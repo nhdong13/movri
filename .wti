@@ -1,0 +1,20 @@
+api_key: proj_pvt_22uRqBPWgCRmuyjt1kbI9w
+
+# Optional: locales not to sync with WebTranslateIt.
+# Takes a string, a symbol, or an array of string or symbol.
+# More information here: https://github.com/AtelierConvivialite/webtranslateit/wiki
+# ignore_locales: 'en'
+
+# Or if you prefer a list of locales to sync with WebTranslateIt:
+# needed_locales: ["ko", "sr", "bn-BD", "pt-BR", "lv", "th-TH", "ro", "zh", "ti", "pt-PT", "eo", "ka", "he-IL", "lt", "it", "nl", "km-KH", "hu", "hr", "pl", "ca", "en-GB", "mk", "sk-SK", "zh-TW", "tr-TR", "sq-AL", "ar", "es", "sv", "en", "hy-AM", "el", "ms-MY", "nb", "ab", "zh-HK", "ru", "is", "sl", "vi", "uk", "hi-IN", "bg", "fr", "de", "es-MX", "da-DK", "et", "cs", "ja", "fr-CA", "fi", "es-ES", "ta-IN", "es-CL", "id", "crp", "eu-ES", "mn", "en-AU", "en-NZ", "sw", "az-AZ"]
+
+# Optional
+# before_pull: "echo 'some unix command'"   # Command executed before pulling files
+# after_pull:  "touch tmp/restart.txt"      # Command executed after pulling files
+#
+# before_push: "echo 'some unix command'"   # Command executed before pushing files
+# after_push:  "touch tmp/restart.txt"      # Command executed after pushing files
+
+# Silence SSL errors
+# silence_errors: true
+
