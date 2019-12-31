@@ -119,6 +119,11 @@ group :development, :staging do
 end
 
 group :development do
+  gem "capistrano", "~> 3.11", require: false
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rvm'
+  gem 'capistrano-puma'
   gem 'rb-fsevent', '~> 0.9.8', require: false
   gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'listen', '~> 3.1.5'
