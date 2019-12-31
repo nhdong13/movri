@@ -60,18 +60,15 @@
 #     # password: "please use keys"
 #   }
 
-set :user, 'ubuntu'
-
-set :server_name, '35.182.111.64'
-
 set :branch, 'master'
 
 set :rails_env, 'production'
 set :bundle_flags, "--no-deployment"
 
-role :web, ["#{fetch(deploy_user)}@#{fetch(server_name)}"]
+server '35.182.111.64', user: 'ubuntu', roles: %w{web app db}
 
 set :ssh_options, {
-  keys: %w(/Users/nhatnkv/.ssh/jack_rsa),
+  keys: '/Users/nhatnkv/.ssh/jack_rsa',
   forward_agent: true,
+  auth_methods: %w(publickey)
 }
