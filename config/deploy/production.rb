@@ -69,9 +69,9 @@ set :branch, 'master'
 set :rails_env, 'production'
 set :bundle_flags, "--no-deployment"
 
-role :web, ["#{fetch(user)}@#{fetch(server_name)}"]
+role :web, ["#{fetch(deploy_user)}@#{fetch(server_name)}"]
 
 set :ssh_options, {
   keys: %w(/Users/nhatnkv/.ssh/jack_rsa),
-  forward_agent: false,
+  forward_agent: true,
 }
