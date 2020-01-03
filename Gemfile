@@ -119,6 +119,12 @@ group :development, :staging do
 end
 
 group :development do
+  gem "capistrano", "~> 3.11", require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-npm', require: false
+  gem 'capistrano3-puma', require: false
   gem 'rb-fsevent', '~> 0.9.8', require: false
   gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'listen', '~> 3.1.5'
@@ -129,6 +135,8 @@ group :development do
   gem 'web-console', '~> 3.7.0'
   gem 'awesome_print', '~> 1.7.0'
   gem 'binding_of_caller'
+  gem 'ed25519', '~> 1.2'
+  gem 'bcrypt_pbkdf', '~> 1'
 end
 
 group :test do
@@ -152,7 +160,6 @@ group :test do
 
   gem 'fake_stripe', git: 'https://github.com/ithouse/fake_stripe.git', ref: '42b9dd09a1db3fb2b7ec11809ac93647f178a115'
   gem 'poltergeist'
-  gem 'puma'
   gem 'webdrivers'
 end
 
@@ -181,3 +188,4 @@ gem 'biz'
 gem 'ffi', '>= 1.9.25'
 gem 'rubyzip', '~> 1.2.2'
 gem 'bootsnap', require: false
+gem 'puma'
