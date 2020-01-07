@@ -1,0 +1,70 @@
+#listing-message-links {
+  #start-on,
+  #end-on {
+    border-radius: 25px;
+
+    &:focus {
+      outline: none !important;
+    }
+  }
+}
+
+.table-condensed tbody tr td{
+  border: 1px solid #E5E5E5;
+  padding: 8px !important;
+  color: #00babc;
+  font-weight: normal;
+}
+
+.table-condensed {
+  tr:nth-child(2) {
+    border: 1px solid #E5E5E5;
+  }
+}
+
+.datepicker-dropdown {
+  padding: 0;
+  border: 0px;
+}
+
+.datepicker table tr td.day:hover {
+  background-color: #f6f6f6 !important;
+  color: #00babc;
+}
+
+.datepicker table tr td.day.selected,
+.datepicker table tr td span.active.active,
+.datepicker table tr td span.active:hover.active {
+  background-color: #71ce52 !important;
+  color: #f6f6f6;
+  font-weight: 600;
+}
+
+.datepicker table tr td.day.selected:hover,
+.datepicker table tr td.day.selected:hover:hover,
+.datepicker table tr td.day.range:hover,
+.datepicker table tr td.day.range:hover:hover {
+  background-color: #f6f6f6 !important;
+  color: #00babc;
+  border: 1px solid #E5E5E5;
+}
+
+.datepicker table tr td.active.active,
+.datepicker table tr td.selected,
+.datepicker table tr td.day.range {
+  border: 1px solid #E5E5E5;
+  font-weight: 600;
+  background-color: #F2FAF2 !important;
+  color: #00babc;
+}
+
+.datepicker table tr td.day.disabled,
+.datepicker table tr td.day.disabled:hover {
+  opacity: .35;
+  background: none !important;
+}
+
+.datepicker thead tr:first-child th:hover,
+.datepicker tfoot tr th:hover {
+  background: none;
+}
