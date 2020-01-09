@@ -1,25 +1,58 @@
 
 #header-user-toggle-menu.toggle-menu.header-toggle-menu-user.hidden
+  .my-account-contain
+    .header-login
+      - unless logged_in?
+        .login-contain
+          .login-title
+            %h2
+              = t('login.title')
+          .sign-in-btn
+            = link_to login_path, class: 'sign-in-button' do
+              = t("header.login")
+          .sign-up-btn
+            = link_to sign_up_path, class: 'sign-up-button' do
+              = t("header.signup")
+      - else
+        .login-contain
+          .sign-out-btn
+            = link_to logout_path, class: 'sign-out-button' do
+              = t("layouts.logged_in.logout")
 
-  = link_to inbox_path do
-    = icon_map_tag(icons, "mail", ["icon-with-text"])
-    = t("layouts.conversations.messages")
-    - if unread_count > 0
-      .mobile-badge{:class => get_badge_class(unread_count)}
-        = unread_count
+    .account-actions.display-flex
+      .display-flex.account-wrap
+        .col-4.action-item.display-flex
+          = image_tag("mf_icons/icon-movri-account.svg", class: 'header-menu-icon icon-movri-account')
+          %p
+            = t('account_action.my_account')
+        .col-4.action-item.display-flex
+          = image_tag("mf_icons/icon-movri-order.svg", class: 'header-menu-icon icon-movri-order')
+          %p
+            = t('account_action.my_order')
+        .col-4.action-item.display-flex
+          = image_tag("mf_icons/icon-movri-wish-list.svg", class: 'header-menu-icon icon-movri-wish-list')
+          %p
+            = t('account_action.wish_list')
 
-  = link_to profile_path do
-    = icon_map_tag(icons, "user", ["icon-with-text"])
-    = t("header.profile")
+  -# = link_to inbox_path do
+  -#   = icon_map_tag(icons, "mail", ["icon-with-text"])
+  -#   = t("layouts.conversations.messages")
+  -#   - if unread_count > 0
+  -#     .mobile-badge{:class => get_badge_class(unread_count)}
+  -#       = unread_count
 
-  = link_to manage_listings_path do
-    = icon_map_tag(icons, "list", ["icon-with-text"])
-    = t("header.manage_listings")
+  -# = link_to profile_path do
+  -#   = icon_map_tag(icons, "user", ["icon-with-text"])
+  -#   = t("header.profile")
 
-  = link_to settings_path do
-    = icon_map_tag(icons, "settings", ["icon-with-text"])
-    = t("layouts.logged_in.settings")
+  -# = link_to manage_listings_path do
+  -#   = icon_map_tag(icons, "list", ["icon-with-text"])
+  -#   = t("header.manage_listings")
 
-  = link_to logout_path do
-    = icon_map_tag(icons, "logout", ["icon-with-text"])
-    = t("layouts.logged_in.logout")
+  -# = link_to settings_path do
+  -#   = icon_map_tag(icons, "settings", ["icon-with-text"])
+  -#   = t("layouts.logged_in.settings")
+
+  -# = link_to logout_path do
+  -#   = icon_map_tag(icons, "logout", ["icon-with-text"])
+  -#   = t("layouts.logged_in.logout")

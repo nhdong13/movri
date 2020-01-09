@@ -2,9 +2,15 @@
   .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
     #header-user-mobile-anchor
       .left
-        = image_tag avatar_url, alt: '', class: 'header-user-avatar'
-      .left
-        %span.header-text-link
-          %span#header-user-display-name.visible-tablet-inline
-            = current_user_name
-          = icon_map_tag(icons, "dropdown", ["icon-dropdown"])
+        .header-menu-container.header-user-contain.toggle.hidden{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute'}}
+          .header-menu-toggle-container.toggle-header-container
+            .display-inline-flex
+              = image_tag("mf_icons/icon-movri-user.svg", class: 'header-menu-icon icon-movri-user')
+              .visible-tablet-inline
+                %small
+                  - username = @current_user.present? ? @current_user.username : t("header.login")
+                  = t("header.hello", name: username )
+                %strong 
+                  = t("header.my_account")
+                  %i{class: 'icon-chevron-down'}
+      -#   

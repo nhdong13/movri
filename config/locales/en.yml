@@ -1731,9 +1731,22 @@ en:
     profile: Profile
     manage_listings: "My listings"
     invite: "Invite new members"
-    login: "Log in"
-    signup: "Sign up"
+    login: "Log In"
+    signup: "Create a Movri Account"
     menu: Menu
+    my_account: My Account
+    hello: 'Hello, %{name}'
+    about_us: About Us
+    help: Help
+    live_chat: Live Chat
+    phone_number: '866.766.6861 / 212.868.4476'
+    history_since: The Professional's Source Since 1973
+  login:
+    title: 'Log In to Your Account'
+  account_action:
+    my_account: MY ACCOUNT
+    my_order: MY ORDER
+    wish_list: WISH LIST
   homepage:
     additional_private_listings_slate:
       additionally_one_private_offer_exists: "Additionally  there is <b>one other offer</b>,"
