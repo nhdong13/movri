@@ -34,6 +34,10 @@ $elementSpacing: lines(0.5);
     border-width: 1px;
     border-radius: 0px;
     outline: none;
+    font-size: 25px;
+    font-style: italic;
+    font-weight: normal;
+    opacity: 0.5;
   }
 
   .header-search-btn {
@@ -53,6 +57,7 @@ $elementSpacing: lines(0.5);
   height: 5rem;
   width: 100%;
   background-color: #e8e9ea;
+  color: #707070;
 }
 
 .header-nav {
@@ -69,8 +74,17 @@ $elementSpacing: lines(0.5);
   border-width: 1px 0px;
   border-color: black;
 
+  .header-wrapper {
+    background-color: #e8e9ea;
+  }
+
+  .history-since-text {
+    color: #7a9f5c;
+  }
+
   .info-header-text {
     padding: 0.4375em 1em;
+    font-size: 14px;
   }
 
   .header-right {
@@ -88,9 +102,10 @@ $elementSpacing: lines(0.5);
       }
 
       small {
-        padding: 2px;
+        padding: 3.7px;
         border: 1px solid;
         border-radius: 5px;
+        text-align: left;
       }
     }
   }
@@ -184,6 +199,10 @@ $elementSpacing: lines(0.5);
 .header-user-contain {
   padding-bottom: 0;
   padding-top: 0;
+
+  .display-inline-flex .visible-tablet-inline small {
+    text-align: left;
+  }
 }
 
 .header-user-container {
@@ -207,6 +226,7 @@ $elementSpacing: lines(0.5);
   color: $body;
   border-radius: 0;
   pointer-events: none;
+  color: #707070;  
 
   .toggled & {
     color: $background;
@@ -383,11 +403,13 @@ $elementSpacing: lines(0.5);
       .login-title {
         margin: 0 auto;
         height: 31px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         text-align: center;
+        margin-top: 10px;
 
-        h2 {
-          color: #ababab;
+        p {
+          color: #707070;
+          font-size: 18px;
         }
       }
 
@@ -443,7 +465,7 @@ $elementSpacing: lines(0.5);
         position: absolute;
         top: 20%;
         left: 39%;
-        height: 33px;
+        height: 32px;
 
         &.icon-movri-account {
           top: 15px;
@@ -453,7 +475,8 @@ $elementSpacing: lines(0.5);
       p {
         position: absolute;
         top: 55%;
-        left: 23%;
+        left: 32%;
+        font-size: 11px;
       }
     }
   }

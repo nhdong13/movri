@@ -1,23 +1,26 @@
 -# Hide header in map view if mobile
 %header.header.info-header
-  .header-wrapper
+  .header-wrapper.clearfix
     .header-right
       .info-header-text
         = t('header.about_us')
     .header-right
       .info-header-text.display-inline-flex
         = image_tag("mf_icons/icon-movri-info.svg", class: 'header-menu-icon icon-movri-info')
-        = t('header.help')
+        %b
+          = t('header.help')
     .header-right
       .info-header-text.display-inline-flex
         = image_tag("mf_icons/icon-movri-chat.svg", class: 'header-menu-icon icon-movri-chat')
-        = t('header.live_chat')
+        %b
+          = t('header.live_chat')
     .header-right
       .info-header-text
-        = t('header.phone_number')
+        %b
+          = t('header.phone_number')
     .header-right
-      .info-header-text
-        = t('header.history_since')
+      .info-header-text.history-since-text
+        = raw t('header.history_since')
     .header-left
       .info-header-text
         %small
@@ -26,9 +29,9 @@
   .header-wrapper.header-nav
     -# .header-right.header-padding.visible-tablet
     -#   = link_to t("homepage.index.post_new_listing"), new_listing_path, :class => "new-listing-link", :id => "new-listing-link"
-
-    .header-right.visible-tablet
-      #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
+    - if logged_in
+      .header-right.visible-tablet
+        #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
     
     .header-right
       = render :partial => "layouts/header_anchors"
@@ -78,5 +81,5 @@
 
     .header-left
       .header-search-box
-        %input{type: 'text', class: 'header-search-input'}
+        %input{type: 'text', class: 'header-search-input', placeholder: 'Search'}
         %i{class: 'icon-search header-search-btn'}

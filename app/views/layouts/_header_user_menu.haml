@@ -5,14 +5,16 @@
       - unless logged_in?
         .login-contain
           .login-title
-            %h2
+            %p
               = t('login.title')
           .sign-in-btn
             = link_to login_path, class: 'sign-in-button' do
-              = t("header.login")
+              %b
+                = t("header.login")
           .sign-up-btn
             = link_to sign_up_path, class: 'sign-up-button' do
-              = t("header.signup")
+              %b
+                = t("header.signup")
       - else
         .login-contain
           .sign-out-btn

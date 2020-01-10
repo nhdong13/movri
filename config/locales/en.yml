@@ -1740,7 +1740,7 @@ en:
     help: Help
     live_chat: Live Chat
     phone_number: '866.766.6861 / 212.868.4476'
-    history_since: The Professional's Source Since 1973
+    history_since: "<b>The Professional's Source </b> Since 1973"
   login:
     title: 'Log In to Your Account'
   account_action:
