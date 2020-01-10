@@ -2,31 +2,31 @@
 %header.header.info-header
   .header-wrapper.clearfix
     .header-right
-      .info-header-text
+      .info-header-text.header-about-us
         = t('header.about_us')
     .header-right
       .info-header-text.display-inline-flex
-        = image_tag("mf_icons/icon-movri-info.svg", class: 'header-menu-icon icon-movri-info')
-        %b
-          = t('header.help')
-    .header-right
-      .info-header-text.display-inline-flex
         = image_tag("mf_icons/icon-movri-chat.svg", class: 'header-menu-icon icon-movri-chat')
-        %b
+        .smbold
           = t('header.live_chat')
     .header-right
-      .info-header-text
-        %b
-          = t('header.phone_number')
+      .info-header-text.display-inline-flex
+        = image_tag("mf_icons/icon-movri-info.svg", class: 'header-menu-icon icon-movri-info')
+        .smbold
+          = t('header.help')
     .header-right
-      .info-header-text.history-since-text
-        = raw t('header.history_since')
+      .info-header-text
+        .smbold
+          = t('header.phone_number')
     .header-left
       .info-header-text
         %small
           B&H for B2B, Gov, Students & More
+    .header-left
+      .info-header-text.history-since-text
+        = raw t('header.history_since')
 %header.header
-  .header-wrapper.header-nav
+  .header-wrapper.header-nav.clearfix
     -# .header-right.header-padding.visible-tablet
     -#   = link_to t("homepage.index.post_new_listing"), new_listing_path, :class => "new-listing-link", :id => "new-listing-link"
     - if logged_in

@@ -1,7 +1,7 @@
 
 #header-user-toggle-menu.toggle-menu.header-toggle-menu-user.hidden
-  .my-account-contain
-    .header-login
+  .my-account-contain.header-login-logged-in
+    .header-login{class: "#{logged_in? ? 'header-login-logged-in' : ''}"}
       - unless logged_in?
         .login-contain
           .login-title
@@ -17,11 +17,16 @@
                 = t("header.signup")
       - else
         .login-contain
+          .section.profile-pic{"data-selenium" => "profilePic"}
+            = image_tag("mf_icons/icon-movri-user.svg", class: 'header-menu-icon icon-movri-user')
+          #js-username.section.profile-name{"data-pi" => "fullName"} Nhat Nguyen Hong
           .sign-out-btn
-            = link_to logout_path, class: 'sign-out-button' do
-              = t("layouts.logged_in.logout")
+            .logout-contain
+              = image_tag("mf_icons/icon-movri-signout.png", class: 'header-menu-icon icon-movri-signout')
+              = link_to logout_path, class: 'sign-out-button' do
+                = t("layouts.logged_in.logout")
 
-    .account-actions.display-flex
+    .account-actions.display-flex{class: "#{logged_in? ? 'account-actions-logged-in' : ''}"}
       .display-flex.account-wrap
         .col-4.action-item.display-flex
           = image_tag("mf_icons/icon-movri-account.svg", class: 'header-menu-icon icon-movri-account')

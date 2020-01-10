@@ -1745,7 +1745,7 @@ en:
     title: 'Log In to Your Account'
   account_action:
     my_account: MY ACCOUNT
-    my_order: MY ORDER
+    my_order: MY ORDERS
     wish_list: WISH LIST
   homepage:
     additional_private_listings_slate:
@@ -1918,8 +1918,8 @@ en:
       admin: Admin
       go_to_your_profile_page: Profile
       hi: Hi
-      login: "Log in"
-      logout: "Log out"
+      login: "Log In"
+      logout: "Sign Out"
       notifications: Notifications
       requests: "Friend requests"
       settings: Settings

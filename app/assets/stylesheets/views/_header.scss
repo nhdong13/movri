@@ -29,8 +29,8 @@ $elementSpacing: lines(0.5);
   position: relative;
 
   .header-search-input {
-    height: 57px;
-    width: 367px;
+    height: 60px;
+    width: 495px;
     border-width: 1px;
     border-radius: 0px;
     outline: none;
@@ -53,26 +53,25 @@ $elementSpacing: lines(0.5);
 }
 
 .header {
-  // height: $headerHeight;
-  height: 5rem;
+  height: 6.25rem;
   width: 100%;
   background-color: #e8e9ea;
   color: #707070;
 }
 
 .header-nav {
-  .header-right,
-  .header-left {
-    margin-top: 10px;
-  }
+  padding: 20px 0px;
+  background: #e8e9ea !important;
 }
 
 .info-header {
   background-color: #e8e9ea;
   height: 2.5em;
-  border-style: solid;
-  border-width: 1px 0px;
-  border-color: black;
+  border-bottom: 1px solid #c2c2c2;
+
+  .header-about-us {
+    margin-top: 2px;
+  }
 
   .header-wrapper {
     background-color: #e8e9ea;
@@ -80,11 +79,18 @@ $elementSpacing: lines(0.5);
 
   .history-since-text {
     color: #7a9f5c;
+    font-size: 16px !important;
+    letter-spacing: -0.6px;
   }
 
   .info-header-text {
-    padding: 0.4375em 1em;
+    padding: 0.4375em 2em;
     font-size: 14px;
+
+    .smbold {
+      font-weight: 600;
+      line-height: 26px;
+    }
   }
 
   .header-right {
@@ -200,8 +206,14 @@ $elementSpacing: lines(0.5);
   padding-bottom: 0;
   padding-top: 0;
 
-  .display-inline-flex .visible-tablet-inline small {
-    text-align: left;
+  .display-inline-flex {
+    .myaccount-header {
+      line-height: 18px;
+    }
+
+    .visible-tablet-inline small {
+      text-align: left;
+    }
   }
 }
 
@@ -238,17 +250,13 @@ $elementSpacing: lines(0.5);
   }
 }
 
-#header-menu-desktop-anchor {
-  padding-bottom: 20px;
-}
-
 .icon-movri-chat,
 .icon-movri-info {
   height: 22px;
 }
 
 .icon-movri-user {
-  height: 45px;
+  height: 35px;
 }
 
 .header-menu-icon {
@@ -387,6 +395,13 @@ $elementSpacing: lines(0.5);
   display: inline-block;
 }
 
+.header-login-logged-in {
+  height: auto !important;
+}
+
+.account-actions-logged-in {
+  background-color: #ffffff !important;
+}
 
 .my-account-contain {
   width: 360px;
@@ -414,21 +429,43 @@ $elementSpacing: lines(0.5);
       }
 
       .sign-up-button,
-      .sign-in-button,
-      .sign-out-button {
+      .sign-in-button {
         text-align: center;
         width: 100%;
         height: 50px;
         border-radius: 4px;
       }
-      
-      .sign-in-btn,
-      .sign-out-btn {
+
+      .sign-in-btn {
         margin: 0 auto;
         height: 50px;
         margin-bottom: 20px;
         background-color: #13578d;
         border-radius: 4px;
+      }
+
+      .sign-out-button {
+        color: #707070;
+        display: inline;
+        font-size: 14px;
+
+        &:hover {
+          background-color: #ffffff;
+          color: #707070;
+        }
+      }
+
+      .sign-out-btn {
+        display: inline;
+
+        .logout-contain {
+          width: 33%;
+          margin: 0 auto;
+
+          .icon-movri-signout {
+            margin-right: -6px;
+          }
+        }
       }
 
       .sign-up-btn {
@@ -441,6 +478,29 @@ $elementSpacing: lines(0.5);
           background-color: #ffffff;
         }
       }
+
+      .profile-pic {
+        background: #b3b3b3;
+        width: 62px;
+        height: 62px;
+        border-radius: 31px;
+        overflow: hidden;
+        margin-right: auto;
+        margin-left: auto;
+
+        .icon-movri-user {
+          top: 20%;
+          left: 20%;
+        }
+      }
+
+      .profile-name {
+        font-size: 24px;
+        font-weight: 300;
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
     }
   }
 
@@ -449,7 +509,7 @@ $elementSpacing: lines(0.5);
   }
 
   .account-actions {
-    height: 87px;
+    height: 85px;
     background-color: #eeeeee;
 
     .account-wrap {
@@ -460,6 +520,12 @@ $elementSpacing: lines(0.5);
       width: 100%;
       position: relative;
       cursor: pointer;
+      padding-right: 0;
+      padding-left: 0;
+
+      &:hover {
+        opacity: .8;
+      }
 
       img {
         position: absolute;
