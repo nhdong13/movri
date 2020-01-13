@@ -19,7 +19,8 @@
         .login-contain
           .section.profile-pic{"data-selenium" => "profilePic"}
             = image_tag("mf_icons/icon-movri-user.svg", class: 'header-menu-icon icon-movri-user')
-          #js-username.section.profile-name{"data-pi" => "fullName"} Nhat Nguyen Hong
+          #js-username.section.profile-name{"data-pi" => "fullName"}
+            = @current_user.username.upcase
           .sign-out-btn
             .logout-contain
               = image_tag("mf_icons/icon-movri-signout.png", class: 'header-menu-icon icon-movri-signout')
