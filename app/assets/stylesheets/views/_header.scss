@@ -17,10 +17,26 @@ $textLineHeight: $headerHeight - em(3);
 /* Default spacing between header bar elements */
 $elementSpacing: lines(0.5);
 
-@media screen and (max-width: 917px) {
+@media screen and (max-width: 500px) {
   .info-header {
     display: none;
   }
+
+  .my-account-contain .header-login .login-contain .sign-out-btn .logout-contain {
+    width: 40%;
+  }
+
+  .my-account-contain {
+    width: 20.5rem;
+  }
+
+  #header-user-toggle-menu {
+    left: 10px !important;
+  }
+}
+
+.header-search-contain {
+  width: 50%;
 }
 
 .header-search-box {
@@ -30,7 +46,7 @@ $elementSpacing: lines(0.5);
 
   .header-search-input {
     height: 60px;
-    width: 495px;
+    width: 100%;
     border-width: 1px;
     border-radius: 0px;
     outline: none;
@@ -487,10 +503,12 @@ $elementSpacing: lines(0.5);
         overflow: hidden;
         margin-right: auto;
         margin-left: auto;
+        position: relative;
 
         .icon-movri-user {
           top: 20%;
           left: 20%;
+          position: absolute;
         }
       }
 
