@@ -33,14 +33,36 @@ $elementSpacing: lines(0.5);
   #header-user-toggle-menu {
     left: 10px !important;
   }
+
+  .header-menu-container {
+    padding: 0 !important;
+  }
+  
+  .header-search-box {
+    margin: 0px 10px !important;
+    margin-right: 0 !important;
+  }
+
+  .header-nav {
+    padding: 10px 0px !important;
+  }
+
+  .header-search-contain {
+    width: 77% !important;
+  }
+
+  .header-search-logged-in {
+    width: 61% !important;
+  }
 }
 
 .header-search-contain {
-  width: 43%;
+  width: 70%;
 }
 
 .header-search-box {
   margin: 0px 20px;
+  margin-right: 0;
   display: flex;
   position: relative;
 
