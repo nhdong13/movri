@@ -69,9 +69,6 @@
         - if @current_community.logo.present?
           %i.header-square-logo.hidden-tablet
             -# Logo is here, it's a CSS background
-        - else
-          %span.header-square-logo-text.hidden-tablet
-            = @current_community.name(I18n.locale)[0]
         - if @current_community.wide_logo.present?
           %i.header-wide-logo.visible-tablet
             -# Logo is here, it's a CSS background
