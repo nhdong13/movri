@@ -36,7 +36,7 @@ $elementSpacing: lines(0.5);
 }
 
 .header-search-contain {
-  width: 50%;
+  width: 43%;
 }
 
 .header-search-box {
@@ -291,6 +291,7 @@ $elementSpacing: lines(0.5);
   padding-left: $elementSpacing;
   display: block;
   @include clearfix;
+  padding-left: 0;
 }
 
 @mixin header-toggle-menu {
