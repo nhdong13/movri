@@ -76,7 +76,7 @@
           %span.header-wide-logo-text.visible-tablet
             = @current_community.name(I18n.locale)
 
-    .header-left.header-search-contain
+    .header-left.header-search-contain{class: "#{logged_in? ? 'header-search-logged-in' : ''}"}
       .header-search-box
         %input{type: 'text', class: 'header-search-input', placeholder: 'Search'}
         %i{class: 'icon-search header-search-btn'}
