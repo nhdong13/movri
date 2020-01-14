@@ -1,0 +1,24 @@
+#myTopnav.topnav
+  - @main_categories.each do |main_category|
+    .dropdown
+      %button.dropbtn
+        = @category_display_names[main_category.id]
+      .dropdown-content
+        - if main_category.children
+          - main_category.children.each do |child|
+            %a{:href => "#"}
+              = @category_display_names[child.id]
+  %a.icon.icon-reorder.category-menu-mobile{:href => "javascript:void(0);"} 
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function() {
+      $(document).on('click', '.category-menu-mobile', function() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "topnav";
+        }
+      });
+    });

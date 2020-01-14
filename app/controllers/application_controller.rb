@@ -43,6 +43,7 @@ class ApplicationController < ActionController::Base
     :set_display_expiration_notice,
     :setup_intercom_user,
     :setup_custom_footer,
+    :fetch_categories,
     :disarm_custom_head_script
 
   # This updates translation files from WTI on every page load. Only useful in translation test servers.
@@ -51,6 +52,28 @@ class ApplicationController < ActionController::Base
   helper_method :root, :logged_in?, :current_user?
 
   attr_reader :current_user
+
+  def fetch_categories
+    @categories = @current_community.categories.includes(:children)
+    @main_categories = @categories.select { |c| c.parent_id == nil }
+    @category_display_names = category_display_names(@current_community, @main_categories, @categories)
+  end
+
+  CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME = 24.hours
+
+  def category_display_names(community, main_categories, categories)
+    Rails.cache.fetch(["catnames",
+                       community,
+                       I18n.locale,
+                       main_categories],
+                      expires_in: CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME) do
+      cat_names = {}
+      categories.each do |cat|
+        cat_names[cat.id] = cat.display_name(I18n.locale)
+      end
+      cat_names
+    end
+  end
 
   def redirect_removed_locale
     if params[:locale] && Rails.application.config.REMOVED_LOCALES.include?(params[:locale])

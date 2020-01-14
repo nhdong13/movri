@@ -208,23 +208,6 @@ class HomepageController < ApplicationController
     end
   end
 
-  # Time to cache category translations per locale
-  CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME = 24.hours
-
-  def category_display_names(community, main_categories, categories)
-    Rails.cache.fetch(["catnames",
-                       community,
-                       I18n.locale,
-                       main_categories],
-                      expires_in: CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME) do
-      cat_names = {}
-      categories.each do |cat|
-        cat_names[cat.id] = cat.display_name(I18n.locale)
-      end
-      cat_names
-    end
-  end
-
   def location_search_params(params, keyword_search_in_use)
     marketplace_configuration = @current_community.configuration
 
