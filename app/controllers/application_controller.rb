@@ -43,7 +43,6 @@ class ApplicationController < ActionController::Base
     :set_display_expiration_notice,
     :setup_intercom_user,
     :setup_custom_footer,
-    :fetch_categories,
     :disarm_custom_head_script
 
   # This updates translation files from WTI on every page load. Only useful in translation test servers.
@@ -303,7 +302,7 @@ class ApplicationController < ActionController::Base
     # Save current community id in request env to be used
     # by Devise and our custom community authenticatable strategy
     request.env[:community_id] = m_community.id.or_else(nil)
-
+    fetch_categories
     setup_logger!(marketplace_id: m_community.id.or_else(nil), marketplace_ident: m_community.ident.or_else(nil))
   end
 
