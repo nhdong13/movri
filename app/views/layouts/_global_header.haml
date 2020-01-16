@@ -25,7 +25,7 @@
     .header-left
       .info-header-text.history-since-text
         = raw t('header.history_since')
-%header.header
+%header.header.main-header
   .header-wrapper.header-nav.clearfix
     -# .header-right.header-padding.visible-tablet
     -#   = link_to t("homepage.index.post_new_listing"), new_listing_path, :class => "new-listing-link", :id => "new-listing-link"
@@ -36,6 +36,7 @@
     .header-right
       = render :partial => "layouts/header_anchors"
       = render :partial => "layouts/header_user_menu"
+
 
     - if logged_in
       = render :partial => "layouts/header_right_visible_tablet", locals: {unread_count: unread_count, inbox_path: inbox_path, icons: icons}
@@ -76,11 +77,9 @@
           %span.header-wide-logo-text.visible-tablet
             = @current_community.name(I18n.locale)
     .header-left.header-search-contain{class: "#{logged_in? ? 'header-search-logged-in' : ''}"}
-      %form{method: "get", class: "header-search-box"}
-        = text_field_tag "q", params[:q], class: 'header-search-input'
-        %button.action-button.header-search-btn#search-button{type: 'submit'}
-          %i{class: 'icon-search'}
-
+      = render partial: 'layouts/searchs/search_box'
+    = render partial: 'layouts/searchs/history'
+    -# = render partial: 'layouts/searchs/results'
 .header.category-nav
   .header-wrapper
     = render :partial => 'layouts/category_bar'

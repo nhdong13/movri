@@ -21,4 +21,16 @@
           x.className = "topnav";
         }
       });
+
+      $('input[name="q"]').click(function() {
+        var search_result = $('.search-dropdown')[0];
+        $(search_result).css('display', 'block');
+      });
+
+      $(document).click (function (e) {
+        if (e.target != $('.header-search-input')[0]) {
+          var search_result = $('.search-dropdown')[0];
+          $(search_result).css('display', 'none');
+        }
+      });
     });

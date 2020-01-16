@@ -1,0 +1,80 @@
+%form{method: "get", class: "header-search-box"}
+  = text_field_tag "q", params[:q], class: 'header-search-input', autocomplete: 'off'
+  %button.action-button.header-search-btn#search-button{type: 'submit'}
+    %i{class: 'icon-search'}
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function() {
+      $('.header-search-input').focus(function() {
+        if (localStorage.search_history == '') {
+          return;
+        }
+        $('.search-description').empty();
+        var historyKeywords = localStorage.search_history.split(',').reverse();
+        var numberOfKeyword = 0;
+
+        $.each(historyKeywords, function(idx, keyword){
+          if ((historyKeywords[idx+1] == keyword) || keyword == '') {
+            return true;
+          }
+          if ((numberOfKeyword > 5)) {
+            return false;
+          }
+          var htmlSearchHistoryItem = '';
+          htmlSearchHistoryItem += '<li>';
+          htmlSearchHistoryItem += '<a href="/?q='+ keyword +'">';
+          htmlSearchHistoryItem += '<span class="link-text ta-ellipsis">' + keyword + '</span>';
+          htmlSearchHistoryItem += '<img src="/assets/mf_icons/icon-movri-visit.svg" class="visit-search-icon">'
+          htmlSearchHistoryItem += '</a>';
+          htmlSearchHistoryItem += '</li>';
+          $('.search-description').append(htmlSearchHistoryItem);
+          numberOfKeyword += 1
+        });
+        htmlClearSearchHistory = '<li class="clear-history-keywords">';
+        htmlClearSearchHistory += '<a href="javascript:void(0)">';
+        htmlClearSearchHistory += '<img src="/assets/mf_icons/icon-movri-undo.svg" class="reset-history-keyword-icon">';
+        htmlClearSearchHistory += '<span class="link-text ta-ellipsis">Clear search history</span>';
+        htmlClearSearchHistory += '</a>';
+        htmlClearSearchHistory += '</li>';
+        $('.search-description').append(htmlClearSearchHistory);
+      })
+
+      $(document).keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          if ($('.header-search-input').is(':focus')) {
+            saveSearchHistory();
+          };
+        }
+      });
+
+      $(document).on('click', '#search-button', function() {
+        saveSearchHistory();
+      });
+
+      $(document).on('click', '.clear-history-keywords', function(){
+        localStorage.search_history = '';
+        location.reload(true);
+      });
+
+      $(document).on('keydown', '.header-search-input', function() {
+        if ($(this).val() != '') {
+          $('.search-history').css('display', 'none');
+        } else {
+          $('.search-history').css('display', 'block');
+        }
+      });
+
+      function saveSearchHistory() {
+        var searchValue = $('.header-search-input').val();
+        if (searchValue != '') {
+          var search_history = localStorage.search_history;
+          if (search_history == undefined) {
+            localStorage.search_history = searchValue;
+          } else {
+            localStorage.search_history = search_history + ',' + searchValue;
+          }
+        }
+      };
+    });

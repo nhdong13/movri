@@ -76,8 +76,7 @@ $elementSpacing: lines(0.5);
     border-width: 1px;
     border-radius: 0px;
     outline: none;
-    font-size: 25px;
-    font-style: italic;
+    font-size: 24px;
     font-weight: normal;
     opacity: 0.5;
   }
@@ -95,6 +94,10 @@ $elementSpacing: lines(0.5);
     padding: 0;
     color: #707070;
     outline: none;
+
+    .icon-search {
+      font-size: 23px;
+    }
   }
 }
 
@@ -729,4 +732,170 @@ $elementSpacing: lines(0.5);
     width: 100%;
     text-align: left;
   }
+}
+
+@mixin search-dropdown {
+  z-index: 1;
+  background: red;
+  position: absolute;
+  top: 140px;
+  display: none;
+  border: 1px solid #c3c3c3;
+  background: #ffffff;
+}
+
+.main-header {
+  .search-results {
+    @include search-dropdown;
+    height: 415px;
+    width: 56%;
+  }
+
+  .search-history {
+    @include search-dropdown;
+    min-width: 20%;
+
+    .suggestionsBrandsCategories {
+      width: 100% !important;
+    }
+  }
+
+  .search-history,
+  .search-results {
+    &:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 18px solid transparent;
+      border-bottom-color: #c3c3c3;
+      top: -36px;
+      left: 205px
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 18px solid transparent;
+      border-bottom-color: #fff;
+      top: -35px;
+      left: 205px;
+    }
+
+    .search-title {
+      float: left;
+      font-size: 14px;
+      font-weight: 800;
+      color: #404040;
+      text-transform: uppercase;
+      line-height: 25px;
+    }
+
+    .suggestedItems {
+      float: left;
+      padding: 15px 25px;
+      width: 55%;
+      height: 100%;
+      border-left: 5px solid #eee;
+
+      .search-title {
+        float: none;
+      }
+
+      .possibleItemMatch-items {
+        padding: 10px;
+
+        .possibleItemMatch-item {
+          width: 33.333333%;
+          height: calc(347px / 2);
+          float: left;
+          padding: 5px;
+  
+          .possibleItemImage {
+            height: 60%;
+  
+            img {
+              width: 55%;
+            }
+          }
+
+          &:hover {
+            background-color: #f6f6f6;
+          }
+  
+          .possibleItemContent {
+            height: 40%;
+            font-size: 14px;
+            color: #000000;
+            padding-top: 15px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+
+    .suggestionsBrandsCategories {
+      padding: 15px 25px;
+      vertical-align: top;
+      float: left;
+      height: 100%;
+      width: 45%;
+
+      li {
+        height: 30px;
+      }
+
+      .search-description {
+        float: right;
+        padding-left: 36px;
+        list-style: none;
+        width: 80%;
+
+        .no-history-keyword {
+          pointer-events: none;
+
+          a {
+            color: #707070;
+          }
+        }
+        
+        a {
+          color: #333333;
+          font-size: 14px;
+          display: block;
+
+          &:hover {
+            background: #eee;
+          }
+        }
+
+        .link-text {
+          display: inline-block;
+        }
+
+        .ta-ellipsis {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .reset-history-keyword-icon {
+          width: 22px;
+        }
+
+        .visit-search-icon {
+          width: 20px;
+          float: right;
+        }
+      }
+    }
+  }
+}
+
+.show-search-result {
+  display: block;
 }
