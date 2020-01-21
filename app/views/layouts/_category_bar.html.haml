@@ -23,13 +23,17 @@
       });
 
       $('input[name="q"]').click(function() {
-        var search_result = $('.search-dropdown')[0];
+        if ($(this).val() != '') {
+          var search_result = $('#search-results');
+        } else {
+          var search_result = $('#search-history');
+        }
         $(search_result).css('display', 'block');
       });
 
       $(document).click (function (e) {
         if (e.target != $('.header-search-input')[0]) {
-          var search_result = $('.search-dropdown')[0];
+          var search_result = $('.search-dropdown');
           $(search_result).css('display', 'none');
         }
       });

@@ -745,13 +745,20 @@ $elementSpacing: lines(0.5);
 }
 
 .main-header {
-  .search-results {
+  #search-results {
     @include search-dropdown;
     height: 415px;
-    width: 56%;
+    width: 65%;
+    display: none;
+
+    .suggestionsBrandsCategories {
+      .history-keywords {
+        width: 87%;
+      }
+    }
   }
 
-  .search-history {
+  #search-history {
     @include search-dropdown;
     min-width: 20%;
 
@@ -760,8 +767,8 @@ $elementSpacing: lines(0.5);
     }
   }
 
-  .search-history,
-  .search-results {
+  #search-history,
+  #search-results {
     &:before {
       content: '';
       position: absolute;
@@ -793,6 +800,12 @@ $elementSpacing: lines(0.5);
       line-height: 25px;
     }
 
+    .suggestionsBrandsCategories {
+      .history-keywords {
+        width: 77%;
+      }
+    }
+
     .suggestedItems {
       float: left;
       padding: 15px 25px;
@@ -815,9 +828,15 @@ $elementSpacing: lines(0.5);
   
           .possibleItemImage {
             height: 60%;
+            position: relative;
   
             img {
-              width: 55%;
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              right: 0;
+              left: 0;
+              width: 70%;
             }
           }
 
@@ -853,7 +872,6 @@ $elementSpacing: lines(0.5);
         float: right;
         padding-left: 36px;
         list-style: none;
-        width: 80%;
 
         .no-history-keyword {
           pointer-events: none;

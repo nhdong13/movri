@@ -102,4 +102,5 @@
 //= require analytics
 //= require social-insurance-number
 //= require stripe_payment
+//= require search_bar
 //= require_self

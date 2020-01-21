@@ -143,6 +143,32 @@ class HomepageController < ApplicationController
   # rubocop:enable AbcSize
   # rubocop:enable MethodLength
 
+  def auto_complete_search
+    view = params[:view] ||= 'Grid'
+    includes =
+      case view.downcase
+      when "grid"
+        [:author, :listing_images]
+      when "list"
+        [:author, :listing_images, :num_of_reviews]
+      when "map"
+        [:location]
+      else
+        raise ArgumentError.new("Unknown view_type #{@view_type}")
+      end
+    compact_filter_params = HashUtils.compact({categories: nil, listing_shape: nil})
+    per_page = view == "map" ? APP_CONFIG.map_listings_limit : APP_CONFIG.grid_listings_limit
+    @listings = find_listings(params: params,
+                                  current_page: 1,
+                                  listings_per_page: per_page,
+                                  filter_params: compact_filter_params,
+                                  includes: includes,
+                                  location_search_in_use: nil,
+                                  keyword_search_in_use: true,
+                                  relevant_search_fields: []).data
+    render layout: false
+  end
+
   private
 
   def parse_relevant_search_fields(params, relevant_filters)
@@ -156,7 +182,6 @@ class HomepageController < ApplicationController
   end
 
   def find_listings(params:, current_page:, listings_per_page:, filter_params:, includes:, location_search_in_use:, keyword_search_in_use:, relevant_search_fields:)
-
     search = {
       # Add listing_id
       categories: filter_params[:categories],

@@ -79,7 +79,7 @@
     .header-left.header-search-contain{class: "#{logged_in? ? 'header-search-logged-in' : ''}"}
       = render partial: 'layouts/searchs/search_box'
     = render partial: 'layouts/searchs/history'
-    -# = render partial: 'layouts/searchs/results'
+    = render partial: 'layouts/searchs/results'
 .header.category-nav
   .header-wrapper
     = render :partial => 'layouts/category_bar'
