@@ -17,6 +17,9 @@ $textLineHeight: $headerHeight - em(3);
 /* Default spacing between header bar elements */
 $elementSpacing: lines(0.5);
 
+$mobile: "(max-width: 767px)";
+$tablet: "(min-width: 768px) and (max-width: 1024px)";
+
 @media screen and (max-width: 500px) {
   .info-header {
     display: none;
@@ -713,7 +716,28 @@ $elementSpacing: lines(0.5);
   }
 }
 
-@media screen and (max-width: 600px) {
+@media #{$tablet} {
+  .header-menu-toggle-container {
+    padding: 0;
+  }
+  .header-search-contain.header-search-logged-in {
+    width: 38%;
+  }
+  .header-search-box {
+    margin: 0;
+  }
+  .info-header .info-header-text {
+    padding: 0.4375em 1em;
+  }
+}
+
+@media #{$mobile} {
+  .main-header #search-history:after,
+  .main-header #search-history:before,
+  .main-header #search-result:after,
+  .main-header #search-result:before {
+    content: none !important;
+  }
   .topnav.responsive {position: relative; z-index: 2;}
   .topnav.responsive .icon {
     position: absolute;
