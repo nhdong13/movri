@@ -2,6 +2,9 @@
 @import "compass/css3/box-sizing";
 @import "mixins/all";
 
+$mobile: "(max-width: 767px)";
+$tablet: "(min-width: 768px) and (max-width: 1024px)";
+
 .listing-details-container {
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -294,4 +297,245 @@ $listing-author-avatar-height: 108;
 .buyer-fees {
   font-size: 15px;
   color: gray;
+}
+
+.listing-breadcrumbs {
+  margin: 0.75rem 0 1.25rem 0.75em;
+  width: 100%;
+
+  .listing-breadcrumb {
+    display: flex;
+    -webkit-box-align: center;
+  }
+
+  .listing-link-crumb {
+    color: #1A5888;
+    font-size: 0.75rem;
+    text-decoration: none;
+  }
+
+  .listing-separator-icon {
+    height: 0.4rem;
+    margin-top: 0.7rem;
+  }
+
+  .bhIcon {
+    fill: #000;
+  }
+}
+
+.listing-details-container {
+  .listing-image-frame {
+    background: none;
+    border: 1px solid #cdcdcd;
+  }
+
+  .listing-image-carousel {
+    overflow: initial;
+  }
+
+  .listing-image-frame-content {
+    top: 15px;
+    bottom: 15px;
+  }
+}
+
+.listing-details {
+  .row {
+    font-size: 14px;
+    margin-top: 15px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .listing-title {
+    font-size: 24px;
+    color: #254e58;
+    border-bottom: 1px solid #cdcdcd;
+    padding-bottom: 0.75em;
+    margin-bottom: 0;
+  }
+
+  .listing-price {
+    font-size: 25px;
+    font-weight: bold;
+
+    .amount {
+      color: #13588d;
+    }
+    .time-rent {
+      color: #5fbf67;
+    }
+  }
+
+  .listing-identity {
+    color: #7d7d7d;
+
+    .listing-sku {
+      font-size: 16px;
+      font-weight: bold;
+
+      .sku {
+        font-size: 15px;
+        font-weight: initial;
+      }
+    }
+
+    .listing-replacement-value {
+      .amount {
+        color: #0e426e;
+      }
+    }
+  }
+
+  .listing-available {
+    font-weight: bold;
+    font-size: 14px;
+
+    .availabel {
+      background: #f3f3f3;
+      padding: 10px 2px;
+      border-radius: 4px;
+      width: auto;
+    }
+  }
+
+  .listing-shipping-date {
+    .arrival-date,
+    .return-date {
+      .form-group {
+        position: relative;
+
+        img {
+          position: absolute;
+          width: 20px;
+          top: 45px;
+          right: 10px;
+        }
+      }
+    }
+
+    input {
+      height: 50px;
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #dddddd;
+    }
+  }
+
+  .listing-order-quantity {
+    background: #f3f3f3;
+
+    @media #{$mobile}, #{$tablet} {
+      .rent-container,
+      .add-wish-list {
+        padding-right: 18px;
+        padding-left: 18px;
+      }
+    }
+
+    button {
+      font-size: 18px;
+      font-weight: initial;
+      width: 100%;
+      margin: 18px 0px;
+    }
+
+    .rent-btn {
+      background: #4eb857;
+      border: 1px solid #4eb857;
+    }
+
+    .add-wish-list {
+      padding-right: 18px;
+    }
+
+    .wish-list-btn {
+      color: #333333;
+      background: #ffffff;
+      border: 1px solid #333333;
+      margin-right: 18px;
+    }
+  }
+
+  .listing-shipping-info {
+    .shipping-rates {
+      background: #f3f3f3;
+      padding: 20px 30px;
+      width: auto;
+
+      span {
+        font-size: 14px;
+        color: #0e426e;
+        font-weight: bold;
+      }
+
+      span:last-child {
+        margin-left: 15px;
+      }
+
+      @media #{$mobile}, #{$tablet} {
+        span:last-child {
+          margin-left: 15px;
+          float: right;
+        }
+      }
+    }
+  }
+
+  .listing-style,
+  .listing-type,
+  .listing-configuration {
+    .style-item,
+    .type-item ,
+    .configuration-item {
+      padding: 10px;
+      border-radius: 4px;
+      margin-right: 5px;
+      border: 1px solid #333333;
+      display: inline-block;
+      margin-bottom: 5px;
+
+      &.selected {
+        background: #e9f4dd;
+        border: 2px solid #8bc34a;
+      }
+    }
+  }
+
+  .listing-payment-method {
+    .payment-method-item {
+      display: inline;
+
+      img{
+        width: 35px;
+        margin-left: 30px;
+      }
+
+      span {
+        text-align: center;
+        display: inline-block;
+        font-size: 13px;
+        color: #0e426e;
+      }
+
+      @media #{$mobile}, #{$tablet} {
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .listing-save-availabe {
+    .save-available {
+      .saving-available-item {
+        height: 50px;
+        width: 100%;
+        background: #c3c3c3;
+      }
+    }
+  }
 }
