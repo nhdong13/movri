@@ -104,7 +104,7 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
   # Expands the lines which load the assets
-  config.assets.debug = false
+  config.assets.debug = true
   config.assets.quiet = true
 
   # Raises error for missing translations
