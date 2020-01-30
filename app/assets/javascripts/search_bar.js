@@ -70,6 +70,7 @@ $(document).ready(function() {
     var view = $('.home-toolbar-button-group').find('.selected').attr('title');
     $.ajax({
       url: "/search_listing",
+      type: "POST",
       data: {
         q: keyword,
         view: view

@@ -91,7 +91,7 @@ Rails.application.routes.draw do
     CustomLandingPage::LandingPageStore.enabled?(request.env[:current_marketplace]&.id)
   }
 
-  get '/search_listing' => 'homepage#auto_complete_search', as: :auto_complete_search
+  post '/search_listing' => 'homepage#auto_complete_search', as: :auto_complete_search
 
   # Default routes for homepage, these are matched if custom landing page is not in use
   # Inside this constraits are the routes that are used when request has subdomain other than www
