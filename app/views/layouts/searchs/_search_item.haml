@@ -1,6 +1,7 @@
 .possibleItemMatch-item
   .possibleItemImage
-    = image_tag search_item.listing_images.first[:medium]
+    - if search_item.listing_images.first
+      = image_tag search_item.listing_images.first[:medium]
   .possibleItemContent
     %p
       = search_item.title
