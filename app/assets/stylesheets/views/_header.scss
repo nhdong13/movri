@@ -40,7 +40,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   .header-menu-container {
     padding: 0 !important;
   }
-  
+
   .header-search-box {
     margin: 0px 10px !important;
     margin-right: 0 !important;
@@ -282,7 +282,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   display: inline-table;
   padding: $elementPadding $elementSpacing;
   height: $headerHeight;
-  
+
   &.toggled {
     background-color: #ababab !important;
     border-color: #ababab !important;
@@ -299,7 +299,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   color: $body;
   border-radius: 0;
   pointer-events: none;
-  color: #707070;  
+  color: #707070;
 
   .toggled & {
     color: $background;
@@ -533,13 +533,14 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       .sign-up-btn {
         margin: 0 auto;
         height: 50px;
-        
+
         .sign-up-button {
           border: 1px solid #212121;
           color: #000000;
           background-color: #ffffff;
         }
       }
+
 
       .profile-pic {
         background: #b3b3b3;
@@ -569,7 +570,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 
   button {
-    outline: none;    
+    outline: none;
   }
 
   .account-actions {
@@ -586,9 +587,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       cursor: pointer;
       padding-right: 0;
       padding-left: 0;
+      color: #707070;
+      padding: 0;
 
       &:hover {
         opacity: .8;
+        background: none;
       }
 
       img {
@@ -849,11 +853,11 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
           height: calc(347px / 2);
           float: left;
           padding: 5px;
-  
+
           .possibleItemImage {
             height: 60%;
             position: relative;
-  
+
             img {
               position: absolute;
               top: 0;
@@ -867,7 +871,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
           &:hover {
             background-color: #f6f6f6;
           }
-  
+
           .possibleItemContent {
             height: 40%;
             font-size: 14px;
@@ -904,7 +908,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
             color: #707070;
           }
         }
-        
+
         a {
           color: #333333;
           font-size: 14px;

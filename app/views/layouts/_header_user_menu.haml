@@ -29,7 +29,7 @@
 
     .account-actions.display-flex{class: "#{logged_in? ? 'account-actions-logged-in' : ''}"}
       .display-flex.account-wrap
-        .col-4.action-item.display-flex
+        = link_to person_path(@current_user), class: "col-4 action-item display-flex" do
           = image_tag("mf_icons/icon-movri-account.svg", class: 'header-menu-icon icon-movri-account')
           %p
             = t('account_action.my_account')
