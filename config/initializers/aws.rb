@@ -1,3 +1,3 @@
-AWS.config.update({
-  signatureVersion: 'v4'
-});
+Aws.config.update(
+  signatureVersion: :v4
+)
