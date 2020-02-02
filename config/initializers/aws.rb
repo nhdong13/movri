@@ -1,3 +1,3 @@
 Aws.config.update(
-  signatureVersion: :v4
+  signature_version: :v4
 )
