@@ -1,2 +1,8 @@
-:plain
-  $('.possibleItemMatch-items').html("#{j render partial: 'layouts/searchs/search_item', collection: @listings }");
+- unless @listings.size.zero?
+  :plain
+    $('.possibleItemMatch-items').html("#{j render partial: 'layouts/searchs/search_item', collection: @listings }");
+    $('.possibleItemContent span').each(function(){
+      var html = $(this).html();
+      var newHtml = html.replace("#{params[:q]}", "<b>#{params[:q]}</b>");
+      $(this).html(newHtml);
+    });

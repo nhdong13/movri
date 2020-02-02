@@ -1,7 +1,8 @@
 .possibleItemMatch-item
-  .possibleItemImage
+  .possibleItemImage.hidden-mobile
     - if search_item.listing_images.first
       = image_tag search_item.listing_images.first[:medium]
   .possibleItemContent
-    %p
+    %span
       = search_item.title
+    = image_tag "mf_icons/icon-movri-visit.svg", class: 'visble-mobile visit-search-icon'
