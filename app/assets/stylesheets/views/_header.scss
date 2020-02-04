@@ -73,6 +73,10 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   display: flex;
   position: relative;
 
+  @media #{$mobile} {
+    display: none;
+  }
+
   .header-search-input {
     height: 60px;
     width: 100%;
@@ -180,6 +184,25 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 .header-wrapper {
   @include wrapper(0);
+  @media #{$mobile} {
+    height: 45px;
+    padding: 0 !important;
+    background: white !important;
+    .header-menu-toggle-container {
+      background: white;
+    }
+    .header-logo {
+      margin: 0 0 0 -14px;
+      .header-wide-logo {
+        background-size: contain;
+        height: 33px;
+        margin-top: 5px;
+      }
+    }
+    .header-left, .header-right {
+      height: 45px;
+    }
+  }
 }
 
 .header-left {

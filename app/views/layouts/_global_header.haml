@@ -19,10 +19,6 @@
         .smbold
           = t('header.phone_number')
     .header-left
-      .info-header-text
-        %small
-          B&H for B2B, Gov, Students & More
-    .header-left
       .info-header-text.history-since-text
         = raw t('header.history_since')
 %header.header.main-header
@@ -32,7 +28,7 @@
     - if logged_in
       .header-right.visible-tablet
         #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
-    
+
     .header-right
       = render :partial => "layouts/header_anchors"
       = render :partial => "layouts/header_user_menu"
@@ -57,8 +53,6 @@
         .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
           #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
             = icon_map_tag(icons, "rows", ["header-menu-icon"])
-            %span.visible-tablet-inline
-              = t("header.menu")
 
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
 
@@ -71,7 +65,7 @@
           %i.header-square-logo.hidden-tablet
             -# Logo is here, it's a CSS background
         - if @current_community.wide_logo.present?
-          %i.header-wide-logo.visible-tablet
+          %i.header-wide-logo
             -# Logo is here, it's a CSS background
         - else
           %span.header-wide-logo-text.visible-tablet

@@ -41,3 +41,17 @@
     display: none !important;
   }
 }
+
+.visble-mobile {
+  display: none;
+  @media (max-width: 767px) {
+    display: inherit;
+  }
+}
+
+.hidden-mobile {
+  display: inherit;
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
