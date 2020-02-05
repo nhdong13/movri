@@ -190,9 +190,20 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     background: white !important;
     .header-menu-toggle-container {
       background: white;
+      .display-inline-flex {
+        margin-top: 6px;
+      }
+    }
+    .header-right {
+      .header-menu-toggle-container {
+        padding-left: 0;
+      }
+      .header-menu-icon {
+        padding-left: 4px;
+      }
     }
     .header-logo {
-      margin: 0 0 0 -14px;
+      margin: 0;
       .header-wide-logo {
         background-size: contain;
         height: 33px;
@@ -201,6 +212,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     }
     .header-left, .header-right {
       height: 45px;
+    }
+    .header-menu-icon {
+      height: 26px;
+    }
+    .icon-movri-user {
+      filter: invert(1);
     }
   }
 }
