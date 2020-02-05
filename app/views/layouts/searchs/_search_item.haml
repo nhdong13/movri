@@ -1,4 +1,4 @@
-.possibleItemMatch-item
+= link_to listing_path(search_item.url), class: 'possibleItemMatch-item' do
   .possibleItemImage.hidden-mobile
     - if search_item.listing_images.first
       = image_tag search_item.listing_images.first[:medium]
