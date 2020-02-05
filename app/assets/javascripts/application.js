@@ -103,4 +103,5 @@
 //= require social-insurance-number
 //= require stripe_payment
 //= require search_bar
+//= require header
 //= require_self

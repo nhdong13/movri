@@ -1,4 +1,8 @@
 = form_tag '/', {method: "get", class: "header-search-box"} do
+  %a{href:  'javascript:void(0)', class: 'back-to-menu'}
+    = image_tag("mf_icons/icon-movri-back.svg", class: 'header-menu-icon hidden-desktop')
   = text_field_tag "q", params[:q], class: 'header-search-input', autocomplete: 'off', placeholder: 'Search'
   %button.action-button.header-search-btn#search-button{type: 'submit'}
-    %i{class: 'icon-search'}
+    %i{class: 'icon-search hidden-mobile'}
+    %span{class: 'hidden-desktop'}
+      GO

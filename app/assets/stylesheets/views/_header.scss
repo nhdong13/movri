@@ -75,6 +75,39 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
   @media #{$mobile} {
     display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 !important;
+    height: 45px;
+    width: 100vw;
+    background-color: white;
+    input {
+      font-size: 14px !important;
+      height: 45px !important;
+      border: none;
+    }
+    .back-to-menu {
+      display: block;
+      padding: 0 10px;
+      img {
+        width: 25px;
+        margin-top: 7px;
+      }
+    }
+    button.header-search-btn {
+      font-size: 14px;
+      color: white;
+      background-color: #13588d;
+      width: 65px;
+      height: 45px;
+      position: relative;
+      display: inline-block;
+      top: 0;
+      right: 0;
+      opacity: 1;
+      border-radius: 0;
+    }
   }
 
   .header-search-input {
