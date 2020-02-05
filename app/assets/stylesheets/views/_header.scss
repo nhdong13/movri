@@ -182,6 +182,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
+.main-header {
+  @media #{$mobile} {
+    border-bottom: 2px solid #4eb857;
+  }
+}
+
 .header-wrapper {
   @include wrapper(0);
   @media #{$mobile} {
@@ -195,16 +201,22 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       }
     }
     .header-right {
-      .header-menu-toggle-container {
-        padding: 0;
-      }
-      .header-menu-icon {
-        padding-left: 7px;
-        padding-right: 7px;
-        margin-top: 5px;
-      }
-      &.mobile {
+      &.controls {
         padding-right: 10px;
+      }
+      .display-inline-flex.icons {
+        .header-menu-toggle-container {
+          padding: 0;
+        }
+        .header-menu-icon {
+          padding-left: 7px;
+          padding-right: 7px;
+          margin-top: 5px;
+          height: 26px;
+        }
+        .icon-movri-user {
+          filter: invert(1);
+        }
       }
     }
     .header-logo {
@@ -220,11 +232,10 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     .header-left, .header-right {
       height: 45px;
     }
-    .header-menu-icon {
-      height: 26px;
-    }
-    .icon-movri-user {
-      filter: invert(1);
+    .account-wrap {
+      .col-4 {
+        margin-bottom: 14px;
+      }
     }
   }
 }

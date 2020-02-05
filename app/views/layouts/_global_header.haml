@@ -27,7 +27,7 @@
       .header-right.visible-tablet
         #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
 
-    .header-right.mobile
+    .header-right.controls
       = render :partial => "layouts/header_anchors"
       = render :partial => "layouts/header_user_menu"
 
@@ -72,6 +72,6 @@
       = render partial: 'layouts/searchs/search_box'
     = render partial: 'layouts/searchs/history'
     = render partial: 'layouts/searchs/results'
-.header.category-nav
+.header.category-nav.hidden-mobile
   .header-wrapper
     = render :partial => 'layouts/category_bar'
