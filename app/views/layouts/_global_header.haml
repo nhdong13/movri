@@ -23,13 +23,11 @@
         = raw t('header.history_since')
 %header.header.main-header
   .header-wrapper.header-nav.clearfix
-    -# .header-right.header-padding.visible-tablet
-    -#   = link_to t("homepage.index.post_new_listing"), new_listing_path, :class => "new-listing-link", :id => "new-listing-link"
     - if logged_in
       .header-right.visible-tablet
         #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
 
-    .header-right
+    .header-right.mobile
       = render :partial => "layouts/header_anchors"
       = render :partial => "layouts/header_user_menu"
 

@@ -191,19 +191,26 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     .header-menu-toggle-container {
       background: white;
       .display-inline-flex {
-        margin-top: 6px;
+        margin-top: 0;
       }
     }
     .header-right {
       .header-menu-toggle-container {
-        padding-left: 0;
+        padding: 0;
       }
       .header-menu-icon {
-        padding-left: 4px;
+        padding-left: 7px;
+        padding-right: 7px;
+        margin-top: 5px;
+      }
+      &.mobile {
+        padding-right: 10px;
       }
     }
     .header-logo {
       margin: 0;
+      max-width: 122px;
+      overflow: hidden;
       .header-wide-logo {
         background-size: contain;
         height: 33px;

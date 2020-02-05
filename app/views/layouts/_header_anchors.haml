@@ -1,19 +1,19 @@
-#header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-  .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-    #header-user-mobile-anchor
-      .left
-        .header-menu-container.header-user-contain.toggle.hidden{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
-          .header-menu-toggle-container.toggle-header-container
-            .display-inline-flex
-              = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
-              = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-menu-icon hidden-desktop')
-              = image_tag("mf_icons/icon-movri-user.svg", class: 'header-menu-icon icon-movri-user')
-              = image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop')
-              .visible-tablet-inline.myaccount-header
-                %small
-                  - username = @current_user.present? ? @current_user.username : t("header.login")
-                  = t("header.hello", name: username )
-                %strong
-                  = t("header.my_account")
-                  %i{class: 'icon-chevron-down'}
-      -#
+.display-inline-flex
+  = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
+  = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-menu-icon hidden-desktop')
+  #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+    .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+      #header-user-mobile-anchor
+        .left
+          .header-menu-container.header-user-contain.toggle.hidden{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+            .header-menu-toggle-container.toggle-header-container
+              .display-inline-flex
+                = image_tag("mf_icons/icon-movri-user.svg", class: 'header-menu-icon icon-movri-user')
+                .visible-tablet-inline.myaccount-header
+                  %small
+                    - username = @current_user.present? ? @current_user.username : t("header.login")
+                    = t("header.hello", name: username )
+                  %strong
+                    = t("header.my_account")
+                    %i{class: 'icon-chevron-down'}
+  = image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop')
