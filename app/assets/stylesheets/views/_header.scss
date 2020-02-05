@@ -1099,3 +1099,9 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 .show-search-result {
   display: block;
 }
+
+@media #{$mobile} {
+  #header-menu-toggle-menu {
+    top: 45px !important;
+  }
+}
