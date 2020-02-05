@@ -896,7 +896,10 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       border: 18px solid transparent;
       border-bottom-color: #c3c3c3;
       top: -36px;
-      left: 205px
+      left: 205px;
+      @include media(mobile) {
+        content: none;
+      }
     }
 
     &:after {
@@ -908,6 +911,9 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       border-bottom-color: #fff;
       top: -35px;
       left: 205px;
+      @include media(mobile) {
+        content: none;
+      }
     }
 
     .search-title {
@@ -1043,6 +1049,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       width: calc(100vw - 22px);
       margin-left: 11px;
       margin-right: 11px;
+      top: 45px;
       .search-title {
         display: none;
       }
