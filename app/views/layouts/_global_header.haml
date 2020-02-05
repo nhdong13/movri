@@ -25,7 +25,7 @@
   .header-wrapper.header-nav.clearfix
     - if logged_in
       .header-right.visible-tablet
-        #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
+        #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
 
     .header-right.controls
       = render :partial => "layouts/header_anchors"
