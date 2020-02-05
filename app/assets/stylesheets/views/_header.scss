@@ -1105,3 +1105,23 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     top: 46px !important;
   }
 }
+
+#header-contact {
+  position: absolute;
+  top: 45px !important;
+  padding: 15px 15px 0 15px;
+  right: 60px;
+  font-size: 15px;
+  color: #212121;
+  border-radius: 0px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+  background-color: white;
+  li {
+    list-style: none;
+    padding-bottom: 15px;
+  }
+  .contact-icon {
+    width: 19px;
+    vertical-align: middle;
+  }
+}
