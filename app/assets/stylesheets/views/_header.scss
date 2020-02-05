@@ -1101,7 +1101,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 @media #{$mobile} {
-  #header-menu-toggle-menu {
-    top: 45px !important;
+  #header-menu-toggle-menu, #header-user-toggle-menu {
+    top: 46px !important;
   }
 }
