@@ -2,8 +2,9 @@
 %header.header.info-header
   .header-wrapper.clearfix
     .header-right
-      .info-header-text.header-about-us
-        = t('header.about_us')
+      = link_to about_infos_path, class: 'de-a' do
+        .info-header-text.header-about-us
+          = t('header.about_us')
     .header-right
       .info-header-text.display-inline-flex
         = image_tag("mf_icons/icon-movri-chat.svg", class: 'header-menu-icon icon-movri-chat')
