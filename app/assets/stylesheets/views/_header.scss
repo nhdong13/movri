@@ -1109,6 +1109,21 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   #header-menu-toggle-menu, #header-user-toggle-menu {
     top: 46px !important;
   }
+  #header-menu-toggle-menu{
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+    background-color: #f0f0f0;
+    a {
+      color: black;
+    }
+  }
+}
+
+#header-menu-toggle-menu {
+  background-color: #f0f0f0;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+  a {
+    color: black;
+  }
 }
 
 #header-contact {
