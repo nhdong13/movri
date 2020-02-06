@@ -48,11 +48,10 @@
             %a{href: locale_change_link[:url]}
               = locale_change_link[:title]
 
-    - if logged_in
-      .header-left.hidden-tablet
-        .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
-          #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
-            = icon_map_tag(icons, "rows", ["header-menu-icon"])
+    .header-left.hidden-tablet
+      .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
+        #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
+          = icon_map_tag(icons, "rows", ["header-menu-icon"])
 
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
 
