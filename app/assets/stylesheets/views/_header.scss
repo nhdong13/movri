@@ -1118,6 +1118,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 @media #{$mobile} {
   #header-menu-toggle-menu, #header-user-toggle-menu {
     top: 46px !important;
+    font-size: 14px;
   }
   #header-menu-toggle-menu{
     box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
@@ -1125,6 +1126,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     a {
       color: black;
     }
+    min-width: 290px;
   }
 }
 
@@ -1133,6 +1135,15 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
   a {
     color: black;
+  }
+  .cat-section {
+    background-color: white;
+    border-bottom: 4px solid #d8d8d8;
+    .sub-cat {
+      padding-left: 30px;
+      font-size: 13px;
+      color: grey;
+    }
   }
 }
 

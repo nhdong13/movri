@@ -8,3 +8,12 @@ window.SearchMobile = {
     })
   }
 }
+
+window.ToggleCat = {
+  run: function(){
+    $('.toggle-cat').click(function(){
+      $(".cat-section .the-rest").slideToggle();
+      $('.cat-section .all, .cat-section .less').toggle();
+    })
+  }
+}

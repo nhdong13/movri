@@ -1,0 +1,5 @@
+= link_to @category_display_names[main_category.id], search_path(category: main_category)
+- if main_category.children
+  - main_category.children.each do |child|
+    = link_to search_path(category: child), class: 'sub-cat' do
+      = @category_display_names[child.id]
