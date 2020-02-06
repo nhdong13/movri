@@ -1160,6 +1160,11 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   li {
     list-style: none;
     padding-bottom: 15px;
+    a {
+      padding: 0;
+      display: inline;
+      color: black;
+    }
   }
   .contact-icon {
     width: 19px;
