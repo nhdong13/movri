@@ -780,11 +780,21 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
-.topnav a:hover, .dropdown:hover .dropbtn {
+.dropdown:hover .dropbtn {
   background-color: #e8e9ea;
   color: black;
   border-top: 4px solid #13578d;
   padding: 12.5px 15px;
+  a.main-cat {
+    color: black;
+  }
+}
+
+.topnav a.main-cat {
+  display: contents;
+  &:hover {
+    color: black;
+  }
 }
 
 .dropdown-content a:hover {
