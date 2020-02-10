@@ -99,3 +99,7 @@ function translate_validation_messages(locale) {
       number_conditional_decimals: json.validation_messages.number
   });
 }
+
+function isMobile(){
+  return $(window).width() <= 767;
+}

@@ -17,6 +17,7 @@ $(document).ready(function() {
       var htmlSearchHistoryItem = '';
       htmlSearchHistoryItem += '<li class="history-keyword-item" data-text-search="'+ keyword +'">';
       htmlSearchHistoryItem += '<a href="/?q='+ keyword +'">';
+      htmlSearchHistoryItem += '<img src="/assets/mf_icons/icon-movri-undo.svg" class="history-keyword-icon">';
       htmlSearchHistoryItem += '<span class="link-text ta-ellipsis">' + keyword + '</span>';
       htmlSearchHistoryItem += '<img src="/assets/mf_icons/icon-movri-visit.svg" class="visit-search-icon">'
       htmlSearchHistoryItem += '</a>';
@@ -55,10 +56,16 @@ $(document).ready(function() {
     if ($(this).val() != '') {
       $('#search-history').css('display', 'none');
       $('#search-results').css('display', 'block');
+      if(isMobile()){
+        $('.suggestionsBrandsCategories').css('display', 'none');
+      }
       search($(this).val());
     } else {
       $('#search-history').css('display', 'block');
       $('#search-results').css('display', 'none');
+      if(isMobile()){
+        $('.suggestionsBrandsCategories').css('display', 'block');
+      }
     }
   });
 

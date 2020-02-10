@@ -2,8 +2,9 @@
 %header.header.info-header
   .header-wrapper.clearfix
     .header-right
-      .info-header-text.header-about-us
-        = t('header.about_us')
+      = link_to about_infos_path, class: 'de-a' do
+        .info-header-text.header-about-us
+          = t('header.about_us')
     .header-right
       .info-header-text.display-inline-flex
         = image_tag("mf_icons/icon-movri-chat.svg", class: 'header-menu-icon icon-movri-chat')
@@ -19,23 +20,18 @@
         .smbold
           = t('header.phone_number')
     .header-left
-      .info-header-text
-        %small
-          B&H for B2B, Gov, Students & More
-    .header-left
       .info-header-text.history-since-text
         = raw t('header.history_since')
 %header.header.main-header
   .header-wrapper.header-nav.clearfix
-    -# .header-right.header-padding.visible-tablet
-    -#   = link_to t("homepage.index.post_new_listing"), new_listing_path, :class => "new-listing-link", :id => "new-listing-link"
     - if logged_in
       .header-right.visible-tablet
-        #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
-    
-    .header-right
+        #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+
+    .header-right.controls
       = render :partial => "layouts/header_anchors"
       = render :partial => "layouts/header_user_menu"
+      = render :partial => "layouts/header_contact"
 
 
     - if logged_in
@@ -52,13 +48,10 @@
             %a{href: locale_change_link[:url]}
               = locale_change_link[:title]
 
-    - if logged_in
-      .header-left.hidden-tablet
-        .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
-          #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
-            = icon_map_tag(icons, "rows", ["header-menu-icon"])
-            %span.visible-tablet-inline
-              = t("header.menu")
+    .header-left.hidden-tablet
+      .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
+        #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
+          = icon_map_tag(icons, "rows", ["header-menu-icon"])
 
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
 
@@ -71,7 +64,7 @@
           %i.header-square-logo.hidden-tablet
             -# Logo is here, it's a CSS background
         - if @current_community.wide_logo.present?
-          %i.header-wide-logo.visible-tablet
+          %i.header-wide-logo
             -# Logo is here, it's a CSS background
         - else
           %span.header-wide-logo-text.visible-tablet
@@ -80,6 +73,6 @@
       = render partial: 'layouts/searchs/search_box'
     = render partial: 'layouts/searchs/history'
     = render partial: 'layouts/searchs/results'
-.header.category-nav
+.header.category-nav.hidden-mobile
   .header-wrapper
     = render :partial => 'layouts/category_bar'

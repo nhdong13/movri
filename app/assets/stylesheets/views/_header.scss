@@ -40,7 +40,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   .header-menu-container {
     padding: 0 !important;
   }
-  
+
   .header-search-box {
     margin: 0px 10px !important;
     margin-right: 0 !important;
@@ -72,6 +72,43 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   margin-right: 0;
   display: flex;
   position: relative;
+
+  @media #{$mobile} {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 !important;
+    height: 45px;
+    width: 100vw;
+    background-color: white;
+    input {
+      font-size: 14px !important;
+      height: 45px !important;
+      border: none;
+    }
+    .back-to-menu {
+      display: block;
+      padding: 0 10px;
+      img {
+        width: 25px;
+        margin-top: 7px;
+      }
+    }
+    button.header-search-btn {
+      font-size: 14px;
+      color: white;
+      background-color: #13588d;
+      width: 65px;
+      height: 45px;
+      position: relative;
+      display: inline-block;
+      top: 0;
+      right: 0;
+      opacity: 1;
+      border-radius: 0;
+    }
+  }
 
   .header-search-input {
     height: 60px;
@@ -131,7 +168,8 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   border-bottom: 1px solid #c2c2c2;
 
   .header-about-us {
-    margin-top: 2px;
+    margin: 0;
+    font-weight: 600;
   }
 
   .header-wrapper {
@@ -178,8 +216,62 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
+.main-header {
+  @media #{$mobile} {
+    border-bottom: 2px solid #4eb857;
+  }
+}
+
 .header-wrapper {
   @include wrapper(0);
+  @media #{$mobile} {
+    height: 45px;
+    padding: 0 !important;
+    background: white !important;
+    .header-menu-toggle-container {
+      background: white;
+      .display-inline-flex {
+        margin-top: 0;
+      }
+    }
+    .header-right {
+      &.controls {
+        padding-right: 10px;
+      }
+      .display-inline-flex.icons {
+        .header-menu-toggle-container {
+          padding: 0;
+        }
+        .header-menu-icon {
+          padding-left: 7px;
+          padding-right: 7px;
+          margin-top: 5px;
+          height: 26px;
+        }
+        .icon-movri-user {
+          filter: invert(1);
+        }
+      }
+    }
+    .header-logo {
+      margin: 0;
+      max-width: 122px;
+      overflow: hidden;
+      .header-wide-logo {
+        background-size: contain;
+        height: 33px;
+        margin-top: 5px;
+      }
+    }
+    .header-left, .header-right {
+      height: 45px;
+    }
+    .account-wrap {
+      .col-4 {
+        margin-bottom: 14px;
+      }
+    }
+  }
 }
 
 .header-left {
@@ -282,7 +374,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   display: inline-table;
   padding: $elementPadding $elementSpacing;
   height: $headerHeight;
-  
+
   &.toggled {
     background-color: #ababab !important;
     border-color: #ababab !important;
@@ -299,7 +391,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   color: $body;
   border-radius: 0;
   pointer-events: none;
-  color: #707070;  
+  color: #707070;
 
   .toggled & {
     color: $background;
@@ -533,13 +625,14 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       .sign-up-btn {
         margin: 0 auto;
         height: 50px;
-        
+
         .sign-up-button {
           border: 1px solid #212121;
           color: #000000;
           background-color: #ffffff;
         }
       }
+
 
       .profile-pic {
         background: #b3b3b3;
@@ -569,7 +662,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 
   button {
-    outline: none;    
+    outline: none;
   }
 
   .account-actions {
@@ -586,9 +679,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       cursor: pointer;
       padding-right: 0;
       padding-left: 0;
+      color: #707070;
+      padding: 0;
 
       &:hover {
         opacity: .8;
+        background: none;
       }
 
       img {
@@ -599,6 +695,10 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
         &.icon-movri-account {
           top: 15px;
+          width: 32px;
+          @media #{$mobile} {
+            padding-bottom: 2px;
+          }
         }
       }
 
@@ -680,11 +780,21 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
-.topnav a:hover, .dropdown:hover .dropbtn {
+.dropdown:hover .dropbtn {
   background-color: #e8e9ea;
   color: black;
   border-top: 4px solid #13578d;
   padding: 12.5px 15px;
+  a.main-cat {
+    color: black;
+  }
+}
+
+.topnav a.main-cat {
+  display: contents;
+  &:hover {
+    color: black;
+  }
 }
 
 .dropdown-content a:hover {
@@ -784,7 +894,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
   #search-history {
     @include search-dropdown;
-    min-width: 20%;
+    min-width: 30%;
 
     .suggestionsBrandsCategories {
       width: 100% !important;
@@ -801,7 +911,10 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       border: 18px solid transparent;
       border-bottom-color: #c3c3c3;
       top: -36px;
-      left: 205px
+      left: 205px;
+      @include media(mobile) {
+        content: none;
+      }
     }
 
     &:after {
@@ -813,6 +926,9 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       border-bottom-color: #fff;
       top: -35px;
       left: 205px;
+      @include media(mobile) {
+        content: none;
+      }
     }
 
     .search-title {
@@ -849,11 +965,11 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
           height: calc(347px / 2);
           float: left;
           padding: 5px;
-  
+
           .possibleItemImage {
             height: 60%;
             position: relative;
-  
+
             img {
               position: absolute;
               top: 0;
@@ -867,7 +983,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
           &:hover {
             background-color: #f6f6f6;
           }
-  
+
           .possibleItemContent {
             height: 40%;
             font-size: 14px;
@@ -904,7 +1020,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
             color: #707070;
           }
         }
-        
+
         a {
           color: #333333;
           font-size: 14px;
@@ -925,8 +1041,9 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
           text-overflow: ellipsis;
         }
 
-        .reset-history-keyword-icon {
+        .reset-history-keyword-icon, .history-keyword-icon {
           width: 22px;
+          margin-right: 10px;
         }
 
         .visit-search-icon {
@@ -935,9 +1052,122 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
         }
       }
     }
+
+    .history-keyword-icon {
+      display: none;
+    }
+  }
+
+  @media #{$mobile} {
+    #search-results, #search-history {
+      height: auto;
+      width: calc(100vw - 22px);
+      margin-left: 11px;
+      margin-right: 11px;
+      top: 45px;
+      .search-title {
+        display: none;
+      }
+      .search-description {
+        float: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      .suggestionsBrandsCategories.js-suggestionsBrandsCategories {
+        width: 100%;
+        padding: 0;
+      }
+      .history-keyword-icon {
+        display: inline-block;
+      }
+      li {
+        border-bottom: 1px dashed grey;
+        padding: 5px 15px 5px 15px;
+        height: 37px !important;
+      }
+    }
+
+    #search-results .suggestedItems {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      .visit-search-icon {
+        width: 20px;
+        float: right;
+      }
+      .possibleItemMatch-item {
+        border-bottom: 1px dashed grey;
+        width: 100% !important;
+        padding: 5px 15px 5px 15px !important;
+        height: 37px !important;
+        .possibleItemContent {
+          width: 100%;
+          height: auto !important;
+          padding-top: 0 !important;
+        }
+      }
+    }
   }
 }
 
 .show-search-result {
   display: block;
+}
+
+@media #{$mobile} {
+  #header-menu-toggle-menu, #header-user-toggle-menu {
+    top: 46px !important;
+    font-size: 14px;
+  }
+  #header-menu-toggle-menu{
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+    background-color: #f0f0f0;
+    a {
+      color: black;
+    }
+    min-width: 290px;
+  }
+}
+
+#header-menu-toggle-menu {
+  background-color: #f0f0f0;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+  a {
+    color: black;
+  }
+  .cat-section {
+    background-color: white;
+    border-bottom: 4px solid #d8d8d8;
+    .sub-cat {
+      padding-left: 30px;
+      font-size: 13px;
+      color: grey;
+    }
+  }
+}
+
+#header-contact {
+  position: absolute;
+  top: 45px !important;
+  padding: 15px 15px 0 15px;
+  right: 60px;
+  font-size: 15px;
+  color: #212121;
+  border-radius: 0px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+  background-color: white;
+  li {
+    list-style: none;
+    padding-bottom: 15px;
+    a {
+      padding: 0;
+      display: inline;
+      color: black;
+    }
+  }
+  .contact-icon {
+    width: 19px;
+    vertical-align: middle;
+  }
 }
