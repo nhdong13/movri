@@ -103,5 +103,6 @@
 //= require social-insurance-number
 //= require stripe_payment
 //= require search_bar
+//= require slick.min.js
 //= require header
 //= require_self

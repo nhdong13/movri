@@ -1,116 +1,61 @@
-.row.listing-title
-  .col-12.clearfix
-    %span
-      = @listing.title
-.row.listing-price
-  .col-12.clearfix
-    %span.amount
-      = MoneyViewUtils.to_humanized(@listing.price)
-    - with_quantity_text(@current_community, @listing) do |text|
-      %span.time-rent
-        \/
-        = text
-.row.listing-identity
-  .col-6.clearfix.listing-sku
-    %span
-      SKU :
-    %span.sku
-      RO8514FFC
-  .col-6.clearfix.listing-replacement-value
-    %span
-      Replacement Value :
-    %span.amount
-      $1299
-.row.listing-available
-  .col-12.clearfix.availabel
-    %span
-      Available 01/24/20
-.row.listing-shipping-date
-  .col-6.clearfix.arrival-date
-    .form-group
-      %label{for: 'arrival-date'} Arrival Date:
-      %input#arrival-date.form-control{type: "arrival-date"}
-      = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
-  .col-6.clearfix.return-date
-    .form-group
-      %label{for: "return-date"} Return Date:
-      %input#return-date.form-control{type: "return-date"}
-      = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
-.row.listing-order-quantity
-  .col-3.quantity
-  .col-5.rent-container
-    %button.rent-btn
-      Rent Now
-  .col-4.add-wish-list
-    %button.wish-list-btn
-      Add to Wish List
-.row.listing-shipping-info
-  .col-6.clearfix.shipping-rates
-    %span
-      Shipping Rates
-    %span
-      Pricing Chart
-.row.listing-style
-  .col-9.clearfix.style
-    %p Style
-    .style-item.selected
-      Body Only
-    .style-item
-      With Canon Body C Log
-    .style-item
-      With 24-70mm Lens
-    .style-item
-      With 24-105mm Lens
-    .style-item
-      Body Only
-    .style-item
-      With Canon Body C Log
-    .style-item
-      With 24-70mm Lens
-    .style-item
-      With 24-105mm Lens
-.row.listing-type
-  .col-9.clearfix.type
-    %p Type
-    .type-item.selected
-      Standard
-    .type-item
-      With 50mm
-    .type-item
-      For Astrophotography Use
-.row.listing-configuration
-  .col-9.clearfix.configuration
-    %p Configuration
-    .configuration-item.selected
-      Base
-    .configuration-item
-      With Free Accessory Kit
-    .configuration-item
-      With Deluxe Kit
-    .configuration-item
-      With Card & Battery Grip Kit
-    .configuration-item
-      With Cinema Kit
-.row.listing-payment-method
-  .col-9.clearfix.payment-method
-    .payment-method-item.col-3
-      = image_tag("mf_icons/pay-on-delivery-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        Pay on delivery
-    .payment-method-item.col-3
-      = image_tag("mf_icons/10-days-replacement-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        10 Days Replacement
-    .payment-method-item.col-3
-      = image_tag("mf_icons/movri-deliver-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        Movri Delivered
-    .payment-method-item.col-3
-      = image_tag("mf_icons/movri-deliver-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        Movri Delivered
-.row.listing-save-availabe
-  .col-6.clearfix.save-available
-    %p
-      Savings Availabe:
-    .saving-available-item
+.specification
+  %table.table.col-11.tab-content#spec_tab
+    %tbody
+      %tr
+        %td{width: '40%'} Focal Length
+        %td 85mm
+      %tr
+        %td{width: '40%'} Maximum Aperture
+        %td f/1.4
+      %tr
+        %td{width: '40%'} Minimum Aperture
+        %td f/16
+      %tr
+        %td{width: '40%'} Focal Length
+        %td 85mm
+      %tr
+        %td{width: '40%'} Maximum Aperture
+        %td f/1.4
+      %tr
+        %td{width: '40%'} Minimum Aperture
+        %td f/16
+      %tr
+        %td{width: '40%'} Focal Length
+        %td 85mm
+      %tr
+        %td{width: '40%'} Maximum Aperture
+        %td f/1.4
+      %tr
+        %td{width: '40%'} Minimum Aperture
+        %td f/16
+      %tr
+        %td{width: '40%'} Focal Length
+        %td 85mm
+      %tr
+        %td{width: '40%'} Maximum Aperture
+        %td f/1.4
+      %tr
+        %td{width: '40%'} Minimum Aperture
+        %td f/16
+  %table.table.col-11.tab-content#overview_tab
+    %tbody
+      %tr
+        %td{width: '40%'} overview
+        %td Doe
+      %tr
+        %td{width: '40%'} Mary
+        %td Moe
+      %tr
+        %td{width: '40%'} July
+        %td Dooley
+  %table.table.col-11.tab-content#review_tab
+    %tbody
+      %tr
+        %td{width: '40%'} review
+        %td Doe
+      %tr
+        %td{width: '40%'} Mary
+        %td Moe
+      %tr
+        %td{width: '40%'} July
+        %td Dooley

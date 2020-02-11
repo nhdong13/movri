@@ -36,52 +36,45 @@
   .col-6.listing-details-container
     .row
       .col-12
-        - with_image_frame(@listing) do |reason, listing_images|
-          - if reason == :images_ok
-            .listing-image-carousel
-              #listing-image-frame
-
-              - if @listing_presenter.prev_image_id && @listing_presenter.next_image_id
-                = link_to params.permit(:id, :locale).merge(image: @listing_presenter.prev_image_id), class: "listing-image-navi listing-image-navi-left", id: "listing-image-navi-left" do
-                  .listing-image-navi-arrow-container
-                    .listing-image-arrow-icon-container.left
-                      = icon_tag("directleft", ["navigate-icon-fix", "listing-image-navi-arrow"])
-                = link_to params.permit(:id, :locale).merge(image: @listing_presenter.next_image_id), class: "listing-image-navi listing-image-navi-right", id: "listing-image-navi-right" do
-                  .listing-image-navi-arrow-container
-                    .listing-image-arrow-icon-container.right
-                      = icon_tag("directright", ["navigate-icon-fix", "listing-image-navi-arrow"])
-            #thumbnail-stripe.listing-image-thumbnail-stripe
-
-            - content_for :extra_javascript do
-              :javascript
-                var listingImages = #{raw listing_images.map { |image| ListingImageJsAdapter.new(image) }.to_json }
-                var currentImage = #{params[:image].present? ? params[:image].to_i : listing_images.first.id};
-                ST.listingImages(listingImages, currentImage);
-          - else
-            .listing-image-text-container
-              .listing-image-frame
-                .listing-image-frame-content
-                  .listing-image-vertical-centering
-                    .listing-no-image
-                      - if reason == :images_processing
-                        = t("listings.show.processing_uploaded_image")
-                      - else
-                        = t(".no_description")
-
+        = render partial: 'listings/slideshow_images'
     .row
-      .col-12.listing-description-content
-        - if @listing.description && !@listing.description.blank?
-          = markdown(@listing.description)
-          - if( @listing_presenter.youtube_link_ids.present?)
-            - @listing_presenter.youtube_link_ids.each do |youtube_id|
-              .listing-description-youtube-wrapper
-                %iframe.listing-description-youtube-iframe{ title: t("listings.show.youtube_video_player"), width: 640, height:390, src: "//www.youtube.com/embed/#{ youtube_id }", frameborder: 0, allowfullscreen: true}
+      .col-12
+        .col-1
+        .col-11.listing-include
+          .listing-include-title
+            INCLUDES
+          .listing-include-items
+            %ul
+              %li
+                Memory Card
+              %li
+                Camera Bag
+              %li
+                Battery Pack
+              %li
+                Speedlite
+              %li
+                Memory Card
+              %li
+                Camera Bag
+              %li
+                Battery Pack
+              %li
+                Speedlite
+    -# .row
+    -#   .col-12.listing-description-content
+    -#     - if @listing.description && !@listing.description.blank?
+    -#       = markdown(@listing.description)
+    -#       - if( @listing_presenter.youtube_link_ids.present?)
+    -#         - @listing_presenter.youtube_link_ids.each do |youtube_id|
+    -#           .listing-description-youtube-wrapper
+    -#             %iframe.listing-description-youtube-iframe{ title: t("listings.show.youtube_video_player"), width: 640, height:390, src: "//www.youtube.com/embed/#{ youtube_id }", frameborder: 0, allowfullscreen: true}
 
-    - @listing.custom_field_values.each do |custom_field_value|
-      .row
-        .col-12
-          - custom_field_value.with_type do |question_type|
-            = render :partial => "listings/custom_field_partials/#{question_type}", :locals => { :custom_field_value => custom_field_value }
+    -# - @listing.custom_field_values.each do |custom_field_value|
+    -#   .row
+    -#     .col-12
+    -#       - custom_field_value.with_type do |question_type|
+    -#         = render :partial => "listings/custom_field_partials/#{question_type}", :locals => { :custom_field_value => custom_field_value }
 
     - if @current_community.show_listing_publishing_date?
       .row
@@ -93,18 +86,18 @@
                 = t(".listing_created_at")
                 = l @listing.created_at, :format => :short_date
 
-    - if !@current_community.private?
-      .row
-        .col-12
-          .listing-social
-            .listing-fb-like-button
-              = facebook_like(current_user?(@listing.author))
-            .listing-tweet-button
-              - twitter_params =  {count: "horizontal", via: (@current_community.twitter_handle), text: @listing.title }.compact
-              = link_to("", "https://twitter.com/share", :class => "twitter-share-button", "data" => twitter_params)
-              - content_for :extra_javascript do
-                :javascript
-                  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    -# - if !@current_community.private?
+    -#   .row
+    -#     .col-12
+    -#       .listing-social
+    -#         .listing-fb-like-button
+    -#           = facebook_like(current_user?(@listing.author))
+    -#         .listing-tweet-button
+    -#           - twitter_params =  {count: "horizontal", via: (@current_community.twitter_handle), text: @listing.title }.compact
+    -#           = link_to("", "https://twitter.com/share", :class => "twitter-share-button", "data" => twitter_params)
+    -#           - content_for :extra_javascript do
+    -#             :javascript
+    -#               !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 
     - unless (@listing.closed? && !current_user?(@listing.author)) || !@current_community.listing_comments_in_use
       .view-item
@@ -122,5 +115,117 @@
             = render :partial => "comment_form"
 
   %aside.col-6.listing-details
-    -# = render partial: 'listings/listing_manage'
+    = render partial: 'listings/listing_orders'
+.row
+  = render partial: 'listings/recommended_accessories'
+
+.row.listing-specifications
+  %ul.nav.nav-pills.listing-categories-detail.clearfix.col-12
+    %li.active
+      %a.tab-link{'data-tab' => 'spec_tab'} SPECS
+    %li
+      %a.tab-link{'data-tab' => 'overview_tab'} OVERVIEW
+    %li
+      %a.tab-link{'data-tab' => 'review_tab'} REVIEWS 4
+    %li
+      %a.tab-link{'data-tab' => 'qa_tab'} Q&A 6
+    %li
+      %a.tab-link{'data-tab' => 'compare_tab'} QUICK COMPARE
+    %li
+      %a.tab-link{'data-tab' => 'accessories_tab'} ACCESSORIES
+    %li
+      %a.tab-link{'data-tab' => 'compatibility_tab'} COMPATIBILITY
+
+.row
+  .listing-specifications.col-9
     = render partial: 'listings/listing_details'
+
+  .include-in-the-box.col-3
+    .col-12
+      = render partial: 'listings/include_in_the_box'
+
+      .listing-user-manual
+        %span.user-manual-file-icon
+          = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
+        %span.user-manual-title
+          User Manual
+        %span.user-manual-file-size
+          15.6 MB
+
+      .listing-firmware-updates
+        %span.firmware-updates-file-icon
+          = image_tag("mf_icons/icon-movri-repair.svg", class: 'header-menu-icon icon-movri-repair')
+        %span.firmware-updates-title
+          Firmware Updates
+
+.row
+  .customers-also-viewed
+    = render partial: 'listings/viewed_slide_show', locals: {title: 'Customers Also Viewed', el: 'customer-also-viewed'}
+
+.row
+  .browsing-history.col-12
+    %button.pull-right.browsing-history-btn-clear
+      Clear History
+    %button.pull-right.browsing-history-btn-on
+      ON
+    %span.pull-right
+      Browsing History
+
+.row
+  .recently_viewed
+    = render partial: 'listings/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
+
+- content_for :extra_javascript do
+  :javascript
+    $(".tab-link").on('click', function(){
+      $(".tab-link").parent().removeClass("active");
+      $(this).parent().addClass("active");
+      $(".tab-content").hide();
+      $("#"+$(this).data('tab')).show();
+      return false;
+    });
+
+    $(document).ready(function() {
+      slickInitialize('.customer-also-viewed-slick', '.customer-also-viewed-prev', '.customer-also-viewed-next');
+      slickInitialize('.recently-viewed-slick', '.recently-viewed-prev', '.recently-viewed-next');
+
+      function slickInitialize(target, prev, next) {
+        $(target).slick({
+          dots: true,
+          prevArrow: $(prev),
+          nextArrow: $(next),
+          infinite: false,
+          speed: 300,
+          slidesToShow: 6,
+          slidesToScroll: 6,
+          arrows: true,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                infinite: true,
+                dots: true
+              }
+            },
+            {
+              breakpoint: 600,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+              }
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+              }
+            }
+          ]
+        });
+      }
+    })
+
+    

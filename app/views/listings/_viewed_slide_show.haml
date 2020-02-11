@@ -1,0 +1,145 @@
+- show_remove_icon = el == 'recently-viewed' ? 'show' : 'hide'
+.container
+  .row
+    = title
+  .row
+    .col-md-12.heroSlider-fixed
+      .overlay
+      .slider.responsive{class: "#{el}-slick"}
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            = image_tag(@listing.listing_images.first.image(:original))
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price 
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            = image_tag(@listing.listing_images.first.image(:original))
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price 
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            = image_tag(@listing.listing_images.first.image(:original))
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price 
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            = image_tag(@listing.listing_images.first.image(:original))
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price 
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            = image_tag(@listing.listing_images.first.image(:original))
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price 
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            = image_tag(@listing.listing_images.first.image(:original))
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price 
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            = image_tag(@listing.listing_images.first.image(:original))
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price 
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+      .prev{class: "#{el}-prev"}
+        %i.icon-angle-left{"aria-hidden" => "true"}
+      .next{class: "#{el}-next"}
+        %i.icon-angle-right{"aria-hidden" => "true"}

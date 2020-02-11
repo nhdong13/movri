@@ -38,6 +38,7 @@ class ListingImage < ApplicationRecord
       :big => Proc.new { |instance| instance.crop_big },
       :email => "150x100#",
       :square => "408x408#",
+      :slideshow => "198x198#",
       :square_2x => "816x816#"}
 
   before_post_process :set_dimensions
