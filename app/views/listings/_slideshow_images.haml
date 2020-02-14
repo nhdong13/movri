@@ -7,13 +7,15 @@
             - listing_images.each do |listing_image|
               %li
                 %a{:href => "Javascript:void(0)"}
-                  = image_tag(listing_image.image(:thumb))
+                  %img{:alt => "", :src => "http://placehold.it/51x51"}/
+                  -# = image_tag(listing_image.image(:thumb))
         #slideshow-main.right.col-11
           %ul#slideshow-list
             - listing_images.each do |listing_image|
               %li
                 %a{:href => "Javascript:void(0)"}
-                  = image_tag(listing_image.image(:original))
+                  -# = image_tag(listing_image.image(:original))
+                  %img{:alt => "", :src => "http://placehold.it/540x540"}/
       -# #listing-image-frame
 
       -# - if @listing_presenter.prev_image_id && @listing_presenter.next_image_id
