@@ -1,0 +1,56 @@
+.row.listing-price
+  .col-12.clearfix
+    %span.amount
+      = MoneyViewUtils.to_humanized(@listing.price)
+    - with_quantity_text(@current_community, @listing) do |text|
+      %span.time-rent
+        \/
+        = text
+.row.listing-identity
+  .col-6.clearfix.listing-sku
+    %span
+      SKU :
+    %span.sku
+      RO8514FFC
+  .col-6.clearfix.listing-replacement-value
+    %span
+      Replacement Value :
+    %span.amount
+      $1299
+.row.listing-available
+  .col-12.clearfix.availabel
+    %span
+      Available 01/24/20
+.row.listing-shipping-date
+  .col-6.clearfix.arrival-date
+    .form-group
+      %label{for: 'arrival-date'} Arrival Date:
+      %input#arrival-date.form-control{type: "arrival-date"}
+      = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+  .col-6.clearfix.return-date
+    .form-group
+      %label{for: "return-date"} Return Date:
+      %input#return-date.form-control{type: "return-date"}
+      = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+.row.listing-order-quantity
+  .col-2.quantity
+    %input{type: 'number', class: 'order-quantity-number-field', max: '99', min: '1'}
+    %i.icon-caret-up
+    %i.icon-caret-down
+  .col-6.rent-container
+    %button.rent-btn
+      Rent Now
+  .col-4.add-wish-list
+    %button.wish-list-btn
+      Add to Wish List
+.row.listing-shipping-info
+  .col-6.clearfix.shipping-rates
+    %span
+      Shipping Rates
+    %span
+      Pricing Chart
+.row.listing-save-availabe
+.col-6.clearfix.save-available
+  %p
+    Savings Availabe:
+  .saving-available-item

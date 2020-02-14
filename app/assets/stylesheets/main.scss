@@ -6,6 +6,9 @@
 @import "compass/css3/box-shadow";
 @import "mixins/all";
 
+$mobile: "(max-width: 767px)";
+$tablet: "(min-width: 768px) and (max-width: 1024px)";
+
 /**
   This file is deprecated: Put your SCSS to views/ and partials/
   and include them in application.scss.erb
@@ -70,6 +73,9 @@ body {
     }
   }
 
+  @media #{$mobile}, #{$tablet} {
+    padding-top: 0;
+  }
 }
 
 /*
@@ -2248,4 +2254,53 @@ figure.fluidratio {
 
 .de-a {
   color: inherit !important;
+}
+
+.desktop-display {
+  display: block;
+}
+
+.mobile-display {
+  display: none;
+}
+
+@media #{$mobile}, #{$tablet} {
+  .desktop-display {
+    display: none;
+  }
+
+  .mobile-display {
+    display: block;
+  }
+}
+
+.mobile-display {
+  .col-6,
+  .col-5,
+  .col-7 {
+    float: left;
+    margin-bottom: 0;
+    padding-right: 0.75em;
+    padding-left: 0.75em;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+
+  .col-6 {
+    width: 50% !important;
+  }
+
+  .col-5 {
+    width: 40% !important;
+  }
+
+  .col-7 {
+    width: 60% !important;
+  }
 }

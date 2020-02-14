@@ -1,0 +1,61 @@
+.mobile-listing-order
+  .row.listing-price
+    .col-6.clearfix
+      %span.amount
+        = MoneyViewUtils.to_humanized(@listing.price)
+      - with_quantity_text(@current_community, @listing) do |text|
+        %span.time-rent
+          \/
+          = text
+    .col-6.clearfix.listing-replacement-value
+      %span
+        Replacement Value :
+      %span.amount
+        $1299
+  .row.listing-available
+    .col-12.clearfix.availabel
+      %span
+        Available 01/24/20
+  .row.listing-shipping-date
+    .col-6.clearfix.arrival-date
+      .form-group
+        %label{for: 'arrival-date'} Arrival Date:
+        %input#arrival-date.form-control{type: "arrival-date"}
+        = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+    .col-6.clearfix.return-date
+      .form-group
+        %label{for: "return-date"} Return Date:
+        %input#return-date.form-control{type: "return-date"}
+        = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+  .row.listing-order-quantity
+    .col-6.row
+      .col-5.quantity
+        %input{type: 'number', class: 'order-quantity-number-field', max: '99', min: '1'}
+        %i.icon-caret-up
+        %i.icon-caret-down
+      .col-7.add-wish-list
+        %button.wish-list-btn
+          Wish List
+    .col-6.listing-shipping-info
+      .clearfix.shipping-rates
+        %span
+          Shipping Rates
+        %span
+          Pricing Chart
+  .row
+    .col-12.rent-container
+      %button.rent-btn
+        Rent Now
+.row
+  .col-12.in-stock
+    .in-stock-label
+      In Stock
+    .in-stock-star
+      %i.icon-star
+      %i.icon-star
+      %i.icon-star
+      %i.icon-star-half
+      %i.icon-star-empty
+    .in-stock-quantity
+      \/ 3.5 (1009)
+    %i.icon-angle-right

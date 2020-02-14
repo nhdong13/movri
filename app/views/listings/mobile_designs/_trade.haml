@@ -1,0 +1,16 @@
+.row.listing-trade-in-your-gear-for-cash
+  .col-12.clearfix
+    .trade-in-your-gear-item
+      .trade-in-your-gear-info
+        .trade-in-your-gear-title
+          Ask Our Experts
+        .trade-in-your-gear-phone
+          %a{href: 'tel:1231231234'}
+            %i.icon-phone
+            %span
+              = @listing.author.phone_number
+        .trade-in-your-gear-email
+          %a{href: "mailto:sample@email.com"}
+            %i.icon-envelope-alt
+            %span
+              Email

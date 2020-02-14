@@ -116,47 +116,16 @@
 
   %aside.col-6.listing-details
     = render partial: 'listings/listing_orders'
-.row
-  = render partial: 'listings/recommended_accessories'
 
-.row.listing-specifications
-  %ul.nav.nav-pills.listing-categories-detail.clearfix.col-12
-    %li.active
-      %a.tab-link{'data-tab' => 'spec_tab'} SPECS
-    %li
-      %a.tab-link{'data-tab' => 'overview_tab'} OVERVIEW
-    %li
-      %a.tab-link{'data-tab' => 'review_tab'} REVIEWS 4
-    %li
-      %a.tab-link{'data-tab' => 'qa_tab'} Q&A 6
-    %li
-      %a.tab-link{'data-tab' => 'compare_tab'} QUICK COMPARE
-    %li
-      %a.tab-link{'data-tab' => 'accessories_tab'} ACCESSORIES
-    %li
-      %a.tab-link{'data-tab' => 'compatibility_tab'} COMPATIBILITY
+  .desktop-display
+    = render partial: 'listings/desktop_designs/recommended_accessories'
+  .mobile-display
+    = render partial: 'listings/mobile_designs/recommended_accessories'
 
-.row
-  .listing-specifications.col-9
-    = render partial: 'listings/listing_details'
-
-  .include-in-the-box.col-3
-    .col-12
-      = render partial: 'listings/include_in_the_box'
-
-      .listing-user-manual
-        %span.user-manual-file-icon
-          = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
-        %span.user-manual-title
-          User Manual
-        %span.user-manual-file-size
-          15.6 MB
-
-      .listing-firmware-updates
-        %span.firmware-updates-file-icon
-          = image_tag("mf_icons/icon-movri-repair.svg", class: 'header-menu-icon icon-movri-repair')
-        %span.firmware-updates-title
-          Firmware Updates
+.desktop-display
+  = render partial: 'listings/desktop_designs/specifications'
+.mobile-display
+  = render partial: 'listings/mobile_designs/specifications'
 
 .row
   .customers-also-viewed

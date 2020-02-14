@@ -1,0 +1,20 @@
+.row.listing-trade-in-your-gear-for-cash
+  .col-6.clearfix
+    %p
+      Trade in your gear for cash:
+      %a{href: '#'}
+        Learn more >
+    .trade-in-your-gear-item
+      .trade-in-your-gear-avatar
+        = small_avatar_thumb(@listing.author)
+      .trade-in-your-gear-info
+        .trade-in-your-gear-title
+          True Know-How
+          .think-text
+            Ask Our Experts
+        .trade-in-your-gear-phone
+          %a{href: 'tel:1231231234'}
+            = @listing.author.phone_number
+        .trade-in-your-gear-email
+          %a{href: "mailto:sample@email.com"}
+            = @listing.author.email
