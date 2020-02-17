@@ -1,61 +1,11 @@
-.specification
-  %table.table.col-11.tab-content#spec_tab
-    %tbody
-      %tr
-        %td{width: '40%'} Focal Length
-        %td 85mm
-      %tr
-        %td{width: '40%'} Maximum Aperture
-        %td f/1.4
-      %tr
-        %td{width: '40%'} Minimum Aperture
-        %td f/16
-      %tr
-        %td{width: '40%'} Focal Length
-        %td 85mm
-      %tr
-        %td{width: '40%'} Maximum Aperture
-        %td f/1.4
-      %tr
-        %td{width: '40%'} Minimum Aperture
-        %td f/16
-      %tr
-        %td{width: '40%'} Focal Length
-        %td 85mm
-      %tr
-        %td{width: '40%'} Maximum Aperture
-        %td f/1.4
-      %tr
-        %td{width: '40%'} Minimum Aperture
-        %td f/16
-      %tr
-        %td{width: '40%'} Focal Length
-        %td 85mm
-      %tr
-        %td{width: '40%'} Maximum Aperture
-        %td f/1.4
-      %tr
-        %td{width: '40%'} Minimum Aperture
-        %td f/16
-  %table.table.col-11.tab-content#overview_tab
-    %tbody
-      %tr
-        %td{width: '40%'} overview
-        %td Doe
-      %tr
-        %td{width: '40%'} Mary
-        %td Moe
-      %tr
-        %td{width: '40%'} July
-        %td Dooley
-  %table.table.col-11.tab-content#review_tab
-    %tbody
-      %tr
-        %td{width: '40%'} review
-        %td Doe
-      %tr
-        %td{width: '40%'} Mary
-        %td Moe
-      %tr
-        %td{width: '40%'} July
-        %td Dooley
+.row.specification
+  .desktop-display
+    = render partial: 'listings/desktop_designs/listing_details/spec_tab'
+    = render partial: 'listings/desktop_designs/listing_details/overview_tab'
+    = render partial: 'listings/desktop_designs/listing_details/review_tab'
+  .mobile-display
+    = render partial: 'listings/mobile_designs/listing_details/overview_tab'
+    = render partial: 'listings/mobile_designs/listing_details/spec_tab'
+    = render partial: 'listings/mobile_designs/listing_details/in_the_box_tab'
+    = render partial: 'listings/mobile_designs/listing_details/review_tab'
+    = render partial: 'listings/mobile_designs/listing_details/question_tab'

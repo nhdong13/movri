@@ -1,7 +1,8 @@
 - show_remove_icon = el == 'recently-viewed' ? 'show' : 'hide'
 .container
   .row
-    = title
+    %span.viewed-title
+      = title
   .row
     .col-md-12.heroSlider-fixed
       .overlay
@@ -26,6 +27,13 @@
                     = text
               %button
                 Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
         .slide-item-container
           .slide-item
             %div{class: "#{show_remove_icon}"}
@@ -46,6 +54,13 @@
                     = text
               %button
                 Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
         .slide-item-container
           .slide-item
             %div{class: "#{show_remove_icon}"}
@@ -66,6 +81,14 @@
                     = text
               %button
                 Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
+                
         .slide-item-container
           .slide-item
             %div{class: "#{show_remove_icon}"}
@@ -86,6 +109,13 @@
                     = text
               %button
                 Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
         .slide-item-container
           .slide-item
             %div{class: "#{show_remove_icon}"}
@@ -106,6 +136,13 @@
                     = text
               %button
                 Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
         .slide-item-container
           .slide-item
             %div{class: "#{show_remove_icon}"}
@@ -126,6 +163,13 @@
                     = text
               %button
                 Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
         .slide-item-container
           .slide-item
             %div{class: "#{show_remove_icon}"}
@@ -146,6 +190,13 @@
                     = text
               %button
                 Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
       .prev{class: "#{el}-prev"}
         %i.icon-angle-left{"aria-hidden" => "true"}
       .next{class: "#{el}-next"}

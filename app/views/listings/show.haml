@@ -131,7 +131,7 @@
   .customers-also-viewed
     = render partial: 'listings/viewed_slide_show', locals: {title: 'Customers Also Viewed', el: 'customer-also-viewed'}
 
-.row
+.row.desktop-display
   .browsing-history.col-12
     %button.pull-right.browsing-history-btn-clear
       Clear History
@@ -140,17 +140,58 @@
     %span.pull-right
       Browsing History
 
-.row
+.row.desktop-display
   .recently_viewed
     = render partial: 'listings/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
 
+.row.mobile-display
+  .similar-product
+    .similar-product-content
+      Find Similar Products with:
+    .similar-wrap
+      .similar-item
+        %label.container
+          %input{:checked => "checked", :type => "checkbox"}
+          %span.checkmark
+        .row.similar-model-wrap
+          %span.similar-model
+            Camera Model
+          %span.similar-name
+            Camera
+      .similar-item
+        %label.container
+          %input{:checked => "checked", :type => "checkbox"}
+          %span.checkmark
+        .row.similar-model-wrap
+          %span.similar-model
+            Camera Model
+          %span.similar-name
+            Camera
+      .similar-item
+        %label.container
+          %input{:checked => "checked", :type => "checkbox"}
+          %span.checkmark
+        .row.similar-model-wrap
+          %span.similar-model
+            Camera Model
+          %span.similar-name
+            Camera
+
 - content_for :extra_javascript do
   :javascript
-    $(".tab-link").on('click', function(){
+    $(".tab-link, .mobile-tab-link").on('click', function(){
       $(".tab-link").parent().removeClass("active");
       $(this).parent().addClass("active");
       $(".tab-content").hide();
       $("#"+$(this).data('tab')).show();
+      return false;
+    });
+
+    $(".mobile-tab-link").on('click', function(){
+      $(".mobile-tab-link").removeClass("active");
+      $(this).addClass("active");
+      $(".tab-content").hide();
+      $(".mobile-display #"+$(this).data('tab')).show();
       return false;
     });
 
@@ -188,8 +229,8 @@
             {
               breakpoint: 480,
               settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
+                slidesToShow: 2,
+                slidesToScroll: 2
               }
             }
           ]

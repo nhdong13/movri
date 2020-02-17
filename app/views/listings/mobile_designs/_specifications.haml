@@ -2,53 +2,33 @@
   .row.listing-specifications
     .col-md-12
       .scrollmenu
-        %a{:href => "#overview"}
+        %a.mobile-tab-link.active{'data-tab' => 'overview_tab'}
           %i.icon-eye-open
           %span
             OVERVIEW
-        %a{:href => "#spec"}
+        %a.mobile-tab-link{'data-tab' => 'spec_tab'}
           = image_tag("mf_icons/icon-movri-note-board.svg", class: 'header-menu-icon icon-movri-chat')
           %span
             SPECS
-        %a{:href => "#in-the-box"}
+        %a.mobile-tab-link{'data-tab' => 'in_the_box_tab'}
           %i.icon-archive
           %span
             IN THE BOX
-        %a{:href => "#accessories"}
+        %a.mobile-tab-link{'data-tab' => 'accessories_tab'}
           %i.icon-suitcase
           %span
             ACCESSORIES
-        %a{:href => "#review"}
+        %a.mobile-tab-link{'data-tab' => 'review_tab'}
           = image_tag("mf_icons/icon-movri-chat-black.svg", class: 'header-menu-icon icon-movri-chat')
           %span
             REVIEW
-        %a{:href => "#review"}
+        %a.mobile-tab-link{'data-tab' => 'question_tab'}
+          %i.icon-question-sign
+          %span
+            Q&A
+        %a.mobile-tab-link{'data-tab' => 'review3_tab'}
           = image_tag("mf_icons/icon-movri-chat-black.svg", class: 'header-menu-icon icon-movri-chat')
           %span
             REVIEW
-        %a{:href => "#review"}
-          = image_tag("mf_icons/icon-movri-chat-black.svg", class: 'header-menu-icon icon-movri-chat')
-          %span
-            REVIEW
 
-.row
-  .col-9
-    = render partial: 'listings/listing_details'
-
-  .include-in-the-box.col-3
-    .col-12
-      = render partial: 'listings/include_in_the_box'
-
-      .listing-user-manual
-        %span.user-manual-file-icon
-          = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
-        %span.user-manual-title
-          User Manual
-        %span.user-manual-file-size
-          15.6 MB
-
-      .listing-firmware-updates
-        %span.firmware-updates-file-icon
-          = image_tag("mf_icons/icon-movri-repair.svg", class: 'header-menu-icon icon-movri-repair')
-        %span.firmware-updates-title
-          Firmware Updates
+= render partial: 'listings/listing_details'

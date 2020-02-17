@@ -1104,14 +1104,15 @@ $listing-author-avatar-height: 108;
 }
 
 .specification {
-  table {
+  .tab-content {
     display: none;
     font-size: 16px;
+
+    &:first-child {
+      display: table;
+    }
   }
 
-  table:first-child {
-    display: table;
-  }
 
   .table {
     margin-top: 20px;
@@ -1123,6 +1124,42 @@ $listing-author-avatar-height: 108;
       td {
         padding: 15px;
         font-size: 16px;
+      }
+    }
+  }
+
+  .mobile-display {
+    @media #{$mobile}, #{$tablet} {
+      .tab-content {
+        border: none;
+        margin-top: 10px;
+        font-size: 14px;
+        margin-bottom: 0;
+
+        .overview-title {
+          font-size: 22px;
+          margin-bottom: 10px;
+        }
+
+        .overview-highlights {
+          margin-bottom: 10px;
+        }
+
+        .overview-view-all-feature button {
+          font-size: 16px;
+          background: none;
+          border: 1px solid #000;
+          width: 100%;
+          height: 44px;
+          color: #000;
+        }
+
+        &#in_the_box_tab {
+          .title {
+            font-size: 22px;
+            margin-bottom: 10px;
+          }
+        }
       }
     }
   }
@@ -1175,6 +1212,7 @@ $listing-author-avatar-height: 108;
       background-color: #f0f0f0;
       overflow: auto;
       white-space: nowrap;
+      border-bottom: 1px solid #757575;
 
       a {
         width: 83px;
@@ -1198,14 +1236,14 @@ $listing-author-avatar-height: 108;
       padding: 14px;
       text-decoration: none;
       font-size: 10px;
-    }
 
-    div.scrollmenu a:hover {
-      background-color: #757575;
-      color: #ffffff;
+      &.active {
+        background-color: #757575;
+        color: #ffffff;
 
-      .icon-movri-chat {
-        filter:  brightness(0) invert(1);
+        .icon-movri-chat {
+          filter:  brightness(0) invert(1);
+        }
       }
     }
 
@@ -1213,6 +1251,160 @@ $listing-author-avatar-height: 108;
       background: none;
     }
   }
+}
+
+.listing-user-manual,
+.listing-firmware-updates {
+  margin-top: 30px;
+  background: #ececec;
+  position: relative;
+  height: 96px;
+  border-radius: 4px;
+
+  .user-manual-title,
+  .firmware-updates-title {
+    position: absolute;
+    left: 35%;
+    top: 35%;
+    font-size: 18px;
+  }
+
+  .user-manual-file-size {
+    font-size: 12px;
+    color: #9a9a9a;
+    top: 36%;
+    left: 70%;
+    position: absolute;
+  }
+
+  .user-manual-file-icon,
+  .firmware-updates-file-icon {
+    position: absolute;
+    background: #0e426e;
+    padding: 30px;
+    border-radius: 4px;
+    top: 0;
+    left: 0;
+
+    img {
+      width: 35px;
+    }
+  }
+}
+
+@media #{$mobile}, #{$tablet} {
+  .listing-user-manual {
+    border-bottom: 1px solid;
+  }
+
+  .listing-user-manual,
+  .listing-firmware-updates {
+    height: auto;
+    background: none;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-radius: 0;
+
+    i {
+      font-size: 27px;
+      margin-left: 10px;
+    }
+
+    .user-manual-file-icon,
+    .firmware-updates-file-icon {
+      padding: 0;
+      background: none;
+
+      img {
+        width: 23px;
+      }
+    }
+
+    .user-manual-title,
+    .firmware-updates-title {
+      font-size: 20px;
+      color: #757575;
+    }
+
+    .user-manual-title,
+    .firmware-updates-title,
+    .user-manual-file-size {
+      font-weight: normal;
+      left: 5px;
+      top: 0;
+    }
+
+    .user-manual-file-size {
+      font-size: 16px;
+      color: #999999;
+    }
+
+    .user-manual-title,
+    .firmware-updates-title,
+    .user-manual-file-size,
+    .user-manual-file-icon,
+    .firmware-updates-file-icon {
+      position: relative;
+    }
+  }
+}
+
+.listing-firmware-updates {
+  margin-top: 10px;
+}
+
+.not-include-box {
+  margin-top: 30px;
+
+  .essentia-item-label {
+    background: #4fb858;
+    padding: 1px 5px;
+    padding-right: 20px;
+    font-size: 13px;
+    display: inline;
+    position: relative;
+    color: #ffffff;
+    font-weight: initial;
+    margin-right: 5px;
+
+    .shape {
+      border-color: rgba(225, 255, 255, 0) #ffffff rgba(225, 255, 255, 0) rgba(225, 255, 255, 0);
+      border-style: solid;
+      border-width: 19px 20px 0 0;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .essentia-item-name {
+    color: #0e426e;
+  }
+
+  .essentia-item-not-include {
+    color: #9a9a9a;
+  }
+}
+
+.include-items {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 20px;
+  font-size: 14px;
+
+  li {
+    padding-bottom: 5px;
+
+    &:first-child {
+      margin-top: 10px;
+    }
+
+    &:last-child {
+      margin-bottom: 5px;
+    }
+  }
+
+  border-bottom: 2px solid #e0e0e0;
 }
 
 .include-in-the-box {
@@ -1225,102 +1417,48 @@ $listing-author-avatar-height: 108;
     }
   }
 
-  .listing-user-manual,
-  .listing-firmware-updates {
-    margin-top: 30px;
-    background: #ececec;
-    position: relative;
-    height: 96px;
-    border-radius: 4px;
+}
 
-    .user-manual-title,
-    .firmware-updates-title {
-      position: absolute;
-      position: absolute;
-      left: 35%;
-      top: 35%;
-      font-size: 18px;
+.customers-also-viewed {
+  @media #{$mobile}, #{$tablet} {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: #757575;
+
+    img {
+      margin-top: 10px !important;
     }
 
-    .user-manual-file-size {
+    .slide-item-title {
       font-size: 12px;
-      color: #9a9a9a;
-      top: 36%;
-      left: 70%;
-      position: absolute;
-    }
-
-    .user-manual-file-icon,
-    .firmware-updates-file-icon {
-      position: absolute;
-      background: #0e426e;
-      padding: 30px;
-      border-radius: 4px;
-      top: 0;
-      left: 0;
-
-      img {
-        width: 35px;
-      }
-    }
-  }
-
-  .listing-firmware-updates {
-    margin-top: 10px;
-  }
-
-  .not-include-box {
-    margin-top: 30px;
-
-    .essentia-item-label {
-      background: #4fb858;
-      padding: 1px 5px;
-      padding-right: 20px;
-      font-size: 13px;
       display: inline;
-      position: relative;
-      color: #ffffff;
-      font-weight: initial;
-      margin-right: 5px;
-
-      .shape {
-        border-color: rgba(225, 255, 255, 0) #ffffff rgba(225, 255, 255, 0) rgba(225, 255, 255, 0);
-        border-style: solid;
-        border-width: 19px 20px 0 0;
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
+      line-height: 0px;
     }
 
-    .essentia-item-name {
-      color: #0e426e;
+    .listing-price  {
+      font-size: 18px !important;
     }
 
-    .essentia-item-not-include {
-      color: #9a9a9a;
+    button {
+      font-size: 14px !important;
+      margin-top: 5px;
+      margin-bottom: 0;
+      padding: 5px 10px 0 10px;
+      height: auto;
     }
-  }
 
-  .include-items {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 20px;
-    font-size: 14px;
-
-    li {
-      padding-bottom: 5px;
-
-      &:first-child {
-        margin-top: 10px;
+    .viewed-slide-star {
+      i {
+        font-size: 15px;
+        color: #4eb857;
       }
 
-      &:last-child {
-        margin-bottom: 5px;
+      span {
+        font-size: 14px;
+        color: #616161;
       }
     }
-
-    border-bottom: 2px solid #e0e0e0;
   }
 }
 
@@ -1334,11 +1472,17 @@ $listing-author-avatar-height: 108;
     padding: 5px;
     margin-bottom: 15px;
   }
+
+  @media #{$mobile}, #{$tablet} {
+    img {
+      margin-left: 20px !important;
+    }
+  }
 }
 
-.customer-also-viewed-slick {
+.customer-also-viewed-slick .slide-item {
   img {
-    margin-top: 40px !important;
+    margin-top: 40px;
   }
 }
 
@@ -1391,6 +1535,37 @@ $listing-author-avatar-height: 108;
         color: #5fbf67;
       }
     }
+
+    @media #{$mobile}, #{$tablet} {
+      width: 160px;
+      height: 270px;
+
+      img {
+        height: 120px;
+        width: 120px;
+      }
+
+      .slide-item-title {
+        font-size: 12px;
+        display: inline;
+      }
+  
+      .listing-price  {
+        font-size: 18px !important;
+      }
+  
+      button {
+        font-size: 14px !important;
+        margin-top: 5px;
+        margin-bottom: 0;
+        padding: 5px 10px 0 10px;
+        height: auto;
+      }
+
+      .recently-viewed-star {
+        display: none;
+      }
+    }
   }
 
   img {
@@ -1438,7 +1613,6 @@ $listing-author-avatar-height: 108;
     }
   }
   
-  /* Custom Arrow */
   .prev{
     color: #999;
     position: absolute;
@@ -1473,7 +1647,26 @@ $listing-author-avatar-height: 108;
 
   @media screen and (max-width: 800px) {
     .next {
-        display: none !important;
+      display: none !important;
+    }
+  }
+  
+  @media #{$mobile}, #{$tablet} {
+    background: #f0f0f0;
+    margin: 0px -12px;
+    padding: 10px;
+
+    .viewed-title {
+      font-size: 20px;
+    }
+
+    .slide-item {
+      border: 1px solid #616161;
+      background: #ffffff;
+    }
+
+    .listing-price  .amount {
+      color: #000 !important;
     }
   }
 }
@@ -1515,4 +1708,309 @@ $listing-author-avatar-height: 108;
   margin-left: -12px;
   margin-right: -12px;
   padding: 0px 10px;
+}
+
+
+// Listing Reviews - Mobile
+
+@media #{$mobile}, #{$tablet} {
+  .specification {
+    .listing-reviews {
+      background: #4eb857;
+      margin-left: -12px;
+      margin-right: -12px;
+      padding: 15px;
+      margin-bottom: 0;
+
+      .reviews-content {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: #ffffff;
+      }
+
+      &.tab-content {
+        border-radius: 0;
+        margin-top: 0;
+      }
+
+      .reviews-wrap {
+        .review-item {
+          background: #ffffff;
+          padding: 10px;
+          font-size: 13px;
+          color: #424242;
+          margin-bottom: 10px;
+
+          .row {
+            margin-bottom: 0;
+          }
+
+          .review-star {
+            font-size: 18px;
+            color: #4eb857;
+            float: left;
+          }
+
+          .review-date {
+            float: right;
+            font-size: 11px;
+            color: #9e9e9e;
+          }
+
+          .review-title {
+            font-size: 16px;
+          }
+
+          .review-author {
+            font-size: 16px;
+            color: #757575;
+          }
+
+        }
+
+        .review-view-all button {
+          float: right;
+          margin: 0;
+          background: #4eb857;
+          border: 1px solid #ffffff;
+          padding: 9px;
+          font-size: 16px;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}
+
+// End Listing Review - Mobile
+
+// Listing Spec - Mobile
+
+@media #{$mobile}, #{$tablet} {
+  .specification {
+    .listing-specs {
+      background: #f0f0f0;
+      font-size: 13px;
+      margin: -12px;
+
+      &.tab-content {
+        margin-top: 0;
+      }
+  
+      .spec-content {
+        font-size: 22px;
+        padding: 10px 15px 0 15px;
+      }
+  
+      .spec-view-all {
+        button {
+          margin: 20px 15px;
+          float: right;
+          background: #ffffff;
+          border: 1px solid #000;
+          color: #000;
+          padding: 9px;
+          font-size: 16px;
+          border-radius: 0;
+          width: 90%;
+        }
+      }
+  
+      .spec-category {
+        margin-bottom: 10px;
+  
+        .spec-model-number {
+          font-size: 16px;
+          margin: 10px 15px;
+        }
+  
+        .spec-item {
+          table {
+            margin-top: 0;
+          }
+
+          table tr{
+            background: none;
+          }
+  
+          td {
+            padding: 5px 15px;
+            border-bottom: 1px solid #ffffff;
+            margin: 15px 0;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
+// End Listing Specs - Mobile
+
+// Listing Q&A - Mobile
+@media #{$mobile}, #{$tablet} {
+  .specification {
+    margin-bottom: 0;
+
+    .listing-questions {
+      background: #f0f0f0;
+      font-size: 13px;
+      margin: -12px;
+
+      &.tab-content {
+        margin-top: 0;
+      }
+
+      .questions-content {
+        padding: 15px;
+        font-size: 22px;
+      }
+
+      .questions-search {
+        padding: 0 15px 15px 15px;
+        width: 70%;
+      }
+
+      .questions-wrap {
+        padding: 0 15px;
+
+        .question-item {
+          background: #ffffff;
+          padding: 10px;
+          font-size: 13px;
+          margin-bottom: 15px;
+
+          .question-author {
+            font-size: 12px;
+            color: #9e9e9e;
+          }
+
+          .question-rate {
+            font-size: 14px;
+            float: left;
+          }
+
+          .question-rate-answer {
+            color: #757575;
+            font-size: 12px;
+            margin-left: 100px;
+          }
+
+          .question-author-rate {
+            color: #9e9e9e;
+            font-size: 12px;
+          }
+        }
+
+        .question-view-all {
+          button {
+            float: right;
+            margin-bottom: 15px;
+            background: #ffffff;
+            border: 1px solid #000;
+            padding: 9px;
+            font-size: 16px;
+            border-radius: 0;
+            color: #000;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media #{$mobile}, #{$tablet} {
+  .similar-product {
+    .similar-wrap {
+      margin-top: 10px;
+
+      label {
+        display: flex;
+      }
+
+      .similar-model-wrap {
+        margin-bottom: 0;
+      }
+
+      .similar-item {
+        padding: 5px;
+        border: 1px solid #e0e0e0;
+        display: inline-block;
+      }
+
+      .similar-model {
+        margin-left: 25px;
+        font-size: 12px;
+        margin-top: -10px;
+        float: left;
+        color: #b3b3b3;
+      }
+
+      .similar-name {
+        margin-left: -72px;
+        font-size: 14px;
+      }
+
+      .container {
+        display: block;
+        position: relative;
+        padding-left: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-weight: normal;
+      }
+      
+      .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+      
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: #eee;
+      }
+      
+      .container:hover input ~ .checkmark {
+        background: none;
+        border: 1px solid #9e9e9e;
+      }
+      
+      .container input:checked ~ .checkmark {
+        background: none;
+        border: 1px solid #9e9e9e;
+      }
+      
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      
+      .container input:checked ~ .checkmark:after {
+        display: block;
+      }
+      
+      .container .checkmark:after {
+        left: 5px;
+        top: 0px;
+        width: 8px;
+        height: 15px;
+        border: 1px solid #4eb857;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    }
+  }
 }

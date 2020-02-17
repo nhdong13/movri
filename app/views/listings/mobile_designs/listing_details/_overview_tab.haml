@@ -1,0 +1,38 @@
+.col-12.tab-content#overview_tab
+  .overview-highlights
+    .overview-title
+      = "#{@listing.title} Highlights"
+    .overview-highlight-items
+      %ul
+        %li
+          30.4MP Full-Frame CMOS Sensor
+        %li
+          30.4MP Full-Frame CMOS Sensor
+        %li
+          30.4MP Full-Frame CMOS Sensor
+        %li
+          30.4MP Full-Frame CMOS Sensor
+  .overview-feature
+    .overview-title
+      Feature
+    .overview-description
+      = @listing.description
+    .overview-view-all-feature
+      %button
+        View All Features
+
+  .col-12.listing-user-manual
+    %span.user-manual-file-icon
+      = image_tag("mf_icons/icon-movri-pdf.png", class: 'header-menu-icon icon-movri-pdf')
+    %span.user-manual-title
+      User Manual
+    %span.user-manual-file-size
+      (PDF 15.6 MB)
+    %i.icon-angle-right{"aria-hidden" => "true"}
+    
+  .col-12.listing-firmware-updates
+    %span.firmware-updates-file-icon
+      = image_tag("mf_icons/icon-movri-play.svg", class: 'header-menu-icon icon-movri-play')
+    %span.firmware-updates-title
+      = truncate(@listing.title, {max: 20})
+    %i.icon-angle-right{"aria-hidden" => "true"}
