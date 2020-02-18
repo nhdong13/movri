@@ -179,6 +179,7 @@
 
 - content_for :extra_javascript do
   :javascript
+
     $(".tab-link, .mobile-tab-link").on('click', function(){
       $(".tab-link").parent().removeClass("active");
       $(this).parent().addClass("active");
@@ -236,6 +237,22 @@
           ]
         });
       }
-    })
 
-    
+      window.onscroll = function() {stickySpecificationBar()};
+      var specifictions = document.getElementById("specification-bar");
+      var stickyTop = specifictions.offsetTop;
+
+      function stickySpecificationBar() {
+        if (window.pageYOffset >= stickyTop) {
+          specifictions.classList.add('sticky-specification');
+        } else {
+          specifictions.classList.remove('sticky-specification');
+        }
+
+        if (window.pageYOffset + window.innerHeight < stickyTop) {
+          specifictions.classList.add('sticky-specification-bottom');
+        } else {
+          specifictions.classList.remove('sticky-specification-bottom');
+        }
+      }
+    })

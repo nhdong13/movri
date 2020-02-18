@@ -1199,8 +1199,11 @@ $listing-author-avatar-height: 108;
       margin-left: 10px;
       font-size: 15px;
       margin-bottom: 10px;
+      background: #ffffff;
 
       &.active {
+        background: #4eb857;
+
         a {
           color: #ffffff !important;
         }
@@ -1929,6 +1932,8 @@ $listing-author-avatar-height: 108;
   }
 }
 
+// End Listing Q&A - Mobile
+
 @media #{$mobile}, #{$tablet} {
   .similar-product {
     .similar-wrap {
@@ -2023,5 +2028,38 @@ $listing-author-avatar-height: 108;
         transform: rotate(45deg);
       }
     }
+  }
+}
+
+// Sticky Specifications
+.sticky-specification,
+.sticky-specification-bottom {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: #fff;
+
+  ul {
+    padding-left: 75px !important;
+  }
+
+  li {
+    margin: 10px;
+  }
+}
+
+.sticky-specification {
+  top: 0;
+  left: 0;
+}
+
+.sticky-specification-bottom {
+  bottom: 0;
+  left: 0;
+  margin-bottom: 0;
+
+  ul {
+    border-top: 2px solid #E7E7E7
   }
 }
