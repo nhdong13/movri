@@ -7,27 +7,13 @@
             - listing_images.each do |listing_image|
               %li
                 %a{:href => "Javascript:void(0)"}
-                  %img{:alt => "", :src => "http://placehold.it/51x51"}/
-                  -# = image_tag(listing_image.image(:thumb))
+                  = image_tag(listing_image.image(:thumb))
         #slideshow-main.right.col-11
           %ul#slideshow-list
             - listing_images.each do |listing_image|
               %li
                 %a{:href => "Javascript:void(0)"}
-                  -# = image_tag(listing_image.image(:original))
-                  %img{:alt => "", :src => "http://placehold.it/540x540"}/
-      -# #listing-image-frame
-
-      -# - if @listing_presenter.prev_image_id && @listing_presenter.next_image_id
-      -#   = link_to params.permit(:id, :locale).merge(image: @listing_presenter.prev_image_id), class: "listing-image-navi listing-image-navi-left", id: "listing-image-navi-left" do
-      -#     .listing-image-navi-arrow-container
-      -#       .listing-image-arrow-icon-container.left
-      -#         = icon_tag("directleft", ["navigate-icon-fix", "listing-image-navi-arrow"])
-      -#   = link_to params.permit(:id, :locale).merge(image: @listing_presenter.next_image_id), class: "listing-image-navi listing-image-navi-right", id: "listing-image-navi-right" do
-      -#     .listing-image-navi-arrow-container
-      -#       .listing-image-arrow-icon-container.right
-      -#         = icon_tag("directright", ["navigate-icon-fix", "listing-image-navi-arrow"])
-    -# #thumbnail-stripe.listing-image-thumbnail-stripe
+                  = image_tag(listing_image.image(:original))
 
     - content_for :extra_javascript do
       :javascript
