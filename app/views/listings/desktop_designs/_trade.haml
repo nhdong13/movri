@@ -12,9 +12,12 @@
           True Know-How
           .think-text
             Ask Our Experts
+        .trade-in-live-chat
+          %a{href: "#"}
+            Live Chat
         .trade-in-your-gear-phone
-          %a{href: 'tel:1231231234'}
+          %a{href: "tel:#{@listing.author.phone_number}"}
             = @listing.author.phone_number
         .trade-in-your-gear-email
-          %a{href: "mailto:sample@email.com"}
-            = @listing.author.email
+          %a{href: "mailto:#{@listing.author.confirmed_notification_emails_to}"}
+            Email

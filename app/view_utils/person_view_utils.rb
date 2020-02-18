@@ -130,4 +130,9 @@ module PersonViewUtils
       [first_name]
     end
   end
+
+  def person_avatar(person_entity)
+    _view_context = ActionView::Base.new
+    person_entity&.image&.present? && !person_entity.image_processing ? person_entity.image.url(:thumb) : _view_context.image_path("mf_icons/icon-movri-user.svg")
+  end
 end

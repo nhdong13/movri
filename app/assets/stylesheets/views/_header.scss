@@ -410,6 +410,14 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 .icon-movri-user {
   height: 35px;
+  border-radius: 30px;
+}
+
+.icon-movri-user-popup {
+  height: 62px;
+  top: 0 !important;
+  left: 0 !important;
+  border-radius: 30px !important;
 }
 
 .header-menu-icon {

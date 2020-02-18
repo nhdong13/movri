@@ -18,7 +18,7 @@
       - else
         .login-contain
           .section.profile-pic{"data-selenium" => "profilePic"}
-            = image_tag("mf_icons/icon-movri-user.svg", class: 'header-menu-icon icon-movri-user')
+            = image_tag PersonViewUtils.person_avatar(@current_user), height: 62, width: 62, class: 'header-menu-icon icon-movri-user icon-movri-user-popup'
           #js-username.section.profile-name{"data-pi" => "fullName"}
             = @current_user.username.upcase
           .sign-out-btn
