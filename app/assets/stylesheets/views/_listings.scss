@@ -1200,6 +1200,7 @@ $listing-author-avatar-height: 108;
       font-size: 15px;
       margin-bottom: 10px;
       background: #ffffff;
+      cursor: pointer;
 
       &.active {
         background: #4eb857;
@@ -2050,7 +2051,7 @@ $listing-author-avatar-height: 108;
 }
 
 .sticky-specification {
-  top: 0;
+  top: 72px;
   left: 0;
 }
 
@@ -2061,5 +2062,52 @@ $listing-author-avatar-height: 108;
 
   ul {
     border-top: 2px solid #E7E7E7
+  }
+}
+
+#listing-title-fixed {
+  height: 72px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 0;
+  background: #e7e7e7;
+  padding-left: 75px !important;
+  padding-right: 75px !important;
+  display: none;
+
+  &.show {
+    display: block;
+  }
+
+  .image-thumb {
+    position: absolute;
+    padding: 10px;
+
+    img {
+      height: 55px;
+    }
+  }
+
+  .listing-title {
+    font-size: 24px;
+    padding-right: 65px;
+    color: #13588d;
+    padding: 25px 25px 25px 80px;
+    display: inline-block;
+  }
+
+  .listing-rent-btn {
+    float: right;
+    padding-right: 10px;
+    
+    button {
+      height: 40px;
+      width: 140px;
+      background: #4eb857;
+      color: white;
+      font-size: 17px;
+    }
   }
 }

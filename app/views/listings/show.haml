@@ -176,11 +176,24 @@
             Camera Model
           %span.similar-name
             Camera
+.row#listing-title-fixed
+  .image-thumb
+    = image_tag(@listing.listing_images.first.image(:thumb))
+  .listing-title
+    %span
+      = @listing.title
+  .listing-rent-btn
+    %button
+      %span
+        Rent Now
 
 - content_for :extra_javascript do
   :javascript
 
     $(".tab-link, .mobile-tab-link").on('click', function(){
+      $('html, body').animate({
+        scrollTop: $("#specification-tabs").offset().top},
+        'slow');
       $(".tab-link").parent().removeClass("active");
       $(this).parent().addClass("active");
       $(".tab-content").hide();
@@ -238,21 +251,37 @@
         });
       }
 
-      window.onscroll = function() {stickySpecificationBar()};
+      window.onscroll = function() {
+        stickySpecificationBar();
+        stickyListingNameBar();
+      };
+
       var specifictions = document.getElementById("specification-bar");
-      var stickyTop = specifictions.offsetTop;
+      var listingName = document.getElementById("listing-title-sticky");
+      var listingNameSticky = document.getElementById("listing-title-fixed");
+
+      var stickySpecificationTop = specifictions.offsetTop;
+      var stickyListingNameTop = listingName.offsetTop;
 
       function stickySpecificationBar() {
-        if (window.pageYOffset >= stickyTop) {
+        if (window.pageYOffset >= stickySpecificationTop) {
           specifictions.classList.add('sticky-specification');
         } else {
           specifictions.classList.remove('sticky-specification');
         }
 
-        if (window.pageYOffset + window.innerHeight < stickyTop) {
+        if (window.pageYOffset + window.innerHeight < stickySpecificationTop) {
           specifictions.classList.add('sticky-specification-bottom');
         } else {
           specifictions.classList.remove('sticky-specification-bottom');
+        }
+      }
+
+      function stickyListingNameBar() {
+        if (window.pageYOffset >= stickyListingNameTop) {
+          listingNameSticky.classList.add('show');
+        } else {
+          listingNameSticky.classList.remove('show');
         }
       }
     })
