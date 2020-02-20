@@ -177,15 +177,16 @@
           %span.similar-name
             Camera
 .row#listing-title-fixed
-  .image-thumb
-    = image_tag(@listing.listing_images.first.image(:thumb))
-  .listing-title
-    %span
-      = @listing.title
-  .listing-rent-btn
-    %button
+  .listing-title-fixed-wrap
+    .image-thumb
+      = image_tag(@listing.listing_images.first.image(:thumb))
+    .listing-title
       %span
-        Rent Now
+        = @listing.title
+    .listing-rent-btn
+      %button
+        %span
+          Rent Now
 
 - content_for :extra_javascript do
   :javascript

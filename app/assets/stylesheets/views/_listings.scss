@@ -1725,7 +1725,6 @@ $listing-author-avatar-height: 108;
   padding: 0px 10px;
 }
 
-
 // Listing Reviews - Mobile
 
 @media #{$mobile}, #{$tablet} {
@@ -1811,12 +1810,12 @@ $listing-author-avatar-height: 108;
       &.tab-content {
         margin-top: 0;
       }
-  
+
       .spec-content {
         font-size: 22px;
         padding: 10px 15px 0 15px;
       }
-  
+
       .spec-view-all {
         button {
           margin: 20px 15px;
@@ -1830,15 +1829,15 @@ $listing-author-avatar-height: 108;
           width: 90%;
         }
       }
-  
+
       .spec-category {
         margin-bottom: 10px;
-  
+
         .spec-model-number {
           font-size: 16px;
           margin: 10px 15px;
         }
-  
+
         .spec-item {
           table {
             margin-top: 0;
@@ -1847,7 +1846,7 @@ $listing-author-avatar-height: 108;
           table tr{
             background: none;
           }
-  
+
           td {
             padding: 5px 15px;
             border-bottom: 1px solid #ffffff;
@@ -1979,7 +1978,7 @@ $listing-author-avatar-height: 108;
         user-select: none;
         font-weight: normal;
       }
-      
+
       .container input {
         position: absolute;
         opacity: 0;
@@ -1987,7 +1986,7 @@ $listing-author-avatar-height: 108;
         height: 0;
         width: 0;
       }
-      
+
       .checkmark {
         position: absolute;
         top: 0;
@@ -1996,27 +1995,27 @@ $listing-author-avatar-height: 108;
         width: 20px;
         background-color: #eee;
       }
-      
+
       .container:hover input ~ .checkmark {
         background: none;
         border: 1px solid #9e9e9e;
       }
-      
+
       .container input:checked ~ .checkmark {
         background: none;
         border: 1px solid #9e9e9e;
       }
-      
+
       .checkmark:after {
         content: "";
         position: absolute;
         display: none;
       }
-      
+
       .container input:checked ~ .checkmark:after {
         display: block;
       }
-      
+
       .container .checkmark:after {
         left: 5px;
         top: 0px;
@@ -2041,8 +2040,9 @@ $listing-author-avatar-height: 108;
   z-index: 999;
   background: #fff;
 
-  ul {
-    padding-left: 75px !important;
+  .specification-list {
+    max-width: 82rem;
+    margin: 0 auto;
   }
 
   li {
@@ -2059,10 +2059,7 @@ $listing-author-avatar-height: 108;
   bottom: 0;
   left: 0;
   margin-bottom: 0;
-
-  ul {
-    border-top: 2px solid #E7E7E7
-  }
+  border-top: 2px solid #E7E7E7
 }
 
 #listing-title-fixed {
@@ -2076,6 +2073,11 @@ $listing-author-avatar-height: 108;
   padding-left: 75px !important;
   padding-right: 75px !important;
   display: none;
+
+  .listing-title-fixed-wrap {
+    max-width: 82rem;
+    margin: 0 auto;
+  }
 
   &.show {
     display: block;
@@ -2101,7 +2103,7 @@ $listing-author-avatar-height: 108;
   .listing-rent-btn {
     float: right;
     padding-right: 10px;
-    
+
     button {
       height: 40px;
       width: 140px;
