@@ -179,7 +179,8 @@
 .row#listing-title-fixed
   .listing-title-fixed-wrap
     .image-thumb
-      = image_tag(@listing.listing_images.first.image(:thumb))
+      - if @listing.listing_images.first.present?
+        = image_tag(@listing.listing_images.first.image(:thumb))
     .listing-title
       %span
         = @listing.title
