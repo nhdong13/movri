@@ -5,13 +5,13 @@
         .col-1
           %ul#image-list
             - listing_images.each do |listing_image|
-              %li
+              %li.zoom-image-slide
                 %a{:href => "Javascript:void(0)"}
                   = image_tag(listing_image.image(:thumb))
         #slideshow-main.right.col-11
           %ul#slideshow-list
             - listing_images.each do |listing_image|
-              %li
+              %li.zoom-image-slide
                 %a{:href => "Javascript:void(0)"}
                   = image_tag(listing_image.image(:original))
 
@@ -25,14 +25,13 @@
           $('#slideshow-list li:first-child').eq(0).show().siblings().hide();
           $('#image-list li:first-child').addClass('active').siblings().removeClass('active');
         }
-
         intializeSlide();
-
         $('#image-list li').click(function () {
           var clickIndex = $(this).index()
           $('#slideshow-list li').eq(clickIndex).show().siblings().hide();
           $(this).addClass('active').siblings().removeClass('active');
         });
+    = render partial: 'zoom_images', locals: { listing_images: listing_images }
   - else
     .listing-image-text-container
       .listing-image-frame

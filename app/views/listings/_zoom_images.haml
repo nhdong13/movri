@@ -1,0 +1,89 @@
+#zoom-image-modal.modal
+  .modal-content
+    .modal-header
+      %span.close ×
+      .zoom-image-cate
+        %ul
+          %li
+            %span.active
+              Product Images
+          %li
+            %span
+              Customer Images
+          %li
+            %span
+              Video
+          %li
+            %span
+              306 View
+    .modal-body.clearfix
+      .modal-image-list
+        - listing_images.each do |listing_image|
+          .zoom-image-wrap
+            .zoom-image-item
+              %a{:href => "Javascript:void(0)"}
+                = image_tag(listing_image.image(:thumb))
+      .modal-slideshow-list
+        %i.icon-angle-left
+        .zoom-image-show
+          - listing_images.each do |listing_image|
+            .zoom-image-wrap
+              = image_tag(listing_image.image(:original))
+        %i.icon-angle-right
+
+- content_for :extra_javascript do
+  :javascript
+    var modal = $('#zoom-image-modal');
+    var btn = $('.zoom-image-slide');
+    var span = $('.close');
+
+    btn.on('click', function() {
+      modal.css('display', 'block');
+    });
+
+    span.on('click', function() {
+      modal.css('display', 'none');
+    });
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.css('display', 'none');
+      }
+    }
+
+    function intializeZoomSlide() {
+      $('.modal-image-list .zoom-image-wrap:first-child .zoom-image-item').addClass('active').siblings().removeClass('active');
+      $('.modal-slideshow-list .zoom-image-wrap:first-child').eq(0).show().siblings().hide();
+    }
+
+    intializeZoomSlide();
+
+    $('.modal-image-list .zoom-image-wrap').click(function () {
+      var clickIndex = $(this).index();
+      $('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
+      $('.zoom-image-item').removeClass('active');
+      $(this).find('.zoom-image-item').addClass('active');
+    });
+
+    $('.icon-angle-left').click(function() {
+      var clickIndex = $('.zoom-image-wrap').find('.active').parent().index();
+      if (clickIndex > 0) {
+        clickIndex -= 1;
+        $('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
+        $('.zoom-image-item').removeClass('active');
+        $('.zoom-image-wrap').eq(clickIndex).find('.zoom-image-item').addClass('active');
+      }
+    })
+
+    $('.icon-angle-right').click(function() {
+      var lengthImages = $('.modal-image-list .zoom-image-wrap').length - 1;
+      var clickIndex = $('.zoom-image-wrap').find('.active').parent().index();
+      if (clickIndex < lengthImages) {
+        clickIndex += 1;
+        $('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
+        $('.zoom-image-item').removeClass('active');
+        $('.zoom-image-wrap').eq(clickIndex).find('.zoom-image-item').addClass('active');
+      }
+    })
+
+    
