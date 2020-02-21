@@ -4,15 +4,22 @@
       - if @listing_presenter.prev_image_id && @listing_presenter.next_image_id
         .col-1
           %ul#image-list
-            - listing_images.each do |listing_image|
-              %li.zoom-image-slide
-                %a{:href => "Javascript:void(0)"}
-                  = image_tag(listing_image.image(:thumb))
+            - listing_images.each_with_index do |listing_image, index|
+              - if index < 4
+                %li.zoom-image-slide
+                  .zoom-image-item
+                    = image_tag(listing_image.image(:thumb))
+              - elsif index < 5
+                %li.zoom-image-slide.zoom-image-show-more
+                  .zoom-image-item
+                    = image_tag(listing_image.image(:thumb))
+                    %span
+                      = "+ #{listing_images.count - 4}"
         #slideshow-main.right.col-11
           %ul#slideshow-list
             - listing_images.each do |listing_image|
               %li.zoom-image-slide
-                %a{:href => "Javascript:void(0)"}
+                .zoom-image-item
                   = image_tag(listing_image.image(:original))
 
     - content_for :extra_javascript do

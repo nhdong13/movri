@@ -21,8 +21,7 @@
         - listing_images.each do |listing_image|
           .zoom-image-wrap
             .zoom-image-item
-              %a{:href => "Javascript:void(0)"}
-                = image_tag(listing_image.image(:thumb))
+              = image_tag(listing_image.image(:thumb))
       .modal-slideshow-list
         %i.icon-angle-left
         .zoom-image-show
@@ -34,7 +33,7 @@
 - content_for :extra_javascript do
   :javascript
     var modal = $('#zoom-image-modal');
-    var btn = $('.zoom-image-slide');
+    var btn = $('#slideshow-list .zoom-image-slide, .zoom-image-show-more');
     var span = $('.close');
 
     btn.on('click', function() {
