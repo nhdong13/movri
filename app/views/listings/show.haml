@@ -176,18 +176,19 @@
             Camera Model
           %span.similar-name
             Camera
-.row#listing-title-fixed
-  .listing-title-fixed-wrap
-    .image-thumb
-      - if @listing.listing_images.first.present?
-        = image_tag(@listing.listing_images.first.image(:thumb))
-    .listing-title
-      %span
-        = @listing.title
-    .listing-rent-btn
-      %button
+.desktop-display
+  .row#listing-title-fixed
+    .listing-title-fixed-wrap
+      .image-thumb
+        - if @listing.listing_images.first.present?
+          = image_tag(@listing.listing_images.first.image(:thumb))
+      .listing-title
         %span
-          Rent Now
+          = @listing.title
+      .listing-rent-btn
+        %button
+          %span
+            Rent Now
 
 - content_for :extra_javascript do
   :javascript
