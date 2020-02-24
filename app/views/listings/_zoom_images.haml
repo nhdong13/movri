@@ -5,30 +5,36 @@
       .zoom-image-cate
         %ul
           %li
-            %span.active
-              Product Images
+            Product Images
           %li
-            %span
-              Customer Images
+            Video
           %li
-            %span
-              Video
-          %li
-            %span
-              306 View
+            Customer Images
     .modal-body.clearfix
-      .modal-image-list
-        - listing_images.each do |listing_image|
-          .zoom-image-wrap
-            .zoom-image-item
-              = image_tag(listing_image.image(:thumb))
-      .modal-slideshow-list
-        %i.icon-angle-left
-        .zoom-image-show
+      .desktop-display.root-parent
+        .modal-image-list
           - listing_images.each do |listing_image|
             .zoom-image-wrap
-              = image_tag(listing_image.image(:original))
-        %i.icon-angle-right
+              .zoom-image-item
+                = image_tag(listing_image.image(:thumb))
+        .modal-slideshow-list
+          %i.icon-angle-left.desktop-display
+          .zoom-image-show
+            - listing_images.each do |listing_image|
+              .zoom-image-wrap
+                = image_tag(listing_image.image(:original))
+          %i.icon-angle-right.desktop-display
+      .mobile-display.root-parent
+        .modal-slideshow-list
+          .zoom-image-show
+            - listing_images.each do |listing_image|
+              .zoom-image-wrap
+                = image_tag(listing_image.image(:original))
+        .modal-image-list
+          - listing_images.each do |listing_image|
+            .zoom-image-wrap
+              .zoom-image-item
+                = image_tag(listing_image.image(:thumb))
 
 - content_for :extra_javascript do
   :javascript
@@ -58,30 +64,33 @@
     intializeZoomSlide();
 
     $('.modal-image-list .zoom-image-wrap').click(function () {
+      var rootParent = $(this).parents('.root-parent');
       var clickIndex = $(this).index();
-      $('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
-      $('.zoom-image-item').removeClass('active');
+      $(rootParent).find('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
+      $(rootParent).find('.zoom-image-item').removeClass('active');
       $(this).find('.zoom-image-item').addClass('active');
     });
 
     $('.icon-angle-left').click(function() {
+      var rootParent = $(this).parents('.root-parent');
       var clickIndex = $('.zoom-image-wrap').find('.active').parent().index();
       if (clickIndex > 0) {
         clickIndex -= 1;
-        $('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
-        $('.zoom-image-item').removeClass('active');
-        $('.zoom-image-wrap').eq(clickIndex).find('.zoom-image-item').addClass('active');
+        $(rootParent).find('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
+        $(rootParent).find('.zoom-image-item').removeClass('active');
+        $(rootParent).find('.zoom-image-wrap').eq(clickIndex).find('.zoom-image-item').addClass('active');
       }
     })
 
     $('.icon-angle-right').click(function() {
+      var rootParent = $(this).parents('.root-parent');
       var lengthImages = $('.modal-image-list .zoom-image-wrap').length - 1;
       var clickIndex = $('.zoom-image-wrap').find('.active').parent().index();
       if (clickIndex < lengthImages) {
         clickIndex += 1;
-        $('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
-        $('.zoom-image-item').removeClass('active');
-        $('.zoom-image-wrap').eq(clickIndex).find('.zoom-image-item').addClass('active');
+        $(rootParent).find('.modal-slideshow-list .zoom-image-wrap').eq(clickIndex).show().siblings().hide();
+        $(rootParent).find('.zoom-image-item').removeClass('active');
+        $(rootParent).find('.zoom-image-wrap').eq(clickIndex).find('.zoom-image-item').addClass('active');
       }
     })
 

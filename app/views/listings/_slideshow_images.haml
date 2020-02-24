@@ -38,7 +38,7 @@
           $('#slideshow-list li').eq(clickIndex).show().siblings().hide();
           $(this).addClass('active').siblings().removeClass('active');
         });
-    = render partial: 'zoom_images', locals: { listing_images: listing_images }
+    = render partial: 'listings/zoom_images', locals: { listing_images: listing_images }
   - else
     .listing-image-text-container
       .listing-image-frame

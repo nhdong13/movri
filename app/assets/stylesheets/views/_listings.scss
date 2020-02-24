@@ -2167,6 +2167,85 @@ $listing-author-avatar-height: 108;
     width: 80%;
     border-radius: 4px;
     margin-bottom: 40px;
+
+    @media #{$mobile}, #{$tablet} {
+      width: 95%;
+      height: auto;
+
+      .modal-body,
+      .modal-header {
+        padding: 0;
+      }
+
+      .modal-header {
+        position: relative;
+        border: none;
+
+        .close {
+          position: absolute;
+          right: 5px;
+          font-size: 27px;
+        }
+      }
+
+      .modal-body {
+        .modal-image-list {
+          width: 100%;
+          float: none;
+          overflow-x: scroll;
+          overflow-y: hidden;
+          white-space: nowrap;
+
+          .zoom-image-wrap {
+            .zoom-image-item {
+              img {
+                height: 45px;
+              }
+            }
+          }
+        }
+
+        .modal-slideshow-list {
+          width: 100%;
+
+          .zoom-image-wrap {
+            width: auto;
+            height: auto;
+
+            img {
+              height: 330px;
+              width: auto;
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+            }
+          }
+        }
+      }
+
+      .zoom-image-cate {
+        ul {
+          background: #efefef;
+          display: flex;
+
+          li {
+            margin-right: 0;
+            padding: 10px 10px;
+            width: 33.33%;
+            text-align: center;
+            border: none;
+            background: none;
+            border-radius: 0;
+            font-size: 16px;
+
+            &.active,
+            &:hover {
+              border-bottom: 1px solid #888888;
+            }
+          }
+        }
+      }
+    }
   }
 
   .modal-header {
@@ -2288,23 +2367,15 @@ $listing-author-avatar-height: 108;
         list-style: none;
         display: inline-block;
         margin-right: 10px;
+        cursor: pointer;
+        padding: 10px 32px 10px 32px;
+        border: 1px solid #333333;
+        border-radius: 4px;
+        color: #333333;
 
-        span {
-          cursor: pointer;
-          padding: 10px 32px 10px 32px;
-          border: 1px solid #333333;
-          border-radius: 4px;
-          color: #333333;
-
-          &.active {
-            background: #333333;
-            color: #fff;
-          }
-
-          &:hover {
-            background: #333333;
-            color: #fff;
-          }
+        &.active {
+          background: #000;
+          color: #fff;
         }
       }
     }
