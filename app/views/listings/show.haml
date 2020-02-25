@@ -190,6 +190,16 @@
           %span
             Rent Now
 
+  #sideEmail
+    .overlap-sidenav
+    .sidenav
+      %a.closebtn{href: "javascript:void(0)"} Close ×
+      .side-mail-wrap
+        %a{href: "#"} About
+        %a{href: "#"} Services
+        %a{href: "#"} Clients
+        %a{href: "#"} Contact
+
 - content_for :extra_javascript do
   :javascript
 
@@ -287,4 +297,17 @@
           listingNameSticky.classList.remove('show');
         }
       }
+
+      $('.trade-in-your-gear-email').on('click', function() {
+        $('#sideEmail').css('width', '100%');
+        $('#sideEmail').css('padding-left', '50%');
+        $('.sidenav').css('width', '50%');
+        $('.overlap-sidenav').css('display', 'block');
+      });
+
+      $('.closebtn').on('click', function() {
+        $('#sideEmail').css('width', '0');
+        $('.overlap-sidenav').css('display', 'none');
+        $('.sidenav').css('width', '0');
+      })
     })
