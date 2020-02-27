@@ -1,17 +1,64 @@
-= render :partial => "listings/form/javascripts", :locals => { listing_id: @listing.id || "false", minimum_price_cents: @listing_presenter.commission[:minimum_price_cents], run_js_immediately: run_js_immediately, shape: shape}
+.row
+  .col-2
+  .col-10
+    .col-12.form-listing-title
+      %span
+        = @listing.title
+    .col-12.form-list-action
+      %ul
+        %li
+          %i.icon-copy
+          %span
+            Duplicate
+        %li
+          %i.icon-eye-open
+          %span
+            View
+        %li
+          %span
+            More actions
+          %i.icon-caret-down
+        %li
+          %a
+            View product history
+    .col-12.form-input-wrap
+      .col-8.form-listing-group
+        = render :partial => "listings/form/javascripts", :locals => { listing_id: @listing.id || "false", minimum_price_cents: @listing_presenter.commission[:minimum_price_cents], run_js_immediately: run_js_immediately, shape: shape}
+        = form_for @listing_presenter.listing_form_object, :html => {:multipart => true} do |form|
+          .col-12.form-listing-wrap
+            = render :partial => "listings/form/title", :locals => { :form => form }
+            = render :partial => "listings/form/spec", :locals => { :form => form }
+            = render :partial => "listings/form/overview", :locals => { :form => form }
+            = render :partial => "listings/form/q_a", :locals => { :form => form }
+            = render :partial => "listings/form/in_the_box", :locals => { :form => form }
+            = render :partial => "listings/form/not_in_the_box", :locals => { :form => form }
+          .col-12.form-listing-wrap
+            = render :partial => "listings/form/images", :locals => { :form => form, :run_js_immediately => run_js_immediately }
+            = hidden_field_tag 'listing_ordered_images'
+            = render :partial => "listings/form/key_features", :locals => { :form => form }
+          .col-12.form-listing-wrap
+            = render :partial => "listings/form/price", :locals => { :form => form, :run_js_immediately => run_js_immediately }
+            = render :partial => "listings/form/quantity", :locals => { :form => form }
+          .col-12.form-listing-wrap
+            = render :partial => "listings/form/inventory", :locals => { :form => form }
+            = render :partial => "listings/form/weight", :locals => { :form => form }
+            = render :partial => "listings/form/user_manual_file", :locals => { :form => form }
+          .col-12.form-listing-wrap
+            = render :partial => "listings/form/shipping", :locals => { :form => form }
+            -# = render :partial => "listings/form/description", :locals => { :form => form }
+            = render :partial => "listings/form/custom_fields", :locals => { :form => form }
+            = render :partial => "listings/form/valid_until", :locals => { :form => form }
+            = render :partial => "listings/form/origin", :locals => { :form => form }
+            = render :partial => "listings/form/googlemap", :locals => { :form => form, :run_js_immediately => run_js_immediately}
+            = render :partial => "listings/form/send_button", :locals => { :form => form }
 
-= form_for @listing_presenter.listing_form_object, :html => {:multipart => true} do |form|
-  = render :partial => "listings/form/title", :locals => { :form => form }
-  = render :partial => "listings/form/price", :locals => { :form => form, :run_js_immediately => run_js_immediately }
-  = render :partial => "listings/form/shipping", :locals => { :form => form }
-  = render :partial => "listings/form/description", :locals => { :form => form }
-  = render :partial => "listings/form/custom_fields", :locals => { :form => form }
-  = render :partial => "listings/form/valid_until", :locals => { :form => form }
-  = render :partial => "listings/form/origin", :locals => { :form => form }
-  = render :partial => "listings/form/googlemap", :locals => { :form => form, :run_js_immediately => run_js_immediately}
-  = render :partial => "listings/form/images", :locals => { :form => form, :run_js_immediately => run_js_immediately }
-  = render :partial => "listings/form/send_button", :locals => { :form => form }
-  = hidden_field_tag 'listing_ordered_images'
-
-= render :partial => "listings/help_texts", :collection => ["help_valid_until"], :as => :field
-= render "layouts/markdown_help", run_js_immediately: run_js_immediately
+        = render :partial => "listings/help_texts", :collection => ["help_valid_until"], :as => :field
+        = render "layouts/markdown_help", run_js_immediately: run_js_immediately
+      .col-4.form-listing-related
+        .col-12.form-listing-wrap.form-product-availability
+        .col-12.form-listing-wrap
+          .form-organization
+          .form-collections
+          .form-tags
+        .col-12.form-listing-wrap.form-recommended-accessories
+        .col-12.form-listing-wrap.form-packing-dimension

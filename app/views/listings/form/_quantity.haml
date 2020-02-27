@@ -1,0 +1,10 @@
+= form.label 'Quantity', 'Quantity', {class: 'input'}
+
+.row
+  .col-6
+    = form.label :available_quantity, 'Available'
+    = form.text_field :available_quantity, :class => "available-quantity", :maxlength => "10", :placeholder => "0", :value => (@listing.available_quantity ? @listing.available_quantity.to_s: 0)
+
+  .col-6
+    = form.label 'Incomming', 'Incomming'
+    = form.label "0"

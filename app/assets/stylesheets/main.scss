@@ -47,6 +47,7 @@ body {
 .page-content {
   padding-bottom: lines(3);
   padding-top: lines(0.5);
+  background: #f4f6f8;
 
   &.no-cover-photo {
     padding-top: lines(0.5);
@@ -2302,5 +2303,24 @@ figure.fluidratio {
 
   .col-7 {
     width: 60% !important;
+  }
+}
+
+.flash-notifications {
+  padding-top: 15px;
+}
+
+@media (min-width: 48em) {
+  .left-navi {
+    position: relative;
+    display: inline-block;
+    width: 20%;
+  }
+
+  .left-navi-section {
+    display: inline-block;
+    margin-left: 0;
+    width: 80%;
+    float: right;
   }
 }

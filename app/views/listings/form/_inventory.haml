@@ -1,0 +1,19 @@
+= form.label 'Inventory', {class: 'input'}
+
+.row
+  .col-6
+    = form.label 'SKU (Stock Keeping Unit)', 'SKU (Stock Keeping Unit)'
+    = form.text_field :sku, :class => "sku", :maxlength => "10", :placeholder => "", :value => (@listing.sku ? @listing.sku.to_s: "")
+
+  .col-6
+    = form.label "Barcode (ISBN, UPC, GTIN, etc.)", "Barcode (ISBN, UPC, GTIN, etc.)"
+    = form.text_field :barcode, :class => "barcode", :maxlength => "10", :placeholder => "", :value => (@listing.barcode ? @listing.barcode.to_s: "")
+
+.row
+  .col-12
+    = form.label :track_quantity do
+      = form.check_box :track_quantity
+      Track quantity
+    = form.label :contiunue_sell do
+      = form.check_box :contiunue_sell
+      Continue selling when out of stock

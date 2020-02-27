@@ -241,5 +241,7 @@ module Kassi
     config.after_initialize do
       require File.expand_path('../../lib/active_storage_decorator', __FILE__)
     end
+
+    config.autoload_paths += %w(#{config.root}/app/models/ckeditor)
   end
 end

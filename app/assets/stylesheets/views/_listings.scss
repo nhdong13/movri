@@ -527,6 +527,15 @@ $listing-author-avatar-height: 108;
 
     .col-12 {
       margin-bottom: 0;
+
+      a {
+        display: inline;
+        padding: 5px 20px;
+        font-size: 13px;
+        background: #4eb857;
+        color: #fff;
+        border-radius: 30px;
+      }
     }
 
     .listing-sku {

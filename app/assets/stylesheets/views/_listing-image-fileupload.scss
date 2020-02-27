@@ -30,6 +30,9 @@ $listing-image-cellpadding: lines(0.5);
 
 .fileupload-preview-image {
   @include fileupload-thumbnail;
+
+  width: 100%;
+  height: 100%;
 }
 
 .fileupload-preview-remove-image {
@@ -87,8 +90,6 @@ $listing-image-cellpadding: lines(0.5);
 
 .upload-image-placeholder {
   @include fileupload-thumbnail;
-  float: left;
-  background-color: #FAFAFA;
 
   &:hover .fileupload-text-container, &.hover .fileupload-text-container {
     border-color: darken(#EEE, 20%);

@@ -48,6 +48,23 @@
 #  availability                    :string(32)       default("none")
 #  per_hour_ready                  :boolean          default(FALSE)
 #  state                           :string(255)      default("approved")
+#  spec                            :text(65535)
+#  overview                        :text(65535)
+#  q_a                             :text(65535)
+#  in_the_box                      :text(65535)
+#  not_in_the_box                  :text(65535)
+#  key_feature                     :text(65535)
+#  available_quantity              :integer
+#  sku                             :string(255)
+#  barcode                         :string(255)
+#  track_quantity                  :boolean
+#  contiunue_sell                  :boolean
+#  user_manual                     :string(255)
+#  weight                          :integer
+#  user_manual_file_name           :string(255)
+#  user_manual_content_type        :string(255)
+#  user_manual_file_size           :integer
+#  user_manual_updated_at          :datetime
 #
 # Indexes
 #

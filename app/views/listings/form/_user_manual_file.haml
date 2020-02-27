@@ -1,0 +1,19 @@
+= form.label 'User Manual', {class: 'input'}
+
+- unless @listing.user_manual.present?
+  .row
+    .fileinput-button.user_manual_upload
+      .fileupload-text-container
+        .fileupload-centered-text
+          .fileupload-text
+            %span
+              Add User Manual
+            %p
+              or drop files to upload
+          .fileupload-small-text
+          .fileupload-error-text
+        = form.file_field :user_manual, {class: 'fileupload'}
+- else
+  .row
+    %iframe{src: "#{@listing.user_manual.url(:original)}"}
+
