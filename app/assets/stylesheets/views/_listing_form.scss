@@ -4,6 +4,14 @@
   padding: 0 0.75em;
   background: #f4f6f8;
 
+  #listing_country_of_origin,
+  #listing_province_of_origin {
+    border: 1px solid #c4cdd5;
+    height: 36px;
+    width: 100%;
+    outline: none;
+  }
+
   input {
     outline: none;
   }

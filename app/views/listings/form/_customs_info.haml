@@ -1,0 +1,23 @@
+= form.label 'customs_information', 'CUSTOMS INFORMATION', :class => "input"
+%small
+  Used by border officers to calculate duties when shipping internationally. Shown on customs forms you print duting fulfillment.
+
+.row
+  .col-12
+    = form.label 'country_of_origin', 'Country of origin', :class => "input"
+    = form.select :country_of_origin, options_for_select(["Canada", "US"]), class: 'listing_country_of_origin'
+
+%small
+  In most cases, where the product is manufactured.
+
+.row
+  .col-12
+    = form.label 'province_of_origin', 'Province of origin', :class => "input"
+    = form.select :province_of_origin, options_for_select(["British Columbia", "New York"]), class: 'listing_province_of_origin'
+
+.row
+  .col-12
+    = form.label 'harmonized_code', 'HS (Harmonized System) code', :class => "input"
+    = form.text_field :harmonized_code, {placeholder: 'Search by product keyword or HS code'}
+    %small
+      Used by border officers to classify this product
