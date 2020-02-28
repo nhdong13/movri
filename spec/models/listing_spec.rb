@@ -65,6 +65,7 @@
 #  user_manual_content_type        :string(255)
 #  user_manual_file_size           :integer
 #  user_manual_updated_at          :datetime
+#  weight_type                     :integer
 #
 # Indexes
 #

@@ -22,43 +22,186 @@
           %a
             View product history
     .col-12.form-input-wrap
-      .col-8.form-listing-group
-        = render :partial => "listings/form/javascripts", :locals => { listing_id: @listing.id || "false", minimum_price_cents: @listing_presenter.commission[:minimum_price_cents], run_js_immediately: run_js_immediately, shape: shape}
-        = form_for @listing_presenter.listing_form_object, :html => {:multipart => true} do |form|
-          .col-12.form-listing-wrap
-            = render :partial => "listings/form/title", :locals => { :form => form }
-            = render :partial => "listings/form/spec", :locals => { :form => form }
-            = render :partial => "listings/form/overview", :locals => { :form => form }
-            = render :partial => "listings/form/q_a", :locals => { :form => form }
-            = render :partial => "listings/form/in_the_box", :locals => { :form => form }
-            = render :partial => "listings/form/not_in_the_box", :locals => { :form => form }
-          .col-12.form-listing-wrap
-            = render :partial => "listings/form/images", :locals => { :form => form, :run_js_immediately => run_js_immediately }
-            = hidden_field_tag 'listing_ordered_images'
-            = render :partial => "listings/form/key_features", :locals => { :form => form }
-          .col-12.form-listing-wrap
-            = render :partial => "listings/form/price", :locals => { :form => form, :run_js_immediately => run_js_immediately }
-            = render :partial => "listings/form/quantity", :locals => { :form => form }
-          .col-12.form-listing-wrap
-            = render :partial => "listings/form/inventory", :locals => { :form => form }
-            = render :partial => "listings/form/weight", :locals => { :form => form }
-            = render :partial => "listings/form/user_manual_file", :locals => { :form => form }
-          .col-12.form-listing-wrap
-            = render :partial => "listings/form/shipping", :locals => { :form => form }
-            -# = render :partial => "listings/form/description", :locals => { :form => form }
-            = render :partial => "listings/form/custom_fields", :locals => { :form => form }
-            = render :partial => "listings/form/valid_until", :locals => { :form => form }
-            = render :partial => "listings/form/origin", :locals => { :form => form }
-            = render :partial => "listings/form/googlemap", :locals => { :form => form, :run_js_immediately => run_js_immediately}
-            = render :partial => "listings/form/send_button", :locals => { :form => form }
+      = form_for @listing_presenter.listing_form_object, :html => {:multipart => true} do |form|
+        .row
+          .col-8.form-listing-group
+            = render :partial => "listings/form/javascripts", :locals => { listing_id: @listing.id || "false", minimum_price_cents: @listing_presenter.commission[:minimum_price_cents], run_js_immediately: run_js_immediately, shape: shape}
+            .col-12.form-listing-wrap
+              = render :partial => "listings/form/title", :locals => { :form => form }
+              = render :partial => "listings/form/spec", :locals => { :form => form }
+              = render :partial => "listings/form/overview", :locals => { :form => form }
+              = render :partial => "listings/form/q_a", :locals => { :form => form }
+              = render :partial => "listings/form/in_the_box", :locals => { :form => form }
+              = render :partial => "listings/form/not_in_the_box", :locals => { :form => form }
+            .col-12.form-listing-wrap
+              = render :partial => "listings/form/images", :locals => { :form => form, :run_js_immediately => run_js_immediately }
+              = hidden_field_tag 'listing_ordered_images'
+              = render :partial => "listings/form/key_features", :locals => { :form => form }
+            .col-12.form-listing-wrap
+              = render :partial => "listings/form/price", :locals => { :form => form, :run_js_immediately => run_js_immediately }
+              = render :partial => "listings/form/quantity", :locals => { :form => form }
+            .col-12.form-listing-wrap
+              = render :partial => "listings/form/inventory", :locals => { :form => form }
+              = render :partial => "listings/form/weight", :locals => { :form => form }
+              = render :partial => "listings/form/user_manual_file", :locals => { :form => form }
+            .col-12.form-listing-wrap
+              = render :partial => "listings/form/shipping", :locals => { :form => form }
+              -# = render :partial => "listings/form/description", :locals => { :form => form }
+              = render :partial => "listings/form/custom_fields", :locals => { :form => form }
+              = render :partial => "listings/form/valid_until", :locals => { :form => form }
+              = render :partial => "listings/form/origin", :locals => { :form => form }
+              = render :partial => "listings/form/googlemap", :locals => { :form => form, :run_js_immediately => run_js_immediately}
+              = render :partial => "listings/form/send_button", :locals => { :form => form }
 
-        = render :partial => "listings/help_texts", :collection => ["help_valid_until"], :as => :field
-        = render "layouts/markdown_help", run_js_immediately: run_js_immediately
-      .col-4.form-listing-related
-        .col-12.form-listing-wrap.form-product-availability
-        .col-12.form-listing-wrap
-          .form-organization
-          .form-collections
-          .form-tags
-        .col-12.form-listing-wrap.form-recommended-accessories
-        .col-12.form-listing-wrap.form-packing-dimension
+            = render :partial => "listings/help_texts", :collection => ["help_valid_until"], :as => :field
+            = render "layouts/markdown_help", run_js_immediately: run_js_immediately
+          .col-4.form-listing-related
+            .col-12.form-listing-wrap
+              .form-organization
+                = form.label 'Organization', class: 'input'
+                = form.label :product_type, 'Product Type'
+                = form.select :product_type, options_for_select(["New", "Old"]), class: 'listing_product_type'
+              .form-collections
+                = form.label 'COLLECTIONS', class: 'input'
+                = form.text_field :collection, class: 'listing_collection'
+                %table.collections-list
+                  %tr
+                    %td{width: '80%'}
+                      Camera
+                    %td
+                      Auto
+                  %tr
+                    %td{width: '80%'}
+                      Over $1000
+                    %td
+                      Auto
+                  %tr
+                    %td{width: '80%'}
+                      Camera
+                    %td
+                      Auto
+                  %tr
+                    %td{width: '80%'}
+                      Over $1000
+                    %td
+                      Auto
+                  %tr
+                    %td{width: '80%'}
+                      Camera
+                    %td
+                      Auto
+                  %tr
+                    %td{width: '80%'}
+                      Over $1000
+                    %td
+                      Auto
+                  %tr
+                    %td{width: '80%'}
+                      Camera
+                    %td
+                      Auto
+                  %tr
+                    %td{width: '80%'}
+                      Over $1000
+                    %td
+                      Auto
+              .form-tags
+                = form.label 'TAGS', class: 'input'
+                = form.text_field :tags, class: 'listing_tag'
+                .tags-list
+                  %ul
+                    %li
+                      video-camera
+                      %i.icon-remove
+                    %li
+                      photo-camera
+                      %i.icon-remove
+                    %li
+                      photo-cam
+                      %i.icon-remove
+                    %li
+                      over-1000
+                      %i.icon-remove
+            .col-12.form-listing-wrap.form-recommended-accessories
+              = form.label 'Recommended Accessories', class: 'input'
+              = form.text_field :recommended_accessories, class: 'listing_accessories'
+              .recommended-accessories-list
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+                .recommended-accessory-item
+                  %i.icon-ellipsis-vertical
+                  %i.icon-ellipsis-vertical
+                  %span
+                    Aputure Light Dome Mini II (21.5")
+                  %i.icon-remove
+            .col-12.form-listing-wrap.form-packing-dimension
+              = form.label 'Packing Dimensions', class: 'input'
+              .row.packing-dimension-attributes
+                .col-3
+                  %input{type: 'number'}
+                  %span
+                    cm
+                .col-3
+                  %input{type: 'number'}
+                  %span
+                    cm
+                .col-3
+                  %input{type: 'number'}
+                  %span
+                    cm
+                .col-3
+                  %input{type: 'number'}
+                  %span
+                    kg
+              .row
+                .col-12
+                  %button
+                    Add Piece
+              
+              

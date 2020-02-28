@@ -1,4 +1,12 @@
 .row
-  .col-3
-    = form.label :weight, 'Weight', :class => "input"
-    = form.number_field(:weight, :class => "listing_weight_text")
+  = form.label :weight, 'WEIGHT', :class => "input"
+  .row
+    %small.col-12
+      Used to calculate shipping rates at checkout and label prices during fulfillment.
+  .row
+    .col-3
+      .listing-weight-wrap
+        = form.number_field(:weight, :class => "listing_weight_text")
+        = form.select :weight_type, options_for_select(["kg", "pound"], disabled: ["Select One"]), class: 'listing_weight_type'
+        %i.icon-caret-up
+        %i.icon-caret-down

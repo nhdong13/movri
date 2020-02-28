@@ -65,6 +65,7 @@
 #  user_manual_content_type        :string(255)
 #  user_manual_file_size           :integer
 #  user_manual_updated_at          :datetime
+#  weight_type                     :integer
 #
 # Indexes
 #
@@ -83,6 +84,9 @@
 #
 
 class Listing < ApplicationRecord
+  enum weight_type: { kg: 0, pound: 1 }
+
+  attr_accessor :product_type, :collection, :tags, :recommended_accessories
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper

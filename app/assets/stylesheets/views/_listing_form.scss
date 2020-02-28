@@ -4,6 +4,10 @@
   padding: 0 0.75em;
   background: #f4f6f8;
 
+  input {
+    outline: none;
+  }
+
   .js-form-fields .form-listing-wrap {
     padding: 10px 20px;
     background: #fff;
@@ -71,10 +75,93 @@
   .form-listing-related {
     .form-listing-wrap {
       margin-top: 10px;
-      height: 100px;
+      background: #f9fafc;
 
       &:first-child {
         margin-top: 0;
+      }
+
+      &.form-packing-dimension {
+        button {
+          border: 1px solid #e1e3e5;
+          color: #000;
+          background: none;
+          height: 36px;
+          font-size: 14px;
+          float: right;
+        }
+      }
+
+      .packing-dimension-attributes {
+        font-size: 14px;
+      }
+
+      .recommended-accessories-list {
+        margin-top: 20px;
+
+        .recommended-accessory-item {
+          border-bottom: 1px solid #e1e3e5;
+          font-size: 14px;
+          padding: 5px 0px;
+
+          &:last-child {
+            border-bottom: 0;
+          }
+
+          .icon-ellipsis-vertical:nth-child(2) {
+            margin-right: 5px;
+          }
+
+          .icon-remove {
+            margin-left: 5px;
+          }
+        }
+      }
+
+      .form-organization,
+      .form-collections {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e1e3e5;
+      }
+
+      .collections-list {
+        margin-top: 20px;
+        font-size: 14px;
+
+        tr {
+          background: none !important;
+          border-bottom: 1px solid #e1e3e5;
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+
+      .tags-list {
+        margin-top: 20px;
+        font-size: 14px;
+
+        ul {
+          padding-left: 0;
+
+          li {
+            list-style: none;
+            display: inline-flex;
+            padding: 3px 10px;
+            background: #e0e2e7;
+            margin-bottom: 5px;
+            margin-right: 10px;
+            position: relative;
+            padding-right: 20px;
+
+            i {
+              position: absolute;
+              top: 8px;
+              right: 5px;
+            }
+          }
+        }
       }
     }
   }
@@ -121,5 +208,47 @@
         font-size: 14px;
       }
     }
+  }
+
+  .listing_weight_text {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    float: left;
+  }
+
+  #listing_weight_type {
+    position: absolute;
+    border: 1px solid #c4cdd5;
+    border-left: 0;
+    border-top-left-radius: 0;
+    -webkit-appearance: inherit;
+    border-bottom-left-radius: 0;
+    padding-top: 6px;
+    min-height: 0;
+  }
+
+  .listing-weight-wrap {
+    position: relative;
+
+    .icon-caret-up {
+      top: 6px;
+    }
+
+    .icon-caret-down {
+      top: 15px;
+    }
+
+    i {
+      position: absolute;
+      font-size: 14px;
+      right: -55px;
+    }
+  }
+
+  #listing_product_type {
+    border: 1px solid #c4cdd5;
+    height: 36px;
+    width: 100%;
+    outline: none;
   }
 }
