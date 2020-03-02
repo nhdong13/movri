@@ -25,13 +25,13 @@
       = render partial: 'listings/include_in_the_box'
 
       .listing-user-manual
-        %span.user-manual-file-icon
-          = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
-        %span.user-manual-title
-          User Manual
-        %span.user-manual-file-size
-          15.6 MB
-
+        = link_to @listing.user_manual.url(:original), {target: "_blank"} do
+          %span.user-manual-file-icon
+            = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
+          %span.user-manual-title
+            User Manual
+          %span.user-manual-file-size
+            15.6 MB
       .listing-firmware-updates
         %span.firmware-updates-file-icon
           = image_tag("mf_icons/icon-movri-repair.svg", class: 'header-menu-icon icon-movri-repair')
