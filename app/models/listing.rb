@@ -86,7 +86,7 @@
 class Listing < ApplicationRecord
   enum weight_type: { kg: 0, pound: 1 }
 
-  attr_accessor :product_type, :collection, :tags, :recommended_accessories, :country_of_origin, :harmonized_code, :province_of_origin
+  attr_accessor :listing_video, :product_type, :collection, :tags, :recommended_accessories, :country_of_origin, :harmonized_code, :province_of_origin
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
@@ -100,6 +100,7 @@ class Listing < ApplicationRecord
   belongs_to :author, :class_name => "Person", :foreign_key => "author_id", :inverse_of => :listings
 
   has_many :listing_images, -> { where("error IS NULL").order("position") }, :dependent => :destroy, :inverse_of => :listing
+  has_one :listing_video, :dependent => :destroy
 
   has_many :conversations, :dependent => :destroy
   has_many :comments, :dependent => :destroy

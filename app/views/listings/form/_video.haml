@@ -1,0 +1,7 @@
+.row
+  .col-6
+    = form.label 'Video', 'Video', :class => "input"
+    = form.file_field "listing_videos", name: "listing_videos[][video]", multiple: "multiple", class: 'listing-video'
+  .col-6
+    - if ListingVideo.find_by(listing_id: @listing.id).present?
+      = video_tag ListingVideo.find_by(listing_id: @listing.id).video.url, controls: true, size: "200x200", class: 'col-12'

@@ -227,6 +227,9 @@ class ListingsController < ApplicationController
         location_params = ListingFormViewUtils.permit_location_params(params)
         @listing.location.update(location_params)
       end
+      if params[:listing_videos].present?
+        process_upload_video(params[:listing_videos].first, @listing.id)
+      end
       flash[:notice] = update_flash(old_availability: old_availability, new_availability: shape[:availability])
       Delayed::Job.enqueue(ListingUpdatedJob.new(@listing.id, @current_community.id))
       reprocess_missing_image_styles(@listing) if @listing.closed?
@@ -470,6 +473,15 @@ class ListingsController < ApplicationController
 
   def get_shape(listing_shape_id)
     @current_community.shapes.find(listing_shape_id)
+  end
+
+  def process_upload_video(listing_video_params, listing_id)
+    listing_video = ListingVideo.find_or_initialize_by(listing_id: listing_id)
+    if listing_video.present?
+      listing_video.update(listing_video_params.permit!)
+    else
+      listing_video.assign_attributes(listing_video_params.permit!)
+    end
   end
 
   # Create image sizes that might be missing

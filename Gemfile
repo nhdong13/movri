@@ -26,6 +26,7 @@ gem 'rest-client', '~> 2.0.2'
 
 gem 'paperclip', '~> 6.0.0'
 gem 'delayed_paperclip', '~> 3.0.1'
+gem 'paperclip-av-transcoder', '~> 0.6.4'
 
 # Active Storage
 gem 'image_processing', '~> 1.9.3'

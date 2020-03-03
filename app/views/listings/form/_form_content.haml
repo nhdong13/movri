@@ -36,6 +36,7 @@
             .col-12.form-listing-wrap
               = render :partial => "listings/form/images", :locals => { :form => form, :run_js_immediately => run_js_immediately }
               = hidden_field_tag 'listing_ordered_images'
+              = render :partial => "listings/form/video", :locals => { :form => form }
               = render :partial => "listings/form/key_features", :locals => { :form => form }
             .col-12.form-listing-wrap
               = render :partial => "listings/form/price", :locals => { :form => form, :run_js_immediately => run_js_immediately }

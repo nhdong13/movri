@@ -2377,16 +2377,45 @@ $listing-author-avatar-height: 108;
         display: inline-block;
         margin-right: 10px;
         cursor: pointer;
-        padding: 10px 32px 10px 32px;
         border: 1px solid #333333;
         border-radius: 4px;
-        color: #333333;
+
+        .tab-link {
+          display: inline-block;
+          padding: 8px 20px;
+          background: none;
+          border: none;
+          margin-left: 2px;
+        }
 
         &.active {
           background: #000;
           color: #fff;
         }
       }
+    }
+  }
+
+  .tab-content {
+    border: none;
+    display: none;
+
+    &:first-child {
+      display: block;
+    }
+  }
+
+  #video_tab {
+    video {
+      width: 70%;
+      height: 100%;
+    }
+
+    .zoom-image-show {
+      margin: auto;
+      height: 520px;
+      width: 920px;
+      outline: none;
     }
   }
 }

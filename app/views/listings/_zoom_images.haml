@@ -5,25 +5,36 @@
       .zoom-image-cate
         %ul
           %li
-            Product Images
+            %span.tab-link{'data-tab' => 'product_image_tab'}
+              Product Images
           %li
-            Video
+            %span.tab-link{'data-tab' => 'video_tab'}
+              Video
           %li
-            Customer Images
+            %span.tab-link{'data-tab' => 'customer_image_tab'}
+              Customer Images
     .modal-body.clearfix
       .desktop-display.root-parent
-        .modal-image-list
-          - listing_images.each do |listing_image|
-            .zoom-image-wrap
-              .zoom-image-item
-                = image_tag(listing_image.image(:thumb))
-        .modal-slideshow-list
-          %i.icon-angle-left.desktop-display
-          .zoom-image-show
+        .tab-content#product_image_tab
+          .modal-image-list
             - listing_images.each do |listing_image|
               .zoom-image-wrap
-                = image_tag(listing_image.image(:original))
-          %i.icon-angle-right.desktop-display
+                .zoom-image-item
+                  = image_tag(listing_image.image(:thumb))
+          .modal-slideshow-list
+            %i.icon-angle-left.desktop-display
+            .zoom-image-show
+              - listing_images.each do |listing_image|
+                .zoom-image-wrap
+                  = image_tag(listing_image.image(:original))
+            %i.icon-angle-right.desktop-display
+        .tab-content#video_tab
+          .row
+            .modal-image-list.col-3
+            .modal-slideshow-list.col-9
+              .zoom-image-show
+                - if ListingVideo.find_by(listing_id: @listing.id).present?
+                  = video_tag ListingVideo.find_by(listing_id: @listing.id).video.url, controls: true
       .mobile-display.root-parent
         .modal-slideshow-list
           .zoom-image-show

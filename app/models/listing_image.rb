@@ -24,7 +24,6 @@
 #
 
 class ListingImage < ApplicationRecord
-
   belongs_to :listing, touch: true
   belongs_to :author, :class_name => "Person"
 
@@ -39,7 +38,8 @@ class ListingImage < ApplicationRecord
       :email => "150x100#",
       :square => "408x408#",
       :slideshow => "198x198#",
-      :square_2x => "816x816#"}
+      :square_2x => "816x816#"
+    }
 
   before_post_process :set_dimensions
 
@@ -50,7 +50,6 @@ class ListingImage < ApplicationRecord
   validates_attachment_content_type :image,
                                     :content_type => ["image/jpeg", "image/png", "image/gif", "image/pjpeg", "image/x-png"], # the two last types are sent by IE.
                                     :unless => Proc.new {|model| model.image.nil? }
-
 
   def get_dimensions_for_style(style)
     case style
