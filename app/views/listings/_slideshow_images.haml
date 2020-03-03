@@ -15,6 +15,9 @@
                     = image_tag(listing_image.image(:thumb))
                     %span
                       = "+ #{listing_images.count - 4}"
+            %li.zoom-image-slide.zoom-image-video
+              .zoom-image-item
+                %i.icon-play-circle
         #slideshow-main.right.col-11
           %ul#slideshow-list
             - listing_images.each do |listing_image|

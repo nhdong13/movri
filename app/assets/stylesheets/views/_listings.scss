@@ -391,6 +391,32 @@ $listing-author-avatar-height: 108;
         vertical-align: middle;
       }
 
+      .zoom-image-video {
+        &.active {
+          color: #000;
+
+          .zoom-image-item {
+            border: 1px solid #000;
+          }
+        }
+
+        .zoom-image-item {
+          position: relative;
+          height: 51px;
+          width: 51px;
+          border: 1px solid #cdcdcd;
+          border-radius: 4px;
+
+          .icon-play-circle {
+            font-size: 40px;
+            -webkit-text-stroke: 3px white;
+            position: absolute;
+            top: 5px;
+            left: 7px;
+          }
+        }
+      }
+
       .zoom-image-slide {
         margin-bottom: 5px;
         cursor: pointer;

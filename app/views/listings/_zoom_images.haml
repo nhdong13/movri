@@ -52,9 +52,16 @@
     var modal = $('#zoom-image-modal');
     var btn = $('#slideshow-list .zoom-image-slide, .zoom-image-show-more');
     var span = $('.close');
+    var iconVideo = $('.zoom-image-video');
 
     btn.on('click', function() {
       modal.css('display', 'block');
+      $('span[data-tab="product_image_tab"]').trigger('click');
+    });
+
+    iconVideo.on('click', function() {
+      modal.css('display', 'block');
+      $('span[data-tab="video_tab"]').trigger('click');
     });
 
     span.on('click', function() {
