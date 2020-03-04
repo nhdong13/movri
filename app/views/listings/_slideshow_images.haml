@@ -15,7 +15,7 @@
                     = image_tag(listing_image.image(:thumb))
                     %span
                       = "+ #{listing_images.count - 4}"
-            - if ListingVideo.find_by(listing_id: @listing.id)
+            - if @listing.video.present?
               %li.zoom-image-slide.zoom-image-video
                 .zoom-image-item
                   %i.icon-play-circle

@@ -66,6 +66,7 @@
 #  user_manual_file_size           :integer
 #  user_manual_updated_at          :datetime
 #  weight_type                     :integer
+#  video                           :string(255)
 #
 # Indexes
 #

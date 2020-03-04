@@ -33,8 +33,8 @@
             .modal-image-list.col-3
             .modal-slideshow-list.col-9
               .zoom-image-show
-                - if ListingVideo.find_by(listing_id: @listing.id).present?
-                  = video_tag ListingVideo.find_by(listing_id: @listing.id).video.url, controls: true
+                - if @listing.video.present?
+                  %iframe{:allowfullscreen => "", :frameborder => "0", :height => "315", :src => "#{@listing.video}"}
       .mobile-display.root-parent
         .modal-slideshow-list
           .zoom-image-show
