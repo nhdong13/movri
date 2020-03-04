@@ -21,3 +21,6 @@
         .trade-in-your-gear-email
           %a{href: "javascript:void(0)"}
             Email
+- content_for :extra_javascript  do
+  :javascript
+    ST.ListingContact.contactFormSlider()

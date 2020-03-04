@@ -445,6 +445,8 @@ Rails.application.routes.draw do
       get :message_arrived
     end
 
+    post 'customers/create_contact', to: 'customers#create_contact', as: :customer_contact
+
     devise_for :people, skip: :omniauth_callbacks, controllers: { confirmations: "confirmations", registrations: "people", omniauth_callbacks: "omniauth"}, :path_names => { :sign_in => 'login'}
     devise_scope :person do
       # these matches need to be before the general resources to have more priority

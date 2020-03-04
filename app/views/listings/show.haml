@@ -195,10 +195,30 @@
     .sidenav
       %a.closebtn{href: "javascript:void(0)"} Close ×
       .side-mail-wrap
-        %a{href: "#"} About
-        %a{href: "#"} Services
-        %a{href: "#"} Clients
-        %a{href: "#"} Contact
+        %h1 Contact Us
+        %h3.title-border.pt-15.mt-15 Hi - what may we help you with?
+        = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
+          .row
+            %label.col-3 Subject(*)
+            = text_field_tag 'contact[subject]', nil, class: 'col-9', required: true
+          .row
+            %label.col-3 Name
+            = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-9'
+          .row
+            %label.col-3 Email(*)
+            = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-9', required: true
+          .row
+            %label.col-3 Order #
+            = text_field_tag 'contact[order_number]', nil, class: 'col-5'
+            - if user_logged_in?
+            - else
+              %p Please login to select previous order number
+          .row
+            %label.col-3 Message(*)
+            = text_area_tag 'contact[message]', nil, class: 'col-9', rows: 5, required: true
+          = submit_tag 'Send', class: 'btn button-submit pull-right'
+      .side-mail-response
+        = render 'customers/thank_for_contacting'
 
 - content_for :extra_javascript do
   :javascript
@@ -297,17 +317,4 @@
           listingNameSticky.classList.remove('show');
         }
       }
-
-      $('.trade-in-your-gear-email').on('click', function() {
-        $('#sideEmail').css('width', '100%');
-        $('#sideEmail').css('padding-left', '50%');
-        $('.sidenav').css('width', '50%');
-        $('.overlap-sidenav').css('display', 'block');
-      });
-
-      $('.closebtn').on('click', function() {
-        $('#sideEmail').css('width', '0');
-        $('.overlap-sidenav').css('display', 'none');
-        $('.sidenav').css('width', '0');
-      })
     })

@@ -105,4 +105,5 @@
 //= require search_bar
 //= require slick.min.js
 //= require header
+//= require listing_contact
 //= require_self

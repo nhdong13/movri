@@ -2420,5 +2420,13 @@ $listing-author-avatar-height: 108;
 }
 
 .side-mail-wrap {
-  padding: 1.25rem 0.625rem 0 2.5rem;
+  padding: 1.25rem 2.5rem;
+  .title-border {
+    border-bottom: 1px solid #cdcdcd;
+  }
+}
+
+.side-mail-response {
+  padding: 1.25rem 2.5rem;
+  display: none;
 }
