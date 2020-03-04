@@ -1,0 +1,7 @@
+<% if @success %>
+  $('.side-mail-response').show();
+  $('.side-mail-wrap').hide();
+  $('.guest-contact-form')[0].reset();
+<% else %>
+  $('.guest-contact-form')[0].reset();
+<% end %>

@@ -3110,3 +3110,14 @@ en:
       landing_page_version/section/video:
         text: Text
         youtube_video_id: "Youtube video ID"
+  
+  customer_mailer:
+    send_contact:
+      body: |
+        <p>Hi,</p>
+        <div>%{body}</div>
+        <p>%{customer_name},</p>
+  customers:
+    thank_for_contacting:
+      thank_you_contacting: Thank You for Contacting Us
+      res_message: We'll email your ticket number within the next 15 minutes. If you do not receive an email within that time, please email %{support_email} or call Customer Service at %{support_phones}

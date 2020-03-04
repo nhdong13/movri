@@ -2445,3 +2445,53 @@ $listing-author-avatar-height: 108;
     }
   }
 }
+
+.overlap-sidenav {
+  width: 100% !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  display: none;
+}
+
+.overlap-sidenav,
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  z-index: 999;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 18px;
+  margin-left: 50px;
+}
+
+.side-mail-wrap {
+  padding: 1.25rem 2.5rem;
+  .title-border {
+    border-bottom: 1px solid #cdcdcd;
+  }
+}
+
+.side-mail-response {
+  padding: 1.25rem 2.5rem;
+  display: none;
+}

@@ -19,5 +19,8 @@
           %a{href: "tel:#{@listing.author.phone_number}"}
             = @listing.author.phone_number
         .trade-in-your-gear-email
-          %a{href: "mailto:#{@listing.author.confirmed_notification_emails_to}"}
+          %a{href: "javascript:void(0)"}
             Email
+- content_for :extra_javascript  do
+  :javascript
+    ST.ListingContact.contactFormSlider()
