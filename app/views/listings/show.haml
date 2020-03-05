@@ -224,12 +224,14 @@
   #mobileSideEmail
     .mobile-overlap-sidenav
     .mobile-sidenav
-      %a.closebtn{href: "javascript:void(0)"} < Sales Department
+      %a.mobile-closebtn{href: "javascript:void(0)"}
+        %i.icon-chevron-left
+        Sales Department
       %hr
       .mobile-side-mail-wrap
         %p.title By Phone
-        %p.item Phone: 212.444.6615
-        %p.item Fax: 212.444.6615
+        %p.item= "Phone: #{APP_CONFIG.contact_phone}"
+        %p.item= "Fax: #{APP_CONFIG.contact_phone}"
 
         .row.foreign-cus-line
           .col-6

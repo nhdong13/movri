@@ -293,6 +293,7 @@ default: &default_settings
   sales_email: hello@example.com
   support_email: support@example.com
   support_phone: 866.766.6861 / 212.868.4476
+  contact_phone: 212.444.6615
 
   # Knowledge base
   knowledge_base_url: http://www.example.com/knowledgebase

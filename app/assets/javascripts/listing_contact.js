@@ -34,7 +34,7 @@ window.ST.ListingContact = (function() {
       $('#mobile_contact_subject').focus();
     });
 
-    $('.closebtn').on('click', function() {
+    $('.mobile-closebtn').on('click', function() {
       $('#mobileSideEmail').css('width', '0');
       $('.mobile-overlap-sidenav').css('display', 'none');
       $('.mobile-sidenav').css('width', '0');
