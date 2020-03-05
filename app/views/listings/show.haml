@@ -209,10 +209,14 @@
             = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-9', required: true
           .row
             %label.col-3 Order #
-            = text_field_tag 'contact[order_number]', nil, class: 'col-5'
+            = text_field_tag 'contact[order_number]', nil, class: 'col-4'
             - if @current_user
+              .col-5.order-number
+                - select_data = @current_user ? @current_user.starter_transactions.map(&:id) : []
+                = select_tag 'order_number', options_for_select(select_data), id: 'order_number', prompt:'Your Previous Order Numbers', class: 'col-12'
             - else
-              %p Please login to select previous order number
+              .col-5
+                %p Please login to select previous order number
           .row
             %label.col-3 Message(*)
             = text_area_tag 'contact[message]', nil, class: 'col-9', rows: 5, required: true
@@ -252,32 +256,20 @@
 
         = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
           .row
-            -# %label.col-3 Subject(*)
             = text_field_tag 'contact[subject]', nil, class: 'col-12 custom-border', required: true, placeholder: "Subject", id: 'mobile_contact_subject'
-
           .row
-
             = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Email Address"
           .row
-
             = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Confirm Email"
           .row
-            -# %label.col-3 Name
             = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-12 custom-border', placeholder: "Name"
-
           .row
-            -# %label.col-3 Name
             = text_field_tag 'contact[name]', nil, class: 'col-12 custom-text-field', placeholder: "Phone Number (optional)"
-
           .row
-            -# %label.col-3 Name
             = text_field_tag 'contact[order_number]', nil, class: 'col-12 custom-text-field', placeholder: "Order Number (optional)"
-
           .row
-            -# %label.col-3 Message(*)
             = text_area_tag 'contact[message]', nil, class: 'col-12 custom-border message', rows: 5, required: true, placeholder: "Message"
             %p.message-note Please do not divulge private information (e.g., credit card number) via this form.
-
           .row
             = submit_tag 'Submit', class: 'btn button-submit custom-btn block col-12'
 

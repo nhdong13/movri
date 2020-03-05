@@ -17,6 +17,10 @@ window.ST.ListingContact = (function() {
       $('.overlap-sidenav').css('display', 'none');
       $('.sidenav').css('width', '0');
     })
+
+    $('#order_number').on('change', function() {
+      $('#contact_order_number').val($('#order_number').val());
+    })
   };
 
   function contactMobileFormSlider() {
