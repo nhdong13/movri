@@ -104,5 +104,6 @@
 //= require stripe_payment
 //= require search_bar
 //= require slick.min.js
+//= require shipping_rates.js
 //= require header
 //= require_self

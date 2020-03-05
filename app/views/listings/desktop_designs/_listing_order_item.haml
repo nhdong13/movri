@@ -45,7 +45,7 @@
       Add to Wish List
 .row.listing-shipping-info
   .col-6.clearfix.shipping-rates
-    %span
+    %span.show-shipping-rates-modal{'data-toggle': "modal", 'data-target': "#shipping-rates-realtime-modal"}
       Shipping Rates
     %span
       Pricing Chart
@@ -54,3 +54,6 @@
   %p
     Savings Availabe:
   .saving-available-item
+
+
+= render partial: "listings/desktop_designs/shipping_rates_realtime"
