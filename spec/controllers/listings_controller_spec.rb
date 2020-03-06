@@ -67,6 +67,7 @@
 #  user_manual_updated_at          :datetime
 #  weight_type                     :integer
 #  video                           :string(255)
+#  tags                            :string(255)
 #
 # Indexes
 #
