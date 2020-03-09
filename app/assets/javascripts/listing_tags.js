@@ -14,11 +14,15 @@ window.ST.ListingTags = (function() {
         }
         // get array tags from string
         var tagsArray = tags.split(',');
-        // get unique array
-        var uniqTagsArray = [...new Set(tagsArray)];
+        // get unique array from tags array
+        var uniqTagsArray = tagsArray.reduce(function(a,b){
+          if (a.indexOf(b) < 0 ) a.push(b);
+          return a;
+        },[]);
         // convert unique array to string
         var uniqTags = uniqTagsArray.join(',');
 
+        // add new value to hidden field
         $('#listing_tags').val(uniqTags);
       },
       beforeTagRemoved: function(event, ui) {
