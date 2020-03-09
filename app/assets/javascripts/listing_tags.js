@@ -22,7 +22,6 @@ window.ST.ListingTags = (function() {
 
           $('#listing_tags').val(uniqTags);
         },
-        afterTagAdded: function(event, ui) {},
         beforeTagRemoved: function(event, ui) {
           var removeTag = ui.tagLabel;
           // get list tags as an array
@@ -35,10 +34,7 @@ window.ST.ListingTags = (function() {
 
           // join array to string
           $('#listing_tags').val(tags.join(','));
-        },
-        onTagExists: function(event, ui) {},
-        onTagClicked: function(event, ui) {},
-        onTagLimitExceeded: function(event, ui) {}
+        }
       });
     });
   }
