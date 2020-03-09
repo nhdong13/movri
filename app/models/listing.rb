@@ -88,7 +88,7 @@
 class Listing < ApplicationRecord
   enum weight_type: { kg: 0, pound: 1 }
 
-  attr_accessor :product_type, :collection, :tags, :recommended_accessories, :country_of_origin, :harmonized_code, :province_of_origin
+  attr_accessor :product_type, :collection, :recommended_accessories, :country_of_origin, :harmonized_code, :province_of_origin
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper

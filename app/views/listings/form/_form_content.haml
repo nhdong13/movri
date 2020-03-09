@@ -109,9 +109,12 @@
                       Auto
               .form-tags
                 = form.label 'TAGS', class: 'input'
-                -# = form.text_field :cats, class: 'listing_tag'
                 = form.hidden_field :tags
                 %ul#list_tags_selected
+                  -if @listing.tags
+                    - @listing.tags.split(',').each do |tag|
+                      %li
+                        = tag
 
             .col-12.form-listing-wrap.form-recommended-accessories
               = form.label 'Recommended Accessories', class: 'input'
@@ -197,36 +200,4 @@
 
 - content_for :extra_javascript do
   :javascript
-    $(document).ready(function() {
-      $("#list_tags_selected").tagit({
-        beforeTagAdded: function(event, ui) {
-          var tags = $('#listing_tags').val();
-
-          // add to hidden field
-          if (tags === '') {
-            tags = ui.tagLabel
-          } else {
-            tags = tags + "," + ui.tagLabel;
-          }
-
-          $('#listing_tags').val(tags);
-        },
-        afterTagAdded: function(event, ui) {},
-        beforeTagRemoved: function(event, ui) {
-          var removeTag = ui.tagLabel;
-          // get list tags as an array
-          var tags = $('#listing_tags').val().split(',');
-
-          // return new array without removed item
-          tags = tags.filter(function(item) {
-            return item !== removeTag
-          })
-
-          // join array to string
-          $('#listing_tags').val(tags.join(','));
-        },
-        onTagExists: function(event, ui) {},
-        onTagClicked: function(event, ui) {},
-        onTagLimitExceeded: function(event, ui) {}
-      });
-    });
+    ST.ListingTags.addTagWithGetIt()

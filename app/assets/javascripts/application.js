@@ -107,4 +107,5 @@
 //= require header
 //= require listing_contact
 //= require tag-it
+//= require listing_tags
 //= require_self
