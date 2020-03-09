@@ -218,7 +218,7 @@ $listing-author-avatar-height: 108;
 
 .delivery-label {
   display: inline;
-  width: auto;
+  // width: auto;
   margin-left: lines(0.2);
 }
 
@@ -258,9 +258,9 @@ $listing-author-avatar-height: 108;
 }
 
 .checkbox-option {
-  &.selected {
+  // &.selected {
 
-  }
+  // }
   &.not-selected {
     color: $border;
   }
@@ -2646,4 +2646,112 @@ $listing-author-avatar-height: 108;
   background-color: #f0f0f0;
   font-family: 'OpenSans-Semibold';
   font-weight: bold;
+}
+
+#shipping-rates-realtime-modal{
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 600px;
+    height: 521px;
+    border-radius: 4px;
+    margin-bottom: 40px;
+
+    @media #{$mobile}, #{$tablet} {
+      width: 95%;
+      height: auto;
+
+      .modal-body,
+      .modal-header {
+        padding: 0;
+      }
+
+      .modal-header {
+        position: relative;
+        border: none;
+
+        .close {
+          position: absolute;
+          right: 5px;
+          font-size: 27px;
+        }
+      }
+
+      // .modal-body {
+
+      // }
+    }
+  }
+
+  .modal-header {
+    height: auto;
+    padding: 30px;
+    border-bottom: 1px solid;
+    .title {
+      font-size: 24px;
+    }
+  }
+
+  .modal-body {
+    padding: 15px;
+    .descriptions {
+      font-size: 14px;
+    }
+
+    .enter-shipping-zip-code-text {
+      font-size: 16px;
+    }
+
+    .group-enter-shipping-zip-code {
+      border: 1px solid #eaeaea;
+      background: #eaeaea;
+
+      input {
+        width: 382px;
+        height: 35px;
+        margin-left: 10px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 2px;
+      }
+
+      .button-calculate-shipping {
+        margin-top: 20px;
+        width: 158px;
+        height: 34px;
+        background-color: #4eb857;
+        font-size: 13px;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: -20px;
+    margin-right: -10px;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
