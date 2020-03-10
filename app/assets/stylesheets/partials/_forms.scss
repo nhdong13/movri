@@ -67,3 +67,30 @@ input.auto_width {
     float: right;
   }
 }
+
+
+// Contact Us form
+.guest-contact-form {
+  input[type=text],
+  input[type=password],
+  input[type=number],
+  textarea {
+    &.col-9 {
+      width: 75%;
+    }
+    &.col-5 {
+      width: 41.66%;
+    }
+    &.col-4 {
+      width: 33.33%;
+    }
+  }
+}
+
+.button-submit {
+  background: #4eb857;
+  border: 1px solid #4eb857;
+  min-width: 150px;
+  padding: 10px 27px;
+  color: white;
+}

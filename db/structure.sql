@@ -856,6 +856,26 @@ CREATE TABLE `listings` (
   `availability` varchar(32) DEFAULT 'none',
   `per_hour_ready` tinyint(1) DEFAULT '0',
   `state` varchar(255) DEFAULT 'approved',
+  `spec` text,
+  `overview` text,
+  `q_a` text,
+  `in_the_box` text,
+  `not_in_the_box` text,
+  `key_feature` text,
+  `available_quantity` int(11) DEFAULT NULL,
+  `sku` varchar(255) DEFAULT NULL,
+  `barcode` varchar(255) DEFAULT NULL,
+  `track_quantity` tinyint(1) DEFAULT NULL,
+  `contiunue_sell` tinyint(1) DEFAULT NULL,
+  `user_manual` varchar(255) DEFAULT NULL,
+  `weight` int(11) DEFAULT NULL,
+  `user_manual_file_name` varchar(255) DEFAULT NULL,
+  `user_manual_content_type` varchar(255) DEFAULT NULL,
+  `user_manual_file_size` int(11) DEFAULT NULL,
+  `user_manual_updated_at` datetime DEFAULT NULL,
+  `weight_type` int(11) DEFAULT NULL,
+  `video` varchar(255) DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_listings_on_uuid` (`uuid`),
   KEY `index_listings_on_new_category_id` (`category_id`) USING BTREE,
@@ -1518,6 +1538,33 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_starter_id` (`starter_id`) USING BTREE,
   KEY `index_transactions_on_listing_author_id` (`listing_author_id`) USING BTREE,
   KEY `community_starter_state` (`community_id`,`starter_id`,`current_state`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `variation_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `variation_items` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  `variation_id` bigint(20) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_variation_items_on_variation_id` (`variation_id`),
+  CONSTRAINT `fk_rails_8fbe6987db` FOREIGN KEY (`variation_id`) REFERENCES `variations` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `variations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `variations` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `listing_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -2413,10 +2460,20 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20190305112030'),
 ('20190319114719'),
 ('20190319122745'),
+('20190627055931'),
+('20190705083608'),
+('20190705100256'),
 ('20190717105844'),
 ('20190718081745'),
 ('20190904115045'),
-('20190627055931'),
-('20190705083608'),
-('20190705100256');
+('20200227074002'),
+('20200227092456'),
+('20200228022034'),
+('20200302073055'),
+('20200304015851'),
+('20200304015916'),
+('20200305100010'),
+('20200305100436'),
+('20200306064626');
+
 

@@ -615,7 +615,7 @@ $listing-author-avatar-height: 108;
       font-size: 16px;
       font-weight: bold;
       display: block;
-      
+
       .sku {
         font-size: 15px;
         font-weight: initial;
@@ -812,7 +812,7 @@ $listing-author-avatar-height: 108;
           top: 0;
           left: 27px;
         }
-  
+
         .icon-caret-down {
           top: 23px;
           left: 27px
@@ -1054,7 +1054,7 @@ $listing-author-avatar-height: 108;
 
   .recommended-accessories-title {
     font-size: 34px;
-    
+
     .recommended-accessories-view-all {
       display: inline;
       font-size: 22px;
@@ -1666,7 +1666,7 @@ $listing-author-avatar-height: 108;
     width: 198px;
     height: 198px;
   }
-  
+
   .heroSlider-fixed {
     position: relative;
   }
@@ -1743,7 +1743,7 @@ $listing-author-avatar-height: 108;
       display: none !important;
     }
   }
-  
+
   @media #{$mobile}, #{$tablet} {
     background: #f0f0f0;
     margin: 0px -12px;
@@ -2454,4 +2454,206 @@ $listing-author-avatar-height: 108;
       outline: none;
     }
   }
+}
+
+.overlap-sidenav {
+  width: 100% !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  display: none;
+}
+
+.overlap-sidenav,
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  z-index: 999;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 35px;
+  font-size: 18px;
+  margin-left: 50px;
+}
+
+.side-mail-wrap {
+  padding: 1.25rem 2.5rem;
+  .title-border {
+    border-bottom: 1px solid #cdcdcd;
+  }
+}
+
+.side-mail-response {
+  padding: 1.25rem 2.5rem;
+  display: none;
+}
+
+// contact form for mobile
+#mobileSideEmail {
+  background-color: #f0f0f0;
+}
+
+.mobile-side-mail-wrap {
+  padding: 1rem 1rem;
+  .title {
+    font-size: 15px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 0px !important;
+  }
+
+  .item {
+    margin-bottom: 0px !important;
+  }
+
+  .custom-text-field {
+    background-color: #e8eef4 !important;
+    border: 0px !important;
+  }
+
+  .custom-btn {
+    text-align: center !important;
+    background-color: #13588d !important;
+    border-radius: 4px !important;
+    font-size: 18px;
+    border: 1px solid #13588d !important
+  }
+
+  .custom-border {
+    border: 0px !important;
+    border-radius: 0px !important;
+  }
+
+  .message {
+    margin-bottom: 0px !important;
+  }
+
+  .message-note {
+    font-size: 11px;
+  }
+
+  .foreign-cus-line {
+    margin-top: 10px;
+    cursor: pointer;
+    margin-bottom: 0px !important;
+
+    .title-btn {
+      margin-bottom: 0.5em !important;
+    }
+
+    .arrow-col {
+      margin-bottom: 0px !important;
+      text-align: right;
+    }
+  }
+
+  .holiday-schedule {
+    margin-top: 10px;
+    cursor: pointer;
+
+    .title-btn {
+      margin-bottom: 0px !important;
+    }
+
+    .arrow-col {
+      margin-bottom: 0px !important;
+      text-align: right;
+    }
+  }
+
+  .row.form-footer {
+    .first-icon {
+      margin-right: 5px;
+    }
+
+    .middle-icon {
+      margin-left: 10%;
+    }
+
+    .last-icon {
+      margin-left: 30%;
+    }
+  }
+
+  .custom-with-col {
+    width: 33.33% !important;
+    margin-bottom: 0px !important;
+  }
+
+  background-color: #f0f0f0;
+}
+
+.mobile-overlap-sidenav {
+  width: 100% !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  display: none;
+  background-color: #f0f0f0;
+
+  // .mobile-title {
+  //   text-align: left;
+  //   background-color: #f0f0f0;
+  //   .mobile-closebtn {
+
+  //   }
+  // }
+}
+
+.mobile-overlap-sidenav,
+.mobile-sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+  // padding-top: 60px;
+  // z-index: 999;
+}
+
+.mobile-sidenav a {
+  padding: 1rem 1rem;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  border-bottom: #bdbdbd solid 1px;
+  background-color: #f0f0f0;
+}
+
+.mobile-sidenav a:hover {
+  background-color: #f0f0f0 !important
+}
+
+.mobile-sidenav a:active {
+  background-color: #f0f0f0 !important
+}
+
+.mobile-sidenav .mobile-closebtn {
+  font-size: 24px;
+  color: black;
+  background-color: #f0f0f0;
+  font-family: 'OpenSans-Semibold';
+  font-weight: bold;
 }

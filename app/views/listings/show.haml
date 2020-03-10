@@ -190,6 +190,99 @@
           %span
             Rent Now
 
+  #sideEmail
+    .overlap-sidenav
+    .sidenav
+      %a.closebtn{href: "javascript:void(0)"} Close
+      .side-mail-wrap
+        %h1 Contact Us
+        %h3.title-border.pt-15.mt-15 Hi - what may we help you with?
+        = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
+          .row
+            %label.col-3 Subject(*)
+            = text_field_tag 'contact[subject]', nil, class: 'col-9', required: true
+          .row
+            %label.col-3 Name
+            = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-9'
+          .row
+            %label.col-3 Email(*)
+            = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-9', required: true
+          .row
+            %label.col-3 Order #
+            = text_field_tag 'contact[order_number]', nil, class: 'col-4'
+            - if @current_user
+              .col-5.order-number
+                - select_data = @current_user ? @current_user.starter_transactions.map(&:id) : []
+                = select_tag 'order_number', options_for_select(select_data), id: 'order_number', prompt:'Your Previous Order Numbers', class: 'col-12'
+            - else
+              .col-5
+                %p Please login to select previous order number
+          .row
+            %label.col-3 Message(*)
+            = text_area_tag 'contact[message]', nil, class: 'col-9', rows: 5, required: true
+          = submit_tag 'Send', class: 'btn button-submit pull-right'
+      .side-mail-response
+        = render 'customers/thank_for_contacting'
+
+.mobile-display
+  #mobileSideEmail
+    .mobile-overlap-sidenav
+    .mobile-sidenav
+      %a.mobile-closebtn{href: "javascript:void(0)"}
+        %i.icon-chevron-left
+        Sales Department
+      %hr
+      .mobile-side-mail-wrap
+        %p.title By Phone
+        %p.item= "Phone: #{APP_CONFIG.contact_phone}"
+        %p.item= "Fax: #{APP_CONFIG.contact_phone}"
+
+        .row.foreign-cus-line
+          .col-6
+            %p.title-btn Foreign Customers Line
+          .col-6.arrow-col
+            %i.icon-chevron-right
+
+        %p.title House Of Opreation:
+        %p.item Sunday: 10:00AM - 5:00PM
+        %p.item Mon-Thu: 9:00AM - 7:00PM
+        %p.item Friday: 9:00AM - 1:00PM
+
+        .row.holiday-schedule
+          .col-6
+            %p.title-btn Holiday Schedule
+          .col-6.arrow-col
+            %i.icon-chevron-right
+
+        = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
+          .row
+            = text_field_tag 'contact[subject]', nil, class: 'col-12 custom-border', required: true, placeholder: "Subject", id: 'mobile_contact_subject'
+          .row
+            = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Email Address"
+          .row
+            = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Confirm Email"
+          .row
+            = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-12 custom-border', placeholder: "Name"
+          .row
+            = text_field_tag 'contact[name]', nil, class: 'col-12 custom-text-field', placeholder: "Phone Number (optional)"
+          .row
+            = text_field_tag 'contact[order_number]', nil, class: 'col-12 custom-text-field', placeholder: "Order Number (optional)"
+          .row
+            = text_area_tag 'contact[message]', nil, class: 'col-12 custom-border message', rows: 5, required: true, placeholder: "Message"
+            %p.message-note Please do not divulge private information (e.g., credit card number) via this form.
+          .row
+            = submit_tag 'Submit', class: 'btn button-submit custom-btn block col-12'
+
+        .row.form-footer
+          .col-12
+            %i.icon-time.first-icon
+            %span.recently-items Recently Viewed Items |
+            %i.icon-ellipsis-vertical.middle-icon
+            %i.icon-plus.last-icon
+
+      .side-mail-response
+        = render 'customers/thank_for_contacting'
+
 - content_for :extra_javascript do
   :javascript
 

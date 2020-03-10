@@ -110,21 +110,13 @@
                       Auto
               .form-tags
                 = form.label 'TAGS', class: 'input'
-                = form.text_field :tags, class: 'listing_tag'
-                .tags-list
-                  %ul
-                    %li
-                      video-camera
-                      %i.icon-remove
-                    %li
-                      photo-camera
-                      %i.icon-remove
-                    %li
-                      photo-cam
-                      %i.icon-remove
-                    %li
-                      over-1000
-                      %i.icon-remove
+                = form.hidden_field :tags
+                %ul#list_tags_selected
+                  -if @listing.tags
+                    - @listing.tags.split(',').each do |tag|
+                      %li
+                        = tag
+
             .col-12.form-listing-wrap.form-recommended-accessories
               = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }
             .col-12.form-listing-wrap.form-packing-dimension
@@ -150,3 +142,7 @@
                 .col-12
                   %button
                     Add Piece
+
+- content_for :extra_javascript do
+  :javascript
+    ST.ListingTags.addTagWithGetIt();
