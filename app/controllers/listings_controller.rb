@@ -125,31 +125,32 @@ class ListingsController < ApplicationController
       logger.info "ADMIN ACTION: admin='#{@current_user.id}' create listing params=#{params.inspect}"
     end
     params[:listing].delete("origin_loc_attributes") if params[:listing][:origin_loc_attributes][:address].blank?
-
+    
     shape = get_shape(Maybe(params)[:listing][:listing_shape_id].to_i.or_else(nil))
     listing_uuid = UUIDUtils.create
-
+    
     unless create_booking(shape, listing_uuid)
       flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
       return redirect_to new_listing_path
     end
-
+    
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
-
+    
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       redirect_to new_listing_path
       return
     end
-
+    
     @listing = Listing.new(result.data)
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
-
+    
     ActiveRecord::Base.transaction do
       @listing.author = new_listing_author
       service.create_state(@listing)
-
+      
       if @listing.save
+        create_or_update_accessories(result.data[:recommended_accessory_ids]) if result.data[:recommended_accessory_ids].present?
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -205,7 +206,6 @@ class ListingsController < ApplicationController
     end
 
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
-
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       return redirect_to edit_listing_path
@@ -220,6 +220,7 @@ class ListingsController < ApplicationController
     @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
 
     if update_successful
+      create_or_update_accessories(result.data[:recommended_accessory_ids]) if result.data[:recommended_accessory_ids].present?
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -292,7 +293,19 @@ class ListingsController < ApplicationController
     redirect_to @listing and return
   end
 
+  def search_by_name
+    @listings = ListingSearchService.new(params[:q]).search
+    respond_to do |format|
+      format.json {render json: @listings}
+    end
+  end
+
   private
+
+  def create_or_update_accessories(recommended_accessory_ids)
+    ListingUpdateAccessoryService.new(recommended_accessory_ids.split(','), @listing)
+                                 .add_recommended_accessories
+  end
 
   def update_flash(old_availability:, new_availability:)
     case [new_availability.to_sym == :booking, old_availability.to_sym == :booking]

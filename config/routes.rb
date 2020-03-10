@@ -92,6 +92,7 @@ Rails.application.routes.draw do
   }
 
   post '/search_listing' => 'homepage#auto_complete_search', as: :auto_complete_search
+  get '/search_listing_by_name' => 'listings#search_by_name', as: :search_by_name
 
   # Default routes for homepage, these are matched if custom landing page is not in use
   # Inside this constraits are the routes that are used when request has subdomain other than www

@@ -146,12 +146,90 @@ window.ST = window.ST || {};
     }
   }
 
+  function loadSelectize() {
+    $('#listing_recommended_accessory_ids').selectize({
+      create: false,
+      delimiter: ',',
+      closeAfterSelect: true,
+      load: function(query, callback) {
+        emptyRenderResult();
+        if (!query.length) {
+          return callback()
+        }
+        _this_load = this
+        $.ajax({
+          url: "/search_listing_by_name",
+          type: 'get',
+          data:
+          {
+            q: query
+          },
+          success: function(res) {
+            renderResult(res)
+            _this_load.loadedSearches = {};
+          }
+        });
+      }
+    })
+
+    function renderResult(res) {
+      html = ''
+      $.each(res, function(idx, result) {
+        html += '<li class="add-recommended-accessory" data-id="'+ result.id +'">'+ result.title +'</li>';
+      });
+      $('.selectize-recommended-accessories-result').html(html);
+    }
+
+    function emptyRenderResult() {
+      $('.selectize-recommended-accessories-result').empty();
+    }
+  
+    $('.recommended-accessories-wrap .selectize-input input').on('focusin', function() {
+      emptyRenderResult();
+      $('.selectize-recommended-accessories-result').css('display', 'block');
+    })
+  
+    $('.selectize-recommended-accessories-result').on('click', '.add-recommended-accessory', function() {
+      var id = $(this).data('id');
+      var title = $(this).text();
+      if (idExists(id) != true) {
+        html = '<div class="recommended-accessory-item" data-id="'+ id +'">' +
+                '<span>' + title + '</span>' +
+                '<i class="icon-remove" data-id="'+ id +'"></i>' +
+                '</div>';
+        $('.recommended-accessories-list').append(html);
+        updateAccessoriesSelectize();
+        $('#listing_recommended_accessory_ids').val(listAccessory.join(','))
+      };
+      $('.selectize-recommended-accessories-result').css('display', 'none');
+    });
+
+    function idExists(id) {
+      return $('.recommended-accessories-list').find('[data-id='+ id +']').length != 0;
+    }
+
+    function updateAccessoriesSelectize() {
+      listAccessory = [];
+      $.each($('.recommended-accessory-item'), function(_idx, el) {
+        listAccessory.push($(el).data('id'));
+      });
+      $('#listing_recommended_accessory_ids').val(listAccessory.join(','))
+    }
+
+    $(document).on('click', '.recommended-accessory-item .icon-remove', function() {
+      var id = $(this).data('id');
+      $('.recommended-accessories-list').find('[data-id='+ id + ']').remove();
+      updateAccessoriesSelectize();
+    });
+  }
+
   // Ajax call to display listing form after categories and
   // listing shape has been selected
   function display_new_listing_form(selected_attributes, options) {
     $.get(options.new_form_content_path, selected_attributes, function(data) {
       $('.js-form-fields').html(data);
       $('.js-form-fields').removeClass('hidden');
+      loadSelectize();
     });
   }
 
@@ -163,6 +241,8 @@ window.ST = window.ST || {};
       $('.js-form-fields').removeClass('hidden');
     });
   }
+
+  loadSelectize();
 
   // Check if selected category or subcategory has certain listing shape
   function has_listing_shape(selected_attributes, listing_shape_id, attribute_array) {

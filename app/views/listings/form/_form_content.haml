@@ -1,5 +1,6 @@
 .row
   .col-2
+    = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
   .col-10
     .col-12.form-listing-title
       %span
@@ -125,63 +126,7 @@
                       over-1000
                       %i.icon-remove
             .col-12.form-listing-wrap.form-recommended-accessories
-              = form.label 'Recommended Accessories', class: 'input'
-              = form.text_field :recommended_accessories, class: 'listing_accessories'
-              .recommended-accessories-list
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
-                .recommended-accessory-item
-                  %i.icon-ellipsis-vertical
-                  %i.icon-ellipsis-vertical
-                  %span
-                    Aputure Light Dome Mini II (21.5")
-                  %i.icon-remove
+              = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }
             .col-12.form-listing-wrap.form-packing-dimension
               = form.label 'Packing Dimensions', class: 'input'
               .row.packing-dimension-attributes
@@ -205,5 +150,3 @@
                 .col-12
                   %button
                     Add Piece
-              
-              
