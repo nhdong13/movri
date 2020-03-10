@@ -8,14 +8,12 @@ class ListingUpdateAccessoryService
 
   def add_recommended_accessories
     listing.recommended_accessories.destroy_all
-    listing_ids.each do |listing_id|
-      listing.recommended_accessories.create(listing_accessory_id: listing_id)
+    position = 1
+    recommended_accessory_ids.each do |listing_id|
+      ActiveRecord::Base.transaction do
+        listing.recommended_accessories.create(listing_accessory_id: listing_id, position: position)
+        position += 1
+      end
     end
-  end
-
-  private
-
-  def listing_ids
-    Listing.where(id: recommended_accessory_ids).ids
   end
 end

@@ -147,7 +147,9 @@ window.ST = window.ST || {};
   }
 
   function loadSelectize() {
-    $('#listing_recommended_accessory_ids').selectize({
+    updateAccessoriesSelectize();
+
+    $('.listing_accessories').selectize({
       create: false,
       delimiter: ',',
       closeAfterSelect: true,
@@ -199,7 +201,6 @@ window.ST = window.ST || {};
                 '</div>';
         $('.recommended-accessories-list').append(html);
         updateAccessoriesSelectize();
-        $('#listing_recommended_accessory_ids').val(listAccessory.join(','))
       };
       $('.selectize-recommended-accessories-result').css('display', 'none');
     });
@@ -213,7 +214,7 @@ window.ST = window.ST || {};
       $.each($('.recommended-accessory-item'), function(_idx, el) {
         listAccessory.push($(el).data('id'));
       });
-      $('#listing_recommended_accessory_ids').val(listAccessory.join(','))
+      $('.listing-accessories-hidden').val(listAccessory.join(','))
     }
 
     $(document).on('click', '.recommended-accessory-item .icon-remove', function() {

@@ -150,7 +150,7 @@ class ListingsController < ApplicationController
       service.create_state(@listing)
       
       if @listing.save
-        create_or_update_accessories(result.data[:recommended_accessory_ids]) if result.data[:recommended_accessory_ids].present?
+        create_or_update_accessories(result.data[:recommended_accessory_ids])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -220,7 +220,7 @@ class ListingsController < ApplicationController
     @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
 
     if update_successful
-      create_or_update_accessories(result.data[:recommended_accessory_ids]) if result.data[:recommended_accessory_ids].present?
+      create_or_update_accessories(result.data[:recommended_accessory_ids])
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end

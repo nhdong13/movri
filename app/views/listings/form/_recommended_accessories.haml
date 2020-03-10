@@ -1,6 +1,7 @@
 .recommended-accessories-wrap
+  = form.hidden_field :recommended_accessory_ids, class: 'listing-accessories-hidden'
   = form.label 'Recommended Accessories', class: 'input'
-  = form.text_field :recommended_accessory_ids, class: 'listing_accessories'
+  %input.listing_accessories{type: 'text'}
   %ul.selectize-recommended-accessories-result
 .recommended-accessories-list
   - @listing.recommended_accessories.each do |recommended_accessory|
