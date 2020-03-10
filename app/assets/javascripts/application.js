@@ -20,7 +20,7 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery-ui-1.9.2.custom.min
+//= require jquery-ui-1.9.2.custom
 //= require jquery.ui.touch-punch.min.js
 //= require jquery_ujs
 //= require jquery.form
