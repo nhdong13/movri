@@ -295,6 +295,10 @@ default: &default_settings
   support_phone: 866.766.6861 / 212.868.4476
   contact_phone: 212.444.6615
 
+  # Shipping rates infor for test
+  test_postmen_api_key: 'd97da7b6-45c8-4b73-bbce-e230f86b8bb2'
+  test_fedex_shipper_id: '6f43fe77-b056-45c3-bce4-9fec4040da0c'
+
   # Knowledge base
   knowledge_base_url: http://www.example.com/knowledgebase
   display_knowledge_base_articles: false

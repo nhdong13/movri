@@ -385,6 +385,7 @@ Rails.application.routes.draw do
         post :follow
         delete :unfollow
         delete :delete
+        post :get_shipping_rates_from_postmen
       end
       collection do
         get :new_form_content

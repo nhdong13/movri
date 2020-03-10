@@ -14,11 +14,18 @@
         .group-enter-shipping-zip-code
           .row
             .col-8
-              %input
+              %input#zipcode
             .col-4
               %button.button-calculate-shipping
                 Calculate Shipping
-        
+    .modal-list-shipping
+      %ul
+        %li FedEx
+
 
 
 #4eb857
+
+- content_for :extra_javascript do
+  :javascript
+    window.ST.getShippingRates('en', 5);
