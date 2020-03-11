@@ -183,12 +183,12 @@ window.ST = window.ST || {};
     function emptyRenderResult() {
       $('.selectize-recommended-accessories-result').empty();
     }
-  
+
     $('.recommended-accessories-wrap .selectize-input input').on('focusin', function() {
       emptyRenderResult();
       $('.selectize-recommended-accessories-result').css('display', 'block');
     })
-  
+
     $('.selectize-recommended-accessories-result').on('click', '.add-recommended-accessory', function() {
       var id = $(this).data('id');
       var title = $(this).text();
@@ -223,6 +223,45 @@ window.ST = window.ST || {};
     });
   }
 
+  // init tags field for new listing
+  function initTagsFieldForNewListing() {
+    $("#list_tags_selected").tagit({
+      beforeTagAdded: function(event, ui) {
+        var tags = $('#listing_tags').val();
+        // add to hidden field
+        if (!tags.length) {
+          tags = ui.tagLabel
+        } else {
+          tags = tags + "," + ui.tagLabel;
+        }
+        // get array tags from string
+        var tagsArray = tags.split(',');
+        // get unique array from tags array
+        var uniqTagsArray = tagsArray.reduce(function(a,b){
+          if (a.indexOf(b) < 0 ) a.push(b);
+          return a;
+        },[]);
+        // convert unique array to string
+        var uniqTags = uniqTagsArray.join(',');
+
+        // add new value to hidden field
+        $('#listing_tags').val(uniqTags);
+      },
+      beforeTagRemoved: function(event, ui) {
+        var removeTag = ui.tagLabel;
+        // get list tags as an array
+        var tags = $('#listing_tags').val().split(',');
+
+        // return new array without removed item
+        tags = tags.filter(function(item) {
+          return item !== removeTag
+        });
+        // join array to string
+        $('#listing_tags').val(tags.join(','));
+      }
+    });
+  }
+
   // Ajax call to display listing form after categories and
   // listing shape has been selected
   function display_new_listing_form(selected_attributes, options) {
@@ -230,6 +269,7 @@ window.ST = window.ST || {};
       $('.js-form-fields').html(data);
       $('.js-form-fields').removeClass('hidden');
       loadSelectize();
+      initTagsFieldForNewListing();
     });
   }
 
