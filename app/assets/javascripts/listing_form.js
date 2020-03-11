@@ -146,6 +146,28 @@ window.ST = window.ST || {};
     }
   }
 
+  function addPackingDimension() {
+    $(document).on('click', '.add-piece-button', function() {
+      $.ajax({
+        url: '/add_packing_dimension',
+        type: 'POST',
+        dataType: 'script',
+        success: function() {
+          return;
+        }
+      });
+    });
+  }
+
+  function removePackingDimension() {
+    $(document).on('click', '.remove-packing-dimension', function() {
+      var id = $(this).attr('id');
+      var packingDimension = $('#' + id);
+      $(packingDimension).remove();
+      $('.packing-dimension-attributes').append("<input type='hidden' value='1' name='listing[packing_dimensions_attributes]["+ id +"][_destroy]' id='listing_packing_dimensions_attributes_"+ id +"_destroy'>");
+    });
+  }
+
   function loadSelectize() {
     updateAccessoriesSelectize();
 
@@ -243,7 +265,9 @@ window.ST = window.ST || {};
     });
   }
 
+  addPackingDimension();
   loadSelectize();
+  removePackingDimension();
 
   // Check if selected category or subcategory has certain listing shape
   function has_listing_shape(selected_attributes, listing_shape_id, attribute_array) {

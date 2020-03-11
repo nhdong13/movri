@@ -90,13 +90,41 @@
       }
 
       &.form-packing-dimension {
-        button {
+        .add-piece-button {
           border: 1px solid #e1e3e5;
           color: #000;
           background: none;
           height: 36px;
           font-size: 14px;
           float: right;
+          padding: 5px;
+          cursor: pointer;
+        }
+
+        .packing-dimension-item {
+          padding-bottom: 5px;
+          border-bottom: 1px solid;
+          position: relative;
+
+          .col-3,
+          .col-2 {
+            padding-right: 0;
+
+            &:last-child {
+              padding-right: 0.75em;
+            }
+          }
+
+          .remove-packing-dimension {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            cursor: pointer;
+          }
+
+          &:last-child {
+            border-bottom: none;            
+          }
         }
       }
 

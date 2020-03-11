@@ -120,28 +120,7 @@
             .col-12.form-listing-wrap.form-recommended-accessories
               = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }
             .col-12.form-listing-wrap.form-packing-dimension
-              = form.label 'Packing Dimensions', class: 'input'
-              .row.packing-dimension-attributes
-                .col-3
-                  %input{type: 'number'}
-                  %span
-                    cm
-                .col-3
-                  %input{type: 'number'}
-                  %span
-                    cm
-                .col-3
-                  %input{type: 'number'}
-                  %span
-                    cm
-                .col-3
-                  %input{type: 'number'}
-                  %span
-                    kg
-              .row
-                .col-12
-                  %button
-                    Add Piece
+              = render partial: 'listings/form/packing_dimension', :locals => { :form => form }
 
 - content_for :extra_javascript do
   :javascript

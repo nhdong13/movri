@@ -300,6 +300,13 @@ class ListingsController < ApplicationController
     end
   end
 
+  def add_packing_dimension
+    @time_stamps = DateTime.current.strftime('%S%m')
+    respond_to do |format|
+      format.js {render 'add_packing_dimension.js.haml', layout: false}
+    end
+  end
+
   private
 
   def create_or_update_accessories(recommended_accessory_ids)

@@ -1,0 +1,27 @@
+.packing-dimension-item.clearfix{id: "#{time_stamps}"}
+  .col-2
+    %label
+      Length
+    = number_field_tag "listing[packing_dimensions_attributes][#{time_stamps}][length]"
+    %span
+      cm
+  .col-3
+    %label
+      Width
+    = number_field_tag "listing[packing_dimensions_attributes][#{time_stamps}][width]"
+    %span
+      cm
+  .col-3
+    %label
+      Height
+    = number_field_tag "listing[packing_dimensions_attributes][#{time_stamps}][height]"
+    %span
+      cm
+  .col-3
+    %label
+      Vol Weight
+    = number_field_tag "listing[packing_dimensions_attributes][#{time_stamps}][weight]"
+    %span
+      kg
+  %span.remove-packing-dimension{id: "#{time_stamps}"}
+    %i.icon-remove

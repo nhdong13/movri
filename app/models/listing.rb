@@ -114,6 +114,8 @@ class Listing < ApplicationRecord
   has_many :custom_checkbox_field_values, :class_name => "CheckboxFieldValue", :dependent => :destroy
 
   has_one :location, :dependent => :destroy
+  has_many :packing_dimensions, dependent: :destroy
+  accepts_nested_attributes_for :packing_dimensions, allow_destroy: true, reject_if: proc { |attributes| attributes[:width].blank? || attributes[:height].blank? || attributes[:weight].blank? || attributes[:length].blank? }
   has_one :origin_loc, -> { where('location_type = ?', 'origin_loc') }, :class_name => "Location", :dependent => :destroy, :inverse_of => :listing
   has_one :destination_loc, -> { where('location_type = ?', 'destination_loc') }, :class_name => "Location", :dependent => :destroy, :inverse_of => :listing
   accepts_nested_attributes_for :origin_loc, :destination_loc

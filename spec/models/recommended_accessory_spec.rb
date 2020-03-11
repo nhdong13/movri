@@ -10,7 +10,8 @@
 #  position             :integer
 #
 
-class RecommendedAccessory < ApplicationRecord
-  belongs_to :listing
-  belongs_to :listing_accessory, class_name: :Listing, foreign_key: :listing_accessory_id
+require 'rails_helper'
+
+RSpec.describe RecommendedAccessory, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end
