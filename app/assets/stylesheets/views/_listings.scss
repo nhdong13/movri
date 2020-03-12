@@ -746,6 +746,10 @@ $listing-author-avatar-height: 108;
       background: #4eb857;
       border: 1px solid #4eb857;
       width: 275px;
+
+      .content {
+        display: block;
+      }
     }
 
     .add-wish-list {
