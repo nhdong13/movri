@@ -21,36 +21,59 @@
   .col-12.clearfix.availabel
     %span
       Available 01/24/20
-.row.listing-shipping-date
-  .col-6.clearfix.arrival-date
-    .form-group
-      %label{for: 'arrival-date'} Arrival Date:
-      %input#arrival-date.form-control{type: "arrival-date"}
-      = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
-  .col-6.clearfix.return-date
-    .form-group
-      %label{for: "return-date"} Return Date:
-      %input#return-date.form-control{type: "return-date"}
-      = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
-.row.listing-order-quantity
-  .col-2.quantity
-    %input{type: 'number', class: 'order-quantity-number-field', max: '99', min: '1'}
-    %i.icon-caret-up
-    %i.icon-caret-down
-  .col-6.rent-container
-    %button.rent-btn
-      Rent Now
-  .col-4.add-wish-list
-    %button.wish-list-btn
-      Add to Wish List
-.row.listing-shipping-info
-  .col-6.clearfix.shipping-rates
-    %span
-      Shipping Rates
-    %span
-      Pricing Chart
-.row.listing-save-availabe
-.col-6.clearfix.save-available
-  %p
-    Savings Availabe:
-  .saving-available-item
+= form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do
+  .row.listing-shipping-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
+    - if @listing_presenter.quantity_per_day_or_night?
+      - @listing_presenter.blocked_dates_result.on_success do |blocked_dates|
+        - content_for :extra_javascript do
+          :javascript
+            window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});
+        .col-6.clearfix.arrival-date
+          .form-group
+            %label{for: 'arrival-date'} Arrival Date:
+            %input.form-control.required#start-on{type: "arrival-date", :data => { :output => "booking-start-output" }}
+            %input#booking-start-output{:type => 'hidden', :name => 'start_on'}
+            = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+        .col-6.clearfix.return-date
+          .form-group
+            %label{for: "return-date"} Return Date:
+            %input.form-control.required#end-on{type: "return-date",  :data => { :output => "booking-end-output" }}
+            %input#booking-end-output{:type => 'hidden', :name => 'end_on'}
+            = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+      - @listing_presenter.blocked_dates_result.on_error do
+        = t("listings.listing_actions.unable_load_availability")
+  .row.listing-order-quantity
+    .col-2.quantity
+      %input{type: 'number', class: 'order-quantity-number-field', max: '99', min: '1'}
+      %i.icon-caret-up
+      %i.icon-caret-down
+    .col-6.rent-container
+      = hidden_field_tag(:listing_id, @listing.id)
+      - if @listing_presenter.quantity_per_day_or_night?
+        - @listing_presenter.blocked_dates_result.on_success do
+          %button.rent-btn
+            .content
+              = action_button_label(@listing)
+
+        - @listing_presenter.blocked_dates_result.on_error do
+          %button.disabled-book-button{disabled: true}
+            .content
+              = action_button_label(@listing)
+      - else
+        %button.rent-btn
+          .content
+            = action_button_label(@listing)
+    .col-4.add-wish-list
+      %button.wish-list-btn
+        Add to Wish List
+  .row.listing-shipping-info
+    .col-6.clearfix.shipping-rates
+      %span
+        Shipping Rates
+      %span
+        Pricing Chart
+  .row.listing-save-availabe
+  .col-6.clearfix.save-available
+    %p
+      Savings Availabe:
+    .saving-available-item

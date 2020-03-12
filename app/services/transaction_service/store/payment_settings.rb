@@ -172,27 +172,27 @@ module TransactionService::Store::PaymentSettings
     end
     # store visible hint
     settings[:api_visible_private_key] = settings[:api_private_key].sub(/\A(.{7}).+(.{4})$/, '\1*********************\2')
-    settings[:api_private_key] = encrypt_value(settings[:api_private_key], settings[:key_encryption_padding])
+    settings[:api_private_key] = encrypt_value(settings[:api_private_key])
   end
 
-  def encrypt_value(value, padding)
+  def encrypt_value(value)
     raise "can not encrypt Stripe keys, add app_encryption_key to config/config.yml" if APP_CONFIG.app_encryption_key.nil?
 
     cipher = OpenSSL::Cipher.new('AES-256-CBC')
     cipher.encrypt
     cipher.key = Digest::SHA256.digest(APP_CONFIG.app_encryption_key)
     iv = cipher.random_iv
-    cipher.padding = padding ? 1 : 0
+    cipher.padding = 0
     cipher.iv = iv
     text = cipher.update(value) + cipher.final
     Base64.strict_encode64(iv + text)
   end
 
-  def decrypt_value(value, padding)
+  def decrypt_value(value)
     cipher = OpenSSL::Cipher.new('AES-256-CBC')
     cipher.decrypt
     cipher.key = Digest::SHA256.digest(APP_CONFIG.app_encryption_key)
-    cipher.padding = padding ? 1 : 0
+    cipher.padding = 0
     plain = Base64.decode64(value)
     cipher.iv = plain.slice!(0,16)
     cipher.update(plain) + cipher.final
