@@ -1,0 +1,66 @@
+= form.label 'Packing Dimensions', class: 'input'
+.row.packing-dimension-attributes
+  - packing_dimensions = @listing.packing_dimensions
+  - if packing_dimensions.present?
+    - packing_dimensions.each do |packing_dimension|
+      = form.fields_for :packing_dimensions, packing_dimension do |dimension|
+        .packing-dimension-item.clearfix{id: "#{dimension.options[:child_index]}"}
+          .col-2
+            %label
+              Length
+            = dimension.number_field :length
+            %span
+              cm
+          .col-3
+            %label
+              Width
+            = dimension.number_field :width
+            %span
+              cm
+          .col-3
+            %label
+              Height
+            = dimension.number_field :height
+            %span
+              cm
+          .col-3
+            %label
+              Vol Weight
+            = dimension.number_field :weight
+            %span
+              kg
+          %span.remove-packing-dimension{id: "#{dimension.options[:child_index]}"}
+            %i.icon-remove
+  - else
+    = form.fields_for :packing_dimensions, PackingDimension.new do |dimension|
+      .packing-dimension-item.clearfix{id: "0"}
+        .col-2
+          %label
+            Length
+          = dimension.number_field :length
+          %span
+            cm
+        .col-3
+          %label
+            Width
+          = dimension.number_field :width
+          %span
+            cm
+        .col-3
+          %label
+            Height
+          = dimension.number_field :height
+          %span
+            cm
+        .col-3
+          %label
+            Vol Weight
+          = dimension.number_field :weight
+          %span
+            kg
+        %span.remove-packing-dimension{id: '0'}
+          %i.icon-remove
+.row
+  .col-12
+    .add-piece-button
+      Add Piece

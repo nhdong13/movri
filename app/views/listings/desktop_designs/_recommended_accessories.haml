@@ -6,99 +6,19 @@
         %a{href: '#'}
           View All >
     .recommended-accessories-list
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
-      .row.col-3.recommended-accessories-item
-        .mobile-recommended-accessories
-          .col-4
-            %a{:href => "#"}
-              %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
-          .col-8
-            .recommended-accessories-listing-title
-              B+W 77mm UV Haze MRC 010M Filter
-            .recommended-accessories-listing-price
-              $44.95
-            %button.recommended-accessories-add-to-cart
-              Add to Cart
+      - @listing.listing_accessories.order(:position).each do |listing_accessory|
+        .row.col-3.recommended-accessories-item
+          .mobile-recommended-accessories
+            .col-4
+              = link_to listing_path("#{listing_accessory.id}-#{listing_accessory.title.to_url}") do
+                - if listing_accessory.main_image != nil
+                  = image_tag listing_accessory.main_image, class: 'img-responsive'
+                - else
+                  %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
+            .col-8
+              .recommended-accessories-listing-title
+                = listing_accessory.title
+              .recommended-accessories-listing-price
+                $44.95
+              %button.recommended-accessories-add-to-cart
+                Add to Cart

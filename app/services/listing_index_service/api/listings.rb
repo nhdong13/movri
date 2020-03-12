@@ -21,7 +21,6 @@ module ListingIndexService::API
         search: ListingIndexService::DataTypes.create_search_params(search),
         includes: includes
       )
-
       search_result.maybe().map { |res|
         Result::Success.new(
           process_results(res, engine)

@@ -146,12 +146,153 @@ window.ST = window.ST || {};
     }
   }
 
+  function addPackingDimension() {
+    $(document).on('click', '.add-piece-button', function() {
+      $.ajax({
+        url: '/add_packing_dimension',
+        type: 'POST',
+        dataType: 'script',
+        success: function() {
+          return;
+        }
+      });
+    });
+  }
+
+  function removePackingDimension() {
+    $(document).on('click', '.remove-packing-dimension', function() {
+      var id = $(this).attr('id');
+      var packingDimension = $('#' + id);
+      $(packingDimension).remove();
+      $('.packing-dimension-attributes').append("<input type='hidden' value='1' name='listing[packing_dimensions_attributes]["+ id +"][_destroy]' id='listing_packing_dimensions_attributes_"+ id +"_destroy'>");
+    });
+  }
+
+  function loadSelectize() {
+    updateAccessoriesSelectize();
+
+    $('.listing_accessories').selectize({
+      create: false,
+      delimiter: ',',
+      closeAfterSelect: true,
+      load: function(query, callback) {
+        emptyRenderResult();
+        if (!query.length) {
+          return callback()
+        }
+        _this_load = this
+        $.ajax({
+          url: "/search_listing_by_name",
+          type: 'get',
+          data:
+          {
+            q: query
+          },
+          success: function(res) {
+            renderResult(res)
+            _this_load.loadedSearches = {};
+          }
+        });
+      }
+    })
+
+    function renderResult(res) {
+      html = ''
+      $.each(res, function(idx, result) {
+        html += '<li class="add-recommended-accessory" data-id="'+ result.id +'">'+ result.title +'</li>';
+      });
+      $('.selectize-recommended-accessories-result').html(html);
+    }
+
+    function emptyRenderResult() {
+      $('.selectize-recommended-accessories-result').empty();
+    }
+
+    $('.recommended-accessories-wrap .selectize-input input').on('focusin', function() {
+      emptyRenderResult();
+      $('.selectize-recommended-accessories-result').css('display', 'block');
+    })
+
+    $('.selectize-recommended-accessories-result').on('click', '.add-recommended-accessory', function() {
+      var id = $(this).data('id');
+      var title = $(this).text();
+      if (idExists(id) != true) {
+        html = '<div class="recommended-accessory-item" data-id="'+ id +'">' +
+                '<span>' + title + '</span>' +
+                '<i class="icon-remove" data-id="'+ id +'"></i>' +
+                '</div>';
+        $('.recommended-accessories-list').append(html);
+        updateAccessoriesSelectize();
+      };
+      $('.selectize-recommended-accessories-result').css('display', 'none');
+    });
+
+    function idExists(id) {
+      return $('.recommended-accessories-list').find('[data-id='+ id +']').length != 0;
+    }
+
+    function updateAccessoriesSelectize() {
+      listAccessory = [];
+      $.each($('.recommended-accessory-item'), function(_idx, el) {
+        listAccessory.push($(el).data('id'));
+      });
+      $('.listing-accessories-hidden').val(listAccessory.join(','))
+    }
+
+    $(document).on('click', '.recommended-accessory-item .icon-remove', function() {
+      var id = $(this).data('id');
+      $('.recommended-accessories-list').find('[data-id='+ id + ']').remove();
+      updateAccessoriesSelectize();
+    });
+  }
+
+  // init tags field for new listing
+  function initTagsFieldForNewListing() {
+    $("#list_tags_selected").tagit({
+      beforeTagAdded: function(event, ui) {
+        var tags = $('#listing_tags').val();
+        // add to hidden field
+        if (!tags.length) {
+          tags = ui.tagLabel
+        } else {
+          tags = tags + "," + ui.tagLabel;
+        }
+        // get array tags from string
+        var tagsArray = tags.split(',');
+        // get unique array from tags array
+        var uniqTagsArray = tagsArray.reduce(function(a,b){
+          if (a.indexOf(b) < 0 ) a.push(b);
+          return a;
+        },[]);
+        // convert unique array to string
+        var uniqTags = uniqTagsArray.join(',');
+
+        // add new value to hidden field
+        $('#listing_tags').val(uniqTags);
+      },
+      beforeTagRemoved: function(event, ui) {
+        var removeTag = ui.tagLabel;
+        // get list tags as an array
+        var tags = $('#listing_tags').val().split(',');
+
+        // return new array without removed item
+        tags = tags.filter(function(item) {
+          return item !== removeTag
+        });
+        // join array to string
+        $('#listing_tags').val(tags.join(','));
+      }
+    });
+  }
+
   // Ajax call to display listing form after categories and
   // listing shape has been selected
   function display_new_listing_form(selected_attributes, options) {
     $.get(options.new_form_content_path, selected_attributes, function(data) {
       $('.js-form-fields').html(data);
       $('.js-form-fields').removeClass('hidden');
+      loadSelectize();
+      initTagsFieldForNewListing();
     });
   }
 
@@ -163,6 +304,10 @@ window.ST = window.ST || {};
       $('.js-form-fields').removeClass('hidden');
     });
   }
+
+  addPackingDimension();
+  loadSelectize();
+  removePackingDimension();
 
   // Check if selected category or subcategory has certain listing shape
   function has_listing_shape(selected_attributes, listing_shape_id, attribute_array) {

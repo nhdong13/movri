@@ -1037,6 +1037,11 @@ $listing-author-avatar-height: 108;
   }
 }
 
+.img-responsive {
+  width: 98px;
+  height: 98px;
+}
+
 .mobile-recommended-accessories-container {
   background: #f0f0f0;
   margin-left: -12px;
@@ -1105,6 +1110,11 @@ $listing-author-avatar-height: 108;
 
             .mobile-acessory-image-wrap {
               text-align: center;
+
+              img {
+                width: 120px;
+                height: 120px;
+              }
             }
 
             .recommended-accessories-listing-title {

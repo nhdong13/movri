@@ -1,0 +1,12 @@
+.recommended-accessories-wrap
+  = form.hidden_field :recommended_accessory_ids, class: 'listing-accessories-hidden'
+  = form.label 'Recommended Accessories', class: 'input'
+  %input.listing_accessories{type: 'text'}
+  %ul.selectize-recommended-accessories-result
+.recommended-accessories-list
+  - @listing.recommended_accessories.each do |recommended_accessory|
+    - listing_accessory = recommended_accessory.listing_accessory
+    .recommended-accessory-item{ 'data-id' => "#{listing_accessory.id}"}
+      %span
+        = listing_accessory.title
+      %i.icon-remove{ 'data-id' => "#{listing_accessory.id}" }

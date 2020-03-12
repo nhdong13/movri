@@ -2,7 +2,7 @@ window.ST = window.ST || {};
 
 
 window.ST.ListingTags = (function() {
-  function addTagWithGetIt() {
+  function initTagsForEditListing() {
     $("#list_tags_selected").tagit({
       beforeTagAdded: function(event, ui) {
         var tags = $('#listing_tags').val();
@@ -41,6 +41,6 @@ window.ST.ListingTags = (function() {
   }
 
   return {
-    addTagWithGetIt: addTagWithGetIt
+    initTagsForEditListing: initTagsForEditListing
   };
 })();

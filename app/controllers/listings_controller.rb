@@ -150,6 +150,7 @@ class ListingsController < ApplicationController
       service.create_state(@listing)
 
       if @listing.save
+        create_or_update_accessories(result.data[:recommended_accessory_ids])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -205,7 +206,6 @@ class ListingsController < ApplicationController
     end
 
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
-
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       return redirect_to edit_listing_path
@@ -220,6 +220,7 @@ class ListingsController < ApplicationController
     @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
 
     if update_successful
+      create_or_update_accessories(result.data[:recommended_accessory_ids])
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -367,7 +368,26 @@ class ListingsController < ApplicationController
     end
   end
 
+  def search_by_name
+    @listings = ListingSearchService.new(params[:q]).search
+    respond_to do |format|
+      format.json {render json: @listings}
+    end
+  end
+
+  def add_packing_dimension
+    @time_stamps = DateTime.current.strftime('%S%m')
+    respond_to do |format|
+      format.js {render 'add_packing_dimension.js.haml', layout: false}
+    end
+  end
+
   private
+
+  def create_or_update_accessories(recommended_accessory_ids)
+    ListingUpdateAccessoryService.new(recommended_accessory_ids.split(','), @listing)
+                                 .add_recommended_accessories
+  end
 
   def update_flash(old_availability:, new_availability:)
     case [new_availability.to_sym == :booking, old_availability.to_sym == :booking]

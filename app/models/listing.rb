@@ -88,7 +88,7 @@
 class Listing < ApplicationRecord
   enum weight_type: { kg: 0, pound: 1 }
 
-  attr_accessor :product_type, :collection, :recommended_accessories, :country_of_origin, :harmonized_code, :province_of_origin
+  attr_accessor :product_type, :collection, :recommended_accessory_ids, :country_of_origin, :harmonized_code, :province_of_origin
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
@@ -98,10 +98,14 @@ class Listing < ApplicationRecord
   has_attached_file :user_manual
   validates_attachment_content_type :user_manual, content_type: "application/pdf"
 
+  has_many :recommended_accessories, dependent: :destroy
+  has_many :listing_accessories, through: :recommended_accessories
+
   belongs_to :community
   belongs_to :author, :class_name => "Person", :foreign_key => "author_id", :inverse_of => :listings
 
   has_many :listing_images, -> { where("error IS NULL").order("position") }, :dependent => :destroy, :inverse_of => :listing
+  has_one  :listing_image, :dependent => :destroy, :inverse_of => :listing
 
   has_many :conversations, :dependent => :destroy
   has_many :comments, :dependent => :destroy
@@ -110,6 +114,8 @@ class Listing < ApplicationRecord
   has_many :custom_checkbox_field_values, :class_name => "CheckboxFieldValue", :dependent => :destroy
 
   has_one :location, :dependent => :destroy
+  has_many :packing_dimensions, dependent: :destroy
+  accepts_nested_attributes_for :packing_dimensions, allow_destroy: true, reject_if: proc { |attributes| attributes[:width].blank? || attributes[:height].blank? || attributes[:weight].blank? || attributes[:length].blank? }
   has_one :origin_loc, -> { where('location_type = ?', 'origin_loc') }, :class_name => "Location", :dependent => :destroy, :inverse_of => :listing
   has_one :destination_loc, -> { where('location_type = ?', 'destination_loc') }, :class_name => "Location", :dependent => :destroy, :inverse_of => :listing
   accepts_nested_attributes_for :origin_loc, :destination_loc
@@ -411,5 +417,9 @@ class Listing < ApplicationRecord
     end
     ids = listings.pluck(:id)
     ListingImage.where(listing_id: ids).destroy_all
+  end
+
+  def main_image
+    listing_images.first&.image&.url
   end
 end

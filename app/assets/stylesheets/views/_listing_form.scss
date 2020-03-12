@@ -90,13 +90,41 @@
       }
 
       &.form-packing-dimension {
-        button {
+        .add-piece-button {
           border: 1px solid #e1e3e5;
           color: #000;
           background: none;
           height: 36px;
           font-size: 14px;
           float: right;
+          padding: 5px;
+          cursor: pointer;
+        }
+
+        .packing-dimension-item {
+          padding-bottom: 5px;
+          border-bottom: 1px solid;
+          position: relative;
+
+          .col-3,
+          .col-2 {
+            padding-right: 0;
+
+            &:last-child {
+              padding-right: 0.75em;
+            }
+          }
+
+          .remove-packing-dimension {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            cursor: pointer;
+          }
+
+          &:last-child {
+            border-bottom: none;            
+          }
         }
       }
 
@@ -122,6 +150,7 @@
 
           .icon-remove {
             margin-left: 5px;
+            cursor: pointer;
           }
         }
       }
@@ -258,5 +287,26 @@
     height: 36px;
     width: 100%;
     outline: none;
+  }
+
+  .recommended-accessories-wrap {
+    position: relative;
+
+    .selectize-recommended-accessories-result {
+      padding-left: 0;
+      border: 1px solid #d0d0d0;
+      border-top: 0;
+      position: absolute;
+      width: 100%;
+      background: #f9fafc;
+      top: 60px;
+      z-index: 999;
+
+      li {
+        list-style: none;
+        padding: 5px;
+        font-size: 14px;
+      }
+    }
   }
 }
