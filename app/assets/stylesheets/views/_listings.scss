@@ -1200,14 +1200,23 @@ $listing-author-avatar-height: 108;
 .specification {
   padding: 0 10px;
 
-  .tab-content {
-    display: none;
-    font-size: 16px;
+  .desktop-display {
+    .tab-content {
+      display: none;
+      font-size: 16px;
+  
+      
+      &:first-child {
+        display: table;
+      }
+    }
 
-    &:first-child {
-      display: table;
+    .col-11 {
+      padding-left: 0;
+      padding-right: 0;
     }
   }
+
 
 
   .table {
