@@ -7,6 +7,6 @@
     .col-3
       .listing-weight-wrap
         = form.number_field(:weight, :class => "listing_weight_text")
-        = form.select :weight_type, options_for_select(["kg", "pound"], disabled: ["Select One"]), class: 'listing_weight_type'
+        = form.select :weight_type, Listing::WIEGHT_TYPE.collect {|weight_type| [ weight_type, weight_type ] }, class: 'listing_weight_type'
         %i.icon-caret-up
         %i.icon-caret-down

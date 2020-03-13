@@ -1198,6 +1198,8 @@ $listing-author-avatar-height: 108;
 }
 
 .specification {
+  padding: 0 10px;
+
   .tab-content {
     display: none;
     font-size: 16px;
@@ -1237,15 +1239,6 @@ $listing-author-avatar-height: 108;
 
         .overview-highlights {
           margin-bottom: 10px;
-        }
-
-        .overview-view-all-feature button {
-          font-size: 16px;
-          background: none;
-          border: 1px solid #000;
-          width: 100%;
-          height: 44px;
-          color: #000;
         }
 
         &#in_the_box_tab {
@@ -1812,6 +1805,8 @@ $listing-author-avatar-height: 108;
 
 @media #{$mobile}, #{$tablet} {
   .specification {
+    padding: 0;
+
     .listing-reviews {
       background: #4eb857;
       margin-left: -12px;
@@ -1889,6 +1884,7 @@ $listing-author-avatar-height: 108;
       background: #f0f0f0;
       font-size: 13px;
       margin: -12px;
+      padding: 12px;
 
       &.tab-content {
         margin-top: 0;
@@ -1896,7 +1892,7 @@ $listing-author-avatar-height: 108;
 
       .spec-content {
         font-size: 22px;
-        padding: 10px 15px 0 15px;
+        margin-bottom: 10px;
       }
 
       .spec-view-all {

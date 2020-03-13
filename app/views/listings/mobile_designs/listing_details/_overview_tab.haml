@@ -1,25 +1,9 @@
 .col-12.tab-content#overview_tab
+  .overview-title
+    = "#{@listing.title} Highlights"
   .overview-highlights
-    .overview-title
-      = "#{@listing.title} Highlights"
-    .overview-highlight-items
-      %ul
-        %li
-          30.4MP Full-Frame CMOS Sensor
-        %li
-          30.4MP Full-Frame CMOS Sensor
-        %li
-          30.4MP Full-Frame CMOS Sensor
-        %li
-          30.4MP Full-Frame CMOS Sensor
-  .overview-feature
-    .overview-title
-      Feature
-    .overview-description
-      = @listing.description
-    .overview-view-all-feature
-      %button
-        View All Features
+    .col-11.tab-content#overview_tab
+      = safe_join([raw(@listing.overview)])
 
   .col-12.listing-user-manual
     %span.user-manual-file-icon
