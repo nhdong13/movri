@@ -298,6 +298,14 @@ default: &default_settings
   # Shipping rates infor for test
   test_postmen_api_key: 'd97da7b6-45c8-4b73-bbce-e230f86b8bb2'
   test_fedex_shipper_id: '6f43fe77-b056-45c3-bce4-9fec4040da0c'
+  test_postmen_get_shipping_rates_url: 'https://sandbox-api.postmen.com/v3/rates'
+
+  # store address
+  store_address_street: "Unit 210-19365, 22nd Avenue"
+  store_address_city: "Surrey"
+  store_address_postal_code: "V3Z3S6"
+  store_address_state: "BC"
+  store_address_country: "CA"
 
   # Knowledge base
   knowledge_base_url: http://www.example.com/knowledgebase

@@ -294,76 +294,43 @@ class ListingsController < ApplicationController
   end
 
   def get_shipping_rates_from_postmen
-    if params[:zipcode].blank?
+    listing = Listing.find_by(id: params[:id])
+
+    if params[:zipcode].blank? || listing.nil?
       return render json: {
-        message: "Invalid zipcode!"
+        success: false,
+        message: "Wrong or missing parameters"
       }, status: 400
     end
 
-    # postmen url for calculate shipping rates
-    postmen_url = "https://sandbox-api.postmen.com/v3/rates"
+    if listing.packing_dimensions.blank?
+      return render json: {
+        success: false,
+        message: "The listing has not dimensions to calculate"
+      }, status: 404
+    end
 
-    hash_body = {
-      "async":false,
-      "shipper_accounts":[{"id":APP_CONFIG.test_fedex_shipper_id}],
-      "is_document":false,
-      "shipment": {
-        "ship_from":{
-          "contact_name":"Elmira Zulauf",
-          "company_name":"Kemmer-Gerhold",
-          "street1":"662 Flatley Manors",
-          "country":"HKG",
-          "type":"business"
-          },
-        "ship_to":{
-          "contact_name":"Dr. Moises Corwin",
-          "phone":"1-140-225-6410",
-          "email":"Giovanna42@yahoo.com",
-          "postal_code":"90209",
-          "state":"CA",
-          "country":"USA",
-          "type":"residential"
-        },
-        "parcels":[
-          {
-            "description":"Food XS",
-            "box_type":"custom",
-            "weight":{"value":2,"unit":"kg"},
-            "dimension":{"width":20,"height":40,"depth":40,"unit":"cm"},
-            "items":[
-              {
-                "description":"Food Bar",
-                "origin_country":"USA",
-                "quantity":2,
-                "price":{"amount":3,"currency":"USD"},
-                "weight":{"value":0.6,"unit":"kg"},"sku":"imac2014"
-              }
-            ]
-          }
-        ]
-      }
-    }
-
-    request_body = hash_body.to_json
+    request_body = ShippingRatesService.create_body_request_to_postmen(params)
 
     response = Faraday.post(
-      postmen_url,
+      APP_CONFIG.test_postmen_get_shipping_rates_url,
       request_body,
       "Content-Type" => "application/json",
       "postmen-api-key" => APP_CONFIG.test_postmen_api_key
     )
 
-    puts "response: #{response.body}"
-
     if response.status == 200
       render json: {
         success: true,
-        message: "Calculated shipping rates sucessfully"
+        message: "Calculated shipping rates sucessfully",
+        data: {
+          rates: response.body
+        }
       }
     else
       render json: {
         success: false,
-        message: "Calculate shipping rates fail"
+        message: "Calculate shipping rates failure"
       }
     end
   end
