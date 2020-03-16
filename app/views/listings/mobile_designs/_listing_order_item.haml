@@ -38,7 +38,7 @@
           Wish List
     .col-6.listing-shipping-info
       .clearfix.shipping-rates
-        %span
+        %span.mobile-show-shipping-rates-modal{'data-toggle': "modal", 'data-target': "#mobile-shipping-rates-realtime-modal"}
           Shipping Rates
         %span
           Pricing Chart
@@ -59,3 +59,5 @@
     .in-stock-quantity
       \/ 3.5 (1009)
     %i.icon-angle-right
+
+= render partial: "listings/mobile_designs/shipping_rates_realtime", locals: { listing: @listing }

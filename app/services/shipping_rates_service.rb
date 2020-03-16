@@ -6,10 +6,10 @@ module ShippingRatesService
     ship_to_postal_code = params[:zipcode] || "V3R0N2"
     packing_dimension = listing.packing_dimensions.first
     dimension = {
-      width: packing_dimension.width,
-      height: packing_dimension.height,
-      depth: packing_dimension.length,
-      weight: packing_dimension.weight
+      width: packing_dimension.width || 10,
+      height: packing_dimension.height || 10,
+      depth: packing_dimension.length || 10,
+      weight: packing_dimension.weight || 1
     }
     listing_weight = listing.weight || dimension[:weight]
     listing_sku = listing.sku.present? ? listing.sku : "required_field"
