@@ -1,0 +1,34 @@
+#shipping-rates-realtime-modal.modal
+  .modal-content
+    .modal-header
+      %span.close ×
+      .title
+        #shipping-rates-title
+          %b Shipping Rates
+    .modal-body.clearfix
+      .desktop-display.root-parent
+        .descriptions
+          Return shipping is included in the shipping price, and we include a prepaid return label with your order - all you need to do is bring it to an appropriate drop-off location when you rental is complete
+        %br
+        .enter-shipping-zip-code-text
+          %b Enter shipping zip code
+        .group-enter-shipping-zip-code
+          .row
+            .col-8
+              %input#zipcode
+            .col-4
+              %button.button-calculate-shipping
+                Calculate Shipping
+    .modal-list-shipping
+      %table#shipping-rates-table
+      .loading Please wait a moment, the calculation process is in progress!
+      .cannot-calculated Cannot calculated, please check your input postal code!
+    %input#listing_id_hidden{:type => "hidden", :value => "#{listing.id}"}
+
+
+
+#4eb857
+
+- content_for :extra_javascript do
+  :javascript
+    window.ST.getShippingRates('en', $("#listing_id_hidden").val());

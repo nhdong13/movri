@@ -4,6 +4,8 @@
 - content_for :extra_javascript do
   :javascript
     window.ST.listing();
+    window.ST.initCalculateShippingRates();
+    window.ST.initMobileCalculateShippingRates();
 
 - content_for :title, raw(@listing.title)
 - content_for :meta_author, PersonViewUtils.person_display_name(@listing.author, @current_community)
