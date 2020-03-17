@@ -64,7 +64,7 @@ module ListingIndexService::Search
         with = HashUtils.compact(
           {
             community_id: community_id,
-            category_id: search[:categories], # array of accepted ids
+            category_listing_id: search[:categories],
             listing_shape_id: search[:listing_shape_id],
             price_cents: search[:price_cents],
             listing_id: numeric_search_match_listing_ids
@@ -77,7 +77,6 @@ module ListingIndexService::Search
           custom_dropdown_field_options: (grouped_by_operator[:or] || []).map { |v| v[:value] },
           custom_checkbox_field_options: (grouped_by_operator[:and] || []).flat_map { |v| v[:value] }
         }
-
         models = Listing.search(
           Riddle::Query.escape(search[:keywords] || ""),
           sql: {

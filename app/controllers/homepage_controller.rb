@@ -9,9 +9,7 @@ class HomepageController < ApplicationController
   # rubocop:disable MethodLength
   def index
     params = unsafe_params_hash.select{|k, v| v.present? }
-
     redirect_to landing_page_path and return if no_current_user_in_private_clp_enabled_marketplace?
-
     all_shapes = @current_community.shapes
     shape_name_map = all_shapes.map { |s| [s[:id], s[:name]]}.to_h
 
@@ -53,7 +51,6 @@ class HomepageController < ApplicationController
     filter_params[:listing_shape] = Maybe(selected_shape)[:id].or_else(nil)
 
     compact_filter_params = HashUtils.compact(filter_params)
-
     per_page = @view_type == "map" ? APP_CONFIG.map_listings_limit : APP_CONFIG.grid_listings_limit
 
     includes =

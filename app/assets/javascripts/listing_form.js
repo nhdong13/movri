@@ -196,6 +196,12 @@ window.ST = window.ST || {};
       }
     })
 
+    $('.listing_collection').selectize({
+      create: false,
+      delimiter: ',',
+      closeAfterSelect: false,
+    });
+
     function renderResult(res) {
       html = ''
       $.each(res, function(idx, result) {

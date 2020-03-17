@@ -66,48 +66,7 @@
                 = form.select :product_type, options_for_select(["New", "Old"]), class: 'listing_product_type'
               .form-collections
                 = form.label 'COLLECTIONS', class: 'input'
-                = form.text_field :collection, class: 'listing_collection'
-                %table.collections-list
-                  %tr
-                    %td{width: '80%'}
-                      Camera
-                    %td
-                      Auto
-                  %tr
-                    %td{width: '80%'}
-                      Over $1000
-                    %td
-                      Auto
-                  %tr
-                    %td{width: '80%'}
-                      Camera
-                    %td
-                      Auto
-                  %tr
-                    %td{width: '80%'}
-                      Over $1000
-                    %td
-                      Auto
-                  %tr
-                    %td{width: '80%'}
-                      Camera
-                    %td
-                      Auto
-                  %tr
-                    %td{width: '80%'}
-                      Over $1000
-                    %td
-                      Auto
-                  %tr
-                    %td{width: '80%'}
-                      Camera
-                    %td
-                      Auto
-                  %tr
-                    %td{width: '80%'}
-                      Over $1000
-                    %td
-                      Auto
+                = form.select :category_ids, options_for_select(Category.all.collect {|cat| [cat.display_name(I18n.locale), cat.id]}, @listing.categories.ids), {}, {class: 'listing_collection', multiple: true, value: @listing.category_listings.pluck(:category_id)}
               .form-tags
                 = form.label 'TAGS', class: 'input'
                 = form.hidden_field :tags

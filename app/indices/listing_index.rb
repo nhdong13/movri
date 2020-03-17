@@ -21,7 +21,7 @@ if APP_CONFIG.use_thinking_sphinx_indexing.to_s.casecmp("true") == 0
     has price_cents
     has created_at, updated_at
     has sort_date
-    has category(:id), :as => :category_id
+    has category_listings(:category_id), :as => :category_listing_id
     has listing_shape_id
     has community_id
     has custom_dropdown_field_values.selected_options.id, :as => :custom_dropdown_field_options, :type => :integer, :multi => true
