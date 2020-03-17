@@ -121,6 +121,14 @@
               = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }
             .col-12.form-listing-wrap.form-packing-dimension
               = render partial: 'listings/form/packing_dimension', :locals => { :form => form }
+            .col-12.form-listing-wrap.form-blocked-dates
+              = form.label 'Blocked Dates', class: 'input'
+              %label From
+              %input.dates-blocked-field
+              %label To
+              %input.dates-blocked-field
+              %label Add Dates
+              %input.dates-blocked-field
 
 - content_for :extra_javascript do
   :javascript
