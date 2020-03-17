@@ -30,7 +30,6 @@ window.ST = window.ST || {};
             zipcode: zipcode
           }
         }).done(function(response) {
-          console.log(response);
           $(".loading").hide();
           var hashResponse = JSON.parse(response.data.rates);
           var rates = hashResponse.data.rates;
@@ -81,7 +80,6 @@ window.ST = window.ST || {};
             zipcode: zipcode
           }
         }).done(function(response) {
-          console.log(response);
           $(".mobile-loading").hide();
           var hashResponse = JSON.parse(response.data.rates);
           var rates = hashResponse.data.rates;
@@ -121,7 +119,6 @@ window.ST = window.ST || {};
 
   function showMobileShippingRatesRealtimeModal() {
     $(".mobile-show-shipping-rates-modal").on('click', function() {
-      console.log('clicked')
       $("#mobile-shipping-rates-realtime-modal").css('display', "block");
     })
   }
