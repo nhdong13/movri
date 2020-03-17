@@ -21,6 +21,40 @@
   .col-12.clearfix.availabel
     %span
       Available 01/24/20
+-# .row.listing-shipping-date
+-#   .col-6.clearfix.arrival-date
+-#     .form-group
+-#       %label{for: 'arrival-date'} Arrival Date:
+-#       %input#arrival-date.form-control{type: "arrival-date"}
+-#       = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+-#   .col-6.clearfix.return-date
+-#     .form-group
+-#       %label{for: "return-date"} Return Date:
+-#       %input#return-date.form-control{type: "return-date"}
+-#       = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+-# .row.listing-order-quantity
+-#   .col-2.quantity
+-#     %input{type: 'number', class: 'order-quantity-number-field', max: '99', min: '1'}
+-#     %i.icon-caret-up
+-#     %i.icon-caret-down
+-#   .col-6.rent-container
+-#     %button.rent-btn
+-#       Rent Now
+-#   .col-4.add-wish-list
+-#     %button.wish-list-btn
+-#       Add to Wish List
+-# .row.listing-shipping-info
+-#   .col-6.clearfix.shipping-rates
+-#     %span.show-shipping-rates-modal{'data-toggle': "modal", 'data-target': "#shipping-rates-realtime-modal"}
+-#       Shipping Rates
+-#     %span
+-#       Pricing Chart
+-# .row.listing-save-availabe
+-# .col-6.clearfix.save-available
+-#   %p
+-#     Savings Availabe:
+-#   .saving-available-item
+
 = form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do
   .row.listing-shipping-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
     - if @listing_presenter.quantity_per_day_or_night?
@@ -68,7 +102,7 @@
         Add to Wish List
   .row.listing-shipping-info
     .col-6.clearfix.shipping-rates
-      %span
+      %span.show-shipping-rates-modal{'data-toggle': "modal", 'data-target': "#shipping-rates-realtime-modal"}
         Shipping Rates
       %span
         Pricing Chart
@@ -77,3 +111,5 @@
     %p
       Savings Availabe:
     .saving-available-item
+
+= render partial: "listings/desktop_designs/shipping_rates_realtime", locals: { listing: @listing }

@@ -125,30 +125,30 @@ class ListingsController < ApplicationController
       logger.info "ADMIN ACTION: admin='#{@current_user.id}' create listing params=#{params.inspect}"
     end
     params[:listing].delete("origin_loc_attributes") if params[:listing][:origin_loc_attributes][:address].blank?
-    
+
     shape = get_shape(Maybe(params)[:listing][:listing_shape_id].to_i.or_else(nil))
     listing_uuid = UUIDUtils.create
-    
+
     unless create_booking(shape, listing_uuid)
       flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
       return redirect_to new_listing_path
     end
-    
+
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
-    
+
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       redirect_to new_listing_path
       return
     end
-    
+
     @listing = Listing.new(result.data)
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
-    
+
     ActiveRecord::Base.transaction do
       @listing.author = new_listing_author
       service.create_state(@listing)
-      
+
       if @listing.save
         create_or_update_accessories(result.data[:recommended_accessory_ids])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
@@ -291,6 +291,48 @@ class ListingsController < ApplicationController
 
     flash[:error] = error_message
     redirect_to @listing and return
+  end
+
+  def get_shipping_rates_from_postmen
+    listing = Listing.find_by(id: params[:id])
+
+    if params[:zipcode].blank? || listing.nil?
+      return render json: {
+        success: false,
+        message: "Wrong or missing parameters"
+      }, status: 400
+    end
+
+    if listing.packing_dimensions.blank?
+      return render json: {
+        success: false,
+        message: "The listing has not dimensions to calculate"
+      }, status: 404
+    end
+
+    request_body = ShippingRatesService.create_body_request_to_postmen(params)
+
+    response = Faraday.post(
+      APP_CONFIG.test_postmen_get_shipping_rates_url,
+      request_body,
+      "Content-Type" => "application/json",
+      "postmen-api-key" => APP_CONFIG.test_postmen_api_key
+    )
+
+    if response.status == 200
+      render json: {
+        success: true,
+        message: "Calculated shipping rates sucessfully",
+        data: {
+          rates: response.body
+        }
+      }
+    else
+      render json: {
+        success: false,
+        message: "Calculate shipping rates failure"
+      }
+    end
   end
 
   def search_by_name

@@ -295,6 +295,16 @@ default: &default_settings
   support_phone: 866.766.6861 / 212.868.4476
   contact_phone: 212.444.6615
 
+  # postmen url for calculate shipping rates
+  test_postmen_get_shipping_rates_url: 'https://sandbox-api.postmen.com/v3/rates'
+
+  # store address
+  store_address_street: "Unit 210-19365, 22nd Avenue"
+  store_address_city: "Surrey"
+  store_address_postal_code: "V3Z3S6"
+  store_address_state: "BC"
+  store_address_country: "CA"
+
   # Knowledge base
   knowledge_base_url: http://www.example.com/knowledgebase
   display_knowledge_base_articles: false
