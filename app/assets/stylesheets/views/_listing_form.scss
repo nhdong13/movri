@@ -161,20 +161,6 @@
         border-bottom: 1px solid #e1e3e5;
       }
 
-      .collections-list {
-        margin-top: 20px;
-        font-size: 14px;
-
-        tr {
-          background: none !important;
-          border-bottom: 1px solid #e1e3e5;
-
-          &:last-child {
-            border-bottom: none;
-          }
-        }
-      }
-
       .tags-list {
         margin-top: 20px;
         font-size: 14px;
@@ -282,7 +268,8 @@
     }
   }
 
-  #listing_product_type {
+  #listing_product_type,
+  #listing_collection {
     border: 1px solid #c4cdd5;
     height: 36px;
     width: 100%;

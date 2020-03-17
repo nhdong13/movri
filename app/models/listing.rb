@@ -88,7 +88,7 @@
 class Listing < ApplicationRecord
   enum weight_type: { kg: 0, pound: 1 }
 
-  attr_accessor :product_type, :collection, :recommended_accessory_ids, :country_of_origin, :harmonized_code, :province_of_origin
+  attr_accessor :product_type, :category_ids, :recommended_accessory_ids, :country_of_origin, :harmonized_code, :province_of_origin
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
@@ -100,34 +100,28 @@ class Listing < ApplicationRecord
 
   has_many :recommended_accessories, dependent: :destroy
   has_many :listing_accessories, through: :recommended_accessories
-
   belongs_to :community
   belongs_to :author, :class_name => "Person", :foreign_key => "author_id", :inverse_of => :listings
-
   has_many :listing_images, -> { where("error IS NULL").order("position") }, :dependent => :destroy, :inverse_of => :listing
   has_one  :listing_image, :dependent => :destroy, :inverse_of => :listing
-
   has_many :conversations, :dependent => :destroy
   has_many :comments, :dependent => :destroy
   has_many :custom_field_values, :dependent => :destroy
   has_many :custom_dropdown_field_values, :class_name => "DropdownFieldValue", :dependent => :destroy
   has_many :custom_checkbox_field_values, :class_name => "CheckboxFieldValue", :dependent => :destroy
-
   has_one :location, :dependent => :destroy
+  has_many :category_listings, dependent: :destroy
+  has_many :categories, through: :category_listings
   has_many :packing_dimensions, dependent: :destroy
   accepts_nested_attributes_for :packing_dimensions, allow_destroy: true, reject_if: proc { |attributes| attributes[:width].blank? || attributes[:height].blank? || attributes[:weight].blank? || attributes[:length].blank? }
   has_one :origin_loc, -> { where('location_type = ?', 'origin_loc') }, :class_name => "Location", :dependent => :destroy, :inverse_of => :listing
   has_one :destination_loc, -> { where('location_type = ?', 'destination_loc') }, :class_name => "Location", :dependent => :destroy, :inverse_of => :listing
   accepts_nested_attributes_for :origin_loc, :destination_loc
-
   has_and_belongs_to_many :followers, :class_name => "Person", :join_table => "listing_followers"
-
   belongs_to :category
   has_many :working_time_slots, ->{ ordered }, dependent: :destroy, inverse_of: :listing
   accepts_nested_attributes_for :working_time_slots, reject_if: :all_blank, allow_destroy: true
-
   belongs_to :listing_shape
-
   has_many :tx, class_name: 'Transaction', :dependent => :destroy
   has_many :bookings, through: :tx
   has_many :bookings_per_hour, ->{ per_hour_blocked }, through: :tx, source: :booking
