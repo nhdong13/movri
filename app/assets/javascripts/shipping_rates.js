@@ -20,11 +20,13 @@ window.ST = window.ST || {};
 
       var zipcode = $("#zipcode").val();
 
+      var getShippingRatesUrl = "/" + locale + "/listings/" + listingId + "/get_shipping_rates_from_postmen";
+
       if (!zipcode || /^\s*$/.test(zipcode)) {
         alert("Please enter a valid zipcode!");
       } else {
         $.ajax({
-          url: `/${locale}/listings/${listingId}/get_shipping_rates_from_postmen`,
+          url: getShippingRatesUrl,
           type: "POST",
           data: {
             zipcode: zipcode
@@ -38,14 +40,8 @@ window.ST = window.ST || {};
             $('#shipping-rates-table').empty();
 
             for (var i = 0; i < rates.length; i++ ) {
-              $('#shipping-rates-table').append(`
-                <tr>
-                  <td>${hashResponse.data.rates[i].service_name}</td>
-                  <td align="right">
-                    $${hashResponse.data.rates[i].total_charge.amount} shipping (${hashResponse.data.rates[i].total_charge.currency})
-                  </td>
-                </tr>
-              `);
+              var shippingRateRow = "<tr>" + "<td>" + hashResponse.data.rates[i].service_name + "</td>" + "<td align='right'>" + hashResponse.data.rates[i].total_charge.amount + "shipping" + " (" + hashResponse.data.rates[i].total_charge.currency + ")" + "</td>" + "</tr>";
+              $('#shipping-rates-table').append(shippingRateRow);
             }
           } else {
             $(".cannot-calculated").show();
@@ -69,12 +65,13 @@ window.ST = window.ST || {};
       $(".mobile-loading").show();
 
       var zipcode = $("#mobile-zipcode").val();
+      var getShippingRatesUrl = "/" + locale + "/listings/" + listingId + "/get_shipping_rates_from_postmen";
 
       if (!zipcode || /^\s*$/.test(zipcode)) {
         alert("Please enter a valid zipcode!");
       } else {
         $.ajax({
-          url: `/${locale}/listings/${listingId}/get_shipping_rates_from_postmen`,
+          url: getShippingRatesUrl,
           type: "POST",
           data: {
             zipcode: zipcode
@@ -88,14 +85,9 @@ window.ST = window.ST || {};
             $('#mobile-shipping-rates-table').empty();
 
             for (var i = 0; i < rates.length; i++ ) {
-              $('#mobile-shipping-rates-table').append(`
-                <tr>
-                  <td>${hashResponse.data.rates[i].service_name}</td>
-                  <td align="right">
-                    $${hashResponse.data.rates[i].total_charge.amount} shipping (${hashResponse.data.rates[i].total_charge.currency})
-                  </td>
-                </tr>
-              `);
+              var shippingRateRow = "<tr>" + "<td>" + hashResponse.data.rates[i].service_name + "</td>" + "<td align='right'>" + hashResponse.data.rates[i].total_charge.amount + "shipping" + " (" + hashResponse.data.rates[i].total_charge.currency + ")" + "</td>" + "</tr>"
+
+              $('#mobile-shipping-rates-table').append(shippingRateRow);
             }
           } else {
             $(".cannot-calculated").show();
