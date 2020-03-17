@@ -86,6 +86,7 @@
 #
 
 class Listing < ApplicationRecord
+  WIEGHT_TYPE = ['kg', 'pound']
   enum weight_type: { kg: 0, pound: 1 }
 
   attr_accessor :product_type, :collection, :recommended_accessory_ids, :country_of_origin, :harmonized_code, :province_of_origin
