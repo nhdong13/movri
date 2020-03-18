@@ -10,7 +10,7 @@ ul.tagit {
 }
 ul.tagit li.tagit-choice {
     -moz-border-radius: 6px;
-    border-radius: 6px;
+    border-radius: 2px;
     -webkit-border-radius: 6px;
     border: 1px solid #CAD8F3;
 
