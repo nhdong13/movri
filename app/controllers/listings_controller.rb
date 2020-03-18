@@ -356,15 +356,6 @@ class ListingsController < ApplicationController
   def create_or_update_category_listings(category_ids)
     ListingUpdateCategoryService.new(category_ids.reject(&:blank?), @listing)
                                 .create_or_update_categories
-    reset_thinking_sphinx
-  end
-
-  def reset_thinking_sphinx
-    require 'rake'
-    spec = Gem::Specification.find_by_name 'thinking-sphinx'
-    load "#{spec.gem_dir}/lib/thinking_sphinx/tasks.rb"
-    Rake::Task["ts:index"].execute
-    Rake::Task["ts:rebuild"].execute
   end
 
   def create_or_update_accessories(recommended_accessory_ids)
