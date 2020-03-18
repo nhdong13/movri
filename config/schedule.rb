@@ -21,4 +21,5 @@
 
 every 2.minutes do
   rake "ts:index"
+  rake "ts:rebuild"
 end
