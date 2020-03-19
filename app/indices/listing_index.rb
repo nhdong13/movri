@@ -17,6 +17,8 @@ if APP_CONFIG.use_thinking_sphinx_indexing.to_s.casecmp("true") == 0
     indexes origin_loc.google_address
     indexes category_listings.category_id
 
+    scope { Listing.includes(:category_listings) }
+
     # attributes
     has id, :as => :listing_id # id didn't work without :as aliasing
     has price_cents
