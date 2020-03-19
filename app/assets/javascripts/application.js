@@ -109,4 +109,5 @@
 //= require listing_contact
 //= require tag-it
 //= require listing_tags
+//= require manually_blocked_dates
 //= require_self

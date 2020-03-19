@@ -192,20 +192,24 @@ class ListingsController < ApplicationController
   end
 
   def update
+    params[:listing][:manually_blocked_dates] = ManuallyBlockedDatesService.datetime_sequence(
+      params[:listing][:manually_blocked_dates], 1.day
+    )
+
     if (params[:listing][:origin] && (params[:listing][:origin_loc_attributes][:address].empty? || params[:listing][:origin].blank?))
       params[:listing].delete("origin_loc_attributes")
       if @listing.origin_loc
         @listing.origin_loc.delete
       end
     end
-    
+
     shape = get_shape(params[:listing][:listing_shape_id])
-    
+
     unless create_booking(shape, @listing.uuid_object)
       flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
       return redirect_to edit_listing_path(@listing)
     end
-    
+
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))

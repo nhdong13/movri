@@ -59,6 +59,13 @@
   .row.listing-shipping-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
     - if @listing_presenter.quantity_per_day_or_night?
       - @listing_presenter.blocked_dates_result.on_success do |blocked_dates|
+        -# Merge manually blocked dates (via admin) with blocked dates automatic (via website booking)
+        - if @listing.manually_blocked_dates
+          - arr_manually_blocked_dates = @listing.manually_blocked_dates.split(",")
+          - manually_blocked_dates = Set.new
+          - arr_manually_blocked_dates.each { |date| manually_blocked_dates << DateTime.parse(date) }
+          - blocked_dates.merge(manually_blocked_dates)
+
         - content_for :extra_javascript do
           :javascript
             window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});

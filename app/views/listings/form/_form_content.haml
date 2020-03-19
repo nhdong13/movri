@@ -81,14 +81,38 @@
             .col-12.form-listing-wrap.form-packing-dimension
               = render partial: 'listings/form/packing_dimension', :locals => { :form => form }
             .col-12.form-listing-wrap.form-blocked-dates
+              - init_datepicker_start_day = ""
+              - init_datepicker_end_day = ""
+              - if @listing.manually_blocked_dates
+                - start_day = DateTime.parse(@listing.manually_blocked_dates.split(",").first).utc
+                - end_day = DateTime.parse(@listing.manually_blocked_dates.split(",").last).utc
+                - init_datepicker_start_day = start_day.year.to_s + "/" + start_day.month.to_s + "/" + start_day.day.to_s
+                - init_datepicker_end_day = end_day.year.to_s + "/" + end_day.month.to_s + "/" + end_day.day.to_s
               = form.label 'Blocked Dates', class: 'input'
               %label From
-              %input.dates-blocked-field
+              %input#start-date-blocked.form-control{:type => "text", value: init_datepicker_start_day}
               %label To
-              %input.dates-blocked-field
-              %label Add Dates
-              %input.dates-blocked-field
+              %input.form-control#end-date-blocked{:type => "text", value: init_datepicker_end_day}
+              = form.hidden_field :manually_blocked_dates, value: ""
 
 - content_for :extra_javascript do
   :javascript
     ST.ListingTags.initTagsForEditListing();
+    ST.BlockedDates.addBlockedDates();
+    $(document).ready(function(){
+      $('#start-date-blocked').datepicker({
+        todayHighlight: true,
+        autoclose: true,
+        clearBtn: true,
+        startDate: new Date(),
+        format: 'yyyy/mm/dd'
+      });
+
+      $('#end-date-blocked').datepicker({
+        todayHighlight: true,
+        autoclose: true,
+        clearBtn: true,
+        startDate: new Date(),
+        format: 'yyyy/mm/dd'
+      });
+    });

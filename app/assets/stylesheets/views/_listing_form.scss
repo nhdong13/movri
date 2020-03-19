@@ -34,7 +34,7 @@
       border: 1px solid #c4cdd5;
       font-size: 14px;
     }
-    
+
     input {
       min-height: 36px;
     }
@@ -123,7 +123,7 @@
           }
 
           &:last-child {
-            border-bottom: none;            
+            border-bottom: none;
           }
         }
       }
@@ -185,6 +185,21 @@
             }
           }
         }
+      }
+    }
+
+    .form-blocked-dates {
+      .add-blocked-dates-btn {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #e1e3e5;
+        color: #000;
+        background: none;
+        height: 36px;
+        font-size: 14px;
+        float: right;
+        padding: 5px;
+        cursor: pointer;
       }
     }
   }
