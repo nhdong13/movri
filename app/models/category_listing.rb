@@ -12,4 +12,8 @@
 class CategoryListing < ApplicationRecord
   belongs_to :category
   belongs_to :listing
+
+  after_save ThinkingSphinx::RealTime.callback_for(
+    :listing, [:listing]
+  )
 end
