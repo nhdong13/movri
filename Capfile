@@ -27,7 +27,6 @@ require "capistrano/bundler"
 #   https://github.com/capistrano/rails
 require 'capistrano/rails'
 
-#   https://github.com/capistrano-plugins/capistrano-delayed-job
 require 'capistrano/delayed_job'
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined

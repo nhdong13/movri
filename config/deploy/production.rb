@@ -74,4 +74,4 @@ set :ssh_options, {
   auth_methods: %w(publickey)
 }
 
-set :delayed_job_workers, 10
+set :delayed_job_workers, 2
