@@ -93,6 +93,9 @@
               %input#start-date-blocked.form-control{:type => "text", value: init_datepicker_start_day}
               %label To
               %input.form-control#end-date-blocked{:type => "text", value: init_datepicker_end_day}
+              .add-blocked-dates-button
+                Add Dates
+              %table#list-blocked-dates-table
               = form.hidden_field :manually_blocked_dates, value: ""
 
 - content_for :extra_javascript do
