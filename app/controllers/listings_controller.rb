@@ -192,10 +192,6 @@ class ListingsController < ApplicationController
   end
 
   def update
-    params[:listing][:manually_blocked_dates] = ManuallyBlockedDatesService.datetime_sequence(
-      params[:listing][:manually_blocked_dates], 1.day
-    )
-
     if (params[:listing][:origin] && (params[:listing][:origin_loc_attributes][:address].empty? || params[:listing][:origin].blank?))
       params[:listing].delete("origin_loc_attributes")
       if @listing.origin_loc

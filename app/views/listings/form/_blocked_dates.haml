@@ -1,0 +1,19 @@
+= form.label 'Blocked Dates', class: 'input'
+%label From
+%input#start-date-blocked.form-control{:type => "text"}
+%label To
+%input.form-control#end-date-blocked{:type => "text"}
+.add-blocked-dates-button
+  Add Dates
+%table#list-blocked-dates-table
+  - if @listing.manually_blocked_dates
+    - rows = @listing.manually_blocked_dates.split("&")
+    - rows.each do |row|
+      %tr.row-start-to-end
+        %td.start-blocked-date-item
+          = row.split(",").first
+        %td.end-blocked-date-item
+          = row.split(",").last
+        %td.delete-blocked-dates
+          %i.icon-remove{:style => "cursor: pointer;"}
+= form.hidden_field :manually_blocked_dates, value: ""
