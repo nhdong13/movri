@@ -151,6 +151,7 @@ class ListingsController < ApplicationController
 
       if @listing.save
         create_or_update_accessories(result.data[:recommended_accessory_ids])
+        create_or_update_category_listings(result.data[:category_ids])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -191,6 +192,10 @@ class ListingsController < ApplicationController
   end
 
   def update
+    params[:listing][:manually_blocked_dates] = ManuallyBlockedDatesService.datetime_sequence(
+      params[:listing][:manually_blocked_dates], 1.day
+    )
+
     if (params[:listing][:origin] && (params[:listing][:origin_loc_attributes][:address].empty? || params[:listing][:origin].blank?))
       params[:listing].delete("origin_loc_attributes")
       if @listing.origin_loc
@@ -221,6 +226,7 @@ class ListingsController < ApplicationController
 
     if update_successful
       create_or_update_accessories(result.data[:recommended_accessory_ids])
+      create_or_update_category_listings(result.data[:category_ids])
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -350,6 +356,11 @@ class ListingsController < ApplicationController
   end
 
   private
+
+  def create_or_update_category_listings(category_ids)
+    ListingUpdateCategoryService.new(category_ids.reject(&:blank?), @listing)
+                                .create_or_update_categories
+  end
 
   def create_or_update_accessories(recommended_accessory_ids)
     ListingUpdateAccessoryService.new(recommended_accessory_ids.split(','), @listing)

@@ -7,6 +7,6 @@ class ListingSearchService
 
   def search
     return Listing.none if keyword.blank?
-    @listings = Listing.select(:id, :title).where('LOWER(title) LIKE ?', "%#{keyword.downcase}%")
+    Listing.select(:id, :title).where('LOWER(title) LIKE ?', "%#{keyword.downcase}%")
   end
 end
