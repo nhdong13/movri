@@ -75,10 +75,3 @@ set :ssh_options, {
 }
 
 set :delayed_job_workers, 2
-
-after 'deploy:publishing', 'deploy:restart'
-namespace :deploy do
-  task :restart do
-    invoke 'delayed_job:start'
-  end
-end
