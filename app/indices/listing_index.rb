@@ -15,6 +15,9 @@ if APP_CONFIG.use_thinking_sphinx_indexing.to_s.casecmp("true") == 0
     indexes description
     indexes custom_field_values(:text_value), :as => :custom_text_fields
     indexes origin_loc.google_address
+    indexes category_listings.category_id
+
+    scope { Listing.includes(:category_listings) }
 
     # attributes
     has id, :as => :listing_id # id didn't work without :as aliasing
@@ -34,6 +37,5 @@ if APP_CONFIG.use_thinking_sphinx_indexing.to_s.casecmp("true") == 0
       :category => 8,
       :description => 3
     }
-
   end
 end

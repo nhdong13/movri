@@ -128,6 +128,8 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem 'capistrano-npm', require: false
   gem 'capistrano3-puma', require: false
+  gem 'capistrano-delayed-job', '~> 1.0', require: false
+  gem 'daemons'
   gem 'rb-fsevent', '~> 0.9.8', require: false
   gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'listen', '~> 3.1.5'
@@ -195,4 +197,4 @@ gem 'puma'
 
 # Provides object geocoding (by street or IP address), reverse geocoding (coordinates to street address), distance queries for ActiveRecord and Mongoid, result caching, and more.
 gem 'geocoder', '~> 1.6', '>= 1.6.1'
-
+gem 'whenever', '~> 1.0.0', require: false

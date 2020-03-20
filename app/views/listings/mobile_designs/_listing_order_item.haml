@@ -28,7 +28,7 @@
           - content_for :extra_javascript do
             :javascript
               window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});
-          .col-6.clearfix
+          .col-6.clearfix.arrival-date
             .form-group
               %label{for: 'arrival-date'} Arrival Date:
               %input#arrival-date.form-control.required#start-on{type: "arrival-date", :data => { :output => "booking-start-output" }}
