@@ -1,34 +1,10 @@
 .include-box
   .title
     In the Box
-  %ul.include-items
-    %li Canon LP-E6N Lithium-Ion Battery Pack
-    %li Canon LC-E6 Charger for LP-E6 Battery Pack
-    %li Canon ER-100B Neck Strap
-    %li Canon LP-E6N Lithium-Ion Battery Pack
-    %li Canon LC-E6 Charger for LP-E6 Battery Pack
-    %li Canon ER-100B Neck Strap
-    %li Canon LP-E6N Lithium-Ion Battery Pack
-    %li Canon LC-E6 Charger for LP-E6 Battery Pack
-    %li Canon ER-100B Neck Strap
-
+  .include-items
+    = safe_join([raw(@listing.in_the_box)])
 .not-include-box
   .title
     Not in the Box
-  %ul.include-items
-    %li
-      %label.essentia-item-label
-        Essentia
-        .shape
-      %span.essentia-item-name
-        Memory Cards
-      %span.essentia-item-not-include
-        (Not Included)
-    %li
-      %label.essentia-item-label
-        Essentia
-        .shape
-      %span.essentia-item-name
-        Lenses
-      %span.essentia-item-not-include
-        (Not Included)
+  .include-items
+    = safe_join([raw(@listing.not_in_the_box)])
