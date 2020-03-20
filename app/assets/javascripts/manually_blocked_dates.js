@@ -42,7 +42,7 @@ window.ST.BlockedDates = (function() {
     $('#list-blocked-dates-table .row-start-to-end').each(function() {
       var start_date = $(this).find(".start-blocked-date-item").html();
       var end_date = $(this).find(".end-blocked-date-item").html();
-      var strStartToEnd = start_date + "," + end_date;
+      var strStartToEnd = start_date.trim() + "," + end_date.trim();
 
       if (listBlockedDates.length) {
         listBlockedDates = listBlockedDates + "&" + strStartToEnd;
