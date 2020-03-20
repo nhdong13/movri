@@ -129,6 +129,7 @@ group :development do
   gem 'capistrano-npm', require: false
   gem 'capistrano3-puma', require: false
   gem 'capistrano-delayed-job', '~> 1.0', require: false
+  gem 'daemons'
   gem 'rb-fsevent', '~> 0.9.8', require: false
   gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'listen', '~> 3.1.5'
