@@ -25,6 +25,7 @@ set :linked_files, %w(config/database.yml config/config.yml)
 # Default value for linked_dirs is []
 set :linked_dirs, %w(log bin/delayed_job tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads .bundle)
 
+remove :linked_dirs, "public/assets"
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
