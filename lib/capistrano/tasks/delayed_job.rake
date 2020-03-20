@@ -1,4 +1,8 @@
 namespace :delayed_job do
+  def args
+    fetch(:delayed_job_args, "")
+  end
+ 
   def delayed_job_roles
     fetch(:delayed_job_server_role, :app)
   end
@@ -8,7 +12,7 @@ namespace :delayed_job do
     on roles(delayed_job_roles) do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          execute :bundle, :exec, :rails, :'jobs:work'
+          execute :bundle, :exec, :rails, :'script/delayed_job', args, :start
         end
       end
     end
