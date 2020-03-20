@@ -43,6 +43,6 @@ set :rvm_custom_path, '/usr/share/rvm'
 after 'deploy:publishing', 'deploy:restart'
 namespace :deploy do
   task :restart do
-    invoke 'delayed_job:restart'
+    invoke 'delayed_job:start'
   end
 end
