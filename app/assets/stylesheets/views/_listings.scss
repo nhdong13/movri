@@ -2938,6 +2938,10 @@ $listing-author-avatar-height: 108;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
 
+  tbody tr:nth-child(odd) {
+    background-color: white !important;
+  }
+
 
   .modal-content {
     background-color: #fefefe;
@@ -2985,10 +2989,6 @@ $listing-author-avatar-height: 108;
       font-size: 14px;
     }
 
-    .enter-shipping-zip-code-text {
-      font-size: 16px;
-    }
-
     .group-options-coverage {
       border: 1px solid #eaeaea;
       background: #eaeaea;
@@ -3011,25 +3011,15 @@ $listing-author-avatar-height: 108;
       margin-top: 5px;
     }
 
-    #shipping-rates-table {
+    #pricing-charts-table {
       table, th, td {
         border-top: 1px solid#cdcdcd;
         border-collapse: collapse;
       }
-    }
 
-    .loading {
-      margin-top: 25px;
-      margin-right: 35px;
-      text-align: center;
-      display: none;
-    }
-
-    .cannot-calculated {
-      margin-top: 25px;
-      margin-right: 35px;
-      text-align: center;
-      display: none;
+      .days {
+        color:#13588d;
+      }
     }
   }
 
@@ -3062,6 +3052,10 @@ $listing-author-avatar-height: 108;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
 
+  tbody tr:nth-child(odd) {
+    background-color: white !important;
+  }
+
   .mobile-modal-content {
     background-color: #fefefe;
     margin: auto;
@@ -3070,7 +3064,6 @@ $listing-author-avatar-height: 108;
     width: 96%;
     min-height: 521px;
     border-radius: 4px;
-    // margin-bottom: 40px;
   }
 
   .mobile-modal-header {
@@ -3088,27 +3081,13 @@ $listing-author-avatar-height: 108;
       font-size: 16px;
     }
 
-    .mobile-group-enter-shipping-zip-code {
+    .mobile-group-options-coverage {
       border: 1px solid #eaeaea;
       background: #eaeaea;
 
       input {
-        height: 35px;
-        margin-left: 5px;
-        margin-top: 20px;
-        border: none;
-        border-radius: 2px;
-        padding: 10px;
-        width: 100%;
-      }
-
-      .mobile-button-calculate-shipping {
-        margin-top: 20px;
-        height: 35px;
-        background-color: #4eb857;
-        font-size: 13px;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin-left: 15px;
+        margin-top: 15px;
       }
     }
   }
@@ -3124,25 +3103,15 @@ $listing-author-avatar-height: 108;
       margin-top: 5px;
     }
 
-    #mobile-shipping-rates-table {
+    #mobile-pricing-charts-table {
       table, th, td {
         border-top: 1px solid#cdcdcd;
         border-collapse: collapse;
       }
-    }
 
-    .mobile-loading {
-      margin-top: 25px;
-      margin-right: 35px;
-      text-align: center;
-      display: none;
-    }
-
-    .mobile-cannot-calculated {
-      margin-top: 25px;
-      margin-right: 35px;
-      text-align: center;
-      display: none;
+      .days {
+        color:#13588d;
+      }
     }
   }
 

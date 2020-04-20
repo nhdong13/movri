@@ -1,0 +1,100 @@
+= form.label 'Pricing Chart', class: 'input'
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 3)
+    %label 3 days
+    = hidden_field_tag "listing[pricing_charts_attributes][0][id]", @listing.pricing_charts.find_by(period: 3).id
+    = number_field_tag "listing[pricing_charts_attributes][0][price]", @listing.pricing_charts.find_by(period: 3).price
+  - else
+    %label 3 days
+    = number_field_tag "listing[pricing_charts_attributes][0][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][0][period]", 3
+.col-6
+  - if @listing.pricing_charts.find_by(period: 4)
+    %label 4 days
+    = hidden_field_tag "listing[pricing_charts_attributes][1][id]", @listing.pricing_charts.find_by(period: 4).id
+    = number_field_tag "listing[pricing_charts_attributes][1][price]", @listing.pricing_charts.find_by(period: 4).price
+  - else
+    %label 4 days
+    = number_field_tag "listing[pricing_charts_attributes][1][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][1][period]", 4
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 7)
+    %label 7 days
+    = hidden_field_tag "listing[pricing_charts_attributes][2][id]", @listing.pricing_charts.find_by(period: 7).id
+    = number_field_tag "listing[pricing_charts_attributes][2][price]", @listing.pricing_charts.find_by(period: 7).price
+  - else
+    %label 7 days
+    = number_field_tag "listing[pricing_charts_attributes][2][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][2][period]", 7
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 10)
+    %label 10 days
+    = hidden_field_tag "listing[pricing_charts_attributes][3][id]", @listing.pricing_charts.find_by(period: 10).id
+    = number_field_tag "listing[pricing_charts_attributes][3][price]", @listing.pricing_charts.find_by(period: 10).price
+  - else
+    %label 10 days
+    = number_field_tag "listing[pricing_charts_attributes][3][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][3][period]", 10
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 14)
+    %label 14 days
+    = hidden_field_tag "listing[pricing_charts_attributes][4][id]", @listing.pricing_charts.find_by(period: 14).id
+    = number_field_tag "listing[pricing_charts_attributes][4][price]", @listing.pricing_charts.find_by(period: 14).price
+  - else
+    %label 14 days
+    = number_field_tag "listing[pricing_charts_attributes][4][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][4][period]", 14
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 21)
+    %label 21 days
+    = hidden_field_tag "listing[pricing_charts_attributes][5][id]", @listing.pricing_charts.find_by(period: 21).id
+    = number_field_tag "listing[pricing_charts_attributes][5][price]", @listing.pricing_charts.find_by(period: 21).price
+  - else
+    %label 21 days
+    = number_field_tag "listing[pricing_charts_attributes][5][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][5][period]", 21
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 30)
+    %label 30 days
+    = hidden_field_tag "listing[pricing_charts_attributes][6][id]", @listing.pricing_charts.find_by(period: 30).id
+    = number_field_tag "listing[pricing_charts_attributes][6][price]", @listing.pricing_charts.find_by(period: 30).price
+  - else
+    %label 30 days
+    = number_field_tag "listing[pricing_charts_attributes][6][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][6][period]", 30
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 45)
+    %label 45 days
+    = hidden_field_tag "listing[pricing_charts_attributes][7][id]", @listing.pricing_charts.find_by(period: 45).id
+    = number_field_tag "listing[pricing_charts_attributes][7][price]", @listing.pricing_charts.find_by(period: 45).price
+  - else
+    %label 45 days
+    = number_field_tag "listing[pricing_charts_attributes][7][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][7][period]", 45
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 60)
+    %label 60 days
+    = hidden_field_tag "listing[pricing_charts_attributes][8][id]", @listing.pricing_charts.find_by(period: 60).id
+    = number_field_tag "listing[pricing_charts_attributes][8][price]", @listing.pricing_charts.find_by(period: 60).price
+  - else
+    %label 60 days
+    = number_field_tag "listing[pricing_charts_attributes][8][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][8][period]", 60
+
+.col-6
+  - if @listing.pricing_charts.find_by(period: 90)
+    %label 90 days
+    = hidden_field_tag "listing[pricing_charts_attributes][9][id]", @listing.pricing_charts.find_by(period: 90).id
+    = number_field_tag "listing[pricing_charts_attributes][9][price]", @listing.pricing_charts.find_by(period: 90).price
+  - else
+    %label 90 days
+    = number_field_tag "listing[pricing_charts_attributes][9][price]", 0
+    = hidden_field_tag "listing[pricing_charts_attributes][9][period]", 90

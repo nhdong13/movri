@@ -16,7 +16,7 @@
         .group-options-coverage
           .row
             %form
-              %input{:name => "coverage", :type => "radio", :value => "no-coverage"}/
+              %input{:checked => "checked", :name => "coverage", :type => "radio", :value => "no-coverage"}/
               No Coverage
               %br/
               %input{:name => "coverage", :type => "radio", :value => "movri-coverage"}/
@@ -25,7 +25,19 @@
               %input{:name => "coverage", :type => "radio", :value => "movri-plus-coverage"}/
               Movri Plus Coverage
     .modal-list-shipping
-      %table#shipping-rates-table
-      .loading Please wait a moment, the calculation process is in progress!
-      .cannot-calculated Cannot calculated, please check your input postal code!
-    %input#listing_id_hidden{:type => "hidden", :value => "#{listing.id}"}
+      %table#pricing-charts-table
+        %tr
+          %th Rental Period
+          %th Rental Price
+          %th Price Per day (Approx)
+        - listing.pricing_charts.each do |elm|
+          %tr
+            %td.days
+              =elm.period
+              days
+            %td
+              $
+              =elm.price
+            %td
+              $
+              =(elm.price/elm.period).round(2)

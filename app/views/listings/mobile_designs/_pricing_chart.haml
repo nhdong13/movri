@@ -13,15 +13,31 @@
           you adjust the length of your rental. Our most common rental periods
           are shown below:
         %br
-        .mobile-group-enter-shipping-zip-code
+        .mobile-group-options-coverage
           .row
-            .col-6
-              %input#mobile-zipcode
-            .col-6
-              %button.mobile-button-calculate-shipping
-                Calculate Shipping
+            %form
+              %input{:checked => "checked", :name => "coverage", :type => "radio", :value => "no-coverage"}/
+              No Coverage
+              %br/
+              %input{:name => "coverage", :type => "radio", :value => "movri-coverage"}/
+              Movri Coverage
+              %br/
+              %input{:name => "coverage", :type => "radio", :value => "movri-plus-coverage"}/
+              Movri Plus Coverage
     .mobile-modal-list-shipping
-      %table#mobile-shipping-rates-table
-      .mobile-loading Please wait a moment, the calculation process is in progress!
-      .mobile-cannot-calculated Cannot calculated, please check your input postal code!
-    %input#mobile_listing_id_hidden{:type => "hidden", :value => "#{listing.id}"}
+      %table#mobile-pricing-charts-table
+        %tr
+          %th Rental Period
+          %th Rental Price
+          %th Price Per day (Approx)
+        - listing.pricing_charts.each do |elm|
+          %tr
+            %td.days
+              =elm.period
+              days
+            %td
+              $
+              =elm.price
+            %td
+              $
+              =(elm.price/elm.period).round(2)
