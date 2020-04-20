@@ -107,9 +107,9 @@
         Add to Wish List
   .row.listing-shipping-info
     .col-6.clearfix.shipping-rates
-      %span.show-shipping-rates-modal{'data-toggle': "modal", 'data-target': "#shipping-rates-realtime-modal"}
+      %span.show-shipping-rates-modal{'data-toggle': 'modal', 'data-target': "#shipping-rates-realtime-modal"}
         Shipping Rates
-      %span
+      %span.show-pricing-chart-modal{'data-toggle': 'modal', 'data-target': "#pricing-chart-modal"}
         Pricing Chart
   .row.listing-save-availabe
   .col-6.clearfix.save-available
@@ -118,3 +118,4 @@
     .saving-available-item
 
 = render partial: "listings/desktop_designs/shipping_rates_realtime", locals: { listing: @listing }
+= render partial: "listings/desktop_designs/pricing_chart", locals: { listing: @listing }

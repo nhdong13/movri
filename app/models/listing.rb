@@ -127,6 +127,8 @@ class Listing < ApplicationRecord
   has_many :tx, class_name: 'Transaction', :dependent => :destroy
   has_many :bookings, through: :tx
   has_many :bookings_per_hour, ->{ per_hour_blocked }, through: :tx, source: :booking
+  has_many :pricing_charts, dependent: :destroy
+  accepts_nested_attributes_for :pricing_charts, allow_destroy: true
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency

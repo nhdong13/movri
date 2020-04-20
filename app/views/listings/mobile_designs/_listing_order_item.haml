@@ -53,9 +53,9 @@
           Wish List
     .col-6.listing-shipping-info
       .clearfix.shipping-rates
-        %span.mobile-show-shipping-rates-modal{'data-toggle': "modal", 'data-target': "#mobile-shipping-rates-realtime-modal"}
+        %span.mobile-show-shipping-rates-modal{'data-toggle': 'modal', 'data-target': "#mobile-shipping-rates-realtime-modal"}
           Shipping Rates
-        %span
+        %span.mobile-show-pricing-chart-modal{'data-toggle': 'modal', 'data-target': "#mobile-pricing-chart-modal"}
           Pricing Chart
   .row
     .col-12.rent-container
@@ -76,3 +76,4 @@
     %i.icon-angle-right
 
 = render partial: "listings/mobile_designs/shipping_rates_realtime", locals: { listing: @listing }
+= render partial: "listings/mobile_designs/pricing_chart", locals: { listing: @listing }

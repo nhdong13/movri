@@ -105,6 +105,7 @@
 //= require search_bar
 //= require slick.min.js
 //= require shipping_rates.js
+//= require pricing_chart.js
 //= require header
 //= require listing_contact
 //= require tag-it

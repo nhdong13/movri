@@ -1,0 +1,27 @@
+#mobile-pricing-chart-modal.modal{:style => "display: none"}
+  .mobile-modal-content
+    .mobile-modal-header
+      %span.mobile-close ×
+      .mobile-title
+        #mobile-shipping-rates-title
+          %b Pricing Chart
+    .mobile-modal-body.clearfix
+      .mobile-display.root-parent
+        .mobile-descriptions
+          Movri offers rentals ranging from 1 to 90 days.
+          The shopping cart will automatically update the quoted price as
+          you adjust the length of your rental. Our most common rental periods
+          are shown below:
+        %br
+        .mobile-group-enter-shipping-zip-code
+          .row
+            .col-6
+              %input#mobile-zipcode
+            .col-6
+              %button.mobile-button-calculate-shipping
+                Calculate Shipping
+    .mobile-modal-list-shipping
+      %table#mobile-shipping-rates-table
+      .mobile-loading Please wait a moment, the calculation process is in progress!
+      .mobile-cannot-calculated Cannot calculated, please check your input postal code!
+    %input#mobile_listing_id_hidden{:type => "hidden", :value => "#{listing.id}"}
