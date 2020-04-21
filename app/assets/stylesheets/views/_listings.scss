@@ -2994,6 +2994,7 @@ $listing-author-avatar-height: 108;
       background: #eaeaea;
 
       input {
+        margin-right: 5px !important;
         margin-left: 15px;
         margin-top: 15px;
       }
@@ -3012,9 +3013,13 @@ $listing-author-avatar-height: 108;
     }
 
     #pricing-charts-table {
-      table, th, td {
+      table, td {
         border-top: 1px solid#cdcdcd;
         border-collapse: collapse;
+      }
+
+      table, th {
+        font-weight: normal;
       }
 
       .days {
@@ -3086,6 +3091,7 @@ $listing-author-avatar-height: 108;
       background: #eaeaea;
 
       input {
+        margin-right: 5px !important;
         margin-left: 15px;
         margin-top: 15px;
       }
@@ -3104,9 +3110,13 @@ $listing-author-avatar-height: 108;
     }
 
     #mobile-pricing-charts-table {
-      table, th, td {
+      table, td {
         border-top: 1px solid#cdcdcd;
         border-collapse: collapse;
+      }
+
+      table, th {
+        font-weight: normal;
       }
 
       .days {
