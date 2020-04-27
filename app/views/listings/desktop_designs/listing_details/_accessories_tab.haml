@@ -1,0 +1,39 @@
+- show_remove_icon = el =  'hide'
+.tab-content#accessories_tab
+  .row
+    .tab-title
+      %p Showcased Accessories
+  - @listing.listing_accessories.each_slice(4).to_a.each do |group_listing|
+    .row
+      - group_listing.each do |listing|
+        .col-3
+          .slide-item-container
+            .slide-item
+              %img{:alt => "", :src => "http://placehold.it/198x198"}/
+              .slide-item-detail
+                %p.slide-item-title
+                  = listing.title
+                .listing-price
+                  %span.amount
+                    = MoneyViewUtils.to_humanized(@listing.price)
+                .rating
+                  %i.icon-star
+                  %i.icon-star
+                  %i.icon-star
+                  %i.icon-star
+                  %i.icon-star
+                  %span.vote_times
+                    921
+                .row.last-row
+                  .col-4.wish-list
+                    %p + Wish List
+                  .col-8
+                    %button
+                      Rent Now
+                .viewed-slide-star.mobile-display
+                  %i.icon-star
+                  %i.icon-star
+                  %i.icon-star
+                  %i.icon-star
+                  %span
+                    \/ (921)

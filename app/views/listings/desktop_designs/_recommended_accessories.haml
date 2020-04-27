@@ -6,7 +6,7 @@
         %a{href: '#'}
           View All >
     .recommended-accessories-list
-      - @listing.listing_accessories.order(:position).each do |listing_accessory|
+      - @listing.listing_accessories.order(:position).limit(8).each do |listing_accessory|
         .row.col-3.recommended-accessories-item
           .mobile-recommended-accessories
             .col-4

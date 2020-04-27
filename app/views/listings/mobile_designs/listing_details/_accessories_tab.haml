@@ -1,9 +1,9 @@
 .row.mobile-recommended-accessories-container
   .recommended-accessories-container.col-12.clearfix
     .recommended-accessories-title
-      Accessories
+      Showcased Accessories
     .recommended-accessories-list.clearfix
-      - @listing.listing_accessories.order(:position).limit(8).each do |listing_accessory|
+      - @listing.listing_accessories.order(:position).each do |listing_accessory|
         .row.col-3.recommended-accessories-item
           .mobile-recommended-accessories
             .mobile-accessory-wrap
@@ -22,6 +22,3 @@
                     = MoneyViewUtils.to_humanized(listing_accessory.price)
                 %button.recommended-accessories-add-to-cart
                   Rent Now
-    .mobile-recommended-accessories-view-all.col-12
-      View All Accessories
-      %i.icon-angle-right
