@@ -90,7 +90,7 @@
       = hidden_field_tag(:listing_id, @listing.id)
       - if @listing_presenter.quantity_per_day_or_night?
         - @listing_presenter.blocked_dates_result.on_success do
-          %button.rent-btn
+          %button.rent-btn.show-view-cart-modal{'data-toggle': 'modal', 'data-target': '#pricing-chart-modal', 'type' => 'button'}
             .content
               = action_button_label(@listing)
 
@@ -99,7 +99,7 @@
             .content
               = action_button_label(@listing)
       - else
-        %button.rent-btn
+        %button.rent-btn.show-view-cart-modal{'data-toggle': 'modal', 'data-target': '#pricing-chart-modal', 'type' => 'button'}
           .content
             = action_button_label(@listing)
     .col-4.add-wish-list
@@ -119,3 +119,4 @@
 
 = render partial: "listings/desktop_designs/shipping_rates_realtime", locals: { listing: @listing }
 = render partial: "listings/desktop_designs/pricing_chart", locals: { listing: @listing }
+= render partial: "listings/desktop_designs/view_cart", locals: { listing: @listing }

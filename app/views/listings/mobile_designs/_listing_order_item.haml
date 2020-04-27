@@ -59,7 +59,7 @@
           Pricing Chart
   .row
     .col-12.rent-container
-      %button.rent-btn
+      %button.rent-btn.mobile-show-view-cart-modal{'data-toggle': 'modal', 'data-target': "#mobile-view-cart-modal"}
         Rent Now
 .row
   .col-12.in-stock
@@ -77,3 +77,4 @@
 
 = render partial: "listings/mobile_designs/shipping_rates_realtime", locals: { listing: @listing }
 = render partial: "listings/mobile_designs/pricing_chart", locals: { listing: @listing }
+= render partial: "listings/mobile_designs/view_cart", locals: { listing: @listing }

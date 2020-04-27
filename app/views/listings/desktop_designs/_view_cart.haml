@@ -1,0 +1,50 @@
+#view-cart-modal.modal
+  .modal-content
+    .modal-header
+      %span.close ×
+      .title
+        #shipping-rates-title
+          1 Item Added to Your Cart
+    .modal-body.clearfix{:style => "border-bottom: 1px solid"}
+      .recommended-accessories-container.col-12.clearfix
+        .recommended-accessories-list
+          .desktop-display.root-parent
+            .col-12.recommended-accessories-item
+              .mobile-recommended-accessories
+                .col-2
+                  = link_to listing_path("#{@listing.id}-#{@listing.title.to_url}") do
+                    - if @listing.main_image != nil
+                      = image_tag @listing.main_image, class: 'img-responsive'
+                    - else
+                      %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
+                .col-10
+                  .recommended-accessories-listing-title
+                    %h1
+                      = @listing.title
+                  .recommended-accessories-listing-price
+                    = MoneyViewUtils.to_humanized(@listing.price)
+                  %button.recommended-accessories-add-to-cart.btn-view-cart
+                    View Cart
+    .modal-list
+      %h2 Recommended Accessories
+      .row
+        .recommended-accessories-container.col-12.clearfix
+          .recommended-accessories-list
+            - @listing.listing_accessories.order(:position).limit(4).each_slice(2).to_a.each do |listing_group|
+              .row
+                - listing_group.each do |listing_accessory|
+                  .col-6.recommended-accessories-item
+                    .mobile-recommended-accessories
+                      .col-4
+                        = link_to listing_path("#{listing_accessory.id}-#{listing_accessory.title.to_url}") do
+                          - if listing_accessory.main_image != nil
+                            = image_tag listing_accessory.main_image, class: 'img-responsive'
+                          - else
+                            %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
+                      .col-8
+                        .recommended-accessories-listing-title
+                          = listing_accessory.title
+                        .recommended-accessories-listing-price
+                          = MoneyViewUtils.to_humanized(listing_accessory.price)
+                        %button.recommended-accessories-add-to-cart
+                          Add to Cart
