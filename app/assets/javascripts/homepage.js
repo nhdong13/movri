@@ -46,10 +46,9 @@ $(function() {
 
         // Change number show on cart
         $(".number-on-cart").html(data.total_items);
+        $(".number-item-in-cart").html(data.total_items);
 
         var divListingId = "#wrap-item-cart-" + data.item;
-
-        console.log("divListingId.length...", divListingId.length);
 
         if ($(divListingId).length) {
           var quantityNumber = "#quantity-item-" + data.item;
