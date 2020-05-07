@@ -1,3 +1,22 @@
+:css
+  .number-on-cart-style-desktop {
+    font-size: 13px;
+    background: #e8e9ea;;
+    border: solid 2px #13588d;
+    color: #13588d;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -9px;
+    border-radius: 50%;
+  }
+
+  .custom-cart-icon {
+    margin-bottom: -5px;
+  }
+
+  .my-cart-text {
+    margin-bottom: -5px;
+  }
 -# Hide header in map view if mobile
 %header.header.info-header
   .header-wrapper.clearfix
@@ -27,6 +46,8 @@
     - if logged_in
       .header-right.visible-tablet
         #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+    .header-right.visible-tablet
+      #header-menu-desktop-cart.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
 
     .header-right.controls
       = render :partial => "layouts/header_anchors"
@@ -52,8 +73,15 @@
       .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
         #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
           = icon_map_tag(icons, "rows", ["header-menu-icon"])
+        #header-menu-mobile-cart.header-menu-toggle-container.toggle-header-container
+          .cart-icon-header
+            = image_tag("mf_icons/icon-movri-cart.svg", class: 'header-menu-icon icon-movri-chat custom-cart-icon')
+            %span.number-on-cart.number-on-cart-style-desktop
+              - session[:cart] ||= {}
+              = session[:cart].values.sum
 
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
+    = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
 
     -#
       If necessary, the buttons will overlap with the logo. Buttons should be on top, that's

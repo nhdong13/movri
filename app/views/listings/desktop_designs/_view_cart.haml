@@ -46,5 +46,5 @@
                           = listing_accessory.title
                         .recommended-accessories-listing-price
                           = MoneyViewUtils.to_humanized(listing_accessory.price)
-                        %button.recommended-accessories-add-to-cart
+                        %button.recommended-accessories-add-to-cart.add-item-to-cart{:id => "view-cart-desktop-#{listing_accessory.id}"}
                           Add to Cart

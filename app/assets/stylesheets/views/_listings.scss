@@ -1155,6 +1155,10 @@ $listing-author-avatar-height: 108;
               border: 1px solid #4eb857;
               color: #ffffff;
             }
+
+            .recommended-accessories-add-to-cart:hover {
+              font-weight: bold;
+            }
           }
         }
 
@@ -1186,6 +1190,11 @@ $listing-author-avatar-height: 108;
       background: none;
       padding: 2px;
       outline: none;
+    }
+
+    .recommended-accessories-add-to-cart:hover {
+      background: #0e426e;
+      color: white;
     }
   }
 
@@ -3217,6 +3226,10 @@ $listing-author-avatar-height: 108;
       .time-rent {
         color: #5fbf67;
       }
+    }
+
+    .btn-rent-now-tab:hover {
+      font-weight: bold;
     }
 
     @media #{$mobile}, #{$tablet} {

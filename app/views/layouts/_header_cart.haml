@@ -1,0 +1,38 @@
+#header-menu-toggle-cart.toggle-menu.header-toggle-menu-menu.hidden
+  - if session[:cart].blank?
+    .title
+      %span Your cart is currently empty
+  - else
+    .wrap-cart
+      .cart-title
+        %span.number-item-in-cart
+          #{session[:cart].values.sum}
+        %span
+          #{session[:cart].values.sum == 1 ? 'Item' : 'Items'} In Cart
+      - session[:cart].each do |key, value|
+        - listing = Listing.find_by(id: key)
+        .row.item.item-order-in-cart{:id => "wrap-item-cart-#{listing.id}"}
+          .col-3
+            - if listing.main_image != nil
+              = image_tag listing.main_image, class: 'img-responsive-cart'
+            - else
+              %img.img-responsive-cart{:alt => "", :src => "http://placehold.it/98x98"}/
+          .col-9.listing-title
+            = listing.title
+            .quantity
+              %span
+                Qty:
+              %span{:id => "quantity-item-#{listing.id}"}
+                #{value}
+            .cart-action
+              %span.remove-item-in-cart{:id => "remove-item-in-cart-#{listing.id}"}
+                Remove
+              %span
+                |
+              %span.plus-item-in-cart{:id => "plus-item-in-cart-#{listing.id}"} +
+              %span
+                |
+              %span.minus-item-in-cart{:id => "minus-item-in-cart-#{listing.id}"} -
+      -# .row.last-item
+    .view-cart-warp
+      %a.view-cart View Cart

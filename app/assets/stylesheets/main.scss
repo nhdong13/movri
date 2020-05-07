@@ -45,7 +45,7 @@ body {
 }
 
 .page-content {
-  padding-bottom: lines(3);
+  // padding-bottom: lines(3);
   padding-top: lines(0.5);
   background: #f4f6f8;
 
@@ -2304,6 +2304,10 @@ figure.fluidratio {
   .col-7 {
     width: 60% !important;
   }
+
+  .col-4 {
+    width: 33% !important;
+  }
 }
 
 .flash-notifications {
@@ -2330,5 +2334,54 @@ figure.fluidratio {
 
   .mt-15 {
     margin-bottom: 15px;
+  }
+}
+
+.show-cart-page {
+  .mobile-cart-title {
+    padding: 10px;
+    font-size: 22px;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    background-color: white;
+  }
+
+  .mobile-cart-note {
+    min-height: 307px;
+  }
+
+  .cart-footer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    margin-left: -0.75em;
+    margin-right: -0.75em;
+    background-color: #e6e6e6;
+
+    .title-1 {
+      margin-top: 10px;
+    }
+
+    .row {
+      margin-top: 10px;
+
+      .phone {
+        float: left;
+        width: 33%;
+        cursor: pointer;
+      }
+
+      .contact-us {
+        float: left;
+        width: 33%;
+        cursor: pointer;
+      }
+
+      .helpful-link {
+        float: left;
+        cursor: pointer;
+        width: 33%;
+      }
+    }
   }
 }

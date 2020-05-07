@@ -1,0 +1,25 @@
+.show-cart-page
+  .mobile-display
+    - if session[:cart].present?
+
+    - else
+      .mobile-cart-title
+        %h3 Cart
+      .mobile-cart-note
+        %span There are currently no items in your cart. If you have an existing account and have items in your cart, log in to view your cart.
+    .cart-footer
+      .select-list
+        %select#sel1.form-control
+          %option
+            -# = image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop')
+            US Dollar
+          %option CAD Dollar
+      .title-1
+        %span © 2000-2020 B&H Foto & Electronics Corp
+      .row
+        .phone
+          %span 800.894.9703
+        .contact-us
+          %span Contact us
+        .helpful-link
+          %span Helpful link

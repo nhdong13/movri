@@ -52,5 +52,5 @@
                           .recommended-accessories-listing-price
                             %span.amount
                               = MoneyViewUtils.to_humanized(listing_accessory.price)
-                          %button.recommended-accessories-add-to-cart
+                          %button.recommended-accessories-add-to-cart.add-item-to-cart{:id => "view-cart-mobile-#{listing_accessory.id}"}
                             Rent Now

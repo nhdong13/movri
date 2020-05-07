@@ -110,6 +110,9 @@ Rails.application.routes.draw do
   get '/community_not_found' => 'errors#community_not_found', as: :community_not_found
   get '/not_available' => 'application#not_available', as: :community_not_available
 
+  get '/load_cart', to: 'listings#load_cart'
+  get '/show_cart', to: 'listings#show_cart'
+
   resources :communities, only: [:new, :create]
 
 
@@ -388,6 +391,10 @@ Rails.application.routes.draw do
         delete :unfollow
         delete :delete
         post :get_shipping_rates_from_postmen
+        get :add_item_to_cart
+        get :remove_cart_item
+        get :plus_item
+        get :minus_item
       end
       collection do
         get :new_form_content

@@ -295,6 +295,148 @@ class ListingsController < ApplicationController
     redirect_to @listing and return
   end
 
+  def add_item_to_cart
+    listing = Listing.find_by(id: params[:id])
+
+    # Return if listing does not eixst
+    unless listing
+      return render json: {
+        success: false,
+        message: "Not found"
+      }, status: 404
+    end
+
+    # Add item to session
+    session[:cart] ||= {}
+    listing_id = params[:id]
+    session[:cart][listing_id] = session[:cart][listing_id] ? (session[:cart][listing_id] + 1) : 1
+
+    # Get total items in cart
+    cart_total_items = session[:cart].values.sum
+
+    render json: {
+      success: true,
+      message: "Add item to cart sucessfully",
+      data: {
+        item: listing_id,
+        item_count: session[:cart][listing_id],
+        cart: session[:cart],
+        total_items: cart_total_items
+      }
+    }
+  end
+
+  def remove_cart_item
+    listing = Listing.find_by(id: params[:id])
+
+    # Return if listing does not eixst or listing does not exist in cart
+    unless listing && session[:cart][params[:id]]
+      return render json: {
+        success: false,
+        message: "Not found"
+      }, status: 404
+    end
+
+    listing_id = params[:id]
+
+    session[:cart].delete(listing_id)
+
+    cart_total_items = session[:cart].values.sum
+
+    render json: {
+      success: true,
+      message: "Remove item sucessfully",
+      data: {
+        delete_item: listing_id,
+        total_items: cart_total_items
+      }
+    }
+  end
+
+  def plus_item
+    listing = Listing.find_by(id: params[:id])
+
+    # Return if listing does not eixst or listing does not exist in cart
+    unless listing && session[:cart][params[:id]]
+      return render json: {
+        success: false,
+        message: "Not found"
+      }, status: 404
+    end
+
+    listing_id = params[:id]
+
+    session[:cart][listing_id] += 1
+
+    render json: {
+      success: true,
+      message: "Plus item sucessfully",
+      data: {
+        item: listing_id,
+        new_quantity: session[:cart][listing_id],
+        total_items: session[:cart].values.sum
+      }
+    }
+  end
+
+  def minus_item
+    listing = Listing.find_by(id: params[:id])
+
+    # Return if listing does not eixst or listing does not exist in cart
+    unless listing && session[:cart][params[:id]]
+      return render json: {
+        success: false,
+        message: "Not found"
+      }, status: 404
+    end
+
+    listing_id = params[:id]
+
+    # True if item will be destroy
+    delete = false
+
+    if session[:cart][listing_id] == 1
+      session[:cart].delete(listing_id)
+      delete = true
+    else
+      session[:cart][listing_id] -= 1
+    end
+
+    render json: {
+      success: true,
+      message: "Minus item sucessfully",
+      data: {
+        delete: delete,
+        item: listing_id,
+        new_quantity: session[:cart][listing_id],
+        total_items: session[:cart].values.sum
+      }
+    }
+  end
+
+  def load_cart
+    unless session[:cart]
+      render json: {
+        success: false,
+        message: "Not found"
+      }, status: 404
+    end
+
+    # Get total items in cart
+    cart_total_items = session[:cart].values.sum
+
+    render json: {
+      success: true,
+      message: "Load cart sucessfully",
+      data: {
+        cart: session[:cart],
+        total_items: cart_total_items
+      }
+    }
+  end
+
+  def show_cart; end
+
   def get_shipping_rates_from_postmen
     listing = Listing.find_by(id: params[:id])
 

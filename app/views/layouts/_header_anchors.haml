@@ -1,3 +1,17 @@
+:css
+  .number-on-cart-style-mobile {
+    font-size: 13px !important;
+    margin-left: -9px !important;
+    display: none;
+    color: #13588d;
+    font-weight: bold;
+  }
+
+  @media screen and (max-width: 768px) {
+    .number-on-cart-style-mobile {
+        display: block !important;
+    }
+  }
 .display-inline-flex.icons
   %a{href:  'javascript:void(0)', class: 'search-mobile'}
     = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
@@ -18,6 +32,10 @@
                   %strong
                     = t("header.my_account")
                     %i{class: 'icon-chevron-down'}
-  = image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop')
+  -# .mobile-display
+  = link_to image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop'), show_cart_path
+  %span.number-on-cart-style-mobile
+    - session[:cart] ||= {}
+    = session[:cart].values.sum
 - content_for :javascript do
   SearchMobile.run();

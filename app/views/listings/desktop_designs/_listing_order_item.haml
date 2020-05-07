@@ -91,7 +91,7 @@
       - if @listing_presenter.quantity_per_day_or_night?
         - @listing_presenter.blocked_dates_result.on_success do
           %button.rent-btn.show-view-cart-modal{'data-toggle': 'modal', 'data-target': '#pricing-chart-modal', 'type' => 'button'}
-            .content
+            .content.add-item-to-cart{:id => "view-cart-desktop-#{@listing.id}"}
               = action_button_label(@listing)
 
         - @listing_presenter.blocked_dates_result.on_error do
@@ -100,7 +100,7 @@
               = action_button_label(@listing)
       - else
         %button.rent-btn.show-view-cart-modal{'data-toggle': 'modal', 'data-target': '#pricing-chart-modal', 'type' => 'button'}
-          .content
+          .content.add-item-to-cart{:id => "view-cart-desktop-#{@listing.id}"}
             = action_button_label(@listing)
     .col-4.add-wish-list
       %button.wish-list-btn
