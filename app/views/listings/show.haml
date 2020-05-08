@@ -190,8 +190,8 @@
         %span
           = @listing.title
       .listing-rent-btn
-        %button
-          %span
+        %button.add-item-to-cart{:id => "listing-rent-top-#{@listing.id}"}
+          %span.add-item-to-cart{:id => "listing-rent-top-span-#{@listing.id}"}
             Rent Now
 
   #sideEmail
