@@ -8,10 +8,12 @@
     .col-12
       .listing-price.clearfix
         %span.listing-price-amount
-          = MoneyViewUtils.to_humanized(@listing.price)
-        - with_quantity_text(@current_community, @listing) do |text|
-          %span.listing-price-quantity
-            = text
+          - number_price = Money.new(PriceCalculationService.calculate(@listing), 'USD')
+          = MoneyViewUtils.to_humanized(number_price)
+          -# = MoneyViewUtils.to_humanized(@listing.price)
+        -# - with_quantity_text(@current_community, @listing) do |text|
+        -#   %span.listing-price-quantity
+        -#     = text
 
 .row-with-divider
   .col-12

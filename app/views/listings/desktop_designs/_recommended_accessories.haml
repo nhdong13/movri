@@ -19,6 +19,8 @@
               .recommended-accessories-listing-title
                 = listing_accessory.title
               .recommended-accessories-listing-price
-                = MoneyViewUtils.to_humanized(listing_accessory.price)
+                - number_price = Money.new(PriceCalculationService.calculate(listing_accessory), 'USD')
+                = MoneyViewUtils.to_humanized(number_price)
+                -# = MoneyViewUtils.to_humanized(listing_accessory.price)
               %button.recommended-accessories-add-to-cart.add-item-to-cart{:id => "recommend-#{listing_accessory.id}"}
                 Add to Cart

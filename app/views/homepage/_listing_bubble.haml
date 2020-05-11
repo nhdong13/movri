@@ -13,7 +13,9 @@
         = author_link(listing)
       .bubble-price{:title => price_as_text(listing) }
         - if listing.price
-          = MoneyViewUtils.to_humanized(listing.price)
+          - number_price = Money.new(PriceCalculationService.calculate(listing), 'USD')
+          = MoneyViewUtils.to_humanized(number_price)
+          -# = MoneyViewUtils.to_humanized(listing.price)
           - if listing.quantity.present?
             %span.bubble-price-quantity
               = t("listings.form.price.per") + " " + listing.quantity

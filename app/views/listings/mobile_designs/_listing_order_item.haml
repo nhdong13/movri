@@ -2,7 +2,9 @@
   .row.listing-price
     .col-6.clearfix
       %span.amount
-        = MoneyViewUtils.to_humanized(@listing.price)
+        - number_price = Money.new(PriceCalculationService.calculate(@listing), 'USD')
+        = MoneyViewUtils.to_humanized(number_price)
+        -# = MoneyViewUtils.to_humanized(@listing.price)
       - with_quantity_text(@current_community, @listing) do |text|
         %span.time-rent
           \/

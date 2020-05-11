@@ -19,6 +19,8 @@
                   = listing_accessory.title
                 .recommended-accessories-listing-price
                   %span.amount
-                    = MoneyViewUtils.to_humanized(listing_accessory.price)
+                    - number_price = Money.new(PriceCalculationService.calculate(listing_accessory), 'USD')
+                    = MoneyViewUtils.to_humanized(number_price)
+                    -# = MoneyViewUtils.to_humanized(listing_accessory.price)
                 %button.recommended-accessories-add-to-cart.add-item-to-cart{:id => "accessories-mobile-#{listing_accessory.id}"}
                   Rent Now

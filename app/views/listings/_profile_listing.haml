@@ -7,7 +7,9 @@
         .people-listing-overlay
         - if listing.price
           .people-listing-price
-            = MoneyViewUtils.to_humanized(listing.price)
+            - number_price = Money.new(PriceCalculationService.calculate(listing), 'USD')
+            = MoneyViewUtils.to_humanized(number_price)
+            -# = MoneyViewUtils.to_humanized(listing.price)
 
         - if listing.listing_images.size > 0 && listing.listing_images.first.image_processing
           .people-listing-image-processing
