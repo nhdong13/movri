@@ -2,13 +2,16 @@
   .row.listing-price
     .col-6.clearfix
       %span.amount
-        - number_price = Money.new(PriceCalculationService.calculate(@listing), 'USD')
+        - number_price = Money.new(PriceCalculationService.calculate(@listing, ListingViewUtils.get_booking_days(session)), 'USD')
         = MoneyViewUtils.to_humanized(number_price)
         -# = MoneyViewUtils.to_humanized(@listing.price)
-      - with_quantity_text(@current_community, @listing) do |text|
-        %span.time-rent
-          \/
-          = text
+      -# - with_quantity_text(@current_community, @listing) do |text|
+      -#   %span.time-rent
+      -#     \/
+      -#     = text
+      %span.time-rent
+        \/
+        = ListingViewUtils.get_time_rent(session)
     .col-6.clearfix.listing-replacement-value
       %span
         Replacement Value :

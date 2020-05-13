@@ -91,7 +91,7 @@ module ListingsHelper
 
   def price_quantity_slash_unit(listing)
     if listing.unit_type.present?
-      "/ " + ListingViewUtils.translate_unit(listing.unit_type, listing.unit_tr_key)
+      "/ 7 " + ListingViewUtils.translate_unit(listing.unit_type, listing.unit_tr_key)
     elsif listing.quantity.present?
       "/ #{listing.quantity}"
     else

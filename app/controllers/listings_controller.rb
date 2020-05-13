@@ -437,6 +437,40 @@ class ListingsController < ApplicationController
 
   def show_cart; end
 
+  def change_booking_days
+    # missing params
+    return unless params[:start_date] && params[:end_date]
+    # pass same value for start and end date
+    if params[:start_date] == params[:end_date]
+      return render json: {
+        success: false
+      }
+    end
+    # pass same value in session
+    if session[:booking] && params[:start_date] == session[:booking][:start_date] && params[:end_date] == session[:booking][:end_date]
+      return render json: {
+        success: false
+      }
+    end
+
+    data = BookingDaysCalculation.call(params)
+
+    # Set to session
+    session[:booking] ||= {}
+    session[:booking][:start_date] = data[:start_date]
+    session[:booking][:end_date] = data[:end_date]
+    session[:booking][:total_days] = data[:total_days]
+
+    render json: {
+      success: true,
+      data: {
+        total_days: session[:booking][:total_days],
+        start_date: session[:booking][:start_date],
+        end_date: session[:booking][:end_date]
+      }
+    }
+  end
+
   def get_shipping_rates_from_postmen
     listing = Listing.find_by(id: params[:id])
 

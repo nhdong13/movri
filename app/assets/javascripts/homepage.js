@@ -1,4 +1,15 @@
 $(function() {
+  function throttle(func, milliseconds) {
+    var lastCall = 0;
+    return function () {
+      var now = Date.now();
+      if (lastCall + milliseconds < now) {
+        lastCall = now;
+        return func.apply(this, arguments);
+      }
+    };
+  }
+
   // Selectors
   var showFiltersButtonSelector = "#home-toolbar-show-filters";
   var filtersContainerSelector = "#home-toolbar-filters";
@@ -164,5 +175,36 @@ $(function() {
       console.log("Error:", error);
     });
   });
+
+  // User change booking date
+  $("#end-on").on("change", throttle(function () {
+    var changeBookingDayUrl = "/en/change_booking_days";
+    var startDate = $("#start-on").val();
+    var endDate = $("#end-on").val();
+
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    $.ajax({
+      url: changeBookingDayUrl,
+      type: "POST",
+      data: {
+        start_date: startDate,
+        end_date: endDate
+      }
+    }).done(function(response) {
+      console.log('response', response);
+      if (response.success === true) {
+        // Change days booking successful
+        location.reload();
+      } else {
+        // Days not change
+      }
+    }).fail(function(error) {
+      console.log("Error:", error);
+    });
+
+  }, 1000));
 
 });

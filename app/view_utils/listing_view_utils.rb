@@ -99,4 +99,23 @@ module ListingViewUtils
     Maybe(pattern.match(link))[1].or_else(nil)
   end
 
+  def get_booking_days(session)
+    # default booking days
+    days = 7
+
+    return days unless session[:booking]
+    return days unless session[:booking][:total_days]
+
+    session[:booking][:total_days]
+  end
+
+  def get_time_rent(session)
+    time_rent = "7 days"
+
+    return time_rent unless session[:booking]&.[](:total_days)
+
+    "#{session[:booking][:total_days]} day" if session[:booking][:total_days] == 1
+
+    "#{session[:booking][:total_days]} days"
+  end
 end

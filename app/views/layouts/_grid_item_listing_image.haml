@@ -19,14 +19,15 @@
     .fluid-thumbnail-grid-image-price-container{:class => "#{modifier_class}"}
       - if listing.price
         %span.fluid-thumbnail-grid-image-price
-          - number_price = Money.new(PriceCalculationService.calculate(listing), 'USD')
+          - number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
           = MoneyViewUtils.to_humanized(number_price)
           -# = MoneyViewUtils.to_humanized(listing.price)
-        -#   - price_unit = price_quantity_slash_unit(listing)
-        -# - if !price_unit.blank?
-        -#   - price_text = " " + price_unit
-        -#   %span.fluid-thumbnail-grid-image-quantity{:title => price_text}
-        -#     = price_text
+          -# - price_unit = price_quantity_slash_unit(listing)
+          - price_unit = ListingViewUtils.get_time_rent(session)
+        - if !price_unit.blank?
+          - price_text = " /" + price_unit
+          %span.fluid-thumbnail-grid-image-quantity{:title => price_text}
+            = price_text
       - else
         %span.fluid-thumbnail-grid-image-type{:class => "#{modifier_class}"}
           = shape_name(listing)

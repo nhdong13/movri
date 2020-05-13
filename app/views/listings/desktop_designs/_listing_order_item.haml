@@ -1,12 +1,17 @@
 .row.listing-price
   .col-12.clearfix
     %span.amount
-      - number_price = Money.new(PriceCalculationService.calculate(@listing), 'USD')
+      - number_price = Money.new(PriceCalculationService.calculate(@listing, ListingViewUtils.get_booking_days(session)), 'USD')
       = MoneyViewUtils.to_humanized(number_price)
     -# - with_quantity_text(@current_community, @listing) do |text|
     -#   %span.time-rent
     -#     \/
     -#     = text
+    - time_rent = ListingViewUtils.get_time_rent(session)
+    %span.time-rent
+      \/
+      = time_rent
+
 .row.listing-identity
   .col-6.clearfix.listing-sku
     %span
@@ -71,13 +76,13 @@
         .col-6.clearfix.arrival-date
           .form-group
             %label{for: 'arrival-date'} Arrival Date:
-            %input.form-control.required#start-on{type: "arrival-date", :data => { :output => "booking-start-output" }}
+            %input.form-control.required#start-on{value: session[:booking] ? session[:booking][:start_date] : '',type: "arrival-date", :data => { :output => "booking-start-output" }}
             %input#booking-start-output{:type => 'hidden', :name => 'start_on'}
             = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
         .col-6.clearfix.return-date
           .form-group
             %label{for: "return-date"} Return Date:
-            %input.form-control.required#end-on{type: "return-date",  :data => { :output => "booking-end-output" }}
+            %input.form-control.required#end-on{value: session[:booking] ? session[:booking][:end_date] : '', type: "return-date",  :data => { :output => "booking-end-output" }}
             %input#booking-end-output{:type => 'hidden', :name => 'end_on'}
             = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
       - @listing_presenter.blocked_dates_result.on_error do

@@ -15,8 +15,10 @@
                   = listing.title
                 .listing-price
                   %span.amount
-                    - number_price = Money.new(PriceCalculationService.calculate(listing), 'USD')
+                    - number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
                     = MoneyViewUtils.to_humanized(number_price)
+                    \/
+                    = ListingViewUtils.get_time_rent(session)
                     -# = MoneyViewUtils.to_humanized(listing.price)
                 .rating
                   %i.icon-star

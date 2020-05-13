@@ -385,6 +385,8 @@ Rails.application.routes.draw do
       end
     end
 
+    post 'change_booking_days', to: 'listings#change_booking_days'
+
     resources :listings do
       member do
         post :follow
