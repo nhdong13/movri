@@ -25,11 +25,13 @@
               %span{:id => "quantity-item-#{listing.id}"}
                 #{value}
             .item-price.quantity
-              - number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
+              - price_cents = 0
+              - if session[:cart][listing.id.to_s]
+                - price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing.id.to_s]
               %span
                 Price:
               %span{:id => "price-item-in-cart#{listing.id}"}
-                = MoneyViewUtils.to_humanized(number_price)
+                = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
               %span
                 \/
                 = ListingViewUtils.get_time_rent(session)
