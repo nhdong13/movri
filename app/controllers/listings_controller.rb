@@ -368,13 +368,19 @@ class ListingsController < ApplicationController
 
     session[:cart][listing_id] += 1
 
+    # Handle to show total price after change number of this listing
+    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing_id]
+    number_price = Money.new(price_cents, 'USD')
+    value_in_cart = MoneyViewUtils.to_humanized(number_price)
+
     render json: {
       success: true,
       message: "Plus item sucessfully",
       data: {
         item: listing_id,
         new_quantity: session[:cart][listing_id],
-        total_items: session[:cart].values.sum
+        total_items: session[:cart].values.sum,
+        value_in_cart: value_in_cart
       }
     }
   end
@@ -402,6 +408,15 @@ class ListingsController < ApplicationController
       session[:cart][listing_id] -= 1
     end
 
+    # Handle to show total price after change number of this listing
+    value_in_cart = 0
+
+    if session[:cart][listing_id]
+      price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing_id]
+      number_price = Money.new(price_cents, 'USD')
+      value_in_cart = MoneyViewUtils.to_humanized(number_price)
+    end
+
     render json: {
       success: true,
       message: "Minus item sucessfully",
@@ -409,7 +424,8 @@ class ListingsController < ApplicationController
         delete: delete,
         item: listing_id,
         new_quantity: session[:cart][listing_id],
-        total_items: session[:cart].values.sum
+        total_items: session[:cart].values.sum,
+        value_in_cart: value_in_cart
       }
     }
   end

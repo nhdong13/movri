@@ -23,9 +23,9 @@
           = MoneyViewUtils.to_humanized(number_price)
           -# = MoneyViewUtils.to_humanized(listing.price)
           -# - price_unit = price_quantity_slash_unit(listing)
-          - price_unit = ListingViewUtils.get_time_rent(session)
-        - if !price_unit.blank?
-          - price_text = " /" + price_unit
+          -# - price_unit = ListingViewUtils.get_time_rent(session)
+        - if ListingViewUtils.get_time_rent(session).present?
+          - price_text = " /" + ListingViewUtils.get_time_rent(session)
           %span.fluid-thumbnail-grid-image-quantity{:title => price_text}
             = price_text
       - else

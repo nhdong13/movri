@@ -24,6 +24,15 @@
                 Qty:
               %span{:id => "quantity-item-#{listing.id}"}
                 #{value}
+            .item-price.quantity
+              - number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
+              %span
+                Price:
+              %span{:id => "price-item-in-cart#{listing.id}"}
+                = MoneyViewUtils.to_humanized(number_price)
+              %span
+                \/
+                = ListingViewUtils.get_time_rent(session)
             .cart-action
               %span.remove-item-in-cart{:id => "remove-item-in-cart-#{listing.id}"}
                 Remove

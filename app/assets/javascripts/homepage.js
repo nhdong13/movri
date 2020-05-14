@@ -117,6 +117,10 @@ $(function() {
         $(item).html(data.new_quantity);
         $(".number-item-in-cart").html(data.total_items);
         $(".number-on-cart").html(data.total_items);
+
+        // Change total price after plus item
+        var priceId = "#price-item-in-cart" + data.item;
+        $(priceId).html(data.value_in_cart);
       } else {
         // TODO:
       }
@@ -149,6 +153,11 @@ $(function() {
           $(item).html(data.new_quantity);
           $(".number-item-in-cart").html(data.total_items);
           $(".number-on-cart").html(data.total_items);
+
+          // Set total price for this item
+          // Total price will change after minus
+          var priceId = "#price-item-in-cart" + data.item;
+          $(priceId).html(data.value_in_cart);
         }
       } else {
         // TODO:
