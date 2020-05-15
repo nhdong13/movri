@@ -1,8 +1,8 @@
 = form.label 'Blocked Dates', class: 'input'
 %label From
-%input#start-date-blocked.form-control{:type => "text"}
+%input#start-date-blocked.form-control{:type => "text", autocomplete: "off"}
 %label To
-%input.form-control#end-date-blocked{:type => "text"}
+%input.form-control#end-date-blocked{:type => "text", autocomplete: "off"}
 .add-blocked-dates-button
   Add Dates
 %table#list-blocked-dates-table

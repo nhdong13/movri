@@ -118,4 +118,16 @@ module ListingViewUtils
 
     "#{session[:booking][:total_days]} days"
   end
+
+  def get_arr_breadcrumb_listing(listing)
+    category = listing.category
+    arr_breadcrumb = []
+
+    while category
+      arr_breadcrumb.push(category.url)
+      category = category.parent
+    end
+
+    arr_breadcrumb
+  end
 end
