@@ -91,6 +91,33 @@ class ListingsController < ApplicationController
     @listing_presenter.form_path = new_transaction_path(listing_id: @listing.id)
     @seo_service.listing = @listing
 
+    # Remove session booking dates if it in blocked dates
+    if @listing.manually_blocked_dates && session[:booking]
+      manually_blocked_dates_arr = @listing.manually_blocked_dates.split("&")
+
+      # convert session[:booking][:start_date]: mm/dd/yyy => dd/mm/yyy
+      arr_start_date = session[:booking][:start_date].split("/")
+      arr_start_date[0], arr_start_date[1] = arr_start_date[1], arr_start_date[0]
+      start_date = arr_start_date.join("/")
+
+      # convert session[:booking][:end_date]: mm/dd/yyy => dd/mm/yyy
+      arr_end_date = session[:booking][:end_date].split("/")
+      arr_end_date[0], arr_end_date[1] = arr_end_date[1], arr_end_date[0]
+      end_date = arr_end_date.join("/")
+
+      manually_blocked_dates_arr.each do |range_date|
+        if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
+          session[:booking] = nil
+          break
+        end
+
+        if end_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
+          session[:booking] = nil
+          break
+        end
+      end
+    end
+
     record_event(
       flash.now,
       "ListingViewed",
