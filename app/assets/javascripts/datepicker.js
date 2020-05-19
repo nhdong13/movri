@@ -107,12 +107,23 @@ window.ST = window.ST || {};
     var dateRage = $('#'+ rangeContainerId);
     var dateLocale = dateRage.data('locale');
 
+    // Config for start-on field
     var options = {
       startDate: today,
-      inputs: [$("#start-on"), $("#end-on")],
+      inputs: [$("#start-on")],
       endDate: endDate,
       datesDisabled: disabledStartDates,
       plusOne: nightPicker
+    };
+
+    // Add config for only end-on field
+    var endDateOptions = {
+      startDate: today,
+      inputs: [$("#end-on")],
+      endDate: endDate,
+      datesDisabled: disabledStartDates,
+      plusOne: nightPicker,
+      daysOfWeekDisabled: [0, 6]
     };
 
     if(dateLocale !== 'en') {
@@ -120,6 +131,7 @@ window.ST = window.ST || {};
     }
 
     var picker = dateRage.datepicker(options);
+    var endDatePicker = dateRage.datepicker(endDateOptions);
 
     if (nightPicker) {
       $("#start-on").focus(function() {
@@ -141,6 +153,29 @@ window.ST = window.ST || {};
     };
 
     picker.on('changeDate', function(e) {
+      var newDate = e.dates[0];
+      var outputElementId = $(e.target).data("output");
+      var outputElement = outputElements[outputElementId];
+
+      if (outputElementId === "booking-end-output" && !nightPicker) {
+        var oneDayMore = new Date(newDate);
+        oneDayMore.setDate(oneDayMore.getDate() + 1);
+        if (oneDayMore <= endDate) {
+          newDate = oneDayMore;
+        }
+      }
+
+      if (outputElementId === "booking-start-output") {
+        $("#start-on").datepicker('hide')
+        $("#end-on").focus().datepicker('show')
+      }
+
+      outputElement.val(module.utils.toISODate(newDate));
+      setTimeout(function() { $("#end-on").valid(); }, 360);
+    });
+
+    // copy config from start-on
+    endDatePicker.on('changeDate', function(e) {
       var newDate = e.dates[0];
       var outputElementId = $(e.target).data("output");
       var outputElement = outputElements[outputElementId];
