@@ -45,7 +45,7 @@ body {
 }
 
 .page-content {
-  // padding-bottom: lines(3);
+  padding-bottom: lines(15);
   padding-top: lines(0.5);
   background: #f4f6f8;
 
@@ -218,6 +218,7 @@ ul {
 // Used for views with left hand navigation
 .left-navi-section {
   padding: lines(0.5) 0;
+  // background-color: #f4f6f8;
 
   @include media(tablet) {
     padding: 0 lines(0.5);
@@ -243,6 +244,7 @@ ul {
 
 // Left hand navigation menu
 .left-navi {
+  background-color: #f4f6f8;
   $selected-highlight-padding: lines(0.25);
   display: none;
   // Add negative margin, which pulls the container up the amount of highlight padding.
@@ -2322,7 +2324,7 @@ figure.fluidratio {
   }
 
   .left-navi-section {
-    display: inline-block;
+    // display: inline-block;
     margin-left: 0;
     width: 80%;
     float: right;

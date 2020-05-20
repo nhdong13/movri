@@ -65,8 +65,88 @@
       = render partial: "locale_input_textarea", locals: transaction_agreement_text_locals
 
     .row
+      .col-6
+        %label Global Blocked Dates:
+        %input#global-blocked-dates.form-control{:type => "text", autocomplete: "off"}
+        %table#global-blocked-dates-table{:style => "margin-top: 10px;"}
+          - if @current_community.global_blocked_dates
+            - @current_community.global_blocked_dates.split(",").each do |date|
+              %tr.global-blocked-date-row
+                %td.global-blocked-date-item
+                  = date
+                %td.global-blocked-date-delete-icon{:style => "text-align: right;"}
+                  %i.icon-remove{:style => "cursor: pointer;"}
+
+      = hidden_field_tag :global_blocked_dates_str, @current_community.global_blocked_dates.to_s
+
+    .row
       .col-12
         = button_tag t("admin.communities.edit_details.save")
 
 
 = render :partial => "people/help_texts", :collection => ["invite_only_help_text"], :as => :field
+
+- content_for :extra_javascript do
+  :javascript
+    ST.ListingTags.initTagsForEditListing();
+    ST.BlockedDates.addBlockedDates();
+    $(document).ready(function(){
+      $('#global-blocked-dates').datepicker({
+        todayHighlight: true,
+        autoclose: true,
+        clearBtn: true,
+        startDate: new Date(),
+        format: 'dd/mm/yyyy'
+      });
+
+      $("#global-blocked-dates").on("change", function () {
+        console.log("value:", $("#global-blocked-dates").val());
+        var dateSelected = $("#global-blocked-dates").val().trim();
+        var strListDates = $("#global_blocked_dates_str").val().trim();
+
+        if (strListDates.includes(dateSelected) == false) {
+          var newStrListDates = '';
+
+          if (strListDates.length) {
+            newStrListDates = strListDates + ',' + dateSelected;
+          } else {
+            newStrListDates = dateSelected;
+          }
+
+          var rowTable = "<tr class='global-blocked-date-row'>"
+                        + "<td class='global-blocked-date-item'>"
+                        + $("#global-blocked-dates").val()
+                        + "</td>"
+                        + "<td class='global-blocked-date-delete-icon' style='text-align: right;'>"
+                        + "<i class='icon-remove' style='cursor: pointer;'></i>"
+                        + "</td>"
+                        + "</tr>";
+
+          $("#global-blocked-dates-table").append(rowTable);
+
+          var listBlockedDates = getGlobalBlockedDates();
+          $("#global_blocked_dates_str").val(listBlockedDates);
+        }
+      });
+
+      $("#global-blocked-dates-table").on("click", '.global-blocked-date-delete-icon', function() {
+        $(this).closest('tr.global-blocked-date-row').remove();
+        $("#global_blocked_dates_str").val(getGlobalBlockedDates());
+      });
+
+      function getGlobalBlockedDates () {
+        var listBlockedDates = "";
+
+        $('#global-blocked-dates-table .global-blocked-date-row').each(function() {
+          var date = $(this).find(".global-blocked-date-item").html().trim();
+
+          if (listBlockedDates.length) {
+            listBlockedDates = listBlockedDates + "," + date;
+          } else {
+            listBlockedDates = date;
+          }
+        });
+
+        return listBlockedDates.trim();
+      }
+    });

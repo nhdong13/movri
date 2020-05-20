@@ -28,7 +28,9 @@
           -# Merge manually blocked dates (via admin) with blocked dates automatic (via website booking)
           - if @listing.manually_blocked_dates
             - manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day)
+            - global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community)
             - blocked_dates.merge(manually_blocked_dates)
+            - blocked_dates.merge(global_blocked_dates)
 
           - content_for :extra_javascript do
             :javascript
@@ -84,17 +86,17 @@
 = render partial: "listings/mobile_designs/pricing_chart", locals: { listing: @listing }
 = render partial: "listings/mobile_designs/view_cart", locals: { listing: @listing }
 
-- content_for :extra_javascript do
-  :javascript
-    ST.ListingTags.initTagsForEditListing();
-    ST.BlockedDates.addBlockedDates();
-    $(document).ready(function(){
-      $('#end-on').datepicker({
-        todayHighlight: true,
-        autoclose: true,
-        clearBtn: true,
-        startDate: new Date(),
-        format: 'mm/dd/yyyy',
-        daysOfWeekDisabled: [0]
-      });
-    });
+-# - content_for :extra_javascript do
+-#   :javascript
+-#     ST.ListingTags.initTagsForEditListing();
+-#     ST.BlockedDates.addBlockedDates();
+-#     $(document).ready(function(){
+-#       $('#end-on').datepicker({
+-#         todayHighlight: true,
+-#         autoclose: true,
+-#         clearBtn: true,
+-#         startDate: new Date(),
+-#         format: 'mm/dd/yyyy',
+-#         daysOfWeekDisabled: [0]
+-#       });
+-#     });

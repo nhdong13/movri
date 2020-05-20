@@ -105,6 +105,11 @@ class ListingsController < ApplicationController
       arr_end_date[0], arr_end_date[1] = arr_end_date[1], arr_end_date[0]
       end_date = arr_end_date.join("/")
 
+      # Reset session[:booking] if user choose the end date before start date
+      if start_date.to_datetime > end_date.to_datetime
+        session[:booking] = nil
+      end
+
       manually_blocked_dates_arr.each do |range_date|
         if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
           session[:booking] = nil

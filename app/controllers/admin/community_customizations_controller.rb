@@ -19,6 +19,10 @@ class Admin::CommunityCustomizationsController < Admin::AdminBaseController
   end
 
   def update_details
+    if params[:global_blocked_dates_str]
+      @current_community.update(global_blocked_dates: params[:global_blocked_dates_str])
+    end
+
     update_results = []
     analytic = AnalyticService::CommunityCustomizations.new(user: @current_user, community: @current_community)
 
