@@ -216,4 +216,25 @@ $(function() {
 
   }, 1000));
 
+  $("#start-on").on("change", function () {
+    var arrivalDate = $("#start-on").val().trim();
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+
+    if (month < 10) {
+      month = "0" + month;
+    }
+    if (day < 10) {
+      day = "0" + day;
+    }
+
+    var date = month + '/' + day + '/' + today.getFullYear();
+
+    if (date == arrivalDate) {
+      swal("Successfully!", "You can pick up from movri office today", "success", {
+      });
+    }
+  })
+
 });
