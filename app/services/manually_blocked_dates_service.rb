@@ -2,7 +2,7 @@ module ManuallyBlockedDatesService
   module_function
 
   def get_global_blocked_dates(community)
-    return unless community.global_blocked_dates.present?
+    return Set.new unless community.global_blocked_dates.present?
 
     blocked_dates = []
 
