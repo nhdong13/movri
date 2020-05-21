@@ -69,6 +69,7 @@
 #  video                           :string(255)
 #  tags                            :string(255)
 #  manually_blocked_dates          :text(65535)
+#  replacement_value               :integer          default(0)
 #
 # Indexes
 #

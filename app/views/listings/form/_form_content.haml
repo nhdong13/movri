@@ -42,6 +42,7 @@
             .col-12.form-listing-wrap
               = render :partial => "listings/form/price", :locals => { :form => form, :run_js_immediately => run_js_immediately }
               = render :partial => "listings/form/quantity", :locals => { :form => form }
+              = render :partial => "listings/form/replacement_value", :locals => { :form => form }
             .col-12.form-listing-wrap
               = render :partial => "listings/form/inventory", :locals => { :form => form }
               = render :partial => "listings/form/weight", :locals => { :form => form }
