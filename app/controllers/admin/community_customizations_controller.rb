@@ -23,6 +23,12 @@ class Admin::CommunityCustomizationsController < Admin::AdminBaseController
       @current_community.update(global_blocked_dates: params[:global_blocked_dates_str])
     end
 
+    # Update padding time
+    @current_community.update(
+      padding_time_before: params[:padding_time_before],
+      padding_time_after: params[:padding_time_after]
+    )
+
     update_results = []
     analytic = AnalyticService::CommunityCustomizations.new(user: @current_user, community: @current_community)
 

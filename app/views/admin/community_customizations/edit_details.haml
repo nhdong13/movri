@@ -65,7 +65,7 @@
       = render partial: "locale_input_textarea", locals: transaction_agreement_text_locals
 
     .row
-      .col-6
+      .col-5
         %label Global Blocked Dates:
         %input#global-blocked-dates.form-control{:type => "text", autocomplete: "off"}
         %table#global-blocked-dates-table{:style => "margin-top: 10px;"}
@@ -77,7 +77,16 @@
                 %td.global-blocked-date-delete-icon{:style => "text-align: right;"}
                   %i.icon-remove{:style => "cursor: pointer;"}
 
+
       = hidden_field_tag :global_blocked_dates_str, @current_community.global_blocked_dates.to_s
+
+    .row
+      .col-5
+        %label Padding Time Before:
+        = text_field_tag :padding_time_before, @current_community.padding_time_before, class: 'form-control'
+      .col-5
+        %label Padding Time After:
+        = text_field_tag :padding_time_after, @current_community.padding_time_after, class: 'form-control'
 
     .row
       .col-12
