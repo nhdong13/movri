@@ -1,7 +1,7 @@
 .show-cart-page
   .mobile-display
     - if session[:cart].present?
-
+      -# TODO:
     - else
       .mobile-cart-title
         %h3 Cart
@@ -23,3 +23,29 @@
           %span Contact us
         .helpful-link
           %span Helpful link
+  .desktop-display
+    - if session[:cart].present?
+      %h1 My Cart
+      - session[:cart].each do |key, value|
+        - listing = Listing.find_by(id: key)
+        .row
+          .col-2
+            = image_tag listing.main_image, alt: '', height: '100', width: 'auto', class: 'img-responsive-cart'
+          .col-4
+            %span Canon EOS 5D Mark III DSLR Camera
+          .col-3
+            %span
+              Quantity:
+              = value
+          .col-3
+            - price_cents = 0
+            - if session[:cart][listing.id.to_s]
+              - price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing.id.to_s]
+            %span
+              Price:
+              = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+        .row
+
+    - else
+      -# TODO:
+      %h1 No products in the cart yet
