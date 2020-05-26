@@ -1,7 +1,109 @@
 .show-cart-page
   .mobile-display
-    - if session[:cart].present?
+    -# - if session[:cart].present?
       -# TODO:
+    - if session[:cart].present?
+      .mobile-cart-header
+        .row
+          .col-2
+            %span.title My Cart
+          .col-6.price
+            %span.subtotal Subtotal
+            .price
+              %span.number-price $129.00
+              %span.day-rent /4 days rental
+          .col-4
+            = button_tag class: "custom-btn" do
+              -# %i.icon-lock.fa-fw
+              %span.uppercase Checkout
+      - session[:cart].each do |key, value|
+        - listing = Listing.find_by(id: key)
+        .row.mobile-listing-info
+          .col-4.image-thumb
+            -# = image_tag "mf_icons/icon-movri-mobile-cart.svg", alt: '', height: '50', width: 'auto', class: 'img-responsive-cart'
+            = image_tag listing.main_image, alt: '', height: '80', width: 'auto', class: 'img-responsive-cart'
+          .col-8.mobile-listing-info-wrap
+            %span.title
+              = listing.title
+            .sku-quantity
+              .sku{float: 'left'}
+                SKU: CNNSNSNSS
+              .quantity
+                Qty: 1
+            .coverage
+              .coverage-selection
+                = select_tag :select_coverage, options_for_select(['Movri Coverage']), class: 'custom-select'
+              .price-coverage
+                %span.price
+                  Price: $129.00
+                %span
+                  Coverage: $20.00
+          .listting-action
+            %i.icon-shopping-cart
+            %span Move to wish list
+
+            %i.icon-remove-sign
+            %span Remove
+        .row-empty-row
+
+        .col-12{"margin-top": "30px"}
+          .common-box
+            .rent-date-box
+              .listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
+                .arrival-date
+                  %p.center-title Arrival Date
+                  = text_field_tag :arrival_date
+                .return-date
+                  %p.center-title Return Date
+                  = text_field_tag :return_date
+
+          .common-box
+            %p.title Promo Code
+            .promo-code-field
+              = text_field_tag :promo_code
+              = button_tag 'Apply', :class => "common-btn"
+
+          .common-box
+            %p Special instructions for seller
+            .special-instructions-box
+              = text_area_tag :instructions, nil, placeholder: "Special instructions"
+
+          .common-box
+            %p.center-title Shipping
+            .shipping-box
+              .options
+                = radio_button_tag :shipping_type, 'delivery', 'checked'
+                %span Delivery
+              .options
+                = radio_button_tag :shipping_type, 'fedex'
+                %span Fedex Office
+              .options
+                = radio_button_tag :shipping_type, 'pickup'
+                %span Pickup
+              = text_field_tag :zip_code, nil, placeholder: "Zip code"
+              = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00'])
+
+          .common-box
+            .checkout-box
+              .price-list
+                %span Subtotal
+                %span.price#subtotal-price $129.00
+              .price-list
+                %span Coverage
+                %span.price#coverage-price $129.00
+              .price-list
+                %span Shipping
+                %span.price#shipping-fee $129.00
+              .total-price
+                %span Total (excluding tax)
+                %span.price#total-price $129.00
+              = button_tag class: "common-btn btn-checkout" do
+                %i.icon-lock.fa-fw
+                %span.uppercase Checkout
+              .coutinue-shipping
+                .center-title
+                  = link_to "Continue Shipping","",  class: "fz-16"
+                %i.icon-chevron-right
     - else
       .mobile-cart-title
         %h3 Cart

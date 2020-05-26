@@ -5,7 +5,8 @@
   button{
     background-color: #13588d;
     margin: 0;
-    width: 60%
+    width: 60%;
+    margin-left: 5px;
   }
   button:hover{
     background-color: #13588d;
@@ -70,6 +71,7 @@
 }
 
 .listing-info{
+  padding-top: 30px;
   border-radius: 7px;
   background-color: white;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
@@ -86,7 +88,102 @@
     .action-item{
       font-size: 16;
       color: #757575;
-      margin-left: 20px
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+}
+
+.row-empty-row {
+  height: 20px;
+  width: 100%;
+}
+
+.mobile-listing-info {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 10px;
+  border-radius: 7px;
+  background-color: white;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
+
+  .listting-action {
+    font-size: 14px;
+    border-top: 1px solid #bdbdbd;
+    text-align: right;
+    padding: 5px;
+    padding-right: 10px;
+    cursor: pointer;
+
+    .icon-remove-sign {
+      margin-left: 5px;
+    }
+  }
+
+  .image-thumb {
+    padding: 5px;
+    padding-left: 15px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .sku-quantity {
+    // margin-top: 10px;
+
+    .sku {
+      float: left;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    .quantity {
+      font-size: 14px;
+    }
+  }
+
+  .coverage {
+    font-size: 14px;
+    margin-left: 33%;
+    // margin-top: 10px;
+
+    .coverage-selection {
+      width: 30px !important;
+
+      .custom-select {
+        border: 1px solid #0b0a0a;
+        background: white;
+      }
+    }
+
+    .price-coverage {
+      // margin-top: 10px;
+      // margin-left: 33%;
+      .price {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  // .mobile-listing-info-wrap {
+  // }
+
+  .content{
+    padding:10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 30px;
+  }
+  .listing-action{
+    border-top: 1px solid #bdbdbd;
+    padding: 5px 20px 20px;
+    .col-4{display: flex; justify-content: center}
+    .action-item{
+      font-size: 16;
+      color: #757575;
+      margin-left: 20px;
+      cursor: pointer;
     }
   }
 }
@@ -107,5 +204,47 @@
   }
   .col-2:last-child{
    button{ margin: 0px; }
+  }
+}
+
+.mobile-cart-header{
+  font-size: 14px;
+  .row{display: flex; align-items: center;}
+
+  .title {
+    font-size: 20px;
+  }
+
+  .price {
+    text-align: right;
+
+    .number-price {
+      color: #13588b;
+    }
+
+    .day-rent {
+      color: #4eb857;
+    }
+  }
+
+  .col-2 {
+    width: 20%;
+  }
+
+  .subtotal {
+    color: #757575;
+  }
+
+  .custom-btn {
+    font-size: 13px !important;
+    padding: 0.75rem 1.5em;
+    background: #4eb857;
+  }
+}
+
+.show-cart-page {
+  .col-4 {
+    width: 33% !important;
+    float: left
   }
 }
