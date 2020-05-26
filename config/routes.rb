@@ -397,6 +397,7 @@ Rails.application.routes.draw do
         get :remove_cart_item
         get :plus_item
         get :minus_item
+        post :change_number_of_item
       end
       collection do
         get :new_form_content
