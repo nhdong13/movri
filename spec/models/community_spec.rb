@@ -107,6 +107,8 @@
 #  allow_free_conversations                   :boolean          default(TRUE)
 #  email_admins_about_new_transactions        :boolean          default(FALSE)
 #  global_blocked_dates                       :string(255)
+#  padding_time_before                        :float(24)        default(0.0)
+#  padding_time_after                         :float(24)        default(0.0)
 #
 # Indexes
 #
