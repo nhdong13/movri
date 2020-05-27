@@ -1,7 +1,5 @@
 .show-cart-page
   .mobile-display
-    -# - if session[:cart].present?
-      -# TODO:
     - if session[:cart].present?
       .mobile-cart-header
         .row
@@ -25,7 +23,6 @@
         - listing = Listing.find_by(id: key)
         .row.mobile-listing-info
           .col-4.image-thumb
-            -# = image_tag "mf_icons/icon-movri-mobile-cart.svg", alt: '', height: '50', width: 'auto', class: 'img-responsive-cart'
             = image_tag listing.main_image, alt: '', height: 'auto', width: '80', class: 'img-responsive-cart'
           .col-8.mobile-listing-info-wrap
             %span.title
@@ -37,7 +34,6 @@
               .quantity
                 %span Qty:
                 - element_id = "cart_detail_item_quantity-" + listing.id.to_s
-                -# %input#cart-detail-item-quantity{value: value, :max => "5", :min => "1", :name => "quantity", :type => "number"}/
                 = select_tag element_id.to_sym, options_for_select((1..10).to_a.map(&:to_s), selected: value), class: 'custom-select-number mobile-number-item-in-cart-detail'
 
 
@@ -62,29 +58,29 @@
               Remove
       .row-empty-row
 
-      .col-12{"margin-top": "30px"}
+      .col-12.mobile-datetime-booking
         .common-box
           .rent-date-box
             .listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
               .arrival-date
                 %p.center-title Arrival Date
-                = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : '')
+                = text_field_tag :mobile_cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : '')
               .return-date
                 %p.center-title Return Date
-                = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')
+                = text_field_tag :mobile_cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')
 
-        .common-box
+        .common-box.mobile-promo-code
           %p.title Promo Code
           .promo-code-field
             = text_field_tag :promo_code
             = button_tag 'Apply', :class => "common-btn"
 
-        .common-box
-          %p Special instructions for seller
+        .common-box.mobile-instructions-code
+          %p.title Special instructions for seller
           .special-instructions-box
             = text_area_tag :instructions, nil, placeholder: "Special instructions"
 
-        .common-box
+        .common-box.mobile-shipping-cal
           %p.center-title Shipping
           .shipping-box
             .options
@@ -129,7 +125,6 @@
       .select-list
         %select#sel1.form-control
           %option
-            -# = image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop')
             US Dollar
           %option CAD Dollar
       .title-1
@@ -168,15 +163,21 @@
             .content
               .row
                 .col-2
-                  -# = image_tag "mf_icons/icon-movri-mobile-cart.svg", alt: '', height: '100', width: 'auto', class: 'img-responsive-cart'
                   = image_tag listing.main_image, alt: '', height: '100', width: 'auto', class: 'img-responsive-cart'
                 .col-4
-                  %span
-                    = listing.title
+                  .listing-title
+                    %span
+                      = listing.title
+                  .listing-sku
+                    %span{style: "font-weight: bold"}
+                      SKU:
+                    %span
+                      = listing.sku.present? ? listing.sku.upcase : 'CAE5D3'
+                  .listing-coverage
+                    = select_tag :select_coverage, options_for_select(['Movri Coverage']), class: 'custom-select-coverage'
                 .col-3
                   .quantity-box
                     %span Quantity
-                    -# = text_field_tag :quantity, value
                     %input.cart-detail-item-quantity{id: "cart-detail-item-quantity-#{listing.id}",value: value, :max => "5", :min => "1", :name => "quantity", :type => "number"}/
                 .col-3
                   - price_cents = 0
@@ -189,7 +190,6 @@
                     %span#price-item= readable_price
                   .cart-item#coverage
                     %span Coverage: $20
-                    -# = readable_price
             .listing-action
               .row
                 .col-8
@@ -212,22 +212,23 @@
                 %p.center-title Return Date
                 = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')
 
-        .common-box
+        .common-box.desktop-promo-code
           %p.title Promo Code
           .promo-code-field
             = text_field_tag :promo_code
             = button_tag 'Apply', :class => "common-btn"
 
-        .common-box
-          %p Special instructions for seller
+        .common-box.desktop-instructions
+          .title
+            %p Special instructions for seller
           .special-instructions-box
             = text_area_tag :instructions, nil, placeholder: "Special instructions"
 
-        .common-box
-          %p.center-title Shipping
+        .common-box.desktop-shipping
+          %p.center-title SHIPPING
           .shipping-box
             .options
-              = radio_button_tag :shipping_type, 'delivery', 'checked'
+              = radio_button_tag :shipping_type, 'delivery'
               %span Delivery
             .options
               = radio_button_tag :shipping_type, 'fedex'
@@ -236,7 +237,7 @@
               = radio_button_tag :shipping_type, 'pickup'
               %span Pickup
             = text_field_tag :zip_code, nil, placeholder: "Zip code"
-            = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00'])
+            = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00']), class: "desktop-custom-select-shipping"
 
         .common-box
           .checkout-box
@@ -268,3 +269,4 @@
 - content_for :javascript do
   window.ST.initCart();
   $('#cart_deatail_arrival_date, #cart_deatail_return_date').datepicker();
+  $('#mobile_cart_deatail_arrival_date, #mobile_cart_deatail_return_date').datepicker();

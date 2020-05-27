@@ -49,7 +49,7 @@ window.ST = window.ST || {};
 
   });
 
-  $("#cart_deatail_return_date").on("change", throttle(function () {
+  $("#cart_deatail_arrival_date, #cart_deatail_return_date").on("change", throttle(function () {
     var changeBookingDayUrl = "/en/change_booking_days";
     var startDate = $("#cart_deatail_arrival_date").val();
     var endDate = $("#cart_deatail_return_date").val();
@@ -77,7 +77,37 @@ window.ST = window.ST || {};
       console.log("Error:", error);
     });
 
-  }, 1000));
+  }, 500));
+
+  $("#mobile_cart_deatail_arrival_date, #mobile_cart_deatail_return_date").on("change", throttle(function () {
+    var changeBookingDayUrl = "/en/change_booking_days";
+    var startDate = $("#mobile_cart_deatail_arrival_date").val();
+    var endDate = $("#mobile_cart_deatail_return_date").val();
+
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    $.ajax({
+      url: changeBookingDayUrl,
+      type: "POST",
+      data: {
+        start_date: startDate,
+        end_date: endDate
+      }
+    }).done(function(response) {
+      console.log('response', response);
+      if (response.success === true) {
+        // Change days booking successful
+        location.reload();
+      } else {
+        // Days not change
+      }
+    }).fail(function(error) {
+      console.log("Error:", error);
+    });
+
+  }, 500));
 
   $(".mobile-number-item-in-cart-detail, .cart-detail-item-quantity").on("change", function () {
     var id = event.target.id;
