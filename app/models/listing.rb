@@ -421,4 +421,14 @@ class Listing < ApplicationRecord
   def main_image
     listing_images.first&.image&.url
   end
+
+  def as_json
+    {
+      id: id,
+      community_id: community_id,
+      title: title,
+      price_cents: price_cents
+
+    }
+  end
 end

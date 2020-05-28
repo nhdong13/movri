@@ -20,8 +20,8 @@
         - listing = Listing.find_by(id: key)
         .row.mobile-listing-info
           .col-4.image-thumb
-            -# = image_tag "mf_icons/icon-movri-mobile-cart.svg", alt: '', height: '50', width: 'auto', class: 'img-responsive-cart'
-            = image_tag listing.main_image, alt: '', height: '80', width: 'auto', class: 'img-responsive-cart'
+            = image_tag "mf_icons/icon-movri-mobile-cart.svg", alt: '', height: '50', width: 'auto', class: 'img-responsive-cart'
+            -# = image_tag listing.main_image, alt: '', height: '80', width: 'auto', class: 'img-responsive-cart'
           .col-8.mobile-listing-info-wrap
             %span.title
               = listing.title
@@ -127,21 +127,9 @@
           %span Helpful link
   .desktop-display
     - if session[:cart].present?
-      .cart-header
-        .row
-          .col-3
-            %span My Cart
-          .col-7
-            %span Subtotal
-            .price
-              %span $129.00
-              %span /4 days rental
-          .col-2
-            = button_tag class: "common-btn btn-checkout" do
-              %i.icon-lock.fa-fw
-              %span.uppercase Checkout
       - session[:cart].each do |key, value|
         - listing = Listing.find_by(id: key)
+        = react_component("CartApp", props: {listing: listing.as_json}, prerender: false)
         .col-8
           .listing-info
             .content
@@ -240,7 +228,6 @@
     - else
       -# TODO:
       %h1 No products in the cart yet
-
 
 - content_for :javascript do
   window.ST.initCart();

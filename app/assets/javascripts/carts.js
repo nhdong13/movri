@@ -2,7 +2,7 @@ window.ST = window.ST || {};
 
 (function(module) {
   module.initCart = function() {
-    onChangeQuantity();
+    // onChangeQuantity();
   };
 
   function onChangeQuantity () {
