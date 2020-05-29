@@ -20,15 +20,15 @@
 -# Hide header in map view if mobile
 %header.header.info-header
   .header-wrapper.clearfix
+    .header-left
+      %select.select
+        %option= "B&H for B2B, Gov, Students & More"
+    .header-left
+      =image_tag('homepage_icons/explora.jpeg', class: "explora-icon")
     .header-right
       = link_to about_infos_path, class: 'de-a' do
         .info-header-text.header-about-us
           = t('header.about_us')
-    .header-right
-      .info-header-text.display-inline-flex
-        = image_tag("mf_icons/icon-movri-chat.svg", class: 'header-menu-icon icon-movri-chat')
-        .smbold
-          = t('header.live_chat')
     .header-right
       .info-header-text.display-inline-flex
         = image_tag("mf_icons/icon-movri-info.svg", class: 'header-menu-icon icon-movri-info')
@@ -38,7 +38,7 @@
       .info-header-text
         .smbold
           = t('header.phone_number')
-    .header-left
+    .header-left.header-info
       .info-header-text.history-since-text
         = raw t('header.history_since')
 %header.header.main-header
@@ -92,13 +92,17 @@
           %i.header-square-logo.hidden-tablet
             -# Logo is here, it's a CSS background
         - if @current_community.wide_logo.present?
-          %i.header-wide-logo
-            -# Logo is here, it's a CSS background
+          .header-wide-logo
+            = image_tag('homepage_icons/movri_logo.png')
         - else
           %span.header-wide-logo-text.visible-tablet
             = @current_community.name(I18n.locale)
     .header-left.header-search-contain{class: "#{logged_in? ? 'header-search-logged-in' : ''}"}
       = render partial: 'layouts/searchs/search_box'
+    .bh-gift-card.float-left
+      = image_tag("homepage_icons/b_h_gift_cards.jpeg")
+    .mega-dealzone.float-left
+      = image_tag("homepage_icons/mega_dealzone.jpeg")
     = render partial: 'layouts/searchs/history'
     = render partial: 'layouts/searchs/results'
 .header.category-nav.hidden-mobile

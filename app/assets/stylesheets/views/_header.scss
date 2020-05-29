@@ -60,10 +60,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .header-search-contain {
-  width: 50%;
+  margin-right: 20px;
+  width: 41%;
 
   &.header-search-logged-in {
     width: 45%;
+    margin-right: 15px;
   }
 }
 
@@ -270,10 +272,45 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       }
     }
   }
+
+  .bh-gift-card,
+  .mega-dealzone {
+    padding: 7px;
+  }
+
+  .bh-gift-card {
+    img {
+      padding-right: 10px;
+      border-right: 1px solid #000000;
+    }
+  }
 }
 
 .header-left {
   float: left;
+
+  &.header-info {
+    float: none;
+    text-align: center;
+  }
+
+  .select{
+    border: 1px solid #747270;
+    border-radius: 8px;
+    height: 25px;
+    margin: 7px 0.4375em;
+    min-height: 25px;
+    font-size: 10px;
+  }
+
+  .select {
+    width: 218px;
+  }
+
+  .explora-icon {
+    height: 26px;
+    margin: 7px 0 0 25px;
+  }
 }
 
 .header-right {
@@ -306,7 +343,24 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 .header-logo {
   display: block;
   @include header-block;
-  margin-top: 15px;
+  margin-top: 0px;
+  width: 115px;
+
+  img {
+    height: 60px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .header-logo {
+    .header-wide-logo {
+      margin: 2px !important;
+
+      img {
+        height: 41px;
+      }
+    }
+  }
 }
 
 .header-text-link {

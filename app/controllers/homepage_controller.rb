@@ -162,7 +162,7 @@ class HomepageController < ApplicationController
                                   includes: includes,
                                   location_search_in_use: nil,
                                   keyword_search_in_use: true,
-                                  relevant_search_fields: []).data
+                                  relevant_search_fields: []).data.order(:created_at)
     render layout: false
   end
 
