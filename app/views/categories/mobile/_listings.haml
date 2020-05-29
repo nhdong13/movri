@@ -2,8 +2,7 @@
   .col-12
     .listing-box-mobile
       .main-image
-        - unless listing.main_image.nil?
-          = image_tag 'len-10_288x288.jpg', :class => "design-image-too-wide"
+        = image_tag 'len-10_288x288.jpg', :class => "design-image-too-wide"
       .listing-information
         .listing-title
           = listing.title
