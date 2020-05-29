@@ -1,0 +1,104 @@
+.footer.text-center
+  .row.information
+    .col-2
+      %h1= I18n.t("footer.shipping.title")
+      %p= I18n.t("footer.shipping.shipping_description")
+    .col-2
+      %h1= I18n.t("footer.returns.title")
+      %p= I18n.t("footer.returns.return_description")
+    .col-2
+      %h1= I18n.t("footer.gift_cards.title")
+      %p= I18n.t("footer.gift_cards.gift_cards_description")
+    .col-2
+      %h1= I18n.t("footer.event_space.title")
+      %p= I18n.t("footer.event_space.event_space_description")
+    .col-2
+      %h1= I18n.t("footer.language")
+      %select.select-language
+        %option= "English"
+    .col-2
+      %h1= I18n.t("footer.currency")
+      %select.select-currency
+        %option= "US Dollar"
+    .col-12
+      %button= I18n.t("footer.helpful_link_btn")
+  .row.other-information
+    .col-4.sign-up
+      %p= I18n.t("footer.sign_up.title")
+      %input.form-control{:placeholder => "Email address", :type => "text", class: "email-address"}/
+      %button{:type => "button", class: "btn-sign-up"} SIGN UP
+
+      %span= I18n.t("footer.sign_up.deal_zone_alerts")
+      %span= I18n.t("footer.sign_up.weekly_bh_newsletter")
+      %span= I18n.t("footer.sign_up.manage_subscriptions")
+      %span= I18n.t("footer.sign_up.sample_newsletter")
+    .col-2.other-sites
+      %p= I18n.t("footer.other_sites.title")
+      %span= I18n.t("footer.other_sites.description")
+    .col-3.customer-services
+      %p= I18n.t("footer.customer_service.title")
+      = image_tag("homepage_icons/customer_service.png", class: "float-left")
+      .descriptioton
+        %span= I18n.t("footer.customer_service.description")
+        %span= I18n.t("footer.customer_service.authenticate_magazine")
+    .col-3.workplace
+      %p= I18n.t("footer.workplace")
+      = image_tag("homepage_icons/workplace1.png", class: "float-left")
+      = image_tag("homepage_icons/workplace2.png")
+  .row.security-social-media
+    .col-12
+      .img
+        = image_tag("homepage_icons/mcafee.png")
+      .img
+        = image_tag("homepage_icons/norton.png")
+      .img
+        = image_tag("homepage_icons/bbb.png")
+      .img
+        = image_tag("homepage_icons/bhapp.png")
+      .img
+        = image_tag("homepage_icons/bhmobile.png")
+      .img
+        = image_tag("homepage_icons/youtube.png")
+      .img
+        = image_tag("homepage_icons/pinterest.png")
+      .img
+        = image_tag("homepage_icons/instagram.png")
+      .img
+        = image_tag("homepage_icons/twiiter.png")
+      .img
+        = image_tag("homepage_icons/facebook.png")
+  .row.copyright.text-center
+    .col-4.company-privacy
+      %p= I18n.t("footer.company")
+      %a= I18n.t("footer.privacy_security")
+      %a= I18n.t("footer.user_agreement")
+      %a= I18n.t("footer.policy")
+      %a= I18n.t("footer.california_policy")
+    .col-2.work-time
+      %p= I18n.t("footer.closing_time")
+      %p= I18n.t("footer.weekend_hours")
+    .col-6.product-notice
+      %p= I18n.t("footer.product_notice")
+
+.mobile-footer.d-none
+  .recently-viewed
+    .d-flex
+      = image_tag("homepage_icons/recently_icon.svg")
+      %span= "Recently Viewed Items"
+      %i.icon-ellipsis-vertical
+    .d-flex
+      %i.icon-plus
+  .mobile-infomation.text-center
+    .col-12
+      %select
+        %option= "US Dollar"
+    .col-12
+      %p= "2000-2020 B&H Foto & Electronics Corp."
+  .mobile-contact-us.d-flex
+    .d-flex
+      %p= "808.894.9703"
+    .d-flex
+      %a= "Contact Us"
+    .d-flex
+      %a= "Helpful Links"
+      %i.icon-chevron-down

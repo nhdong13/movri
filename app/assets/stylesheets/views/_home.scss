@@ -38,6 +38,10 @@
   }
 }
 
+.d-flex{
+  display: flex;
+}
+
 .home-toolbar-button-group-button {
   @include button($link);
   @include button-group-button;
@@ -529,4 +533,504 @@ $home-list-avatar-padding: lines(0.25);
 
 .pac-item span {
   pointer-events: none;
+}
+
+.how-it-works {
+  h1 {
+    font-size: 30px;
+    font-weight: 500;
+
+  }
+
+  .row {
+    margin-top: 25px;
+
+    .col-1 {
+      margin-top: 115px;
+    }
+
+    .col-3,
+    .col-4 {
+      .icon {
+        margin: 10px auto;
+        border: 1px solid #747270;
+        border-radius: 5px;
+        width: 98px;
+        height: 92px;
+      }
+
+      span {
+        &.title {
+          margin-top: 25px;
+          font-size: 24px;
+          display: block;
+        }
+
+        &.description {
+          margin-top: 25px;
+          font-size: 14px;
+
+          &::before {
+            content: "[";
+            color: #e1050a;
+          }
+
+          &::after {
+            content: "]";
+            color: #e1050a;
+          }
+        }
+      }
+    }
+
+    i {
+      font-size: 30px;
+    }
+  }
+}
+
+.new-products,
+.feature-products {
+  margin-top: 25px;
+
+  p {
+    font-size: 34px;
+  }
+
+  .row {
+    .products {
+      .col-3 {
+        .product{
+          margin: 0px auto;
+          width: 255px;
+          height: 355px;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+
+          .product-image {
+            width: 167px;
+            height: 121px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin: 35px auto;
+          }
+
+          .product-name,
+          .product-rent-price {
+            font-size: 16px;
+            height: 37px;
+          }
+
+          .product-name {
+            padding: 0px 10px;
+          }
+
+          .product-rent-price {
+            margin-top: 15px;
+            font-weight: bold;
+
+            span:last-of-type {
+              color: #4eb857;
+            }
+          }
+
+          button {
+            height: 34px;
+            width: 106px;
+            background: #4eb857;
+            color: white;
+            font-size: 17px;
+            margin: 10px auto;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.movri-different {
+  margin-top: 25px;
+
+  .title {
+    font-size: 30px;
+    font-weight: 500;
+  }
+
+  .col-6 {
+    background-color: #f3f9fe;
+    height: 300px;
+    width: 619px;
+    margin: 10px;
+
+    img {
+      margin-top: 50px;
+      width: 82px;
+      height: 100px;
+    }
+
+    img.assured_quality,
+    img.cancellation {
+      height: 113px;
+    }
+
+    img.assured_quality {
+      width: 308px;
+    }
+
+    img.cancellation {
+      width: 369px;
+    }
+
+    p {
+      margin: 80px auto 0px auto;
+      font-size: 18px;
+      line-height: 1.3;
+      width: 75%;
+    }
+  }
+}
+
+.contact-us {
+  .row {
+    line-height: 70px;
+
+    .sale_expert_advice,
+    .customer_service {
+      line-height: 0.8;
+
+      span:first-of-type {
+        color: #7f7f7f;
+      }
+
+      p {
+        &.title {
+          font-size: 14px;
+          display: block;
+          color: #7f7f7f;
+        }
+
+        &.phone_number {
+          font-size: 30px;
+          font-weight: bolder;
+          color: #334455;
+          margin-bottom: 12px;
+        }
+
+        &.second_phone_number {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .contact-mail {
+      i,
+      span {
+        color: #334455;
+      }
+
+      i {
+        font-size: 30px;
+      }
+
+      span {
+        font-size: 30px;
+        font-weight: bolder;
+      }
+    }
+  }
+}
+
+.footer {
+  background-color: #f3f3f3;
+  .information {
+    .col-2 {
+      margin-top: 40px;
+
+      p {
+        color: #999999;
+      }
+
+      h1 {
+        color: #999999;
+        font-size: 24px;
+        font-weight: bolder;
+      }
+
+      select {
+        background-color: #ffffff;
+        border: none;
+        width: 170px;
+        font-size: 14px;
+      }
+    }
+
+    .col-12 {
+      border-bottom: 1px solid #bdbdbd;
+
+      button {
+        margin: 40px auto 25px auto;
+        width: 228px;
+        height: 54px;
+        font-size: 16px;
+        font-weight: bold;
+        word-spacing: 2px;
+        color: #7f7f7f;
+        background-color: #dddddd;
+      }
+
+      button:hover {
+        background-color: #dddddd;
+      }
+    }
+  }
+
+  .other-information {
+    text-align: left;
+
+    p {
+      font-size: 18px;
+    }
+
+    .sign-up,
+    .other-sites,
+    .customer-services {
+      border-right: 1px solid #bdbdbd;
+      height: 210px;
+    }
+
+    .sign-up {
+      span {
+        display: block;
+      }
+    }
+
+    .other-sites {
+      span {
+        font-size: 15px;
+        color: #999999;
+        line-height: 1.7;
+      }
+    }
+
+    .customer-services {
+      img {
+        float: left;
+        margin-right: 10px;
+      }
+
+      .description {
+        margin-top: 30px;
+
+        span:first-of-type {
+          display: block;
+          font-size: 14px;
+          width: 240px;
+        }
+
+        span {
+          font-size: 13px;
+          font-style: italic;
+        }
+      }
+    }
+
+    .workplace {
+      img:first-of-type {
+        margin-top: 15px;
+        width: 172px;
+      }
+
+      img {
+        width: 100px;
+      }
+    }
+
+    input.email-address {
+      border: none;
+      width: 70%;
+      float: left;
+      height: 52px;
+    }
+
+    .btn-sign-up {
+      background: #7f7f7f;
+      color: #d9e3ec;
+      font-weight: bold;
+      font-size: 16px;
+      height: 52px;
+    }
+  }
+
+  .security-social-media {
+    background-color: #bebebe;
+    height: 92px;
+    margin-bottom: 0px;
+
+    img {
+      float: left;
+      margin: 15px 21px auto 21px;
+    }
+
+    .img {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  .copyright {
+    height: 92px;
+    margin-top: 0px;
+    background-color: #959595;
+
+    p {
+      margin-bottom: 0px;
+    }
+
+    .company-privacy,
+    .work-time,
+    .product-notice {
+      margin-top: 10px;
+
+      p {
+        text-align: left;
+      }
+    }
+    .company-privacy {
+      p {
+        font-size: 13px;
+        color: #ffffff;
+      }
+
+      a,
+      a:hover {
+        color: #b2b2b2;
+        font-size: 11px;
+        margin: auto 2px;
+        cursor: pointer;
+      }
+    }
+
+    .work-time,
+    .product-notice {
+      font-size: 10px;
+    }
+
+    .work-time {
+      p:first-of-type {
+        color: #b2b2b2;
+      }
+
+      p:last-of-type {
+        color: #333333;
+      }
+    }
+  }
+}
+
+.mobile-footer {
+  background-color: #f0f0f0;
+  border-top: 1px solid #bdbdbd;
+
+  .recently-viewed {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span,
+    img,
+    i {
+      display: flex;
+    }
+
+    span {
+      margin: auto 10px;
+      font-size: 20px;
+    }
+
+    img {
+      width: 23px;
+    }
+
+    i {
+      font-size: 24px;
+    }
+
+    .icon-ellipsis-vertical {
+      border-left: 1px solid;
+      padding-left: 10px
+    }
+
+    .icon-plus {
+      padding-right: 10px;
+    }
+  }
+
+  .mobile-infomation {
+    margin-top: 20px;
+
+    select {
+      width: 240px;
+      background: white;
+      border: none;
+    }
+
+    .col-12 {
+      p {
+        font-size: 14px;
+        color: #000000;
+      }
+    }
+  }
+
+  .mobile-contact-us {
+    background-color: white;
+    justify-content: space-between;
+
+    a, p, i{
+      font-size: 12px;
+      color: #757575;
+    }
+
+    i {
+      padding: 6px;
+    }
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .carousel {
+    img {
+      height: 134px;
+    }
+  }
+
+  .icon-chevron-right,
+  .footer,
+  .contact-us {
+    display: none;
+  }
+
+  .movri-different{
+    .col-6 {
+      margin: 10px auto;
+      width: auto;
+    }
+  }
+
+  .new-products,
+  .feature-products {
+    text-align: center;
+  }
+
+  .how-it-works {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mobile-footer {
+    display: block !important;
+  }
 }
