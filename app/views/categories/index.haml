@@ -1,0 +1,18 @@
+.desktop-display
+  .main-content
+    .row
+      .col-2
+        = render :partial => 'filter_bar', locals: {listings: @listings}
+      .col-10
+        .listtinggrid--item
+          = render :partial => 'listings', locals: {listings: @listings}
+        .listting-pagination
+          = will_paginate(@listings)
+.mobile-display
+  = render :partial => 'layouts/searchs/search_box'
+  = render :partial => 'categories/mobile/sort_filter_bar'
+  = render :partial => 'categories/mobile/listings', locals: {listings: @listings}
+  = render :partial => 'categories/mobile/pagination', locals: {listings: @listings}
+
+- content_for :javascript do
+  window.ST.initSortAndFilter();

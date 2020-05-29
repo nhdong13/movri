@@ -177,6 +177,9 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :categories, only: [:index]
+
+
     namespace :admin do
       get '' => "getting_started_guide#index"
 

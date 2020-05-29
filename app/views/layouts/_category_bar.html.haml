@@ -8,6 +8,7 @@
           - main_category.children.each do |child|
             %a{:href => search_path(category: child)}
               = @category_display_names[child.id]
+  = link_to "Camera", categories_path()
   %a.icon.icon-reorder.category-menu-mobile{:href => "javascript:void(0);"}
 
 - content_for :extra_javascript do

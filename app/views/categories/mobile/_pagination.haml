@@ -1,0 +1,9 @@
+.pagination-bar
+  .previous-btn
+    %span Previous
+  .page-select-box
+    %span Page
+    = select_tag :page, options_for_select([1,2,3,4,5])
+    %span of 30
+  .next-btn
+    %span Next
