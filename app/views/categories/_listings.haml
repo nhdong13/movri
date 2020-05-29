@@ -13,11 +13,10 @@
     .col-3
       .listing-box
         .main-image
-          - unless listing.main_image.nil?
-            = image_tag 'len-10_288x288.jpg', :class => "design-image-too-wide"
+          = image_tag 'len-10_288x288.jpg', :class => "design-image-too-wide"
         .listing-price
           %span $240
           %span /1 day
-        .listing-info
+        .listing-information
           = listing.title
         = link_to "Rent now", "", class: "rent-now-btn"
