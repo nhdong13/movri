@@ -86,6 +86,11 @@ $(function() {
       type: "GET"
     }).done(function(response) {
       if (response.success === true) {
+        // User in cart detail page
+        if (window.location.pathname.includes("show_cart")) {
+          location.reload(true);
+        }
+
         var data = response.data;
         var item_id = "#wrap-item-cart-" + data.delete_item;
         // Remove item without reload page
@@ -111,6 +116,11 @@ $(function() {
       type: "GET"
     }).done(function(response) {
       if (response.success === true) {
+        // User in cart detail page
+        if (window.location.pathname.includes("show_cart")) {
+          location.reload(true);
+        }
+
         var data = response.data;
 
         var item = "#quantity-item-" + data.item;
@@ -139,6 +149,11 @@ $(function() {
       type: "GET"
     }).done(function(response) {
       if (response.success === true) {
+        // User in cart detail page
+        if (window.location.pathname.includes("show_cart")) {
+          location.reload(true);
+        }
+
         var data = response.data;
 
         if (data.delete === true) {

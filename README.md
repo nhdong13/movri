@@ -475,3 +475,80 @@ The forum is a great place to ask support and help for example with issues durin
 ## License
 
 Sharetribe is source available under the Sharetribe Community Public Licence. See [LICENSE](LICENSE) for details.
+
+## Setup project note
+
+1. Install Ruby and dependencies
+`rvm install 2.6.2`
+`bundle install`
+
+2. Setup Javascript dependencies
+`nvm install`
+`npm install`
+
+3. Install sphinxsearch
+`searchd --status`
+`sudo apt-get install sphinxsearch`
+
+4. Install imagemagick for edit image uploaded
+`sudo apt list imagemagick -a`
+`sudo apt install imagemagick`
+
+5. Add files
+`database.yml` and `config.yml`
+
+6. Create and handle data
+
+`rake db:create`
+
+`rake db:structure:load`
+
+`bundle exec rake ts:index`
+
+`bundle exec rake ts:start`
+
+7. Assets compile
+`rake assets:precompile`
+
+8. Start foreman
+`foreman start -f Procfile.static`
+
+9. Start delayed_job
+`bundle exec rake jobs:work`
+
+10. Import sample database
+
+11. Update community for local development
+
+e.g: `Community.first.update(domain: 'localhost')`
+
+12. Update person password and set this person is admin
+
+e.g `Person.first.update(password: 'your_pass')`
+
+13. Harmony setup
+
+Setup follow this guide:
+https://github.com/sharetribe/harmony
+
+Note: If you setup harmony on macos you just do more some steps below:
+
+- Update Dockerfile:
+
+Remove:
+
+```bash
+RUN apt-get update \
+    && apt-get upgrade -y
+```
+
+Replaced the above code by:
+
+```bash
+RUN echo 'deb http://archive.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
+RUN apt-get -o Acquire::Check-Valid-Until=false update
+```
+
+- Install java:
+https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html

@@ -462,6 +462,22 @@ class ListingsController < ApplicationController
     }
   end
 
+  def change_number_of_item
+    id = params[:id]
+
+    if session[:cart].key?(id) && params[:total].to_i > 0
+      session[:cart][id] = params[:total].to_i
+
+      render json: {
+        success: true
+      }
+    else
+      render json: {
+        success: false
+      }
+    end
+  end
+
   def load_cart
     unless session[:cart]
       render json: {

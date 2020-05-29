@@ -1,0 +1,368 @@
+.promo-code-field{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  button{
+    background-color: #13588d;
+    margin: 0;
+    width: 60%;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+  }
+  button:hover{
+    background-color: #13588d;
+  }
+  input{
+    border: 1px solid #13588d !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+  }
+}
+
+.special-instructions-box{
+  margin-bottom: 20px;
+  textarea{
+    min-height: 140px;
+  }
+}
+
+.shipping-box{
+  .options{
+    margin-bottom: 5px;
+    input{
+      transform: scale(1.25)
+    }
+  }
+  #zip_code{
+    margin-top: 20px;
+  }
+}
+
+#select_shipping{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background-color: white;
+  width: 100%
+}
+
+.checkout-box{
+  .price-list:first-child{margin-top: 20px;}
+  .price{float: right}
+  .price-list{
+    margin-bottom: 7px;
+    font-size: 15px;
+    color: #757575;
+  }
+  .total-price{
+    font-size: 13px;
+    color: black
+  }
+
+  .coutinue-shipping{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    .icon-chevron-right{
+      display: inline-block;
+      margin-top: 5px;
+      margin-left: 7px;
+      color: #13588d;
+    }
+  }
+
+}
+
+.listing-info{
+  padding-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 7px;
+  background-color: white;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
+  .content{
+    padding:10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 30px;
+  }
+  .listing-action{
+    border-top: 1px solid #bdbdbd;
+    padding: 5px 20px 20px;
+    .col-4{display: flex; justify-content: center}
+    .action-item{
+      font-size: 16;
+      color: #757575;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .listing-title {
+    font-size: 17px;
+    font-weight: bold;
+  }
+
+  .listing-sku {
+    margin-top: 10px;
+  }
+
+  .listing-coverage {
+    margin-top: 10px;
+
+    .custom-select-coverage {
+      background: white;
+      border: solid 1px black;
+      padding: 8px 16px !important;
+    }
+  }
+}
+
+
+.row-empty-row {
+  height: 20px;
+  width: 100%;
+}
+
+.mobile-listing-info {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 10px;
+  border-radius: 7px;
+  background-color: white;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
+
+  .listting-action {
+    font-size: 14px;
+    border-top: 1px solid #bdbdbd;
+    text-align: right;
+    padding: 5px;
+    padding-right: 10px;
+    cursor: pointer;
+
+    .icon-remove-sign {
+      margin-left: 5px;
+    }
+  }
+
+  .image-thumb {
+    padding: 5px;
+    padding-left: 15px;
+  }
+
+  .title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .sku-quantity {
+    .sku {
+      float: left;
+      font-size: 14px;
+      margin-right: 10px;
+      margin-top: 2px;
+    }
+
+    .quantity {
+      font-size: 14px;
+    }
+  }
+
+  .coverage {
+    font-size: 14px;
+    margin-left: 33%;
+
+    .coverage-selection {
+      width: 30px !important;
+
+      .custom-select {
+        border: 1px solid #0b0a0a;
+        background: white;
+      }
+    }
+
+    .price-coverage {
+      .price {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .mobile-listing-info-wrap {
+    input {
+      height: 20px;
+      width: 30px;
+    }
+  }
+
+  .content{
+    padding:10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 30px;
+  }
+  .listing-action{
+    border-top: 1px solid #bdbdbd;
+    padding: 5px 20px 20px;
+    .col-4{display: flex; justify-content: center}
+    .action-item{
+      font-size: 16;
+      color: #757575;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+
+  select {
+    min-height: 10px;
+  }
+
+  .custom-select-number {
+    background: white;
+    border: none;
+  }
+
+  .custom-select-number:focus {
+    border: none;
+  }
+}
+
+.mobile-datetime-booking {
+  .center-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .return-date {
+    margin-top: 15px;
+  }
+
+  .mobile-promo-code {
+    .title {
+      font-size: 14px;
+      font-weight: bolder;
+    }
+    .common-btn {
+      font-size: 14px;
+    }
+  }
+
+  .mobile-instructions-code {
+    .title {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+
+  .mobile-shipping-cal {
+    .center-title {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}
+
+.cart-header{
+  .row{display: flex; align-items: center;}
+  margin-bottom: 20px;
+  .col-3{padding-left: 15px !important; font-size: 30px;}
+  .col-7{
+    padding-right:0px;
+    text-align: right;
+    .price{
+      font-size:20px;
+      font-weight: bold;
+      span:first-child{color: #13588d}
+      span:last-child{color: #4eb857;}
+    }
+  }
+  .col-2:last-child{
+   button{ margin: 0px; }
+  }
+}
+
+.mobile-cart-header{
+  font-size: 14px;
+  .row{display: flex; align-items: center;}
+
+  .title {
+    font-size: 20px;
+  }
+
+  .price {
+    text-align: right;
+
+    .number-price {
+      color: #13588b;
+    }
+
+    .day-rent {
+      color: #4eb857;
+    }
+  }
+
+  .col-2 {
+    width: 20%;
+  }
+
+  .subtotal {
+    color: #757575;
+  }
+
+  .custom-btn {
+    font-size: 13px !important;
+    padding: 0.75rem 1.5em;
+    background: #4eb857;
+  }
+}
+
+.show-cart-page {
+  .col-4 {
+    width: 33% !important;
+    float: left
+  }
+}
+
+.rent-date-box {
+  font-weight: bold;
+
+  .arrival-date {
+    .center-title {
+      color: #616161;
+    }
+  }
+
+  .return-date {
+    margin-top: 15px;
+    .center-title {
+      color: #616161;
+    }
+  }
+}
+
+.desktop-promo-code {
+  .title {
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+.desktop-instructions {
+  .title {
+    font-weight: bold;
+    font-size: 16px;
+  }
+}
+
+.desktop-shipping {
+  .center-title {
+    font-weight: bold;
+    font-size: 16px;
+    color: #616161;
+  }
+
+  .desktop-custom-select-shipping {
+    background: white;
+    border: 1px solid #9e9e9e;
+    padding: 5px 10px !important;
+  }
+}

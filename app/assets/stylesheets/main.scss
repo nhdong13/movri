@@ -45,7 +45,7 @@ body {
 }
 
 .page-content {
-  padding-bottom: lines(15);
+  padding-bottom: lines(10);
   padding-top: lines(0.5);
   background: #f4f6f8;
 
@@ -97,7 +97,8 @@ body {
 }
 
 body {
-  background: $background;
+  // background: $background;
+  background: #f4f6f8;
   color: $body;
   height: auto; // fixes some height issues in the map view
   //border: solid darken($highlight, 9%);

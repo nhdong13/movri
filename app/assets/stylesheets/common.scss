@@ -1,1 +1,69 @@
-.fa-fw{margin-right: 5px;}
+.common-box{
+  border-radius: 7px;
+  background-color: white;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
+  padding:10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-bottom: 30px;
+  .center-title{
+    font-size: 18px;
+    text-align: center;
+  }
+  .title{
+    margin-top: 10px;
+    color: #616161;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+.common-btn{
+  font-size: 18px;
+  font-weight: initial;
+  width: 100%;
+  margin: 18px 0px;
+}
+
+.btn-checkout{
+  background-color: #4eb857
+}
+
+.btn-checkout:hover{
+  background-color: #4eb857
+}
+
+.uppercase{
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.fa-fw {
+  margin-right: 5px;
+}
+
+.fz-14{font-size: 14px;}
+.fz-16{font-size: 16px;}
+
+#arrival_date, #return_date {
+  background: url(mf_icons/icon-movri-calendar.svg) no-repeat 325px center;
+  background-size: 20px 20px;
+  margin-bottom: 20px;
+}
+
+.quantity-box{
+  color: #757575;
+  font-size: 13px;
+  width: 90px;
+  border: 1px solid black;
+  border-radius: 5px;
+  text-align: center;
+  input{
+    font-size: 15px;
+    border: transparent !important;
+    text-align: center;
+    min-height: unset !important;
+    padding: 0 !important;
+  }
+ }

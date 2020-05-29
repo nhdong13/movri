@@ -114,4 +114,5 @@
 //= require tag-it
 //= require listing_tags
 //= require manually_blocked_dates
+//= require carts
 //= require_self
