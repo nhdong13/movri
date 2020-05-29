@@ -50,7 +50,6 @@
 
 .rent-now-btn{
   text-align: center;
-  display: block;
   width: 95px;
   font-size: 14px;
   padding: 10px 10px;
@@ -116,7 +115,7 @@
   align-items: center;
   .main-image{
     img {
-      max-width: 150px;
+      max-width: 125px;
     }
   }
   .listing-info{min-height: 70%}
@@ -128,6 +127,9 @@
     span:last-child{
       color: #4eb857;
     }
+  }
+  .rent-now-btn{
+    display: block;
   }
 }
 
@@ -155,11 +157,16 @@
 
 }
 .pagination-bar{
+  border-bottom: 1px solid black;
   display: flex;
   justify-content:center;
   align-items: center;
   .previous-btn, .next-btn{
-    padding: 10px;
+    input{
+      padding: 10px;
+      background: transparent;
+      border: unset;
+    }
     border: 1px solid;
     border-radius: 5px;
     background: white;

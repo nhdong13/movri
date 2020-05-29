@@ -7,7 +7,7 @@
   .col-12
     .brown-bar
       %span Sort by:
-      = select_tag "sort_listing", options_for_select(['Best Seller', "Best Renter"])
+      = select_tag "sort_listing", options_for_select(['Best Sellers', "Best Renters"])
 
   - listings.each do |listing|
     .col-3

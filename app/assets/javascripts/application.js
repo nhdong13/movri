@@ -108,6 +108,7 @@
 //= require pricing_chart.js
 //= require view_cart.js
 //= require sortAndFilter.js
+//= require categories
 //= require header
 //= require listing_contact
 //= require tag-it

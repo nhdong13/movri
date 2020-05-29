@@ -74,14 +74,13 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   position: relative;
 
   @media #{$mobile} {
-    display: none;
-    position: absolute;
     top: 0;
     left: 0;
-    margin: 0 !important;
+    margin: 10px 0 !important;
     height: 45px;
-    width: 100vw;
+    width: 100%;
     background-color: white;
+    border: 1px solid #bdbdbd;
     input {
       font-size: 14px !important;
       height: 45px !important;
@@ -100,7 +99,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       color: white;
       background-color: #13588d;
       width: 65px;
-      height: 45px;
       position: relative;
       display: inline-block;
       top: 0;
