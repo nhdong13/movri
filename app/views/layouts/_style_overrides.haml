@@ -17,7 +17,6 @@
   .new-listing-link { background: ##{ ColorUtils.darken(color2, 0) }; }
   .new-listing-link:hover { background: ##{ ColorUtils.darken(color2, 5) }; }
   .new-listing-link:active { background: ##{ ColorUtils.darken(color2, 10) }; }
-  .header-wide-logo { background-image: url("#{ image_map[:wide_logo_lowres] }"); }
   .header-square-logo { background-image: url("#{ image_map[:square_logo_lowres] }"); }
   .home-toolbar-button-group-button.selected,.home-toolbar-show-filters-button.selected { background-color: ##{ ColorUtils.darken(color1, 0) }; border-color: ##{ ColorUtils.darken(color1, 10) }; }
   @media (min-width: 48em) {
@@ -27,10 +26,8 @@
   .feed-map-link a.map-link:hover { color: ##{ ColorUtils.darken(color1, 0) }; }
   }
   @media (-webkit-min-device-pixel-ratio: 1.5) {
-  .header-wide-logo { background-image: url("#{ image_map[:wide_logo_highres] }"); }
   .header-square-logo { background-image: url("#{ image_map[:square_logo_highres] }"); }
   }
   @media (min-resolution: 144dpi) {
-  .header-wide-logo { background-image: url("#{ image_map[:wide_logo_highres] }"); }
   .header-square-logo { background-image: url("#{ image_map[:square_logo_highres] }"); }
   }
