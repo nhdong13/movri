@@ -18,6 +18,10 @@
   text-align: center;
   padding: 5px;
   .main-image{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 235px;
     img {
       max-width:100%;
       max-height: 250px;
