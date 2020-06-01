@@ -7,17 +7,20 @@
           %input.form-control{:placeholder => "Email address", :type => "text", class: "email-address"}
           %button{:type => "button", class: "btn-sign-up"} SIGN UP
         .sign-up-line
-          %span= I18n.t("footer.sign_up.deal_zone_alerts")
-          %span= I18n.t("footer.sign_up.weekly_bh_newsletter")
-          %span= I18n.t("footer.sign_up.manage_subscriptions")
-          %span= I18n.t("footer.sign_up.sample_newsletter")
+          .checkbox
+            %input{type: "checkbox"}
+            %span= I18n.t("footer.sign_up.deal_zone_alerts")
+            %input{type: "checkbox"}
+            %span= I18n.t("footer.sign_up.weekly_bh_newsletter")
+          %p= I18n.t("footer.sign_up.manage_subscriptions")
+          %p= I18n.t("footer.sign_up.sample_newsletter")
       .col-2.other-sites
         %p= I18n.t("footer.other_sites.title")
         %span= I18n.t("footer.other_sites.description")
       .col-3.customer-services
         %p= I18n.t("footer.customer_service.title")
         = image_tag("homepage_icons/customer_service.png", class: "float-left")
-        .descriptioton
+        .description
           %span= I18n.t("footer.customer_service.description")
           %span= I18n.t("footer.customer_service.authenticate_magazine")
       .col-3.workplace

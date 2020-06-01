@@ -10,6 +10,14 @@ $(function() {
     };
   }
 
+  $('.homepage-carousel').slick({
+    adaptiveHeigh: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: true,
+    dots: true
+  });
+
   // Selectors
   var showFiltersButtonSelector = "#home-toolbar-show-filters";
   var filtersContainerSelector = "#home-toolbar-filters";
