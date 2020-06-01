@@ -1,0 +1,23 @@
+.footer.text-center
+  .wrapper
+    .row.information
+      .col-2
+        %h1= I18n.t("footer.shipping.title")
+        %p= I18n.t("footer.shipping.shipping_description")
+      .col-2
+        %h1= I18n.t("footer.returns.title")
+        %p= I18n.t("footer.returns.return_description")
+      .col-2
+        %h1= I18n.t("footer.gift_cards.title")
+        %p= I18n.t("footer.gift_cards.gift_cards_description")
+      .col-2
+        %h1= I18n.t("footer.event_space.title")
+        %p= I18n.t("footer.event_space.event_space_description")
+      .col-2
+        %h1= I18n.t("footer.language")
+        %select.select-language
+          %option= "English"
+      .col-2
+        %h1= I18n.t("footer.currency")
+        %select.select-currency
+          %option= "US Dollar"

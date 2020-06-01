@@ -1,6 +1,23 @@
 module PriceCalculationService
   module_function
 
+  def calculate_total_price(session)
+    total_price = 0
+
+    # listing_id => total
+    # e.g: {"8"=>2, "7"=>1}
+    session[:cart].each do |key, value|
+      listing = Listing.find_by(id: key)
+
+      total_price += PriceCalculationService.calculate(
+        listing,
+        ListingViewUtils.get_booking_days(session)
+      ) * value
+    end
+
+    total_price
+  end
+
   def calculate(listing, days = 7)
     a_day_price = listing.price.cents
 

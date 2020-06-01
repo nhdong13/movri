@@ -1852,6 +1852,34 @@ en:
       list_button: List
       all_listing_types: "All listing types"
       all_categories: "All categories"
+    new_products:
+      title: "New Products"
+    featured_products:
+      title: "Featured Products"
+    how_it_works:
+      title: "HOW IT WORKS"
+      rental_date: "Select Rental Dates"
+      rental_date_description: " Real-time search by date "
+      shoot: "Shoot"
+      shoot_description: " Rent for 3-90 days "
+      fast_shipping: "Fast Shipping"
+      fast_shipping_description: " Return label included "
+    movri_different:
+      title: "The Movri Different"
+      assured_quality: "Each item is hand inspected, cleaned & tested by our experts before every rental."
+      easy_cancellation: "Change of Plans? For smooth & Thehassle free cancellations, Contact Us."
+      shipping_services: "Gear shipped right to your door or over 400 UPS pickup locations."
+      look_up_for_gear: "Didn't find the gear you were looking to rent? Let us know & we will get it for you."
+    contact:
+      sale_and_expert_advice:
+        title: "SALES & EXPERT ADVICE"
+        phone_number: "800.606.6969"
+        second_phone_number: "212.444.6615"
+      contact_us: "Contact Us"
+      customer_service:
+        title: "CUSTOMER SERVICE"
+        phone_number: "800.221.5743"
+        second_phone_number: "212.239.7765"
     errors:
       search_engine_not_responding: "Search is currently unavailable. Try searching again soon."
   infos:
@@ -3086,7 +3114,72 @@ en:
       category_description: "%{category} on %{marketplace}"
       profile_title: "Profile of %{user} - %{marketplace}"
       profile_description: "Learn more about %{user} on %{marketplace}"
-
+  footer:
+    shipping:
+      title: "SHIPPING"
+      shipping_description: "Free Expedited Shipping for most orders over $49"
+    returns:
+      title: "RETURNS"
+      return_description: "Shop With Confidence Easy 30-Day Return Policy"
+    gift_cards:
+      title: "GIFT CARDS"
+      gift_cards_description: "The Gift that Never Expires"
+    event_space:
+      title: "EVENT SPACE"
+      event_space_description: "Expert Movri Events and Presentations"
+    language: "LANGUAGE"
+    currency: "CURRENCY"
+    helpful_link_btn: "MORE HELPFUL LINKS"
+    helpful_link_mobile_btn: "Helpful Links"
+    helpful_links_section:
+      help: 'Help'
+      track_request_a_return: 'Track/Request a Return'
+      unsubscribe_from_catalog: 'Unsubscribe from Catalog'
+      unsubscribe_from_email: 'Unsubscribe from Email'
+      payments: 'Payments'
+      all_help_topics: 'All Help Topics'
+      international: 'International'
+      worldwide_shipping: 'Worldwide Shipping'
+      payment_options: 'Payment Options'
+      customs_and_vat: 'Customs and VAT'
+      company_information: 'Company Information'
+      about_us: 'About Us'
+      the_event_space: 'The Event Space'
+      national_workshops: 'National Workshops'
+      reviews_and_awards: 'Reviews and Awards'
+      affiliate_program: 'Affiliate Program'
+      supplier_diversity_program: 'Supplier Diversity Program'
+      career_opportunities: 'Career Opportunities'
+      b_h_resources: 'B&H Resources'
+      shop_by_brand: 'Shop by Brand'
+      manufacturers_directory: 'Manufacturers Directory'
+      sourcebooks_catalogs: 'Sourcebooks & Catalogs'
+      browse_our_summer: 'Browse our Summer 2019 Interactive Catalog'
+      send_your_feedback: 'Send us your feedback'
+    sign_up:
+      title: "SIGN UP FOR B&H NEWS AND SPECIAL OFFERS"
+      deal_zone_alerts: "Deal Zone Alerts"
+      weekly_newsletter: "Weekly B&H Newsletter"
+      manage_subscriptions: "Manage Existing Subscriptions"
+      sample_newsletter: "See sample Newsletter"
+      deal_zone_alerts: "Deal Zone Alerts"
+      weekly_bh_newsletter: "Weekly B&H Newsletter"
+    other_sites:
+      title: "OTHER B&H SITES"
+      description: "Student Advantage B2B Corp. Govt. & Edu. Federal Marketplace"
+    customer_service:
+      title: "GREAT CUSTOMER SERVICE"
+      description: "America's Best Customer Service List"
+      authenticate_magazine: "-Newsweek"
+    workplace: "MORE THAN A WORKPLACE"
+    company: "© 2000-2020 B & H Foto & Electronics Corp. 420 9th Ave, New York, NY 10001"
+    privacy_security: "Privacy & Security"
+    user_agreement: "User Agreement & Disclaimer"
+    policy: "Export Policy"
+    california_policy: "California Privacy Rights"
+    closing_time: "We close every Friday evening to Saturday evening for Shabbos."
+    weekend_hours: "Weekend hours"
+    product_notice: "Prices, specifications, and images are subject to change without notice. Not responsible for typographical or illustrative errors. Manufacturer rebates, terms, conditions, and expiration dates are subject to manufacturers printed forms NYC DCA Lic.: Elec. Store #0906712 Elec. & Home App. Serv. Deal. #0907905; Sec. Hd. Deal. Gen. #0907906"
   activemodel:
     attributes:
       landing_page_version/section/base:
@@ -3110,7 +3203,7 @@ en:
       landing_page_version/section/video:
         text: Text
         youtube_video_id: "Youtube video ID"
-  
+
   customer_mailer:
     send_contact:
       body: |

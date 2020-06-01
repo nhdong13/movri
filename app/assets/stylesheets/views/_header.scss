@@ -60,10 +60,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .header-search-contain {
-  width: 50%;
+  margin-right: 20px;
+  width: 41%;
 
   &.header-search-logged-in {
     width: 45%;
+    margin-right: 15px;
   }
 }
 
@@ -74,14 +76,13 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   position: relative;
 
   @media #{$mobile} {
-    display: none;
-    position: absolute;
     top: 0;
     left: 0;
-    margin: 0 !important;
+    margin: 10px 0 !important;
     height: 45px;
-    width: 100vw;
+    width: 100%;
     background-color: white;
+    border: 1px solid #bdbdbd;
     input {
       font-size: 14px !important;
       height: 45px !important;
@@ -100,7 +101,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       color: white;
       background-color: #13588d;
       width: 65px;
-      height: 45px;
       position: relative;
       display: inline-block;
       top: 0;
@@ -272,10 +272,45 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       }
     }
   }
+
+  .bh-gift-card,
+  .mega-dealzone {
+    padding: 7px;
+  }
+
+  .bh-gift-card {
+    img {
+      padding-right: 10px;
+      border-right: 1px solid #000000;
+    }
+  }
 }
 
 .header-left {
   float: left;
+
+  &.header-info {
+    float: none;
+    text-align: center;
+  }
+
+  .select{
+    border: 1px solid #747270;
+    border-radius: 8px;
+    height: 25px;
+    margin: 7px 0.4375em;
+    min-height: 25px;
+    font-size: 10px;
+  }
+
+  .select {
+    width: 218px;
+  }
+
+  .explora-icon {
+    height: 26px;
+    margin: 7px 0 0 25px;
+  }
 }
 
 .header-right {
@@ -308,7 +343,24 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 .header-logo {
   display: block;
   @include header-block;
-  margin-top: 15px;
+  margin-top: 0px;
+  width: 115px;
+
+  img {
+    height: 60px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .header-logo {
+    .header-wide-logo {
+      margin: 2px !important;
+
+      img {
+        height: 41px;
+      }
+    }
+  }
 }
 
 .header-text-link {

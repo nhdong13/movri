@@ -1,0 +1,15 @@
+.col-12
+  = form_tag categories_path, method: :get do
+    = hidden_field_tag :page, listings.current_page
+    .pagination-bar
+      .previous-btn{:'data-page' => listings.previous_page}
+        = submit_tag "Previous", :disabled => listings.previous_page ? false : true
+      .page-select-box
+        %span Page
+        = select_tag :page_select_box, options_for_select([*1..listings.total_pages], selected: listings.current_page)
+        %span of #{listings.total_pages}
+      .next-btn{:'data-page' => listings.next_page}
+        = submit_tag "Next", :disabled => listings.next_page ? false : true
+
+- content_for :javascript do
+  window.ST.HandleMobilePagination();

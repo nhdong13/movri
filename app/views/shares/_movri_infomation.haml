@@ -1,0 +1,17 @@
+.footer.text-center
+  .wrapper
+    .row.information
+      .col-3
+        %h1= I18n.t("footer.shipping.title")
+        %p= I18n.t("footer.shipping.shipping_description")
+      .col-3
+        %h1= I18n.t("footer.returns.title")
+        %p= I18n.t("footer.returns.return_description")
+      .col-3
+        %h1= I18n.t("footer.language")
+        %select.select-language
+          %option= "English"
+      .col-3
+        %h1= I18n.t("footer.currency")
+        %select.select-currency
+          %option= "US Dollar"

@@ -1,0 +1,17 @@
+.feature-products
+  .row
+    .col-12
+      %p= I18n.t("homepage.featured_products.title")
+    .products.text-center
+      - @listings[0..3].each do |listing|
+        .col-3
+          .product
+            .product-image
+              - listing.listing_images.each do |listing_image|
+                = image_tag(listing_image[:medium])
+            .product-name
+              %span= listing.title
+            .product-rent-price
+              %span= "#{humanized_money_with_symbol listing.price} "
+              %span= "/ #{ListingViewUtils.get_time_rent(session)}"
+            %button= "Rent now"
