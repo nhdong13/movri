@@ -3129,7 +3129,33 @@ en:
       event_space_description: "Expert Movri Events and Presentations"
     language: "LANGUAGE"
     currency: "CURRENCY"
-    helpful_link_btn: "MORE HELPFUL LINKS +"
+    helpful_link_btn: "MORE HELPFUL LINKS"
+    helpful_link_mobile_btn: "Helpful Links"
+    helpful_links_section:
+      help: 'Help'
+      track_request_a_return: 'Track/Request a Return'
+      unsubscribe_from_catalog: 'Unsubscribe from Catalog'
+      unsubscribe_from_email: 'Unsubscribe from Email'
+      payments: 'Payments'
+      all_help_topics: 'All Help Topics'
+      international: 'International'
+      worldwide_shipping: 'Worldwide Shipping'
+      payment_options: 'Payment Options'
+      customs_and_vat: 'Customs and VAT'
+      company_information: 'Company Information'
+      about_us: 'About Us'
+      the_event_space: 'The Event Space'
+      national_workshops: 'National Workshops'
+      reviews_and_awards: 'Reviews and Awards'
+      affiliate_program: 'Affiliate Program'
+      supplier_diversity_program: 'Supplier Diversity Program'
+      career_opportunities: 'Career Opportunities'
+      b_h_resources: 'B&H Resources'
+      shop_by_brand: 'Shop by Brand'
+      manufacturers_directory: 'Manufacturers Directory'
+      sourcebooks_catalogs: 'Sourcebooks & Catalogs'
+      browse_our_summer: 'Browse our Summer 2019 Interactive Catalog'
+      send_your_feedback: 'Send us your feedback'
     sign_up:
       title: "SIGN UP FOR B&H NEWS AND SPECIAL OFFERS"
       deal_zone_alerts: "Deal Zone Alerts"
@@ -3177,7 +3203,7 @@ en:
       landing_page_version/section/video:
         text: Text
         youtube_video_id: "Youtube video ID"
-  
+
   customer_mailer:
     send_contact:
       body: |

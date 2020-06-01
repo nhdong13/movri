@@ -250,6 +250,29 @@ $(function() {
       swal("Successfully!", "You can pick up from movri office today", "success", {
       });
     }
-  })
+  });
 
+  $('.helpful-link-btn').click(function(){
+    if($('.more-helpful-links').is(":visible")){
+      $('.more-helpful-links').slideUp('slow')
+      iconClass = $('.helpful-link-btn').find('.icon-minus')
+      iconClass.removeClass("icon-minus").addClass('icon-plus')
+    } else {
+      $('.more-helpful-links').slideDown('slow')
+      iconClass = $('.helpful-link-btn').find('.icon-plus')
+      iconClass.removeClass("icon-plus").addClass('icon-minus')
+    }
+  });
+
+  $('.helpful-link-mobile-btn').click(function(){
+    if($('.more-helpful-links').is(":visible")){
+      $('.more-helpful-links').slideUp('slow')
+      iconClass = $('.helpful-link-mobile-btn').find('.icon-chevron-up')
+      iconClass.removeClass("icon-chevron-up").addClass('icon-chevron-down')
+    } else {
+      $('.more-helpful-links').slideDown('slow')
+      iconClass = $('.helpful-link-mobile-btn').find('.icon-chevron-down')
+      iconClass.removeClass("icon-chevron-down").addClass('icon-chevron-up')
+    }
+  });
 });

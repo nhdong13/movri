@@ -20,8 +20,11 @@
       %h1= I18n.t("footer.currency")
       %select.select-currency
         %option= "US Dollar"
-    .col-12
-      %button= I18n.t("footer.helpful_link_btn")
+    .col-12.helpful-link-section
+      = render partial: "homepage/more_helpful_links"
+      .helpful-link-btn
+        %span.fa-fw= I18n.t("footer.helpful_link_btn")
+        %i.icon-plus
   .row.other-information
     .col-4.sign-up
       %p= I18n.t("footer.sign_up.title")
@@ -100,5 +103,7 @@
     .d-flex
       %a= "Contact Us"
     .d-flex
-      %a= "Helpful Links"
-      %i.icon-chevron-down
+      .helpful-link-mobile-btn
+        %span= t("footer.helpful_link_mobile_btn")
+        %i.icon-chevron-down
+  = render partial: "homepage/more_helpful_links"
