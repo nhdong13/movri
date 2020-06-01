@@ -794,6 +794,7 @@ $home-list-avatar-padding: lines(0.25);
 }
 
 .other-information {
+  .row{background-color: #f3f3f3;}
   background-color: #f3f3f3;
   padding: 20px;
   text-align: left;
@@ -862,6 +863,7 @@ $home-list-avatar-padding: lines(0.25);
 
 
 .security-social-media {
+  .row{margin-bottom: 0;background-color: #bebebe;}
   background-color: #bebebe;
   height: 92px;
   margin-bottom: 0px;
@@ -1085,4 +1087,10 @@ $home-list-avatar-padding: lines(0.25);
     font-size: 16px;
     height: 52px;
   }
+}
+
+.select-language, .select-currency{
+  border: unset;
+  background-color: white;
+  padding: 5px 30px;
 }
