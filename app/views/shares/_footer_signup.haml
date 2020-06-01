@@ -1,0 +1,7 @@
+.row.footer-signup
+  .wrapper
+    .col-12
+      %p= I18n.t("footer.sign_up.title")
+      .sign-up-group
+        %input.form-control{:placeholder => "Email address", :type => "text", class: "email-address"}
+        %button{:type => "button", class: "btn-sign-up"} SIGN UP

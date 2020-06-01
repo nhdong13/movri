@@ -696,6 +696,8 @@ $home-list-avatar-padding: lines(0.25);
 }
 
 .contact-us {
+  border-top: 1px solid #bdbdbd;
+  padding: 30px;
   .row {
     line-height: 70px;
 
@@ -748,9 +750,10 @@ $home-list-avatar-padding: lines(0.25);
 .footer {
   background-color: #f3f3f3;
   .information {
+    margin-bottom: 0px;
+    padding: 30px;
+    background-color: #f3f3f3;
     .col-2 {
-      margin-top: 40px;
-
       p {
         color: #999999;
       }
@@ -788,151 +791,94 @@ $home-list-avatar-padding: lines(0.25);
       }
     }
   }
+}
 
-  .other-information {
-    text-align: left;
+.other-information {
+  background-color: #f3f3f3;
+  padding: 20px;
+  text-align: left;
+  p {font-size: 18px;}
+  .sign-up,
+  .other-sites,
+  .customer-services {
+    min-height: 215px;
+    border-right: 1px solid #bdbdbd;
+  }
 
-    p {
-      font-size: 18px;
-    }
+  .sign-up-line {
+    span {display: block;}
+  }
 
-    .sign-up,
-    .other-sites,
-    .customer-services {
-      border-right: 1px solid #bdbdbd;
-      height: 210px;
-    }
-
-    .sign-up {
-      span {
-        display: block;
-      }
-    }
-
-    .other-sites {
-      span {
-        font-size: 15px;
-        color: #999999;
-        line-height: 1.7;
-      }
-    }
-
-    .customer-services {
-      img {
-        float: left;
-        margin-right: 10px;
-      }
-
-      .description {
-        margin-top: 30px;
-
-        span:first-of-type {
-          display: block;
-          font-size: 14px;
-          width: 240px;
-        }
-
-        span {
-          font-size: 13px;
-          font-style: italic;
-        }
-      }
-    }
-
-    .workplace {
-      img:first-of-type {
-        margin-top: 15px;
-        width: 172px;
-      }
-
-      img {
-        width: 100px;
-      }
-    }
-
-    input.email-address {
-      border: none;
-      width: 70%;
-      float: left;
-      height: 52px;
-    }
-
-    .btn-sign-up {
-      background: #7f7f7f;
-      color: #d9e3ec;
-      font-weight: bold;
-      font-size: 16px;
-      height: 52px;
+  .other-sites {
+    span {
+      font-size: 15px;
+      color: #999999;
+      line-height: 1.7;
     }
   }
 
-  .security-social-media {
-    background-color: #bebebe;
-    height: 92px;
-    margin-bottom: 0px;
-
+  .customer-services {
     img {
       float: left;
-      margin: 15px 19px auto 19px;
+      margin-right: 10px;
     }
 
-    .img {
-      display: inline-block;
-      vertical-align: middle;
+    .description {
+      margin-top: 30px;
+
+      span:first-of-type {
+        display: block;
+        font-size: 14px;
+        width: 240px;
+      }
+
+      span {
+        font-size: 13px;
+        font-style: italic;
+      }
     }
   }
 
-  .copyright {
-    height: 92px;
-    margin-top: 0px;
-    background-color: #959595;
+  input.email-address{
+    width: 70%
+  }
 
-    p {
-      margin-bottom: 0px;
+  .workplace {
+    img:first-of-type {
+      margin-top: 15px;
+      width: 172px;
     }
 
-    .company-privacy,
-    .work-time,
-    .product-notice {
-      margin-top: 10px;
-
-      p {
-        text-align: left;
-      }
+    img {
+      width: 100px;
     }
-    .company-privacy {
-      p {
-        font-size: 13px;
-        color: #ffffff;
-      }
+  }
+  .sign-up-group{
+    display: flex;
+    align-items: center;
+  }
 
-      a,
-      a:hover {
-        color: #b2b2b2;
-        font-size: 11px;
-        margin: auto 2px;
-        cursor: pointer;
-      }
-    }
+}
 
-    .work-time,
-    .product-notice {
-      font-size: 10px;
-    }
 
-    .work-time {
-      p:first-of-type {
-        color: #b2b2b2;
-      }
+.security-social-media {
+  background-color: #bebebe;
+  height: 92px;
+  margin-bottom: 0px;
 
-      p:last-of-type {
-        color: #333333;
-      }
-    }
+  img {
+    float: left;
+    margin: 15px 19px auto 19px;
+  }
+
+  .img {
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 
 .mobile-footer {
+  padding: 0 15px;
   background-color: #f0f0f0;
   border-top: 1px solid #bdbdbd;
 
@@ -1002,11 +948,43 @@ $home-list-avatar-padding: lines(0.25);
   }
   .more-helpful-links{
     text-align: right;
-    padding: 15px;
+    padding: 15px 0;
   }
   .helpful-link-mobile-btn{
     font-size: 12px;
     color: #757575;
+  }
+}
+.copyright {
+  margin-bottom: 0px;
+  height: 92px;
+  margin-top: 0px;
+  background-color: #959595;
+  p {margin-bottom: 0px;}
+  .company-privacy,
+  .work-time,
+  .product-notice {
+    margin-top: 10px;
+    p {text-align: left;}
+  }
+  .company-privacy {
+    p {
+      font-size: 13px;
+      color: #ffffff;
+    }
+    a,
+    a:hover {
+      color: #b2b2b2;
+      font-size: 11px;
+      margin: auto 2px;
+      cursor: pointer;
+    }
+  }
+  .work-time,
+  .product-notice {font-size: 10px;}
+  .work-time {
+    p:first-of-type {color: #b2b2b2;}
+    p:last-of-type {color: #333333;}
   }
 }
 
@@ -1058,9 +1036,10 @@ $home-list-avatar-padding: lines(0.25);
   }
 }
 .helpful-link-section{
+  margin-bottom: 0px;
+  background-color: #f3f3f3;
   padding: 20px 0;
   text-align: center;
-  border-top: 1px solid #bdbdbd;
   .helpful-link-btn{
     font-size: 16px;
     color: #999999;
@@ -1072,5 +1051,38 @@ $home-list-avatar-padding: lines(0.25);
     width: 230px;
     border-radius: 5px;
     font-weight: bold;
+  }
+}
+
+.center-items{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-signup{
+  text-align: center;
+  input.email-address{
+    margin-right: 10px;
+    width: 370px;
+  }
+  .sign-up-group{@extend .center-items;}
+}
+
+.footer-signup, .other-information {
+  margin-bottom: 0px;
+  background-color: #f3f3f3;
+  font-size: 18px;
+  padding: 20px;
+  input.email-address{
+    border: none;
+    height: 52px;
+  }
+  .btn-sign-up {
+    background: #7f7f7f;
+    color: #d9e3ec;
+    font-weight: bold;
+    font-size: 16px;
+    height: 52px;
   }
 }
