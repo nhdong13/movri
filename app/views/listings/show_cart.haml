@@ -1,270 +1,271 @@
-.show-cart-page
-  .mobile-display
-    - if session[:cart].present?
-      .mobile-cart-header
-        .row
-          .col-2
-            %span.title My Cart
-          .col-6.price
-            %span.subtotal Subtotal
-            .price
-              %span.number-price
-                - price_cents = PriceCalculationService.calculate_total_price(session)
-                = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
-              %span.day-rent
-                \/
-                = session[:booking][:total_days]
-                days rental
-          .col-4
-            = button_tag class: "custom-btn" do
-              -# %i.icon-lock.fa-fw
-              %span.uppercase Checkout
-      - session[:cart].each do |key, value|
-        - listing = Listing.find_by(id: key)
-        .row.mobile-listing-info
-          .col-4.image-thumb
-            -# = image_tag listing.main_image, alt: '', height: 'auto', width: '80', class: 'img-responsive-cart'
-            = image_tag "mf_icons/icon-movri-mobile-cart.svg", alt: '', height: '50', width: 'auto', class: 'img-responsive-cart'
-          .col-8.mobile-listing-info-wrap
-            %span.title
-              = listing.title
-            .sku-quantity
-              .sku{float: 'left'}
-                SKU:
-                = listing.sku.present? ? listing.sku.upcase : "CAE5D3"
-              .quantity
-                %span Qty:
-                - element_id = "cart_detail_item_quantity-" + listing.id.to_s
-                = select_tag element_id.to_sym, options_for_select((1..10).to_a.map(&:to_s), selected: value), class: 'custom-select-number mobile-number-item-in-cart-detail'
-
-
-            .coverage
-              .coverage-selection
-                = select_tag :select_coverage, options_for_select(['Movri Coverage']), class: 'custom-select'
-              .price-coverage
-              - price_cents = 0
-              - if session[:cart][listing.id.to_s]
-                - price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing.id.to_s]
-                - readable_price = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
-                %span.price
-                  Price:
-                  = readable_price
-                %span
-                  Coverage: $20.00
-          .listting-action
-            %i.icon-shopping-cart
-            %span Move to wish list
-            %i.icon-remove-sign.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
-            %span.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
-              Remove
-      .row-empty-row
-
-      .col-12.mobile-datetime-booking
-        .common-box
-          .rent-date-box
-            .listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
-              .arrival-date
-                %p.center-title Arrival Date
-                = text_field_tag :mobile_cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : '')
-              .return-date
-                %p.center-title Return Date
-                = text_field_tag :mobile_cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')
-
-        .common-box.mobile-promo-code
-          %p.title Promo Code
-          .promo-code-field
-            = text_field_tag :promo_code
-            = button_tag 'Apply', :class => "common-btn"
-
-        .common-box.mobile-instructions-code
-          %p.title Special instructions for seller
-          .special-instructions-box
-            = text_area_tag :instructions, nil, placeholder: "Special instructions"
-
-        .common-box.mobile-shipping-cal
-          %p.center-title Shipping
-          .shipping-box
-            .options
-              = radio_button_tag :shipping_type, 'delivery', 'checked'
-              %span Delivery
-            .options
-              = radio_button_tag :shipping_type, 'fedex'
-              %span Fedex Office
-            .options
-              = radio_button_tag :shipping_type, 'pickup'
-              %span Pickup
-            = text_field_tag :zip_code, nil, placeholder: "Zip code"
-            = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00'])
-
-        .common-box
-          .checkout-box
-            .price-list
-              %span Subtotal
-              %span.price#subtotal-price $129.00
-            .price-list
-              %span Coverage
-              %span.price#coverage-price $129.00
-            .price-list
-              %span Shipping
-              %span.price#shipping-fee $129.00
-            .total-price
-              %span Total (excluding tax)
-              %span.price#total-price $129.00
-            = button_tag class: "common-btn btn-checkout" do
-              %i.icon-lock.fa-fw
-              %span.uppercase Checkout
-            .coutinue-shipping
-              .center-title
-                = link_to "Continue Shipping","",  class: "fz-16"
-              %i.icon-chevron-right
-    - else
-      .mobile-cart-title
-        %h3 Cart
-      .mobile-cart-note
-        %span There are currently no items in your cart. If you have an existing account and have items in your cart, log in to view your cart.
-    .cart-footer
-      .select-list
-        %select#sel1.form-control
-          %option
-            US Dollar
-          %option CAD Dollar
-      .title-1
-        %span © 2000-2020 B&H Foto & Electronics Corp
-      .row
-        .phone
-          %span 800.894.9703
-        .contact-us
-          %span Contact us
-        .helpful-link
-          %span Helpful link
-  .desktop-display
-    - if session[:cart].present?
-      .cart-header
-        .row
-          .col-3
-            %span My Cart
-          .col-7
-            %span Subtotal
-            .price
-              %span
-                - price_cents = PriceCalculationService.calculate_total_price(session)
-                = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
-              %span
-                \/
-                = session[:booking][:total_days]
-                days rental
-          .col-2
-            = button_tag class: "common-btn btn-checkout" do
-              %i.icon-lock.fa-fw
-              %span.uppercase Checkout
-      .col-8
+.wrapper
+  .show-cart-page
+    .mobile-display
+      - if session[:cart].present?
+        .mobile-cart-header
+          .row
+            .col-2
+              %span.title My Cart
+            .col-6.price
+              %span.subtotal Subtotal
+              .price
+                %span.number-price
+                  - price_cents = PriceCalculationService.calculate_total_price(session)
+                  = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+                %span.day-rent
+                  \/
+                  = session[:booking][:total_days]
+                  days rental
+            .col-4
+              = button_tag class: "custom-btn" do
+                -# %i.icon-lock.fa-fw
+                %span.uppercase Checkout
         - session[:cart].each do |key, value|
           - listing = Listing.find_by(id: key)
-          .listing-info{id: "listing-info-#{listing.id}"}
-            .content
-              .row
-                .col-2
-                  = image_tag listing.main_image, alt: '', height: '100', width: 'auto', class: 'img-responsive-cart'
-                .col-4
-                  .listing-title
-                    %span
-                      = listing.title
-                  .listing-sku
-                    %span{style: "font-weight: bold"}
-                      SKU:
-                    %span
-                      = listing.sku.present? ? listing.sku.upcase : 'CAE5D3'
-                  .listing-coverage
-                    = select_tag :select_coverage, options_for_select(['Movri Coverage']), class: 'custom-select-coverage'
-                .col-3
-                  .quantity-box
-                    %span Quantity
-                    %input.cart-detail-item-quantity{id: "cart-detail-item-quantity-#{listing.id}",value: value, :max => "5", :min => "1", :name => "quantity", :type => "number"}/
-                .col-3
-                  - price_cents = 0
-                  - if session[:cart][listing.id.to_s]
-                    - price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing.id.to_s]
-                    - readable_price = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
-                    = hidden_field_tag :readable_price, price_cents
-                  .cart-item
-                    %span Price:
-                    %span#price-item= readable_price
-                  .cart-item#coverage
-                    %span Coverage: $20
-            .listing-action
-              .row
-                .col-8
-                .col-4
-                  .action-item
-                    %i.icon-shopping-cart
-                    %span Move to wish list
-                  .action-item.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
-                    %i.icon-remove-sign
-                    %span Remove
+          .row.mobile-listing-info
+            .col-4.image-thumb
+              -# = image_tag listing.main_image, alt: '', height: 'auto', width: '80', class: 'img-responsive-cart'
+              = image_tag "mf_icons/icon-movri-mobile-cart.svg", alt: '', height: '50', width: 'auto', class: 'img-responsive-cart'
+            .col-8.mobile-listing-info-wrap
+              %span.title
+                = listing.title
+              .sku-quantity
+                .sku{float: 'left'}
+                  SKU:
+                  = listing.sku.present? ? listing.sku.upcase : "CAE5D3"
+                .quantity
+                  %span Qty:
+                  - element_id = "cart_detail_item_quantity-" + listing.id.to_s
+                  = select_tag element_id.to_sym, options_for_select((1..10).to_a.map(&:to_s), selected: value), class: 'custom-select-number mobile-number-item-in-cart-detail'
 
-      .col-4
-        .common-box
-          .rent-date-box
-            .listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
-              .arrival-date
-                %p.center-title Arrival Date
-                = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : '')
-              .return-date
-                %p.center-title Return Date
-                = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')
 
-        .common-box.desktop-promo-code
-          %p.title Promo Code
-          .promo-code-field
-            = text_field_tag :promo_code
-            = button_tag 'Apply', :class => "common-btn"
+              .coverage
+                .coverage-selection
+                  = select_tag :select_coverage, options_for_select(['Movri Coverage']), class: 'custom-select'
+                .price-coverage
+                - price_cents = 0
+                - if session[:cart][listing.id.to_s]
+                  - price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing.id.to_s]
+                  - readable_price = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+                  %span.price
+                    Price:
+                    = readable_price
+                  %span
+                    Coverage: $20.00
+            .listting-action
+              %i.icon-shopping-cart
+              %span Move to wish list
+              %i.icon-remove-sign.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
+              %span.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
+                Remove
+        .row-empty-row
 
-        .common-box.desktop-instructions
-          .title
-            %p Special instructions for seller
-          .special-instructions-box
-            = text_area_tag :instructions, nil, placeholder: "Special instructions"
+        .col-12.mobile-datetime-booking
+          .common-box
+            .rent-date-box
+              .listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
+                .arrival-date
+                  %p.center-title Arrival Date
+                  = text_field_tag :mobile_cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : '')
+                .return-date
+                  %p.center-title Return Date
+                  = text_field_tag :mobile_cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')
 
-        .common-box.desktop-shipping
-          %p.center-title SHIPPING
-          .shipping-box
-            .options
-              = radio_button_tag :shipping_type, 'delivery'
-              %span Delivery
-            .options
-              = radio_button_tag :shipping_type, 'fedex'
-              %span Fedex Office
-            .options
-              = radio_button_tag :shipping_type, 'pickup'
-              %span Pickup
-            = text_field_tag :zip_code, nil, placeholder: "Zip code"
-            = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00']), class: "desktop-custom-select-shipping"
+          .common-box.mobile-promo-code
+            %p.title Promo Code
+            .promo-code-field
+              = text_field_tag :promo_code
+              = button_tag 'Apply', :class => "common-btn"
 
-        .common-box
-          .checkout-box
-            .price-list
+          .common-box.mobile-instructions-code
+            %p.title Special instructions for seller
+            .special-instructions-box
+              = text_area_tag :instructions, nil, placeholder: "Special instructions"
+
+          .common-box.mobile-shipping-cal
+            %p.center-title Shipping
+            .shipping-box
+              .options
+                = radio_button_tag :shipping_type, 'delivery', 'checked'
+                %span Delivery
+              .options
+                = radio_button_tag :shipping_type, 'fedex'
+                %span Fedex Office
+              .options
+                = radio_button_tag :shipping_type, 'pickup'
+                %span Pickup
+              = text_field_tag :zip_code, nil, placeholder: "Zip code"
+              = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00'])
+
+          .common-box
+            .checkout-box
+              .price-list
+                %span Subtotal
+                %span.price#subtotal-price $129.00
+              .price-list
+                %span Coverage
+                %span.price#coverage-price $129.00
+              .price-list
+                %span Shipping
+                %span.price#shipping-fee $129.00
+              .total-price
+                %span Total (excluding tax)
+                %span.price#total-price $129.00
+              = button_tag class: "common-btn btn-checkout" do
+                %i.icon-lock.fa-fw
+                %span.uppercase Checkout
+              .coutinue-shipping
+                .center-title
+                  = link_to "Continue Shipping","",  class: "fz-16"
+                %i.icon-chevron-right
+      - else
+        .mobile-cart-title
+          %h3 Cart
+        .mobile-cart-note
+          %span There are currently no items in your cart. If you have an existing account and have items in your cart, log in to view your cart.
+      .cart-footer
+        .select-list
+          %select#sel1.form-control
+            %option
+              US Dollar
+            %option CAD Dollar
+        .title-1
+          %span © 2000-2020 B&H Foto & Electronics Corp
+        .row
+          .phone
+            %span 800.894.9703
+          .contact-us
+            %span Contact us
+          .helpful-link
+            %span Helpful link
+    .desktop-display
+      - if session[:cart].present?
+        .cart-header
+          .row
+            .col-3
+              %span My Cart
+            .col-7
               %span Subtotal
-              %span.price#subtotal-price $129.00
-            .price-list
-              %span Coverage
-              %span.price#coverage-price $129.00
-            .price-list
-              %span Shipping
-              %span.price#shipping-fee $129.00
-            .total-price
-              %span Total (excluding tax)
-              %span.price#total-price $129.00
-            = button_tag class: "common-btn btn-checkout" do
-              %i.icon-lock.fa-fw
-              %span.uppercase Checkout
-            .coutinue-shipping
-              .center-title
-                = link_to "Continue Shipping","",  class: "fz-16"
-              %i.icon-chevron-right
+              .price
+                %span
+                  - price_cents = PriceCalculationService.calculate_total_price(session)
+                  = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+                %span
+                  \/
+                  = session[:booking][:total_days]
+                  days rental
+            .col-2
+              = button_tag class: "common-btn btn-checkout" do
+                %i.icon-lock.fa-fw
+                %span.uppercase Checkout
+        .col-8
+          - session[:cart].each do |key, value|
+            - listing = Listing.find_by(id: key)
+            .listing-info{id: "listing-info-#{listing.id}"}
+              .content
+                .row
+                  .col-2
+                    = image_tag listing.main_image, alt: '', height: '100', width: 'auto', class: 'img-responsive-cart'
+                  .col-4
+                    .listing-title
+                      %span
+                        = listing.title
+                    .listing-sku
+                      %span{style: "font-weight: bold"}
+                        SKU:
+                      %span
+                        = listing.sku.present? ? listing.sku.upcase : 'CAE5D3'
+                    .listing-coverage
+                      = select_tag :select_coverage, options_for_select(['Movri Coverage']), class: 'custom-select-coverage'
+                  .col-3
+                    .quantity-box
+                      %span Quantity
+                      %input.cart-detail-item-quantity{id: "cart-detail-item-quantity-#{listing.id}",value: value, :max => 5, :min => "1", :name => "quantity", :type => "number", :maxlength => 4}/
+                  .col-3
+                    - price_cents = 0
+                    - if session[:cart][listing.id.to_s]
+                      - price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing.id.to_s]
+                      - readable_price = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+                      = hidden_field_tag :readable_price, price_cents
+                    .cart-item
+                      %span Price:
+                      %span#price-item= readable_price
+                    .cart-item#coverage
+                      %span Coverage: $20
+              .listing-action
+                .row
+                  .col-8
+                  .col-4
+                    .action-item
+                      %i.icon-shopping-cart
+                      %span Move to wish list
+                    .action-item.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
+                      %i.icon-remove-sign
+                      %span Remove
 
-    - else
-      -# TODO:
-      %h1 No products in the cart yet
+        .col-4
+          .common-box
+            .rent-date-box
+              .listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
+                .arrival-date
+                  %p.center-title Arrival Date
+                  = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : '')
+                .return-date
+                  %p.center-title Return Date
+                  = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')
+
+          .common-box.desktop-promo-code
+            %p.title Promo Code
+            .promo-code-field
+              = text_field_tag :promo_code
+              = button_tag 'Apply', :class => "common-btn"
+
+          .common-box.desktop-instructions
+            .title
+              %p Special instructions for seller
+            .special-instructions-box
+              = text_area_tag :instructions, nil, placeholder: "Special instructions"
+
+          .common-box.desktop-shipping
+            %p.center-title SHIPPING
+            .shipping-box
+              .options
+                = radio_button_tag :shipping_type, 'delivery'
+                %span Delivery
+              .options
+                = radio_button_tag :shipping_type, 'fedex'
+                %span Fedex Office
+              .options
+                = radio_button_tag :shipping_type, 'pickup'
+                %span Pickup
+              = text_field_tag :zip_code, nil, placeholder: "Zip code"
+              = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00']), class: "desktop-custom-select-shipping"
+
+          .common-box
+            .checkout-box
+              .price-list
+                %span Subtotal
+                %span.price#subtotal-price $129.00
+              .price-list
+                %span Coverage
+                %span.price#coverage-price $129.00
+              .price-list
+                %span Shipping
+                %span.price#shipping-fee $129.00
+              .total-price
+                %span Total (excluding tax)
+                %span.price#total-price $129.00
+              = button_tag class: "common-btn btn-checkout" do
+                %i.icon-lock.fa-fw
+                %span.uppercase Checkout
+              .coutinue-shipping
+                .center-title
+                  = link_to "Continue Shipping","",  class: "fz-16"
+                %i.icon-chevron-right
+
+      - else
+        -# TODO:
+        %h1 No products in the cart yet
 
 - content_for :javascript do
   window.ST.initCart();

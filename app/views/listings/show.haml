@@ -8,284 +8,284 @@
     window.ST.initMobileCalculateShippingRates();
     window.ST.initPricingChart();
     window.ST.initViewCart();
+.wrapper
+  - content_for :title, raw(@listing.title)
+  - content_for :meta_author, PersonViewUtils.person_display_name(@listing.author, @current_community)
+  - content_for :meta_description, StringUtils.first_words(@listing.description, 15)
+  - content_for :meta_image, @listing.listing_images.first.image.url(:medium) if !@listing.listing_images.empty?
+  - dimensions = @listing.listing_images.first.get_dimensions_for_style(:medium) if !@listing.listing_images.empty?
+  - content_for :meta_image_width, dimensions[:width].to_s if !@listing.listing_images.empty?
+  - content_for :meta_image_height, dimensions[:height].to_s if !@listing.listing_images.empty?
 
-- content_for :title, raw(@listing.title)
-- content_for :meta_author, PersonViewUtils.person_display_name(@listing.author, @current_community)
-- content_for :meta_description, StringUtils.first_words(@listing.description, 15)
-- content_for :meta_image, @listing.listing_images.first.image.url(:medium) if !@listing.listing_images.empty?
-- dimensions = @listing.listing_images.first.get_dimensions_for_style(:medium) if !@listing.listing_images.empty?
-- content_for :meta_image_width, dimensions[:width].to_s if !@listing.listing_images.empty?
-- content_for :meta_image_height, dimensions[:height].to_s if !@listing.listing_images.empty?
+  - content_for :title_header do
+    %h1
+      %span#listing-title.listing-title= @listing.title
 
-- content_for :title_header do
-  %h1
-    %span#listing-title.listing-title= @listing.title
+  %script{type: "text/template", class: "template", id: "image-frame-template"}
+    .listing-image-frame
+      #listing-image-link.listing-image-frame-content
+        .listing-image-vertical-centering{:class => "${aspectRatioClass}" }
+          %img{:src => "${url}", :alt => @listing.title, :class => "listing-image ${aspectRatioClass}"}
 
-%script{type: "text/template", class: "template", id: "image-frame-template"}
-  .listing-image-frame
-    #listing-image-link.listing-image-frame-content
-      .listing-image-vertical-centering{:class => "${aspectRatioClass}" }
-        %img{:src => "${url}", :alt => @listing.title, :class => "listing-image ${aspectRatioClass}"}
+  %script{type: "text/template", class: "template", id: "image-thumbnail-template"}
+    .listing-image-thumbnail-container
+      %img.listing-image-thumbnail{src: "${url}"}
+      .fade
 
-%script{type: "text/template", class: "template", id: "image-thumbnail-template"}
-  .listing-image-thumbnail-container
-    %img.listing-image-thumbnail{src: "${url}"}
-    .fade
+  = render partial: 'layouts/onboarding_popup_wrapper'
 
-= render partial: 'layouts/onboarding_popup_wrapper'
-
-.row
-  .col-12.listing_breadcrumbs
-    = render partial: 'listings/listing_breadcrumbs'
-  .col-6.listing-details-container
-    .row
-      .col-12
-        = render partial: 'listings/slideshow_images'
-    .row
-      .col-12
-        .col-1
-        .col-11.listing-include
-          .listing-include-title
-            INCLUDES
-          .listing-include-items
-            %ul
-              %li
-                Memory Card
-              %li
-                Camera Bag
-              %li
-                Battery Pack
-              %li
-                Speedlite
-              %li
-                Memory Card
-              %li
-                Camera Bag
-              %li
-                Battery Pack
-              %li
-                Speedlite
-    -# .row
-    -#   .col-12.listing-description-content
-    -#     - if @listing.description && !@listing.description.blank?
-    -#       = markdown(@listing.description)
-    -#       - if( @listing_presenter.youtube_link_ids.present?)
-    -#         - @listing_presenter.youtube_link_ids.each do |youtube_id|
-    -#           .listing-description-youtube-wrapper
-    -#             %iframe.listing-description-youtube-iframe{ title: t("listings.show.youtube_video_player"), width: 640, height:390, src: "//www.youtube.com/embed/#{ youtube_id }", frameborder: 0, allowfullscreen: true}
-
-    -# - @listing.custom_field_values.each do |custom_field_value|
-    -#   .row
-    -#     .col-12
-    -#       - custom_field_value.with_type do |question_type|
-    -#         = render :partial => "listings/custom_field_partials/#{question_type}", :locals => { :custom_field_value => custom_field_value }
-
-    - if @current_community.show_listing_publishing_date?
+  .row
+    .col-12.listing_breadcrumbs
+      = render partial: 'listings/listing_breadcrumbs'
+    .col-6.listing-details-container
       .row
         .col-12
-          .icon-with-text-container
-            = icon_tag("calendar", ["icon-part"])
-            .text-part
-              %b
-                = t(".listing_created_at")
-                = l @listing.created_at, :format => :short_date
+          = render partial: 'listings/slideshow_images'
+      .row
+        .col-12
+          .col-1
+          .col-11.listing-include
+            .listing-include-title
+              INCLUDES
+            .listing-include-items
+              %ul
+                %li
+                  Memory Card
+                %li
+                  Camera Bag
+                %li
+                  Battery Pack
+                %li
+                  Speedlite
+                %li
+                  Memory Card
+                %li
+                  Camera Bag
+                %li
+                  Battery Pack
+                %li
+                  Speedlite
+      -# .row
+      -#   .col-12.listing-description-content
+      -#     - if @listing.description && !@listing.description.blank?
+      -#       = markdown(@listing.description)
+      -#       - if( @listing_presenter.youtube_link_ids.present?)
+      -#         - @listing_presenter.youtube_link_ids.each do |youtube_id|
+      -#           .listing-description-youtube-wrapper
+      -#             %iframe.listing-description-youtube-iframe{ title: t("listings.show.youtube_video_player"), width: 640, height:390, src: "//www.youtube.com/embed/#{ youtube_id }", frameborder: 0, allowfullscreen: true}
 
-    -# - if !@current_community.private?
-    -#   .row
-    -#     .col-12
-    -#       .listing-social
-    -#         .listing-fb-like-button
-    -#           = facebook_like(current_user?(@listing.author))
-    -#         .listing-tweet-button
-    -#           - twitter_params =  {count: "horizontal", via: (@current_community.twitter_handle), text: @listing.title }.compact
-    -#           = link_to("", "https://twitter.com/share", :class => "twitter-share-button", "data" => twitter_params)
-    -#           - content_for :extra_javascript do
-    -#             :javascript
-    -#               !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+      -# - @listing.custom_field_values.each do |custom_field_value|
+      -#   .row
+      -#     .col-12
+      -#       - custom_field_value.with_type do |question_type|
+      -#         = render :partial => "listings/custom_field_partials/#{question_type}", :locals => { :custom_field_value => custom_field_value }
 
-    - unless (@listing.closed? && !current_user?(@listing.author)) || !@current_community.listing_comments_in_use
-      .view-item
-        #comments.discussion.overflow-allowed
-          %h2
-            = icon_tag("chat_bubble", ["icon-with_text"])
-            .text-with-icon
-              = t(".comments")
-              %span#comment_count= "(#{@listing.comments_count})"
-          #follow-links.follow-links
-            = render :partial => "follow_links"
-          #comment-list
-            = render :partial => "comment", :collection => @listing.comments
-          #comment-form
-            = render :partial => "comment_form"
+      - if @current_community.show_listing_publishing_date?
+        .row
+          .col-12
+            .icon-with-text-container
+              = icon_tag("calendar", ["icon-part"])
+              .text-part
+                %b
+                  = t(".listing_created_at")
+                  = l @listing.created_at, :format => :short_date
 
-  %aside.col-6.listing-details
-    = render partial: 'listings/listing_orders'
+      -# - if !@current_community.private?
+      -#   .row
+      -#     .col-12
+      -#       .listing-social
+      -#         .listing-fb-like-button
+      -#           = facebook_like(current_user?(@listing.author))
+      -#         .listing-tweet-button
+      -#           - twitter_params =  {count: "horizontal", via: (@current_community.twitter_handle), text: @listing.title }.compact
+      -#           = link_to("", "https://twitter.com/share", :class => "twitter-share-button", "data" => twitter_params)
+      -#           - content_for :extra_javascript do
+      -#             :javascript
+      -#               !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+      - unless (@listing.closed? && !current_user?(@listing.author)) || !@current_community.listing_comments_in_use
+        .view-item
+          #comments.discussion.overflow-allowed
+            %h2
+              = icon_tag("chat_bubble", ["icon-with_text"])
+              .text-with-icon
+                = t(".comments")
+                %span#comment_count= "(#{@listing.comments_count})"
+            #follow-links.follow-links
+              = render :partial => "follow_links"
+            #comment-list
+              = render :partial => "comment", :collection => @listing.comments
+            #comment-form
+              = render :partial => "comment_form"
+
+    %aside.col-6.listing-details
+      = render partial: 'listings/listing_orders'
+
+    .desktop-display
+      = render partial: 'listings/desktop_designs/recommended_accessories'
+    .mobile-display
+      = render partial: 'listings/mobile_designs/recommended_accessories'
 
   .desktop-display
-    = render partial: 'listings/desktop_designs/recommended_accessories'
+    = render partial: 'listings/desktop_designs/specifications'
   .mobile-display
-    = render partial: 'listings/mobile_designs/recommended_accessories'
+    = render partial: 'listings/mobile_designs/specifications'
 
-.desktop-display
-  = render partial: 'listings/desktop_designs/specifications'
-.mobile-display
-  = render partial: 'listings/mobile_designs/specifications'
+  .row
+    .customers-also-viewed
+      = render partial: 'listings/viewed_slide_show', locals: {title: 'Customers Also Viewed', el: 'customer-also-viewed'}
 
-.row
-  .customers-also-viewed
-    = render partial: 'listings/viewed_slide_show', locals: {title: 'Customers Also Viewed', el: 'customer-also-viewed'}
+  .row.desktop-display
+    .browsing-history.col-12
+      %button.pull-right.browsing-history-btn-clear
+        Clear History
+      %button.pull-right.browsing-history-btn-on
+        ON
+      %span.pull-right
+        Browsing History
 
-.row.desktop-display
-  .browsing-history.col-12
-    %button.pull-right.browsing-history-btn-clear
-      Clear History
-    %button.pull-right.browsing-history-btn-on
-      ON
-    %span.pull-right
-      Browsing History
+  .row.desktop-display
+    .recently_viewed
+      = render partial: 'listings/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
 
-.row.desktop-display
-  .recently_viewed
-    = render partial: 'listings/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
+  .row.mobile-display
+    .similar-product
+      .similar-product-content
+        Find Similar Products with:
+      .similar-wrap
+        .similar-item
+          %label.container
+            %input{:checked => "checked", :type => "checkbox"}
+            %span.checkmark
+          .row.similar-model-wrap
+            %span.similar-model
+              Camera Model
+            %span.similar-name
+              Camera
+        .similar-item
+          %label.container
+            %input{:checked => "checked", :type => "checkbox"}
+            %span.checkmark
+          .row.similar-model-wrap
+            %span.similar-model
+              Camera Model
+            %span.similar-name
+              Camera
+        .similar-item
+          %label.container
+            %input{:checked => "checked", :type => "checkbox"}
+            %span.checkmark
+          .row.similar-model-wrap
+            %span.similar-model
+              Camera Model
+            %span.similar-name
+              Camera
+  .desktop-display
+    .row#listing-title-fixed
+      .listing-title-fixed-wrap
+        .image-thumb
+          - if @listing.listing_images.first.present?
+            = image_tag(@listing.listing_images.first.image(:thumb))
+        .listing-title
+          %span
+            = @listing.title
+        .listing-rent-btn
+          %button.add-item-to-cart{:id => "listing-rent-top-#{@listing.id}"}
+            %span.add-item-to-cart{:id => "listing-rent-top-span-#{@listing.id}"}
+              Rent Now
 
-.row.mobile-display
-  .similar-product
-    .similar-product-content
-      Find Similar Products with:
-    .similar-wrap
-      .similar-item
-        %label.container
-          %input{:checked => "checked", :type => "checkbox"}
-          %span.checkmark
-        .row.similar-model-wrap
-          %span.similar-model
-            Camera Model
-          %span.similar-name
-            Camera
-      .similar-item
-        %label.container
-          %input{:checked => "checked", :type => "checkbox"}
-          %span.checkmark
-        .row.similar-model-wrap
-          %span.similar-model
-            Camera Model
-          %span.similar-name
-            Camera
-      .similar-item
-        %label.container
-          %input{:checked => "checked", :type => "checkbox"}
-          %span.checkmark
-        .row.similar-model-wrap
-          %span.similar-model
-            Camera Model
-          %span.similar-name
-            Camera
-.desktop-display
-  .row#listing-title-fixed
-    .listing-title-fixed-wrap
-      .image-thumb
-        - if @listing.listing_images.first.present?
-          = image_tag(@listing.listing_images.first.image(:thumb))
-      .listing-title
-        %span
-          = @listing.title
-      .listing-rent-btn
-        %button.add-item-to-cart{:id => "listing-rent-top-#{@listing.id}"}
-          %span.add-item-to-cart{:id => "listing-rent-top-span-#{@listing.id}"}
-            Rent Now
+    #sideEmail
+      .overlap-sidenav
+      .sidenav
+        %a.closebtn{href: "javascript:void(0)"} Close
+        .side-mail-wrap
+          %h1 Contact Us
+          %h3.title-border.pt-15.mt-15 Hi - what may we help you with?
+          = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
+            .row
+              %label.col-3 Subject(*)
+              = text_field_tag 'contact[subject]', nil, class: 'col-9', required: true
+            .row
+              %label.col-3 Name
+              = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-9'
+            .row
+              %label.col-3 Email(*)
+              = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-9', required: true
+            .row
+              %label.col-3 Order #
+              = text_field_tag 'contact[order_number]', nil, class: 'col-4'
+              - if @current_user
+                .col-5.order-number
+                  - select_data = @current_user ? @current_user.starter_transactions.map(&:id) : []
+                  = select_tag 'order_number', options_for_select(select_data), id: 'order_number', prompt:'Your Previous Order Numbers', class: 'col-12'
+              - else
+                .col-5
+                  %p Please login to select previous order number
+            .row
+              %label.col-3 Message(*)
+              = text_area_tag 'contact[message]', nil, class: 'col-9', rows: 5, required: true
+            = submit_tag 'Send', class: 'btn button-submit pull-right'
+        .side-mail-response
+          = render 'customers/thank_for_contacting'
 
-  #sideEmail
-    .overlap-sidenav
-    .sidenav
-      %a.closebtn{href: "javascript:void(0)"} Close
-      .side-mail-wrap
-        %h1 Contact Us
-        %h3.title-border.pt-15.mt-15 Hi - what may we help you with?
-        = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
-          .row
-            %label.col-3 Subject(*)
-            = text_field_tag 'contact[subject]', nil, class: 'col-9', required: true
-          .row
-            %label.col-3 Name
-            = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-9'
-          .row
-            %label.col-3 Email(*)
-            = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-9', required: true
-          .row
-            %label.col-3 Order #
-            = text_field_tag 'contact[order_number]', nil, class: 'col-4'
-            - if @current_user
-              .col-5.order-number
-                - select_data = @current_user ? @current_user.starter_transactions.map(&:id) : []
-                = select_tag 'order_number', options_for_select(select_data), id: 'order_number', prompt:'Your Previous Order Numbers', class: 'col-12'
-            - else
-              .col-5
-                %p Please login to select previous order number
-          .row
-            %label.col-3 Message(*)
-            = text_area_tag 'contact[message]', nil, class: 'col-9', rows: 5, required: true
-          = submit_tag 'Send', class: 'btn button-submit pull-right'
-      .side-mail-response
-        = render 'customers/thank_for_contacting'
+  .mobile-display
+    #mobileSideEmail
+      .mobile-overlap-sidenav
+      .mobile-sidenav
+        %a.mobile-closebtn{href: "javascript:void(0)"}
+          %i.icon-chevron-left
+          Sales Department
+        %hr
+        .mobile-side-mail-wrap
+          %p.title By Phone
+          %p.item= "Phone: #{APP_CONFIG.contact_phone}"
+          %p.item= "Fax: #{APP_CONFIG.contact_phone}"
 
-.mobile-display
-  #mobileSideEmail
-    .mobile-overlap-sidenav
-    .mobile-sidenav
-      %a.mobile-closebtn{href: "javascript:void(0)"}
-        %i.icon-chevron-left
-        Sales Department
-      %hr
-      .mobile-side-mail-wrap
-        %p.title By Phone
-        %p.item= "Phone: #{APP_CONFIG.contact_phone}"
-        %p.item= "Fax: #{APP_CONFIG.contact_phone}"
+          .row.foreign-cus-line
+            .col-6
+              %p.title-btn Foreign Customers Line
+            .col-6.arrow-col
+              %i.icon-chevron-right
 
-        .row.foreign-cus-line
-          .col-6
-            %p.title-btn Foreign Customers Line
-          .col-6.arrow-col
-            %i.icon-chevron-right
+          %p.title House Of Opreation:
+          %p.item Sunday: 10:00AM - 5:00PM
+          %p.item Mon-Thu: 9:00AM - 7:00PM
+          %p.item Friday: 9:00AM - 1:00PM
 
-        %p.title House Of Opreation:
-        %p.item Sunday: 10:00AM - 5:00PM
-        %p.item Mon-Thu: 9:00AM - 7:00PM
-        %p.item Friday: 9:00AM - 1:00PM
+          .row.holiday-schedule
+            .col-6
+              %p.title-btn Holiday Schedule
+            .col-6.arrow-col
+              %i.icon-chevron-right
 
-        .row.holiday-schedule
-          .col-6
-            %p.title-btn Holiday Schedule
-          .col-6.arrow-col
-            %i.icon-chevron-right
+          = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
+            .row
+              = text_field_tag 'contact[subject]', nil, class: 'col-12 custom-border', required: true, placeholder: "Subject", id: 'mobile_contact_subject'
+            .row
+              = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Email Address"
+            .row
+              = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Confirm Email"
+            .row
+              = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-12 custom-border', placeholder: "Name"
+            .row
+              = text_field_tag 'contact[name]', nil, class: 'col-12 custom-text-field', placeholder: "Phone Number (optional)"
+            .row
+              = text_field_tag 'contact[order_number]', nil, class: 'col-12 custom-text-field', placeholder: "Order Number (optional)"
+            .row
+              = text_area_tag 'contact[message]', nil, class: 'col-12 custom-border message', rows: 5, required: true, placeholder: "Message"
+              %p.message-note Please do not divulge private information (e.g., credit card number) via this form.
+            .row
+              = submit_tag 'Submit', class: 'btn button-submit custom-btn block col-12'
 
-        = form_tag customer_contact_path({listing_id: @listing.id}), {class: 'guest-contact-form', remote: true} do
-          .row
-            = text_field_tag 'contact[subject]', nil, class: 'col-12 custom-border', required: true, placeholder: "Subject", id: 'mobile_contact_subject'
-          .row
-            = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Email Address"
-          .row
-            = text_field_tag 'contact[email]', @current_user.try(:primary_email).try(:address), class: 'col-12 custom-border', required: true, placeholder: "Confirm Email"
-          .row
-            = text_field_tag 'contact[name]', @current_user.try(:username).try(:capitalize), class: 'col-12 custom-border', placeholder: "Name"
-          .row
-            = text_field_tag 'contact[name]', nil, class: 'col-12 custom-text-field', placeholder: "Phone Number (optional)"
-          .row
-            = text_field_tag 'contact[order_number]', nil, class: 'col-12 custom-text-field', placeholder: "Order Number (optional)"
-          .row
-            = text_area_tag 'contact[message]', nil, class: 'col-12 custom-border message', rows: 5, required: true, placeholder: "Message"
-            %p.message-note Please do not divulge private information (e.g., credit card number) via this form.
-          .row
-            = submit_tag 'Submit', class: 'btn button-submit custom-btn block col-12'
+          .row.form-footer
+            .col-12
+              %i.icon-time.first-icon
+              %span.recently-items Recently Viewed Items |
+              %i.icon-ellipsis-vertical.middle-icon
+              %i.icon-plus.last-icon
 
-        .row.form-footer
-          .col-12
-            %i.icon-time.first-icon
-            %span.recently-items Recently Viewed Items |
-            %i.icon-ellipsis-vertical.middle-icon
-            %i.icon-plus.last-icon
-
-      .side-mail-response
-        = render 'customers/thank_for_contacting'
+        .side-mail-response
+          = render 'customers/thank_for_contacting'
 
 - content_for :extra_javascript do
   :javascript

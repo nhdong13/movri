@@ -7,7 +7,7 @@
         .listing-title
           = listing.title
         .listing-price
-          %span $240
+          %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
           %span /1 day
         .listing-rent-now
-          = link_to "Rent now", "", class: "rent-now-btn"
+          = link_to "Rent now", listing_path(listing), class: "rent-now-btn"

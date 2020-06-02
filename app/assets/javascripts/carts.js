@@ -133,4 +133,10 @@ window.ST = window.ST || {};
     })
   });
 
+  $('.mobile-number-item-in-cart-detail, .cart-detail-item-quantity').keypress(function(event){
+    if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
+      event.preventDefault();
+    }
+  });
+
 })(window.ST);
