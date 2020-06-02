@@ -1,0 +1,23 @@
+.common-box
+  .checkout-box
+    .price-list
+      - price_cents = price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code)
+      %span Subtotal
+      %span.price#subtotal-price= MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+    .price-list
+      %span Coverage
+      %span.price#coverage-price $129.00
+    .price-list
+      %span Shipping
+      %span.price#shipping-fee $129.00
+    .total-price
+      %span Total (excluding tax)
+      %span.price#total-price= MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+    = button_tag class: "common-btn btn-checkout" do
+      %i.icon-lock.fa-fw
+      %span.uppercase Checkout
+    .coutinue-shipping
+      .center-title
+        = link_to "Continue Shipping","",  class: "fz-16"
+      %i.icon-chevron-right
+

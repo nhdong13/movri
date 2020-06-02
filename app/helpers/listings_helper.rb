@@ -1,5 +1,5 @@
+require 'numberic'
 module ListingsHelper
-
   # Class is selected if conversation type is currently selected
   def get_map_tab_class(tab_name)
     current_tab_name = action_name || "map_view"
@@ -129,6 +129,24 @@ module ListingsHelper
       I18n.t("admin.communities.listings.status.selected_js") + params[:status].size.to_s
     else
       I18n.t("admin.communities.listings.status.all")
+    end
+  end
+
+  def calculate_price_cents listing, sesstion_cart, promo_code
+    return 0 unless sesstion_cart
+    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * sesstion_cart
+    price_with_promo_code(price_cents, promo_code)
+  end
+
+  def price_with_promo_code price, promo_code
+    return price unless promo_code
+    case promo_code.promo_type
+    when 'discount_10_percent'
+      price -= price.percent_of(10)
+    when 'discount_20_percent'
+      price -= price.percent_of(20)
+    else
+      price
     end
   end
 end

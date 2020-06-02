@@ -16,6 +16,36 @@ window.ST = window.ST || {};
     // onChangeQuantity();
   };
 
+  function getListingSku () {
+    skus = []
+    _.map($('.unique-listing-sku'), function(i) {
+      skus.push($(i).data("sku"))
+      }
+    )
+    return _.uniq(skus)
+  }
+
+  function handleChangeInput() {
+    $('#price-item').html("...")
+    $('.promo-code-error').hide();
+  }
+
+  $('.promo-code-field #promo_code')
+  $(".promo-code-field button").click(function(){
+    handleChangeInput()
+    skus = getListingSku()
+    promoCode = $(this).parent().find('.promo-code-val').val();
+    $.ajax({
+      url: '/promo_codes/check_code.js',
+      type: "GET",
+      data: {
+        code: promoCode,
+        skus: skus
+      }
+    }).done(function(response) {
+    }).fail(function(error) {});
+  });
+
   function onChangeQuantity () {
     $('#quantity').on('change', function() {
       var quantity = $(this).val();
@@ -46,8 +76,8 @@ window.ST = window.ST || {};
     }).fail(function(error) {
       console.log("Error:", error);
     });
-
   });
+
 
   $("#cart_deatail_arrival_date, #cart_deatail_return_date").on("change", throttle(function () {
     var changeBookingDayUrl = "/en/change_booking_days";

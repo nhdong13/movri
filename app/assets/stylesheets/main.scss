@@ -45,7 +45,6 @@ body {
 }
 
 .page-content {
-  padding-top: lines(0.5);
   background: white;
 
   &.no-cover-photo {
@@ -66,8 +65,6 @@ body {
   }
 
   @include media(tablet) {
-    padding-top: lines(1);
-
     &.no-cover-photo {
       padding-top: 33px;
     }
@@ -96,12 +93,9 @@ body {
 }
 
 body {
-  // background: $background;
-  background: #f4f6f8;
+  background: #f0f0f0;
   color: $body;
   height: auto; // fixes some height issues in the map view
-  //border: solid darken($highlight, 9%);
-  //border-width: 0 0 lines(1);
 }
 
 ul {
@@ -2354,7 +2348,6 @@ figure.fluidratio {
     font-size: 22px;
     margin-left: -0.75rem;
     margin-right: -0.75rem;
-    background-color: white;
   }
 
   .mobile-cart-note {

@@ -1,0 +1,14 @@
+.common-box.desktop-shipping
+  %p.center-title SHIPPING
+  .shipping-box
+    .options
+      = radio_button_tag :shipping_type, 'delivery'
+      %span Delivery
+    .options
+      = radio_button_tag :shipping_type, 'fedex'
+      %span Fedex Office
+    .options
+      = radio_button_tag :shipping_type, 'pickup'
+      %span Pickup
+    = text_field_tag :zip_code, nil, placeholder: "Zip code"
+    = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00']), class: "desktop-custom-select-shipping"
