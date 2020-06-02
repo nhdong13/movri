@@ -10,8 +10,8 @@
               - listing.listing_images.each do |listing_image|
                 = image_tag(listing_image[:medium])
             .product-name
-              %span= listing.title
+              %a{href: listing_path(listing.id)}= listing.title
             .product-rent-price
               %span= "#{humanized_money_with_symbol listing.price} "
               %span= "/ #{ListingViewUtils.get_time_rent(session)}"
-            %button= "Rent now"
+            %a.rent-btn{href: listing_path(listing.id)}= "Rent now"

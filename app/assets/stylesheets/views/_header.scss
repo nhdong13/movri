@@ -193,6 +193,8 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 
   .header-right {
+    height: 35px;
+
     .info-header-text {
       &:last-child {
         padding-right: 0em;
