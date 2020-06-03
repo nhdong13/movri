@@ -4,6 +4,7 @@ import searchPageReducer from './SearchPageReducer';
 import routesReducer from './RoutesReducer';
 import manageAvailabilityReducer from './ManageAvailabilityReducer';
 import listingWorkingHoursReducer from '../components/sections/ListingWorkingHours/reducer';
+import changeQuantityReducer from './CartReducer';
 
 // This is how you do a directory of reducers.
 // The `import * as reducers` does not work for a directory, but only with a single file
@@ -20,4 +21,7 @@ export default {
   user: (state = {}) => state,
   manageAvailability: manageAvailabilityReducer,
   listingWorkingHours: listingWorkingHoursReducer,
+  changeQuantity: changeQuantityReducer,
+  listingcart: (state = {}) => state
+
 };

@@ -13,8 +13,38 @@ window.ST = window.ST || {};
   }
 
   module.initCart = function() {
-    onChangeQuantity();
+    // onChangeQuantity();
   };
+
+  function getListingSku () {
+    skus = []
+    _.map($('.unique-listing-sku'), function(i) {
+      skus.push($(i).data("sku"))
+      }
+    )
+    return _.uniq(skus)
+  }
+
+  function handleChangeInput() {
+    $('#price-item').html("...")
+    $('.promo-code-error').hide();
+  }
+
+  $('.promo-code-field #promo_code')
+  $(".promo-code-field button").click(function(){
+    handleChangeInput()
+    skus = getListingSku()
+    promoCode = $(this).parent().find('.promo-code-val').val();
+    $.ajax({
+      url: '/promo_codes/check_code.js',
+      type: "GET",
+      data: {
+        code: promoCode,
+        skus: skus
+      }
+    }).done(function(response) {
+    }).fail(function(error) {});
+  });
 
   function onChangeQuantity () {
     $('#quantity').on('change', function() {
@@ -46,8 +76,8 @@ window.ST = window.ST || {};
     }).fail(function(error) {
       console.log("Error:", error);
     });
-
   });
+
 
   $("#cart_deatail_arrival_date, #cart_deatail_return_date").on("change", throttle(function () {
     var changeBookingDayUrl = "/en/change_booking_days";
@@ -131,6 +161,12 @@ window.ST = window.ST || {};
     }).fail(function(error) {
       console.log(error);
     })
+  });
+
+  $('.mobile-number-item-in-cart-detail, .cart-detail-item-quantity').keypress(function(event){
+    if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
+      event.preventDefault();
+    }
   });
 
 })(window.ST);

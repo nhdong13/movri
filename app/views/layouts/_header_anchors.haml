@@ -16,7 +16,7 @@
     .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
       #header-user-mobile-anchor
         .left
-          .header-menu-container.header-user-contain.toggle.hidden{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+          .header-menu-container.header-user-contain.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
             .header-menu-toggle-container.toggle-header-container
               .display-inline-flex
                 = image_tag PersonViewUtils.person_avatar(@current_user), height: 62, width: 62, class: 'header-menu-icon icon-movri-user'

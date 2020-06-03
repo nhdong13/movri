@@ -1,0 +1,6 @@
+.common-box.desktop-promo-code
+  %p.title Promo Code
+  .promo-code-field
+    = text_field_tag :promo_code, nil, class: "promo-code-val"
+    = button_tag 'Apply', :class => "common-btn"
+  %span.promo-code-error.alert-error.d-none

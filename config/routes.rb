@@ -178,7 +178,11 @@ Rails.application.routes.draw do
     end
 
     resources :categories, only: [:index]
-
+    resources :promo_codes, only: [] do
+      collection do
+        get 'check_code'
+      end
+    end
 
     namespace :admin do
       get '' => "getting_started_guide#index"
