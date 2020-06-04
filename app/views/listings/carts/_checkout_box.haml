@@ -6,13 +6,14 @@
       %span.price#subtotal-price= MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
     .price-list
       %span Coverage
-      %span.price#coverage-price $129.00
+      - total_coverage = total_coverage_for_all_items_cart
+      %span.price#coverage-price= MoneyViewUtils.to_humanized(Money.new(total_coverage, 'USD'))
     .price-list
       %span Shipping
       %span.price#shipping-fee $129.00
     .total-price
       %span Total (excluding tax)
-      %span.price#total-price= MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+      %span.price#total-price= MoneyViewUtils.to_humanized(Money.new(price_cents + total_coverage, 'USD'))
     = button_tag class: "common-btn btn-checkout" do
       %i.icon-lock.fa-fw
       %span.uppercase Checkout
