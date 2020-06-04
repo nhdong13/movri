@@ -1,7 +1,7 @@
 module InsuranceCalculationService
   module_function
 
-  MIN_INSURANCE_PRICE = 5
+  MIN_INSURANCE_PRICE = 500
 
   def call(listing, booking_dates)
     return MIN_INSURANCE_PRICE unless booking_dates.to_i > 0
