@@ -13,7 +13,6 @@ window.ST = window.ST || {};
   }
 
   module.initCart = function() {
-    // onChangeQuantity();
   };
 
   function getListingSku () {
@@ -45,19 +44,6 @@ window.ST = window.ST || {};
     }).done(function(response) {
     }).fail(function(error) {});
   });
-
-  function onChangeQuantity () {
-    $('#quantity').on('change', function() {
-      var quantity = $(this).val();
-      if(quantity < 1){
-        $(this).val(1)
-      }
-      parent = $(this).parents(".listing-info")
-      price_item = parent.find("#readable_price").val()
-      total_price_item = price_item * quantity
-      parent.find('#price-item').html(total_price_item)
-    });
-  }
 
   $(".remove-item-in-cart-detail").on("click", function () {
     var listingId = $(this).attr('id').split("-").pop();

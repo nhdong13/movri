@@ -6,7 +6,7 @@
       %span Subtotal
       .price
         %span
-          - price_cents = price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code)
+          - price_cents = price_with_all_fee(promo_code)
           = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
         %span
           \/

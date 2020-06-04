@@ -149,4 +149,22 @@ module ListingsHelper
       price
     end
   end
+
+  def total_coverage listing, quantity
+    InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
+  end
+
+  def total_coverage_for_all_items_cart
+    total_coverage = 0
+    session[:cart].each do|listing_id, quantity|
+      listing = Listing.find_by(listing_id)
+      coverage = InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
+      total_coverage += coverage
+    end
+    total_coverage
+  end
+
+  def price_with_all_fee promo_code
+    price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code) + total_coverage_for_all_items_cart
+  end
 end

@@ -21,12 +21,11 @@
         .price-coverage
           - price_cents = calculate_price_cents(listing, session[:cart][listing.id.to_s], promo_code)
           - readable_price = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
-          = hidden_field_tag :readable_price, price_cents
           %span.price
             Price:
             = readable_price
-          %span
-            Coverage: $20.00
+          %span Coverage:
+          %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
     .listting-action
       %i.icon-shopping-cart
       %span Move to wish list
