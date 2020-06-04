@@ -139,28 +139,30 @@ window.ST = window.ST || {};
 
   }, 500));
 
-  $(".mobile-number-item-in-cart-detail, .cart-detail-item-quantity").on("change", function () {
+  function getPromoCode() {
+    var promoCode = []
+    _.map($('.promo-code-val'), function(i) {
+      if(!$(i).val() == ""){
+        promoCode.push($(i).val())
+      }
+    })
+    return promoCode[0];
+  }
+
+  $('body').on("change", ".mobile-number-item-in-cart-detail, .cart-detail-item-quantity", function () {
+    var promoCode = getPromoCode();
     var id = event.target.id;
     var total = $("#" + id).val();
     var listingId = id.split("-").pop();
-    var plusItemUrl = "/en/listings/" + listingId + "/change_number_of_item";
-
+    var plusItemUrl = "/en/listings/" + listingId + "/change_number_of_item.js";
     $.ajax({
       url: plusItemUrl,
       type: "POST",
       data: {
-        total: total
+        total: total,
+        promo_code: promoCode
       }
-    }).done(function(response) {
-      if (response.success === true) {
-        location.reload(true);
-      } else {
-        //TODO:
-        location.reload(true);
-      }
-    }).fail(function(error) {
-      console.log(error);
-    })
+    }).done(function(response) {}).fail(function(error) {})
   });
 
   $('.mobile-number-item-in-cart-detail, .cart-detail-item-quantity').keypress(function(event){

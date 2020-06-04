@@ -464,17 +464,17 @@ class ListingsController < ApplicationController
 
   def change_number_of_item
     id = params[:id]
-
-    if session[:cart].key?(id) && params[:total].to_i > 0
-      session[:cart][id] = params[:total].to_i
-
-      render json: {
-        success: true
-      }
-    else
-      render json: {
-        success: false
-      }
+    @item_count = params[:total].to_i
+    if session[:cart].key?(id) && @item_count > 0
+      session[:cart][id] = @item_count
+    end
+    @promo_code = PromoCode.find_by(code: params[:promo_code])
+    @listing = Listing.find_by_id(id)
+    # Get total items in cart
+    @cart_total_items = session[:cart].values.sum
+    respond_to do |format|
+      format.html
+      format.js {render layout: false}
     end
   end
 
