@@ -9,9 +9,9 @@ window.ST = window.ST || {};
   };
 
   function showViewCart() {
-    $(".show-view-cart-modal").on('click', function() {
-      $("#view-cart-modal").css('display', "block");
-    })
+    // $(".show-view-cart-modal").on('click', function() {
+    //   $("#view-cart-modal").css('display', "block");
+    // })
   };
 
   function closeViewCart () {
@@ -22,9 +22,9 @@ window.ST = window.ST || {};
 
 
   function showMobileViewCart() {
-    $(".mobile-show-view-cart-modal").on('click', function() {
-      $("#mobile-view-cart-modal").css('display', "block");
-    })
+    // $(".mobile-show-view-cart-modal").on('click', function() {
+    //   $("#mobile-view-cart-modal").css('display', "block");
+    // })
   };
 
   function closeMobileViewCart () {

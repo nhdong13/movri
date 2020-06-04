@@ -70,13 +70,12 @@ window.ST = window.ST || {};
 
     $("#booking-dates").validate({
       rules: rules,
-      submitHandler: function(form) {
-        var $form = $(form);
-        $form.find("#start-on").attr("name", "");
-        $form.find("#end-on").attr("name", "");
-
-        form.submit();
-      }
+      // submitHandler: function(form) {
+      //   var $form = $(form);
+      //   $form.find("#start-on").attr("name", "");
+      //   $form.find("#end-on").attr("name", "");
+      //   form.submit();
+      // }
     });
 
     var endDate = new Date(options.end_date * 1000);
@@ -142,7 +141,7 @@ window.ST = window.ST || {};
 
       $("#end-on").focus(function() {
         if(!$(this).is(":focus")) {
-          $("#end-on").datepicker("setDatesDisabled", disabledEndDates);
+          $("#end-on").datepicker("setDatesDisabled", disabledStartDates);
         }
       });
     }

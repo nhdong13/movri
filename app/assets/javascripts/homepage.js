@@ -257,8 +257,8 @@ $(function() {
     var date = month + '/' + day + '/' + today.getFullYear();
 
     if (date == arrivalDate) {
-      swal("Successfully!", "You can pick up from movri office today", "success", {
-      });
+      // swal("Successfully!", "You can pick up from movri office today", "success", {
+      // });
     }
   });
 
