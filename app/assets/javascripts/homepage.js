@@ -10,6 +10,11 @@ $(function() {
     };
   }
 
+  $('.homepage-carousel').on('init', function () {
+    $('.loading-carousel').css({display: 'none'});
+    $('.homepage-carousel').css({display: 'block', opacity: 1});
+  });
+
   $('.homepage-carousel').slick({
     adaptiveHeigh: true,
     autoplay: true,

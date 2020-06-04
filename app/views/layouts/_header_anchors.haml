@@ -7,16 +7,11 @@
     font-weight: bold;
   }
 
-  @media screen and (max-width: 768px) {
-    .number-on-cart-style-mobile {
-        display: block !important;
-    }
-  }
 .display-inline-flex.icons
   %a{href:  'javascript:void(0)', class: 'search-mobile'}
     = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
   .toggle{data: {toggle: '#header-contact', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-    = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-menu-icon hidden-desktop')
+    = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
   #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
     .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
       #header-user-mobile-anchor
