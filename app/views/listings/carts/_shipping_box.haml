@@ -10,5 +10,6 @@
     .options
       = radio_button_tag :shipping_type, 'pickup'
       %span Pickup
-    = text_field_tag :zip_code, nil, placeholder: "Zip code"
-    = select_tag :select_shipping, options_for_select(['Fedex Standard Shipping - $25.00']), class: "desktop-custom-select-shipping"
+    = text_field_tag :zip_code, zipcode, placeholder: "Zip code", class: "zip-code-input"
+    %span.zipcode-error.alert-error.d-none
+    = select_tag :select_shipping, options_for_select(shipping_selection), class: "desktop-custom-select-shipping"

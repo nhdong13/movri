@@ -14,7 +14,7 @@
         .col-12.instructions-box
           = render partial: "listings/carts/instructions_box"
         .col-12.shipping-box
-          = render partial: "listings/carts/shipping_box"
+          = render partial: "listings/carts/shipping_box", locals: {shipping_selection: {}, zipcode: nil}
         .col-12.checkout-box
           = render partial: "listings/carts/checkout_box", locals: {promo_code: nil}
       - else

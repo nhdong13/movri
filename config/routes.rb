@@ -184,6 +184,13 @@ Rails.application.routes.draw do
       end
     end
 
+
+    resources :carts, only: [] do
+      collection do
+        get 'get_shipping_rates_for_listing_items'
+      end
+    end
+
     namespace :admin do
       get '' => "getting_started_guide#index"
 

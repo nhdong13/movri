@@ -1,0 +1,6 @@
+<% if @message %>
+  $('.zipcode-error').html('<%= @message %>').css('display', 'block').delay(5000).slideUp("slow");
+<% else %>
+  $(".desktop-display .show-cart-page .shipping-box").html("<%= j render(partial: 'listings/carts/shipping_box', locals: { shipping_selection: @shipping_selection, zipcode:  params[:zipcode] }) %>");
+  $('#shipping_type_fedex').attr("checked", true);
+<% end %>

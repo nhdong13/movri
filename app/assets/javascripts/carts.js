@@ -15,6 +15,17 @@ window.ST = window.ST || {};
   module.initCart = function() {
   };
 
+
+  $('body').on('change', ".show-cart-page .zip-code-input", function(){
+    var zipcode = $(this).val()
+    $.ajax({
+      url: '/carts/get_shipping_rates_for_listing_items.js',
+      type: "GET",
+      data: { zipcode: zipcode }
+    }).done(function(response) {
+    }).fail(function(error) {});
+  });
+
   function getListingSku () {
     skus = []
     _.map($('.unique-listing-sku'), function(i) {
@@ -29,7 +40,6 @@ window.ST = window.ST || {};
     $('.promo-code-error').hide();
   }
 
-  $('.promo-code-field #promo_code')
   $(".promo-code-field button").click(function(){
     handleChangeInput()
     skus = getListingSku()
