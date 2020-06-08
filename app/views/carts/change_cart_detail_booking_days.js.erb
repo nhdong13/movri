@@ -1,5 +1,5 @@
 <% if @success %>
-  $(".desktop-display .show-cart-page .shipping-box").html("<%= j render(partial: 'listings/carts/shipping_box', locals: { zipcode:  params[:zipcode] }) %>");
+  $(".show-cart-page .shipping-box").html("<%= j render(partial: 'listings/carts/shipping_box', locals: { zipcode:  params[:zipcode] }) %>");
   //desktop-display
   $(".desktop-display .show-cart-page .header-checkout").html("<%= j render(partial: 'listings/carts/header_checkout', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
   $(".desktop-display .show-cart-page .col-8").html("<%= j render(partial: 'listings/carts/list_listing', locals: { promo_code: @promo_code }) %>");

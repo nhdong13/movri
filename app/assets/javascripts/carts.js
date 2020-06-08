@@ -105,36 +105,6 @@ window.ST = window.ST || {};
     }
   );
 
-  $("#mobile_cart_deatail_arrival_date, #mobile_cart_deatail_return_date").on("change", throttle(function () {
-    var changeBookingDayUrl = "/en/change_cart_detail_booking_days.js";
-    var startDate = $("#mobile_cart_deatail_arrival_date").val();
-    var endDate = $("#mobile_cart_deatail_return_date").val();
-
-    if (!startDate || !endDate) {
-      return;
-    }
-
-    $.ajax({
-      url: changeBookingDayUrl,
-      type: "PUT",
-      data: {
-        start_date: startDate,
-        end_date: endDate
-      }
-    }).done(function(response) {
-      console.log('response', response);
-      if (response.success === true) {
-        // Change days booking successful
-        location.reload();
-      } else {
-        // Days not change
-      }
-    }).fail(function(error) {
-      console.log("Error:", error);
-    });
-
-  }, 500));
-
   function getPromoCode() {
     var promoCode = []
     _.map($('.promo-code-val'), function(i) {
