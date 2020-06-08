@@ -26,6 +26,7 @@ class ListingsController < ApplicationController
   before_action :ensure_is_admin, :only => [:move_to_top, :show_in_updates_email]
 
   before_action :is_authorized_to_post, :only => [:new, :create]
+  before_action :set_sessions
 
   def index
     @selected_tribe_navi_tab = "home"
@@ -836,5 +837,14 @@ class ListingsController < ApplicationController
       else
         @current_user
       end
+  end
+
+  def set_sessions
+    session[:shipping] ||= {}
+    session[:shipping][:fedex] = [
+      {'service_name' => "Fedex Standard Shipping", 'total_charge' => {"amount" => 25, "currency" => "USD"}, "service_type" => "fedex_express_saver"},
+      {'service_name'=> "Fedex Priority Overnight", 'total_charge'=> {"amount"=> 50, "currency" => "USD"}, 'service_type' => "fedex_priority_overnight"}
+    ]
+
   end
 end

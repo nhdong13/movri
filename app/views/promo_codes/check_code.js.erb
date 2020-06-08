@@ -2,9 +2,9 @@
   $('.promo-code-error').html("This code is invalid or already used.").css('display', 'block');;
 <% end %>
 //desktop-display
-$(".desktop-display .show-cart-page .header-checkout").html("<%= j render(partial: 'listings/carts/header_checkout', locals: { promo_code: @promo_code }) %>");
+$(".desktop-display .show-cart-page .header-checkout").html("<%= j render(partial: 'listings/carts/header_checkout', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
 $(".desktop-display .show-cart-page .col-8").html("<%= j render(partial: 'listings/carts/list_listing', locals: { promo_code: @promo_code }) %>");
-$(".show-cart-page .checkout-box").html("<%= j render(partial: 'listings/carts/checkout_box', locals: { promo_code: @promo_code }) %>");
+$(".show-cart-page .checkout-box").html("<%= j render(partial: 'listings/carts/checkout_box', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
 //mobile-display
-$(".mobile-display .show-cart-page .mobile-cart-header").html("<%= j render(partial: 'listings/carts/mobile/cart_header', locals: { promo_code: @promo_code }) %>");
+$(".mobile-display .show-cart-page .mobile-cart-header").html("<%= j render(partial: 'listings/carts/mobile/cart_header', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
 $(".mobile-display .show-cart-page .mobile-cart-listings").html("<%= j render(partial: 'listings/carts/mobile/list_listing', locals: { promo_code: @promo_code }) %>");

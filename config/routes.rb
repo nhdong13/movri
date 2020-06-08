@@ -400,6 +400,8 @@ Rails.application.routes.draw do
     end
 
     post 'change_booking_days', to: 'listings#change_booking_days'
+    put 'change_cart_detail_booking_days', to: 'carts#change_cart_detail_booking_days'
+    get 'change_cart_select_shipping', to: 'carts#change_cart_select_shipping'
 
     resources :listings do
       member do

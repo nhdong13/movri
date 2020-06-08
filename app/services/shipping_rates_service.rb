@@ -65,7 +65,7 @@ module ShippingRatesService
           {
             description:"Food XS",
             box_type:"custom",
-            weight:{"value": dimension[:weight], "unit":"kg"},
+            weight:{"value": dimension[:weight] * quantity, "unit":"kg"},
             dimension:{width: dimension[:width], height: dimension[:height], depth: dimension[:depth], unit:"cm"},
             items:[
               {
@@ -120,9 +120,9 @@ module ShippingRatesService
 
   def convert_to_shipping_selection response
     rates = response["data"]["rates"]
-    shipping_selection = {}
+    shipping_selection = []
     rates.each do |rate|
-      shipping_selection.merge!({"#{rate['service_name']} - #{rate['total_charge']['amount']} #{rate['total_charge']['currency']}": rate['service_type']})
+      shipping_selection.push({'service_name' => rate['service_name'], 'total_charge' => rate['total_charge'], 'service_type' => rate['service_type']})
     end
     shipping_selection
   end

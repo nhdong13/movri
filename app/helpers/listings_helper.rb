@@ -132,9 +132,9 @@ module ListingsHelper
     end
   end
 
-  def calculate_price_cents listing, sesstion_cart, promo_code
-    return 0 unless sesstion_cart
-    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * sesstion_cart
+  def calculate_price_cents listing, session_cart, promo_code
+    return 0 unless session_cart
+    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session_cart
     price_with_promo_code(price_cents, promo_code)
   end
 
@@ -164,7 +164,8 @@ module ListingsHelper
     total_coverage
   end
 
-  def price_with_all_fee promo_code
-    price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code) + total_coverage_for_all_items_cart
+  def price_with_all_fee promo_code, shipping_fee=nil
+    shipping_fee =  FEDEX_STANDARD_FEE unless shipping_fee
+    price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code) + total_coverage_for_all_items_cart + shipping_fee
   end
 end

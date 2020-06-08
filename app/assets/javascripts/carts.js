@@ -15,7 +15,6 @@ window.ST = window.ST || {};
   module.initCart = function() {
   };
 
-
   $('body').on('change', ".show-cart-page .zip-code-input", function(){
     var zipcode = $(this).val()
     $.ajax({
@@ -75,38 +74,39 @@ window.ST = window.ST || {};
   });
 
 
-  $("#cart_deatail_arrival_date, #cart_deatail_return_date").on("change", throttle(function () {
-    var changeBookingDayUrl = "/en/change_booking_days";
-    var startDate = $("#cart_deatail_arrival_date").val();
-    var endDate = $("#cart_deatail_return_date").val();
+  $('#cart_deatail_arrival_date, #cart_deatail_return_date').datepicker({
+    autoclose: true
+  });
 
-    if (!startDate || !endDate) {
-      return;
+  $('#cart_deatail_arrival_date, #cart_deatail_return_date').datepicker()
+    .on('changeDate', function(e) {
+      if(this.id == "cart_deatail_arrival_date"){
+        startDate = $(this).val();
+        endDate = $("#cart_deatail_return_date").val();
+      }else{
+        startDate = $("#cart_deatail_arrival_date").val();
+        endDate = $(this).val();
+      }
+
+      if (!startDate || !endDate) {
+        return;
+      }
+      changeBookingDayUrl = "/en/change_cart_detail_booking_days.js";
+      promoCode = getPromoCode()
+      $.ajax({
+        url: changeBookingDayUrl,
+        type: "PUT",
+        data: {
+          start_date: startDate,
+          end_date: endDate,
+          code: promoCode
+        }
+      })
     }
-
-    $.ajax({
-      url: changeBookingDayUrl,
-      type: "POST",
-      data: {
-        start_date: startDate,
-        end_date: endDate
-      }
-    }).done(function(response) {
-      console.log('response', response);
-      if (response.success === true) {
-        // Change days booking successful
-        location.reload();
-      } else {
-        // Days not change
-      }
-    }).fail(function(error) {
-      console.log("Error:", error);
-    });
-
-  }, 500));
+  );
 
   $("#mobile_cart_deatail_arrival_date, #mobile_cart_deatail_return_date").on("change", throttle(function () {
-    var changeBookingDayUrl = "/en/change_booking_days";
+    var changeBookingDayUrl = "/en/change_cart_detail_booking_days.js";
     var startDate = $("#mobile_cart_deatail_arrival_date").val();
     var endDate = $("#mobile_cart_deatail_return_date").val();
 
@@ -116,7 +116,7 @@ window.ST = window.ST || {};
 
     $.ajax({
       url: changeBookingDayUrl,
-      type: "POST",
+      type: "PUT",
       data: {
         start_date: startDate,
         end_date: endDate
@@ -165,6 +165,20 @@ window.ST = window.ST || {};
     if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
       event.preventDefault();
     }
+  });
+
+  $('body').on('change', '.shipping-box #select_shipping', function(){
+    changeCartSelectShippingURL = "/en/change_cart_select_shipping.js";
+    promoCode = getPromoCode();
+    shipping_type = $(this).val();
+    $.ajax({
+      url: changeCartSelectShippingURL,
+      type: "GET",
+      data: {
+        shipping_type: shipping_type,
+        code: promoCode
+      }
+    })
   });
 
 })(window.ST);

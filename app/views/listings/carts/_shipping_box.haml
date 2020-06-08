@@ -2,14 +2,14 @@
   %p.center-title SHIPPING
   .shipping-box
     .options
-      = radio_button_tag :shipping_type, 'delivery'
+      = radio_button_tag :shipping_type, 'delivery', true, class: "shipping_type_delivery"
       %span Delivery
     .options
-      = radio_button_tag :shipping_type, 'fedex'
+      = radio_button_tag :shipping_type, 'fedex', false, class: "shipping_type_fedex"
       %span Fedex Office
     .options
-      = radio_button_tag :shipping_type, 'pickup'
+      = radio_button_tag :shipping_type, 'pickup', false, class: "shipping_type_pickup"
       %span Pickup
     = text_field_tag :zip_code, zipcode, placeholder: "Zip code", class: "zip-code-input"
     %span.zipcode-error.alert-error.d-none
-    = select_tag :select_shipping, options_for_select(shipping_selection), class: "desktop-custom-select-shipping"
+    = select_tag :select_shipping, options_for_select(shipping_options(session[:shipping]), selected: select_method_shipping(session[:shipping], session[:booking])), class: "desktop-custom-select-shipping"

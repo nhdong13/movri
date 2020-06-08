@@ -5,8 +5,8 @@
     %span.subtotal Subtotal
     .price
       %span.number-price
-        - price_cents = price_with_all_fee(promo_code)
-        = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+        - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
+        = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
       %span.day-rent
         \/
         = session[:booking][:total_days]

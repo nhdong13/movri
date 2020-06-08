@@ -3,7 +3,7 @@
     .show-cart-page
       - if session[:cart].present?
         .mobile-cart-header.header-checkout
-          = render partial: 'listings/carts/mobile/cart_header', locals: {promo_code: nil}
+          = render partial: 'listings/carts/mobile/cart_header', locals: {promo_code: nil, shipping_type: nil}
         .mobile-cart-listings
           = render partial: 'listings/carts/mobile/list_listing', locals: {promo_code: nil}
         .row-empty-row
@@ -14,9 +14,9 @@
         .col-12.instructions-box
           = render partial: "listings/carts/instructions_box"
         .col-12.shipping-box
-          = render partial: "listings/carts/shipping_box", locals: {shipping_selection: {}, zipcode: nil}
+          = render partial: "listings/carts/shipping_box", locals: {zipcode: nil}
         .col-12.checkout-box
-          = render partial: "listings/carts/checkout_box", locals: {promo_code: nil}
+          = render partial: "listings/carts/checkout_box", locals: {promo_code: nil, shipping_type: nil}
       - else
         = render partial: 'listings/carts/mobile/no_listing'
     = render partial: 'shares/mobile_footer'
@@ -25,7 +25,7 @@
       .wrapper
         - if session[:cart].present?
           .header-checkout
-            = render partial: "listings/carts/header_checkout", locals: {promo_code: nil}
+            = render partial: "listings/carts/header_checkout", locals: {promo_code: nil, shipping_type: nil}
           .col-8
             = render partial: "listings/carts/list_listing", locals: {promo_code: nil}
           .col-4
@@ -36,5 +36,3 @@
 
 - content_for :javascript do
   window.ST.initCart();
-  $('#cart_deatail_arrival_date, #cart_deatail_return_date').datepicker();
-  $('#mobile_cart_deatail_arrival_date, #mobile_cart_deatail_return_date').datepicker();
