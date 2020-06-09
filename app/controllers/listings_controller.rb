@@ -841,10 +841,6 @@ class ListingsController < ApplicationController
 
   def set_sessions
     session[:shipping] ||= {}
-    session[:shipping][:fedex] = [
-      {'service_name' => "Fedex Standard Shipping", 'total_charge' => {"amount" => 25, "currency" => "USD"}, "service_type" => "fedex_express_saver"},
-      {'service_name'=> "Fedex Priority Overnight", 'total_charge'=> {"amount"=> 50, "currency" => "USD"}, 'service_type' => "fedex_priority_overnight"}
-    ]
-
+    session[:shipping][:fedex] = []
   end
 end

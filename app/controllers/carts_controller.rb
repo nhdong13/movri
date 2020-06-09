@@ -9,7 +9,9 @@ class CartsController < ApplicationController
 
     listings.each do |listing|
       if listing.packing_dimensions.blank?
-        @message = "The listing has not dimensions to calculate"
+        # TODO: create packing_dimension only for test, remove this line when app release
+        PackingDimension.create(height: 10, length:10, width: 10, weight: 10, listing_id: listing.id)
+        # @message = "The listing has not dimensions to calculate"
       end
     end
     result = ShippingRatesService.get_shipping_rates_for_cart_page(params, session[:cart])

@@ -16,6 +16,7 @@ window.ST = window.ST || {};
   };
 
   $('body').on('change', ".show-cart-page .zip-code-input", function(){
+    handleChangeZipCode()
     var zipcode = $(this).val()
     $.ajax({
       url: '/carts/get_shipping_rates_for_listing_items.js',
@@ -37,6 +38,11 @@ window.ST = window.ST || {};
   function handleChangeInput() {
     $('#price-item').html("...")
     $('.promo-code-error').hide();
+  }
+
+  function handleChangeZipCode() {
+    $(".show-cart-page .desktop-custom-select-shipping").hide()
+    $('.shipping-box .spinner').fadeIn("slow");
   }
 
   $(".promo-code-field button").click(function(){
