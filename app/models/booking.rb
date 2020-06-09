@@ -23,6 +23,8 @@
 class Booking < ApplicationRecord
   belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :booking
 
+  before_save :add_listing_blocked_dates
+
   scope :in_period, ->(start_time, end_time) { where(['start_time >= ? AND end_time <= ?', start_time, end_time]) }
   scope :hourly_basis, -> { where(per_hour: true) }
   scope :covers_another_booking, ->(booking) do
@@ -51,5 +53,15 @@ class Booking < ApplicationRecord
 
   def self.columns
     super.reject { |c| c.name == "end_on_exclusive" }
+  end
+
+  def add_listing_blocked_dates
+    padding_dates_arr =  []
+    community = self.tx.listing.community
+
+    padding_before_dates = (self.start_on - community.padding_time_before.days...self.start_on).to_a
+    padding_after_dates = (self.end_on...self.end_on + community.padding_time_after.days).to_a
+    padding_dates_arr.concat(padding_before_dates, padding_after_dates).sort.map{|date| date.to_formatted_s(:iso8601)}.to_s.remove("[", "]").gsub!(/\"/, '\'')
+    self.tx.listing.update(manually_blocked_dates: padding_dates_arr)
   end
 end
