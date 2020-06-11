@@ -5,7 +5,6 @@
 #  id                :integer          not null, primary key
 #  transaction_id    :integer          not null
 #  status            :string(255)
-#  name              :string(255)
 #  phone             :string(255)
 #  postal_code       :string(255)
 #  city              :string(255)
@@ -16,6 +15,11 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  country_code      :string(8)
+#  person_id         :integer
+#  first_name        :string(255)
+#  last_name         :string(255)
+#  company           :string(255)
+#  apartment         :string(255)
 #
 # Indexes
 #

@@ -157,4 +157,21 @@ window.ST = window.ST || {};
     })
   });
 
+  $('body').on('click', '.btn-checkout', function(){
+    createTransactionURL = "/en//transactions";
+    instructions = $('#instructions').val();
+    promoCode = getPromoCode();
+    $.ajax({
+      url: createTransactionURL,
+      type: "POST",
+      dataType: "json",
+      data: {
+        instructions: instructions,
+        code: promoCode
+      }
+    }).done(function(response) {
+       window.location.href = response.redirect_url
+    }).fail(function(error) {})
+  });
+
 })(window.ST);

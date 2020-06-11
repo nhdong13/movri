@@ -105,25 +105,45 @@ module TransactionService::Transaction
     Result::Success.new(result: false)
   end
 
-  def create(opts, force_sync: true)
-    opts_tx = opts[:transaction].to_hash
+  def create session, params, force_sync: true
+    promo_code = PromoCode.find_by(code: params[:code])
+    transaction_params = {
+      instructions_from_seller: params[:instructions]
+    }
+    transaction_params.merge(promo_code_id: promo_code.id)  if promo_code
+    transaction =  Transaction.create(transaction_params)
 
-    set_adapter = settings_adapter(opts_tx[:payment_gateway])
-    tx_process_settings = set_adapter.tx_process_settings(opts_tx)
+    session[:cart].each do |key, value|
+      listing = Listing.find_by(id: key)
+      transaction.transaction_items.create(
+        listing_id: listing.id,
+        listing_uuid: listing.uuid,
+        listing_title: listing.title,
+        quantity: value,
+        coverage_price_cents: InsuranceCalculationService.call(listing, session[:booking][:total_days]),
+        price_cents: listing.price_cents
+      )
+    end
+    transaction
 
-    tx = TxStore.create(opts_tx.merge(tx_process_settings))
+    # opts_tx = opts[:transaction].to_hash
 
-    tx_process = tx_process(tx[:payment_process])
-    gateway_adapter = gateway_adapter(tx[:payment_gateway])
-    res = tx_process.create(tx: tx,
-                            gateway_fields: opts[:gateway_fields],
-                            gateway_adapter: gateway_adapter,
-                            force_sync: force_sync)
+    # set_adapter = settings_adapter(opts_tx[:payment_gateway])
+    # tx_process_settings = set_adapter.tx_process_settings(opts_tx)
 
-    tx.reload
-    res.maybe()
-      .map { |gw_fields| Result::Success.new(create_transaction_response(tx, gw_fields)) }
-      .or_else(res)
+    # tx = TxStore.create(opts_tx.merge(tx_process_settings))
+
+    # tx_process = tx_process(tx[:payment_process])
+    # gateway_adapter = gateway_adapter(tx[:payment_gateway])
+    # res = tx_process.create(tx: tx,
+    #                         gateway_fields: opts[:gateway_fields],
+    #                         gateway_adapter: gateway_adapter,
+    #                         force_sync: force_sync)
+
+    # tx.reload
+    # res.maybe()
+    #   .map { |gw_fields| Result::Success.new(create_transaction_response(tx, gw_fields)) }
+    #   .or_else(res)
   end
 
   def find_tx_model(community_id:, transaction_id:)

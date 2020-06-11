@@ -196,3 +196,4 @@ gem 'puma'
 # Provides object geocoding (by street or IP address), reverse geocoding (coordinates to street address), distance queries for ActiveRecord and Mongoid, result caching, and more.
 gem 'geocoder', '~> 1.6', '>= 1.6.1'
 gem 'whenever', '~> 1.0.0', require: false
+gem "font-awesome-rails"

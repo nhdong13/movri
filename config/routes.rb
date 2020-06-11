@@ -111,7 +111,6 @@ Rails.application.routes.draw do
   get '/not_available' => 'application#not_available', as: :community_not_available
 
   get '/load_cart', to: 'listings#load_cart'
-  get '/show_cart', to: 'listings#show_cart'
 
   resources :communities, only: [:new, :create]
 
@@ -120,6 +119,7 @@ Rails.application.routes.draw do
 
   # Adds locale to every url right after the root path
   scope "(/:locale)", :constraints => { :locale => locale_matcher } do
+    get '/show_cart', to: 'listings#show_cart'
 
     put '/mercury_update' => "mercury_update#update", :as => :mercury_update
 
@@ -130,6 +130,7 @@ Rails.application.routes.draw do
 
     # All new transactions (in the future)
     get "/transactions/new" => "transactions#new", as: :new_transaction
+    get "/transactions/:uuid/checkout" => "transactions#checkout", as: :checkout_transaction
 
     # preauthorize flow
 
@@ -184,6 +185,15 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :transactions, only: [:show, :new, :create] do
+      resources :shipping_addresses, only: [:create, :update]
+    end
+
+    resources :shipping_addresses, only: [:create, :update] do
+      collection do
+        get 'change_state_shipping_form'
+      end
+    end
 
     resources :carts, only: [] do
       collection do
@@ -547,7 +557,6 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :transactions, only: [:show, :new, :create]
         resource :settings do
           member do
             get :account

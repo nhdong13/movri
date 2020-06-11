@@ -1,0 +1,74 @@
+.common-box
+  .row
+    .col-9
+      .header-title
+        %h2 Contact Information
+      .row
+        .col-12
+          = text_field_tag :email, nil, placeholder: "Email"
+          = fa_icon "check", class: "d-none"
+        .col-12
+          .shipping-noti
+            = check_box_tag :notification, nil, true
+            %span Keep me up to date on news and exclusive offers
+      .header-title
+        %h2 Shipping Address
+      = form_for [@transaction, @shipping_address], id: 'shipping_address' do |form|
+        .form-group
+          .row
+            .col-6
+              = form.text_field :first_name, placeholder: "First name"
+              = fa_icon "check", class: "d-none"
+            .col-6
+              = form.text_field :last_name, placeholder: "Last name"
+              = fa_icon "check", class: "d-none"
+        .form-group
+          .row
+            .col-12
+              = form.text_field :company, placeholder: "Company(optional)"
+              = fa_icon "check", class: "d-none"
+        .form-group
+          .row
+            .col-12
+              = form.text_field :street1, placeholder: "Address"
+              = fa_icon "check", class: "d-none"
+        .form-group
+          .row
+            .col-12
+              = form.text_field :apartment, placeholder: "Apartment, suite, etc. (Optional)"
+              = fa_icon "check", class: "d-none"
+        .form-group
+          .row
+            .col-12
+              = form.text_field :city, placeholder: "City"
+              = fa_icon "check", class: "d-none"
+        .form-group
+          .row
+            .col-4
+              = text_field_tag :country, 'Canada', placeholder: "Country/Region", readonly: true
+            .col-4
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES)
+            .col-4
+              = form.text_field :postal_code,  placeholder: "Zip Code"
+              = fa_icon "check", class: "d-none"
+        .form-group
+          .row
+            .col-12
+              = form.text_field :phone, placeholder: "Phone"
+              = fa_icon "check", class: "d-none"
+        .form-group
+          .row
+            .col-12.center-items
+              = form.submit 'Continue to Shipping', class:"btn btn-submit"
+            .col-12.center-items.back-to-cart
+              = fa_icon "angle-left"
+              = link_to "Return to cart", show_cart_path
+        .row
+          .col-12.br-top.copy-right
+            %span All rights reserved MOVRI
+    .col-3
+      %span Already have an account?
+      = link_to "Log in", login_path
+
+- content_for :javascript do
+  ValidateForm.run();

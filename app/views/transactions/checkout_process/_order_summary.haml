@@ -1,0 +1,52 @@
+.common-box.padding-0
+  .row
+    .col-12
+      .header-title.margin-0
+        %span Order Summary
+  .order-summary-products
+    - session[:cart].each do |key, value|
+      - listing = Listing.find_by(id: key)
+      .row
+        .col-12
+          .listing-row
+            .main-image
+              = image_tag listing.main_image, :class => "design-image-too-wide"
+            .listing-information
+              .listing-title
+                = listing.title
+              .coverage
+                .coverage-selection
+                  %span Coverage:
+                  %span Movri Coverage
+              .sku-quantity
+                .quantity
+                  %span Quantity:
+                  %span= value
+              .price
+                %span.number-price
+                  -# with coverage fee
+                  - listing_subtotal = listing_subtotal(listing, value, nil)
+                  = MoneyViewUtils.to_humanized(Money.new(listing_subtotal, 'USD'))
+                %span.day-rent
+                  \/
+                  = session[:booking][:total_days]
+                  days rental
+  .row
+    .col-12
+      .order-summary-prices
+        .subtotal.items
+          %span Subtotal
+          %span= MoneyViewUtils.to_humanized(Money.new(listings_subtotal, 'USD'))
+        - if session[:promo_code] && session[:promo_code][:code]
+          .promo-code-discount.items
+            %span= "Promo Code (#{session[:promo_code][:code]})"
+            %span= "- #{MoneyViewUtils.to_humanized(Money.new(get_discount_for_all_products_cart, 'USD'))}"
+        .shipping-fee.items
+          %span Shipping
+          %span TBD
+        .tax-fee.items
+          %span Tax
+          %span= MoneyViewUtils.to_humanized(Money.new(get_tax_fee(state), 'USD'))
+        .price-with-all-fee.items
+          %span Total (including tax)
+          %span= MoneyViewUtils.to_humanized(Money.new(final_price(state), 'USD'))

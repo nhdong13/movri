@@ -1,0 +1,98 @@
+.checkout-section{
+  .common-box{
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .header-title{
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .booking-date-bar{
+    background-color: white;
+    display: flex;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 5px;
+    .items{
+      padding: 14px;
+      width: 25%;
+      border-left: 1px solid black;
+    }
+    .items:first-child{border-left: unset;}
+  }
+  .back-to-cart{
+      color: #13588d;
+    .fa-angle-left{
+      margin-right: 5px;
+    }
+  }
+  .copy-right{
+    color: #757575;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  .shipping-noti{
+    margin-bottom: 50px;
+    margin-top: 10px;
+  }
+}
+
+.order-summary-products{
+  .row{margin-bottom: 0;}
+  .row:last-child{margin-bottom: 20px;}
+  .row:first-child{
+    .listing-row{border-top: 1px solid #bdbdbd;}
+  }
+  .listing-row {
+    border-bottom: 1px solid #bdbdbd;
+    display: flex;
+    align-items: center;
+    .main-image{
+      img {
+        max-width: 125px;
+        margin-right: 10px;
+        margin-top: 7px;
+      }
+    }
+  }
+  .listing-information{
+    line-height: 2;
+    .listing-title{
+      color: #4eb857;
+      font-size: 20px;
+    }
+    .coverage, .sku-quantity{
+      color: #757575;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+    .price {
+      font-size: 20px;
+      text-transform: uppercase;
+      font-weight: bold;
+      .number-price {color: #13588b;}
+      .day-rent {color: #4eb857;}
+    }
+  }
+}
+
+.order-summary-prices{
+  padding: 0 20px;
+  line-height: 2;
+  .items{
+    color: #757575;
+    font-size: 18px;
+    span:last-child{float: right}
+  }
+  .price-with-all-fee{
+    color: black;
+  }
+}
+#shipping_address_state_or_province{
+  width: 100%
+}
+
+.header-checkout{
+  font-size: 26px;
+  padding: 20px 0;
+}

@@ -111,6 +111,7 @@
 //= require categories
 //= require header
 //= require listing_contact
+//= require form_validate
 //= require tag-it
 //= require listing_tags
 //= require manually_blocked_dates

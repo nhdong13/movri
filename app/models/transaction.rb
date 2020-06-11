@@ -3,28 +3,19 @@
 # Table name: transactions
 #
 #  id                                :integer          not null, primary key
-#  starter_id                        :string(255)      not null
-#  starter_uuid                      :binary(16)       not null
-#  listing_id                        :integer          not null
-#  listing_uuid                      :binary(16)       not null
+#  starter_id                        :string(255)
+#  starter_uuid                      :string(255)
 #  conversation_id                   :integer
-#  automatic_confirmation_after_days :integer          not null
-#  community_id                      :integer          not null
-#  community_uuid                    :binary(16)       not null
+#  automatic_confirmation_after_days :string(255)
+#  community_id                      :string(255)
+#  community_uuid                    :string(255)
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
 #  starter_skipped_feedback          :boolean          default(FALSE)
 #  author_skipped_feedback           :boolean          default(FALSE)
 #  last_transition_at                :datetime
 #  current_state                     :string(255)
-#  commission_from_seller            :integer
-#  minimum_commission_cents          :integer          default(0)
-#  minimum_commission_currency       :string(255)
 #  payment_gateway                   :string(255)      default("none"), not null
-#  listing_quantity                  :integer          default(1)
-#  listing_author_id                 :string(255)      not null
-#  listing_author_uuid               :binary(16)       not null
-#  listing_title                     :string(255)
 #  unit_type                         :string(32)
 #  unit_price_cents                  :integer
 #  unit_price_currency               :string(8)
@@ -36,9 +27,12 @@
 #  availability                      :string(32)       default("none")
 #  booking_uuid                      :binary(16)
 #  deleted                           :boolean          default(FALSE)
-#  commission_from_buyer             :integer
-#  minimum_buyer_fee_cents           :integer          default(0)
-#  minimum_buyer_fee_currency        :string(3)
+#  uuid                              :binary(16)       not null
+#  instructions_from_seller          :text(65535)
+#  promo_code_id                     :integer
+#  total_price_cents                 :integer
+#  tax_cents                         :integer
+#  promo_code_discount_cents         :integer
 #
 # Indexes
 #
@@ -47,8 +41,6 @@
 #  index_transactions_on_conversation_id     (conversation_id)
 #  index_transactions_on_deleted             (deleted)
 #  index_transactions_on_last_transition_at  (last_transition_at)
-#  index_transactions_on_listing_author_id   (listing_author_id)
-#  index_transactions_on_listing_id          (listing_id)
 #  index_transactions_on_starter_id          (starter_id)
 #  transactions_on_cid_and_deleted           (community_id,deleted)
 #
@@ -59,7 +51,8 @@ class Transaction < ApplicationRecord
   attr_accessor :contract_agreed
 
   belongs_to :community
-  belongs_to :listing
+  belongs_to :promo_code
+  has_and_belongs_to_many :listings
   has_many :transaction_transitions, dependent: :destroy, foreign_key: :transaction_id, inverse_of: :tx
   has_one :booking, dependent: :destroy
   has_one :shipping_address, dependent: :destroy
@@ -68,28 +61,24 @@ class Transaction < ApplicationRecord
   has_many :testimonials, dependent: :destroy
   belongs_to :listing_author, class_name: 'Person'
   has_many :stripe_payments, dependent: :destroy
+  has_many :transaction_items, dependent: :destroy
 
   delegate :author, to: :listing
   delegate :title, to: :listing, prefix: true
 
   accepts_nested_attributes_for :booking
 
-  validates :payment_gateway, presence: true, on: :create
-  validates :community_uuid, :listing_uuid, :starter_id, :starter_uuid, presence: true, on: :create
-  validates :listing_quantity, numericality: {only_integer: true, greater_than_or_equal_to: 1}, on: :create
-  validates :listing_title, :listing_author_id, :listing_author_uuid, presence: true, on: :create
-  validates :unit_type, inclusion: ["hour", "day", "night", "week", "month", "custom", "unit", nil, :hour, :day, :night, :week, :month, :custom, :unit], on: :create
-  validates :availability, inclusion: ["none", "booking", :none, :booking], on: :create
-  validates :delivery_method, inclusion: ["none", "shipping", "pickup", nil, :none, :shipping, :pickup], on: :create
-  validates :payment_process, inclusion: [:none, :postpay, :preauthorize], on: :create
-  validates :payment_gateway, inclusion: [:paypal, :checkout, :braintree, :stripe, :none], on: :create
-  validates :commission_from_seller, numericality: {only_integer: true}, on: :create
-  validates :automatic_confirmation_after_days, numericality: {only_integer: true}, on: :create
+  # validates :payment_gateway, presence: true, on: :create
+  # validates :community_uuid, presence: true, on: :create
+  # validates :unit_type, inclusion: ["hour", "day", "night", "week", "month", "custom", "unit", nil, :hour, :day, :night, :week, :month, :custom, :unit], on: :create
+  # validates :availability, inclusion: ["none", "booking", :none, :booking], on: :create
+  # validates :delivery_method, inclusion: ["none", "shipping", "pickup", nil, :none, :shipping, :pickup], on: :create
+  # validates :payment_process, inclusion: [:none, :postpay, :preauthorize], on: :create
+  # validates :payment_gateway, inclusion: [:paypal, :checkout, :braintree, :stripe, :none], on: :create
+  # validates :automatic_confirmation_after_days, numericality: {only_integer: true}, on: :create
 
-  monetize :minimum_commission_cents, with_model_currency: :minimum_commission_currency
-  monetize :unit_price_cents, with_model_currency: :unit_price_currency
+  # monetize :unit_price_cents, with_model_currency: :unit_price_currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :unit_price_currency
-  monetize :minimum_buyer_fee_cents, with_model_currency: :minimum_buyer_fee_currency
 
   scope :exist, -> { where(deleted: false) }
   scope :for_person, -> (person){
@@ -147,6 +136,23 @@ class Transaction < ApplicationRecord
            OR NOT author_skipped_feedback AND NOT #{Testimonial.with_tx_author.select('1').arel.exists.to_sql}")
   }
 
+  def uuid_object
+    if self[:uuid].nil?
+      nil
+    else
+      UUIDUtils.parse_raw(self[:uuid])
+    end
+  end
+
+  def uuid_object=(uuid)
+    self.uuid = UUIDUtils.raw(uuid)
+  end
+
+  before_create :add_uuid
+  def add_uuid
+    self.uuid ||= UUIDUtils.create_raw
+  end
+
   def booking_uuid_object
     if self[:booking_uuid].nil?
       nil
@@ -187,16 +193,8 @@ class Transaction < ApplicationRecord
     write_attribute(:starter_uuid, UUIDUtils::RAW.call(value))
   end
 
-  def listing_uuid=(value)
-    write_attribute(:listing_uuid, UUIDUtils::RAW.call(value))
-  end
-
   def community_uuid=(value)
     write_attribute(:community_uuid, UUIDUtils::RAW.call(value))
-  end
-
-  def listing_author_uuid=(value)
-    write_attribute(:listing_author_uuid, UUIDUtils::RAW.call(value))
   end
 
   def booking_uuid=(value)

@@ -17,7 +17,7 @@ class TransactionsController < ApplicationController
     end
   end
 
-  before_action do |controller|
+  before_action except: [:checkout, :create] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -59,65 +59,100 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    Result.all(
-      -> {
-        TransactionForm.validate(params.to_unsafe_hash)
-      },
-      ->(form) {
-        fetch_data(form[:listing_id])
-      },
-      ->(form, (_, _, _, process)) {
-        validate_form(form, process)
-      },
-      ->(_, (listing_id, listing_model), _) {
-        ensure_can_start_transactions(listing_model: listing_model, current_user: @current_user, current_community: @current_community)
-      },
-      ->(form, (listing_id, listing_model, author_model, process, gateway), _, _) {
-        booking_fields = Maybe(form).slice(:start_on, :end_on).select { |booking| booking.values.all? }.or_else({})
+    # if user have at least one transaction
+    if @current_user
+      if @current_user.starter_transactions.any?
+        return render json: {redirect_url: checkout_transaction_path(@current_user.starter_transactions.last.uuid_object)}
+      # if user don't have any transaction but they click checkout before login
+      else
+        if session[:transaction] && session[:transaction][:transaction_id]
+          @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
+          # TODO: check if transaction is pending
+        else
+          @transaction = transaction_service.create(session, params)
+        end
+        if @transaction
+          @transaction.update(starter_id: @current_user.id)
+          return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
+        end
+      end
+    else
+      if session[:transaction] && session[:transaction][:transaction_id]
+        @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
+        if @transaction
+          return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
+        else
+          @transaction = transaction_service.create(session, params)
+        end
+      else
+        @transaction = transaction_service.create(session, params)
+      end
+      session[:transaction] = {transaction_id: @transaction.id}
+    end
 
-        is_booking = date_selector?(listing_model)
-        quantity = calculate_quantity(tx_params: {
-                                        quantity: form[:quantity],
-                                        start_on: booking_fields.dig(:start_on),
-                                        end_on: booking_fields.dig(:end_on)
-                                      },
-                                      is_booking: is_booking,
-                                      unit: listing_model.unit_type&.to_sym)
+    respond_to do |format|
+      format.html
+      format.json { render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)} }
+    end
+    # Result.all(
+    #   -> {
+    #     TransactionForm.validate(params.to_unsafe_hash)
+    #   },
+    #   ->(form) {
+    #     fetch_data(form[:listing_id])
+    #   },
+    #   ->(form, (_, _, _, process)) {
+    #     validate_form(form, process)
+    #   },
+    #   ->(_, (listing_id, listing_model), _) {
+    #     ensure_can_start_transactions(listing_model: listing_model, current_user: @current_user, current_community: @current_community)
+    #   },
+    #   ->(form, (listing_id, listing_model, author_model, process, gateway), _, _) {
+    #     booking_fields = Maybe(form).slice(:start_on, :end_on).select { |booking| booking.values.all? }.or_else({})
+
+    #     is_booking = date_selector?(listing_model)
+    #     quantity = calculate_quantity(tx_params: {
+    #                                     quantity: form[:quantity],
+    #                                     start_on: booking_fields.dig(:start_on),
+    #                                     end_on: booking_fields.dig(:end_on)
+    #                                   },
+    #                                   is_booking: is_booking,
+    #                                   unit: listing_model.unit_type&.to_sym)
 
 
-        transaction_service.create(
-          {
-            transaction: {
-              community_id: @current_community.id,
-              community_uuid: @current_community.uuid_object,
-              listing_id: listing_id,
-              listing_uuid: listing_model.uuid_object,
-              listing_title: listing_model.title,
-              starter_id: @current_user.id,
-              starter_uuid: @current_user.uuid_object,
-              listing_author_id: author_model.id,
-              listing_author_uuid: author_model.uuid_object,
-              unit_type: listing_model.unit_type,
-              unit_price: listing_model.price || Money.new(0, @current_community.currency),
-              unit_tr_key: listing_model.unit_tr_key,
-              availability: listing_model.availability,
-              listing_quantity: quantity,
-              content: form[:message],
-              starting_page: ::Conversation::PAYMENT,
-              booking_fields: booking_fields,
-              payment_gateway: process.process == :none ? :none : gateway, # TODO This is a bit awkward
-              payment_process: process.process
-            }
-          })
-      }
-    ).on_success { |(_, (_, _, _, process), _, _, tx)|
-      after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
-      flash[:notice] = after_create_flash(process: process) # add more params here when needed
-      redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
-    }.on_error { |error_msg, data|
-      flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
-      redirect_to(session[:return_to_content] || root)
-    }
+    #     transaction_service.create(
+    #       {
+    #         transaction: {
+    #           community_id: @current_community.id,
+    #           community_uuid: @current_community.uuid_object,
+    #           listing_id: listing_id,
+    #           listing_uuid: listing_model.uuid_object,
+    #           listing_title: listing_model.title,
+    #           starter_id: @current_user.id,
+    #           starter_uuid: @current_user.uuid_object,
+    #           listing_author_id: author_model.id,
+    #           listing_author_uuid: author_model.uuid_object,
+    #           unit_type: listing_model.unit_type,
+    #           unit_price: listing_model.price || Money.new(0, @current_community.currency),
+    #           unit_tr_key: listing_model.unit_tr_key,
+    #           availability: listing_model.availability,
+    #           listing_quantity: quantity,
+    #           content: form[:message],
+    #           starting_page: ::Conversation::PAYMENT,
+    #           booking_fields: booking_fields,
+    #           payment_gateway: process.process == :none ? :none : gateway, # TODO This is a bit awkward
+    #           payment_process: process.process
+    #         }
+    #       })
+    #   }
+    # ).on_success { |(_, (_, _, _, process), _, _, tx)|
+    #   after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
+    #   flash[:notice] = after_create_flash(process: process) # add more params here when needed
+    #   redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
+    # }.on_error { |error_msg, data|
+    #   flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
+    #   redirect_to(session[:return_to_content] || root)
+    # }
   end
 
   def show
@@ -230,6 +265,11 @@ class TransactionsController < ApplicationController
       url: person_path(username: person.username),
       display_name: PersonViewUtils.person_display_name(person, @current_community.name_display_type)
     }
+  end
+
+  def checkout
+    @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
+    @shipping_address = @transaction.build_shipping_address
   end
 
   private

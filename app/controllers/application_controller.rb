@@ -443,6 +443,10 @@ class ApplicationController < ActionController::Base
     @display_expiration_notice = ext_service_active && is_expired
   end
 
+  def uuid_to_raw string_uuid
+    uuid_object = UUIDTools::UUID.parse(string_uuid)
+    uuid_raw = UUIDUtils.raw(uuid_object)
+  end
   private
 
   # Override basic instrumentation and provide additional info for

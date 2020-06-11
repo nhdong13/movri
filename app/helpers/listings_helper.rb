@@ -132,22 +132,16 @@ module ListingsHelper
     end
   end
 
-  def calculate_price_cents listing, session_cart, promo_code
-    return 0 unless session_cart
-    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session_cart
+  def calculate_price_cents listing, quantity, promo_code=nil
+    return 0 unless quantity
+    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * quantity
     price_with_promo_code(price_cents, promo_code)
   end
 
   def price_with_promo_code price, promo_code
     return price unless promo_code
-    case promo_code.promo_type
-    when 'discount_10_percent'
-      price -= price.percent_of(10)
-    when 'discount_20_percent'
-      price -= price.percent_of(20)
-    else
-      price
-    end
+    discount = PriceCalculationService.get_discount_from_promo_code(price, promo_code)
+    price - discount
   end
 
   def total_coverage listing, quantity
@@ -157,15 +151,65 @@ module ListingsHelper
   def total_coverage_for_all_items_cart
     total_coverage = 0
     session[:cart].each do|listing_id, quantity|
-      listing = Listing.find_by(listing_id)
+      listing = Listing.find_by(id: listing_id)
       coverage = InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
       total_coverage += coverage
     end
     total_coverage
   end
 
-  def price_with_all_fee promo_code, shipping_fee=nil
+  def price_with_all_fee promo_code=nil, shipping_fee=nil
     shipping_fee =  FEDEX_STANDARD_FEE unless shipping_fee
     price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code) + total_coverage_for_all_items_cart + shipping_fee
+  end
+
+  def listing_subtotal listing, quantity, promo_code=nil
+    price_cents = calculate_price_cents(listing, quantity, promo_code)
+    total_coverage = total_coverage(listing, quantity)
+    price_cents + total_coverage
+  end
+
+  # this value is including coverage
+  def listings_subtotal
+    listings_subtotal = 0
+    session[:cart].each do|listing_id, quantity|
+      listing = Listing.find_by(id: listing_id)
+      listings_subtotal += listing_subtotal(listing, quantity)
+    end
+    listings_subtotal
+  end
+
+  # this value is not including coverage
+  def get_price_cents_for_all_products_cart
+    price_cents = 0
+    session[:cart].each do|listing_id, quantity|
+      listing = Listing.find_by(id: listing_id)
+      price_cents += calculate_price_cents(listing, quantity)
+    end
+    price_cents
+  end
+
+  def get_discount_for_all_products_cart
+    promo_code = PromoCode.find_by(code: session[:promo_code]&[:code])
+    PriceCalculationService.get_discount_from_promo_code(
+      get_price_cents_for_all_products_cart,
+      promo_code
+    )
+  end
+
+  def get_tax_fee canada_provinces, shipping_fee=nil
+    shipping_fee = 0 unless shipping_fee
+    all_fee = listings_subtotal - get_discount_for_all_products_cart + shipping_fee
+    PriceCalculationService.calculate_tax_fee(all_fee, canada_provinces)
+  end
+
+  def final_price canada_provinces, shipping_fee=nil
+    shipping_fee = 0 unless shipping_fee
+    tax_fee = get_tax_fee(canada_provinces, shipping_fee)
+    listings_subtotal - get_discount_for_all_products_cart + shipping_fee + tax_fee
+  end
+
+  def get_today
+    Date.today.strftime("%m/%d/%Y")
   end
 end
