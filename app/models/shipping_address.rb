@@ -28,4 +28,10 @@
 
 class ShippingAddress < ApplicationRecord
   belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :shipping_address
+  validates_length_of :phone, :in => 10..16, :allow_nil => false
+
+  before_save :convert_phone
+  def convert_phone
+    self.phone = phone.tr("(), ,-", "")
+  end
 end

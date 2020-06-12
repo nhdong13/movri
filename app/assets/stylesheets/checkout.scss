@@ -96,3 +96,45 @@
   font-size: 26px;
   padding: 20px 0;
 }
+
+.checkout-section{
+  .mobile-display {
+    padding: 15px;
+    .order-summary-products{
+      .listing-row {
+        .main-image img{
+          max-width: 80px;
+        }
+        .listing-information{
+          .listing-title{font-size: 16px}
+          .price{font-size: 15px}
+          .coverage, .sku-quantity{font-size: 14px; color: #616161}
+        }
+      }
+    }
+    .booking-date-bar{
+      border: 1px solid #e0e0e0;
+      .items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .items{
+        border-left: 1px solid #e0e0e0;
+      }
+    }
+    .order-summary-prices{
+      padding: 0 10px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+  .mobile-contact-info{
+    .shipping-noti{
+      font-size: 13px;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.booking-date-bar
+  .order-date.items
+    .item
+      %h3 Order Date
+      %span= get_today
+  .arrival-date.items
+    .item
+      %h3 Arrival Date
+      %span= session[:booking][:start_date]
+  .return-date.items
+    .item
+      %h3 Return Date
+      %span= session[:booking][:end_date]
+  .rental-duration.items
+    .item
+      %h3 Rental Duration
+      %span= "#{session[:booking][:total_days]} days"

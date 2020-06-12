@@ -269,7 +269,11 @@ class TransactionsController < ApplicationController
 
   def checkout
     @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
-    @shipping_address = @transaction.build_shipping_address
+    if @current_user && @current_user.starter_transactions && @current_user.starter_transactions.last.shipping_address
+      @shipping_address = @current_user.starter_transactions.last.shipping_address
+    else
+      @shipping_address = @transaction.build_shipping_address
+    end
   end
 
   private

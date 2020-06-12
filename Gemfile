@@ -197,3 +197,4 @@ gem 'puma'
 gem 'geocoder', '~> 1.6', '>= 1.6.1'
 gem 'whenever', '~> 1.0.0', require: false
 gem "font-awesome-rails"
+gem 'jquery-inputmask-rails'

@@ -112,8 +112,13 @@
 //= require header
 //= require listing_contact
 //= require form_validate
+//= require common
 //= require tag-it
 //= require listing_tags
 //= require manually_blocked_dates
 //= require carts
+//= require jquery.inputmask
+//= require jquery.inputmask.extensions
+//= require jquery.inputmask.numeric.extensions
+//= require jquery.inputmask.date.extensions
 //= require_self

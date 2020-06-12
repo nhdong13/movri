@@ -266,6 +266,10 @@ class Person < ApplicationRecord
     end
   end
 
+  def get_email
+    emails.last.address
+  end
+
   def last_community_updates_at
     community_updates_last_sent_at || DEFAULT_TIME_FOR_COMMUNITY_UPDATES.ago
   end

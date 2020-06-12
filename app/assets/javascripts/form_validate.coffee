@@ -1,5 +1,5 @@
 validateShippingAddressForm = ->
-  $("#new_shipping_address").validate
+  $(".desktop-shipping-address").validate
     rules:
       'shipping_address[first_name]':
         required: true
@@ -17,8 +17,26 @@ validateShippingAddressForm = ->
         number: true
       'shipping_address[phone]':
         required: true
-        minlength: 10
+
+validateMobileShippingAddressForm = ->
+  $(".mobile-shipping-address").validate
+    rules:
+      'shipping_address[first_name]':
+        required: true
+        minlength: 2
+      'shipping_address[last_name]':
+        required: true
+        minlength: 2
+      'shipping_address[street1]':
+        required: true
+      'shipping_address[city]':
+        required: true
+      'shipping_address[postal_code]':
+        required: true
+        minlength: 4
         number: true
+      'shipping_address[phone]':
+        required: true
 
 onInputRequiredShippingFormField = ->
   $('#shipping_address_first_name,
@@ -44,7 +62,7 @@ onInputUnrequiredShippingFormField = ->
       $(this).animate({backgroundColor:'white'}, 500);
 
 onChangeState = ->
-  $('#shipping_address_state_or_province').change ->
+  $('.shipping-address-state').change ->
     state = $(this).val();
     $.ajax
       url: '/shipping_addresses/change_state_shipping_form.js'
@@ -52,10 +70,39 @@ onChangeState = ->
       data:
         state: state
 
+onFillColorToShippingInput = ->
+  inputs = [
+    '.shipping-address-first-name',
+    '.shipping-address-last-name',
+    '.shipping-address-street1',
+    '.shipping-address-city',
+    '.shipping-address-postal-code',
+    '.shipping-address-phone',
+    '.shipping-address-company',
+    '.shipping-address-apartment',
+    '.shipping-address-email'
+  ]
+  _.map(inputs, (i) ->
+    _.map($(i), ($i) ->
+      if $($i).val() != ""
+        $($i).animate({backgroundColor:'#e8f0fe'}, 500);
+        $($i).parent().find('.fa-check').css("display", 'inline-block');
+    )
+  )
+
+handleSubmitForm = ->
+  $("body").on "click", ".btn-submit", (e) ->
+    e.preventDefault();
+    if $(this).parents("form").valid()
+      $(this).parents("form").submit();
+
 window.ValidateForm =
   run: ->
     $(document).ready ->
       validateShippingAddressForm()
+      validateMobileShippingAddressForm()
       onInputRequiredShippingFormField()
       onInputUnrequiredShippingFormField()
       onChangeState()
+      onFillColorToShippingInput()
+      handleSubmitForm()

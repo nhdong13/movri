@@ -1,8 +1,14 @@
 class ShippingAddressesController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :find_transaction
+  before_action :find_shipping_address
+
   def create
     @shipping_address = @transaction.create_shipping_address(shipping_address_params)
+  end
+
+  def update
+    @shipping_address.update!(shipping_address_params)
   end
 
   def change_state_shipping_form
@@ -14,6 +20,10 @@ class ShippingAddressesController < ApplicationController
   end
 
   private
+  def find_shipping_address
+    @shipping_address = ShippingAddress.find_by(id: params[:id])
+  end
+
   def find_transaction
     @transaction = Transaction.find_by(id: params[:transaction_id])
   end

@@ -1,20 +1,20 @@
-.common-box
+.common-box.padding-15
   .row
     .col-9
       .header-title
-        %h2 Contact Information
+        %h2 Contact information
       .row
         .col-12
           - email = @current_user ? @current_user.get_email : ""
           = text_field_tag :email, email, placeholder: "Email", class: "shipping-address-email"
           = fa_icon "check", class: "d-none"
         .col-12
-          .shipping-noti
+          .shipping-noti.margin-bt-0.brown-font-color
             = check_box_tag :notification, nil, true
             %span Keep me up to date on news and exclusive offers
       .header-title
-        %h2 Shipping Address
-      = form_for [@transaction, @shipping_address], html: {class: "desktop-shipping-address"} do |form|
+        %h2 Shipping address
+      = form_for [@transaction, @shipping_address], html: {class: "mobile-shipping-address"} do |form|
         .form-group
           .row
             .col-6
@@ -45,16 +45,16 @@
               = fa_icon "check", class: "d-none"
         .form-group
           .row
-            .col-4
+            .col-6
               = text_field_tag :country, 'Canada', placeholder: "Country/Region", readonly: true
-            .col-4
-              = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, {:class => "shipping-address-state"}
-            .col-4
-              = form.text_field :postal_code,  placeholder: "Zip Code", class: "shipping-address-postal-code"
-              = fa_icon "check", class: "d-none"
+            .col-6
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, class: "shipping-address-state"
         .form-group
           .row
-            .col-12
+            .col-6
+              = form.text_field :postal_code,  placeholder: "Zip Code", class: "shipping-address-postal-code"
+              = fa_icon "check", class: "d-none"
+            .col-6
               = form.text_field :phone, placeholder: "Phone", class: "shipping-address-phone"
               = fa_icon "check", class: "d-none"
         .form-group
@@ -67,7 +67,3 @@
         .row
           .col-12.br-top.copy-right
             %span All rights reserved MOVRI
-    - unless @current_user
-      .col-3.padding-0.fz-14
-        %span Already have an account?
-        = link_to "Log in", login_path
