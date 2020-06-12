@@ -780,8 +780,10 @@ $home-list-avatar-padding: lines(0.25);
 }
 
 .contact-us {
+  background: white;
   padding: 30px;
   .row {
+    margin-bottom: 0;
     line-height: 70px;
 
     .sale_expert_advice,

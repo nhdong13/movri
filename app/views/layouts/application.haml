@@ -64,7 +64,6 @@
       %article.page-content{class: is_homepage && !@big_cover_photo ? 'no-cover-photo' : ''}
         = render :partial => "layouts/notifications"
         = yield
-        = render partial: "shares/footer"
     -#
       This is not pretty, but works.
       On homepage, we want to wrap the whole page content (search bar and the "real" content) to a form, so that
@@ -83,8 +82,7 @@
     - else
       = content_for(:page_content)
 
-    - if @custom_footer.try(:display?)
-      = render 'layouts/footer'
+    = render partial: "shares/homepage_footer"
 
     -# Most of the JavaScript should be for performance reasons at the end of the body
 

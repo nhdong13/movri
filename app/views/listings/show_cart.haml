@@ -23,16 +23,17 @@
   .desktop-display
     .show-cart-page
       .wrapper
-        - if session[:cart].present?
-          .header-checkout
-            = render partial: "listings/carts/header_checkout", locals: {promo_code: nil, shipping_type: nil}
-          .col-8
-            = render partial: "listings/carts/list_listing", locals: {promo_code: nil}
-          .col-4
-            = render partial: "listings/carts/info_boxes", locals: {promo_code: nil}
-        - else
-          -# TODO:
-          %h1 No products in the cart yet
+        .row
+          - if session[:cart].present?
+            .header-checkout
+              = render partial: "listings/carts/header_checkout", locals: {promo_code: nil, shipping_type: nil}
+            .col-8
+              = render partial: "listings/carts/list_listing", locals: {promo_code: nil}
+            .col-4
+              = render partial: "listings/carts/info_boxes", locals: {promo_code: nil}
+          - else
+            -# TODO:
+            %h1 No products in the cart yet
 
 - content_for :javascript do
   window.ST.initCart();
