@@ -1,0 +1,37 @@
+.common-box
+  .row
+    .col-9
+      .header-title
+        %h2 Shipping method
+  .row
+    .col-9
+      .shipping-select-box{'data-uuid': @transaction.uuid_object }
+        - if @shipping_address.is_office_address?
+          .items
+            .row.margin-0
+              .col-6
+                = radio_button_tag :shipment, 'pick_up', @shipping_address.is_office_address?
+                %span Pick Up
+              .col-6
+                .price
+                  %strong Free
+        - @shipping_selection.each_with_index do |shipment, index|
+          .items{class: @shipping_address.is_office_address? ? 'disabled-shipping-select': 'enabled-shipping-select'}
+            .row.margin-0
+              .col-6
+                = radio_button_tag :shipment, shipment['service_type'], (!@shipping_address.is_office_address? && index == 0) ? true : false, disabled: @shipping_address.is_office_address?
+                %span= shipment["service_name"]
+                .days-shippment
+                  %span= shipping_type_to_humanized(shipment["service_type"])
+              .col-6
+                .price
+                  %strong= "#{shipment["total_charge"]['amount']} #{shipment["total_charge"]['currency']}"
+  .row
+    .col-9.center-items
+      = submit_tag 'Continue to Payment', class: "btn btn-submit"
+    .col-9.center-items.back-to-cart
+      = fa_icon "angle-left"
+      = link_to "Return to cart", show_cart_path
+    .row
+      .col-9.br-top.copy-right
+        %span All rights reserved MOVRI

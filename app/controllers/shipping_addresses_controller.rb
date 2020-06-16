@@ -5,13 +5,29 @@ class ShippingAddressesController < ApplicationController
 
   def create
     @shipping_address = @transaction.create_shipping_address(shipping_address_params)
+    redirect_to shipment_transaction_path(@transaction.uuid_object)
   end
 
   def update
-    @shipping_address.update!(shipping_address_params)
+    success = @shipping_address.update(shipping_address_params)
+    if success
+      redirect_to shipment_transaction_path(@transaction.uuid_object)
+    else
+      redirect_to checkout_transaction_path(@transaction.uuid_object)
+      # flash[:error] = @shipping_address.full_message
+      # redirect_to shipment_transaction_path(@transaction.uuid_object)
+    end
   end
 
   def change_state_shipping_form
+    @state = params[:state]
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false}
+    end
+  end
+
+  def change_shipping_method_shipment_process
     @state = params[:state]
     respond_to do |format|
       format.html
@@ -32,6 +48,7 @@ class ShippingAddressesController < ApplicationController
     params
     .require(:shipping_address)
     .permit(
+      :email,
       :first_name,
       :last_name,
       :company,

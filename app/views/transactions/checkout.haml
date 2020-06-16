@@ -12,7 +12,7 @@
           .col-8
             = render partial: "transactions/checkout_process/contact_info"
           .col-4.order-summary-box
-            = render partial: "transactions/checkout_process/order_summary", locals: {state: DEFAULT_STATE}
+            = render partial: "transactions/checkout_process/order_summary", locals: {state: DEFAULT_STATE, default_shipping_fee: @default_shipping_fee}
       .mobile-display
         .row
           .col-12
@@ -22,7 +22,7 @@
             = render partial: "transactions/checkout_process/rent_date_bar"
         .row
           .col-12.mobile-order-summary-box
-            = render partial: "transactions/checkout_process/mobile_design/order_summary", locals: {state: DEFAULT_STATE}
+            = render partial: "transactions/checkout_process/mobile_design/order_summary", locals: {state: DEFAULT_STATE, default_shipping_fee: @default_shipping_fee}
           - unless @current_user
             .col-12.padding-0.fz-14.text-r
               %span Already have an account?

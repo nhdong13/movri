@@ -25,8 +25,8 @@
               .price
                 %span.number-price
                   -# with coverage fee
-                  - listing_subtotal = listing_subtotal(listing, value, nil)
-                  = MoneyViewUtils.to_humanized(Money.new(listing_subtotal, 'USD'))
+                  - listing_subtotal = @calculate_money.listing_subtotal(listing, value)
+                  = money_to_humanized(listing_subtotal)
                 %span.day-rent
                   \/
                   = session[:booking][:total_days]
@@ -36,17 +36,18 @@
       .order-summary-prices
         .subtotal.items
           %span Subtotal
-          %span= MoneyViewUtils.to_humanized(Money.new(listings_subtotal, 'USD'))
-        - if session[:promo_code] && session[:promo_code][:code]
+          %span= money_to_humanized(@calculate_money.listings_subtotal)
+        - if @transaction.promo_code
           .promo-code-discount.items
-            %span= "Promo Code (#{session[:promo_code][:code]})"
-            %span= "- #{MoneyViewUtils.to_humanized(Money.new(get_discount_for_all_products_cart, 'USD'))}"
+            %span= "Promo Code (#{@transaction.promo_code.code})"
+            %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
         .shipping-fee.items
           %span Shipping
-          %span TBD
+          - shipping_fee = default_shipping_fee ? PriceCalculationService.to_cents(default_shipping_fee) : 0
+          %span= shipping_fee > 0 ? money_to_humanized(shipping_fee) : 'TBD'
         .tax-fee.items
           %span Tax
-          %span= MoneyViewUtils.to_humanized(Money.new(get_tax_fee(state), 'USD'))
+          %span= money_to_humanized(@calculate_money.get_tax_fee(shipping_fee))
         .price-with-all-fee.items
           %span Total (including tax)
-          %span= MoneyViewUtils.to_humanized(Money.new(final_price(state), 'USD'))
+          %span= money_to_humanized(@calculate_money.final_price(shipping_fee))

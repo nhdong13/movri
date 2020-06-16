@@ -13,8 +13,8 @@ validateShippingAddressForm = ->
         required: true
       'shipping_address[postal_code]':
         required: true
-        minlength: 4
-        number: true
+        minlength: 6
+        cdnPostal: true
       'shipping_address[phone]':
         required: true
 
@@ -33,8 +33,8 @@ validateMobileShippingAddressForm = ->
         required: true
       'shipping_address[postal_code]':
         required: true
-        minlength: 4
-        number: true
+        minlength: 6
+        cdnPostal: true
       'shipping_address[phone]':
         required: true
 

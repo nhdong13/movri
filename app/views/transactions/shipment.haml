@@ -1,0 +1,21 @@
+.brown-background
+  .checkout-section
+    .wrapper
+      .desktop-display
+        .row
+          .col-12
+            .header-checkout Shipment
+        .row
+          .col-8.margin-bt-20
+            = render partial: "transactions/shipment_process/shipment_bar"
+          .col-4.margin-bt-20.shipment-promo-code-partial
+            = render partial: "transactions/shipment_process/shipment_promo_code"
+        .row
+          .col-8
+            = render partial: "transactions/shipment_process/shipment_methods"
+          .col-4.order-summary-box
+            = render partial: "transactions/checkout_process/order_summary", locals: {state: @state, default_shipping_fee: @default_shipping_fee}
+      .mobile-display
+
+- content_for :javascript do
+  Shipment.run();

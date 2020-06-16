@@ -131,6 +131,9 @@ Rails.application.routes.draw do
     # All new transactions (in the future)
     get "/transactions/new" => "transactions#new", as: :new_transaction
     get "/transactions/:uuid/checkout" => "transactions#checkout", as: :checkout_transaction
+    get "/transactions/:uuid/shipment" => "transactions#shipment", as: :shipment_transaction
+    get "/transactions/:uuid/change_shipping_selection" => "transactions#change_shipping_selection", as: :change_shipping_selection_transaction
+    get "/transactions/:uuid/update_promo_code" => "transactions#update_promo_code", as: :update_promo_code_transaction
 
     # preauthorize flow
 

@@ -28,7 +28,6 @@ window.ST = window.ST or {}
         data:
           sort_condition: data
         success: (response) ->
-          debugger
           window.location = response.redirect_url;
 
   module.HandleMobilePagination = ->

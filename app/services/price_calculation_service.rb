@@ -65,6 +65,10 @@ module PriceCalculationService
     price.percent_of(get_persent_of_canada_provinces(canada_provinces))
   end
 
+  def to_cents value
+     value * CONVERT_TO_CENT_VALUE
+  end
+
   def get_persent_of_canada_provinces canada_provinces
     case canada_provinces
     when 'alberta'

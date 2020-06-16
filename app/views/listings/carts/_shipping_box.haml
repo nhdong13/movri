@@ -2,13 +2,13 @@
   %p.center-title SHIPPING
   .shipping-box
     .options
-      = radio_button_tag :shipping_type, 'delivery', true, class: "shipping_type_delivery"
+      = radio_button_tag :shipping_type, 'delivery', false, class: "shipping_type_delivery", disabled: session[:booking][:start_date] == get_today
       %span Delivery
     .options
-      = radio_button_tag :shipping_type, 'fedex', false, class: "shipping_type_fedex"
+      = radio_button_tag :shipping_type, 'fedex', false, class: "shipping_type_fedex", disabled: session[:booking][:start_date] == get_today
       %span Fedex Office
     .options
-      = radio_button_tag :shipping_type, 'pickup', false, class: "shipping_type_pickup"
+      = radio_button_tag :shipping_type, 'pickup', session[:booking][:start_date] == get_today, class: "shipping_type_pickup"
       %span Pickup
     = text_field_tag :zip_code, zipcode, placeholder: "Zip code", class: "zip-code-input"
     %span.zipcode-error.alert-error.d-none

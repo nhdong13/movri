@@ -1,0 +1,11 @@
+.common-box.padding-0.margin-0
+  .shipping-promo-code{'data-uuid': @transaction.uuid_object}
+    %span.fz-18.padding-l-15 Promo Code
+    .row.center-items
+      .col-8
+        = text_field_tag :promo_code, @promo_code
+      .col-4
+        = button_tag 'Apply', :class => "common-btn margin-0"
+    .row.center-items.margin-0
+      .col-12
+        %span.promo-code-error.alert-error.d-none

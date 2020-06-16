@@ -1,0 +1,17 @@
+.shipment-bar
+  .contact-info
+    .row
+      .col-2
+        %span Contact
+      .col-8
+        %span= @shipping_address.email
+      .col-2
+        = link_to "Change", checkout_transaction_path(@transaction.uuid_object)
+  .shipping-address
+    .row
+      .col-2
+        %span Ship to
+      .col-8
+        %span= @shipping_address.full_address
+      .col-2
+        = link_to "Change", checkout_transaction_path(@transaction.uuid_object)

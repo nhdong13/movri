@@ -83,23 +83,22 @@ module ShippingRatesService
     hash_body.to_json
   end
 
-  def create_body_request_to_postmen_with_multiple_listings params, session_cart
-    listing_ids = session_cart.keys
+  def create_body_request_to_postmen_with_multiple_listings listing_ids, zipcode, total_quantity
     listings = Listing.where(id: listing_ids)
     dimension = dimension_params(listings)
-    ship_to_postal_code = params[:zipcode] || "V3R0N2"
+    ship_to_postal_code = zipcode || "V3R0N2"
     weight_average = dimension[:weight]
     # TODO: define skus later
     listing_skus = "required_field"
-    quantity = session_cart.values.sum
+    quantity = total_quantity
     state_from_postal_code = convert_postal_code_to_state_in_canada(ship_to_postal_code)
     request_body(ship_to_postal_code, state_from_postal_code, dimension, quantity, listing_skus)
   end
 
 
 
-  def get_shipping_rates_for_cart_page params, session_cart
-    request_body = create_body_request_to_postmen_with_multiple_listings(params, session_cart)
+  def get_shipping_rates_for_cart_page listing_ids, zipcode , total_quantity
+    request_body = create_body_request_to_postmen_with_multiple_listings(listing_ids, zipcode, total_quantity)
 
     response = Faraday.post(
       APP_CONFIG.test_postmen_get_shipping_rates_url,

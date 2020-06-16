@@ -1,20 +1,19 @@
 .common-box
   .row
     .col-9
-      .header-title
-        %h2 Contact Information
-      .row
-        .col-12
-          - email = @current_user ? @current_user.get_email : ""
-          = text_field_tag :email, email, placeholder: "Email", class: "shipping-address-email"
-          = fa_icon "check", class: "d-none"
-        .col-12
-          .shipping-noti
-            = check_box_tag :notification, nil, true
-            %span Keep me up to date on news and exclusive offers
-      .header-title
-        %h2 Shipping Address
       = form_for [@transaction, @shipping_address], html: {class: "desktop-shipping-address"} do |form|
+        .header-title
+          %h2 Contact Information
+        .row
+          .col-12
+            = form.text_field :email, placeholder: "Email", class: "shipping-address-email"
+            = fa_icon "check", class: "d-none"
+          .col-12
+            .shipping-noti
+              = check_box_tag :notification, nil, true
+              %span Keep me up to date on news and exclusive offers
+        .header-title
+          %h2 Shipping Address
         .form-group
           .row
             .col-6

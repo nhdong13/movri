@@ -19,3 +19,12 @@ CANADA_PROVINCES = {
 }
 
 DEFAULT_STATE = "alberta"
+
+OFFICE_ADDRESS = {
+  state_or_province: 'british_columbia',
+  postal_code: 'V3Z3S6',
+  street1: 'Unit 210-19365, 22nd Avenue',
+  city: 'Surrey',
+  country: 'Canada',
+  is_office_address: true
+}

@@ -22,7 +22,8 @@
 
 class Booking < ApplicationRecord
   belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :booking
-
+  validates :start_on, presence: true
+  validates :end_on, presence: true
   scope :in_period, ->(start_time, end_time) { where(['start_time >= ? AND end_time <= ?', start_time, end_time]) }
   scope :hourly_basis, -> { where(per_hour: true) }
   scope :covers_another_booking, ->(booking) do
@@ -33,6 +34,8 @@ class Booking < ApplicationRecord
   scope :availability_blocking, -> { merge(Transaction.availability_blocking) }
   scope :per_hour_blocked, -> { hourly_basis.availability_blocking }
 
+  after_save :remove_office_shipping_adress
+  after_save :update_transaction_delivery_method
   def week_day
     Listing::WorkingTimeSlot.week_days.keys[start_time.wday].to_sym
   end
@@ -51,5 +54,21 @@ class Booking < ApplicationRecord
 
   def self.columns
     super.reject { |c| c.name == "end_on_exclusive" }
+  end
+
+  def remove_office_shipping_adress
+    today = Date.today.strftime("%m/%d/%Y")
+    if start_on.strftime("%m/%d/%Y") > today && tx.shipping_address && tx.shipping_address.is_office_address?
+      tx.shipping_address.delete
+    end
+  end
+
+  def update_transaction_delivery_method
+    today = Date.today.strftime("%m/%d/%Y")
+    if start_on.strftime("%m/%d/%Y") == today
+      tx.update(delivery_method: 'pickup')
+    else
+      tx.update(delivery_method: 'shipping')
+    end
   end
 end
