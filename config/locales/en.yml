@@ -708,6 +708,20 @@ en:
             locations: "Edit locations section"
             video: "Edit video section"
             locations: "Edit locations section"
+      manage_orders:
+        manage_orders: "Orders"
+        order: "Order"
+        date: "Date"
+        customer: "Customer"
+        payment: "Payment"
+        fulfillment: "Fulfillment"
+        total: "Total"
+        items: "Items"
+        delivery_method: "Delivery method"
+        search_by_keyword: "Search for a name, email or keyword"
+        search_by_customer_name: "Search for transactions customer name"
+        search: Search
+        create_order: "Create Order"
     landing_page_versions:
       sections:
         hero:

@@ -1,0 +1,57 @@
+#manage-orders {
+  .button {
+    float: right;
+
+    &.create-order-button{
+      width: 146px;
+      margin: 0px;
+      margin-right: 2px;
+    }
+
+    &.search-button {
+      width: 100%;
+    }
+  }
+
+  #table-tabs {
+    table {
+      tbody {
+        span {
+          border-radius: 8px;
+          padding: 1px 8px;
+        }
+
+        .grey-span {
+          background-color: #DFE3E8;
+        }
+
+        .pending-span {
+          background-color: #FFC28F;
+        }
+
+        .unfulfilled-span {
+          background-color: #FAE28E;
+        }
+      }
+    }
+
+    ul {
+      margin: 20px 0px;
+      padding: 0px;
+      list-style: none;
+
+      li {
+        display: inline;
+        padding-right: 15px;
+
+        a {
+          color: gray;
+        }
+      }
+
+      li.ui-tabs-active a {
+        color: #4a90e2;
+      }
+    }
+  }
+}

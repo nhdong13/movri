@@ -4,7 +4,7 @@
 #
 #  id                                :integer          not null, primary key
 #  starter_id                        :string(255)
-#  starter_uuid                      :string(255)
+#  starter_uuid                      :binary(16)
 #  conversation_id                   :integer
 #  automatic_confirmation_after_days :string(255)
 #  community_id                      :string(255)
@@ -135,6 +135,8 @@ class Transaction < ApplicationRecord
     where("NOT starter_skipped_feedback AND NOT #{Testimonial.with_tx_starter.select('1').arel.exists.to_sql}
            OR NOT author_skipped_feedback AND NOT #{Testimonial.with_tx_author.select('1').arel.exists.to_sql}")
   }
+  scope :fulfilled_orders, -> { where(current_state: "fulfilled")}
+  scope :unfulfilled_orders, -> { where(current_state: "unfulfilled")}
 
   def uuid_object
     if self[:uuid].nil?
@@ -324,4 +326,11 @@ class Transaction < ApplicationRecord
     (unit_price * quantity) + shipping_price + buyer_commission
   end
 
+  def paid?
+    payment_process == :paid
+  end
+
+  def fulfilled?
+    current_state == "fulfilled"
+  end
 end

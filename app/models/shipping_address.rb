@@ -20,6 +20,8 @@
 #  last_name         :string(255)
 #  company           :string(255)
 #  apartment         :string(255)
+#  email             :string(255)
+#  is_office_address :boolean          default(FALSE)
 #
 # Indexes
 #
