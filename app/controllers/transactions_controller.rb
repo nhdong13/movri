@@ -328,7 +328,6 @@ class TransactionsController < ApplicationController
   end
 
   def shipment
-    session[:cart] = {"1" => 2}
     return unless  @transaction.transaction_items.any?
     listing_ids = @transaction.transaction_items.pluck(:listing_id)
     listings = Listing.where(id: listing_ids)
