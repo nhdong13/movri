@@ -350,7 +350,6 @@ class TransactionsController < ApplicationController
     result = ShippingRatesService.get_shipping_rates_for_cart_page(listing_ids, zipcode, total_quantity)
     if result[:success]
       @shipping_selection = result[:shipping_selection]
-      Rails.logger.info result[:shipping_selection]
       session[:shipping][:fedex] = @shipping_selection
       shipper_params = {
         service_delivery: 'fedex',
@@ -362,9 +361,9 @@ class TransactionsController < ApplicationController
       @transaction.create_shipper(shipper_params) unless @transaction.shipper
       @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
     else
-      @message = result[:message]
+      flash[:notice] = result[:message]
+      return redirect_to request.referer
     end
-
   end
 
   def change_shipping_selection

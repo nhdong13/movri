@@ -106,13 +106,12 @@ module ShippingRatesService
       "Content-Type" => "application/json",
       "postmen-api-key" => APP_CONFIG.test_postmen_api_key
     )
-
     response_body = JSON.parse(response.body)
-    if response_body["meta"]["code"] == 200
+    if response_body["meta"]["code"] == 200 && response_body["meta"]["details"].any?
       shipping_selection = convert_to_shipping_selection(response_body)
       return {success: true, shipping_selection: shipping_selection}
     else
-      return {success: false, message: response_body["meta"]["details"][0]["info"]}
+      return {success: false, message: 'Some thing went wrong'}
     end
 
   end
