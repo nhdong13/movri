@@ -2,7 +2,7 @@
   .row
     .col-12
       .header-title.margin-bt-0
-        %span Order Summary
+        %span= t('transactions.order_summary.header')
   .order-summary-products
     - session[:cart].each do |key, value|
       - listing = Listing.find_by(id: key)
@@ -12,15 +12,15 @@
             .main-image
               = image_tag listing.main_image, :class => "design-image-too-wide"
             .listing-information
-              .listing-title
+              .listing-title.cut-text
                 = listing.title
               .coverage
                 .coverage-selection
-                  %span Coverage:
+                  %span= "#{t('transactions.label.coverage')}:"
                   %span Movri Coverage
               .sku-quantity
                 .quantity
-                  %span Quantity:
+                  %span= "#{t('transactions.label.quantity')}:"
                   %span= value
               .price
                 %span.number-price
@@ -29,25 +29,24 @@
                   = money_to_humanized(listing_subtotal)
                 %span.day-rent
                   \/
-                  = session[:booking][:total_days]
-                  days rental
+                  = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
   .row
     .col-12
       .order-summary-prices
         .subtotal.items
-          %span Subtotal
+          %span= t('transactions.label.subtotal')
           %span= money_to_humanized(@calculate_money.listings_subtotal)
         - if @transaction.promo_code
           .promo-code-discount.items
             %span= "Promo Code (#{@transaction.promo_code.code})"
             %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
         .shipping-fee.items
-          %span Shipping
+          %span= t('transactions.label.shipping')
           - shipping_fee = default_shipping_fee ? PriceCalculationService.to_cents(default_shipping_fee) : 0
-          %span= shipping_fee > 0 ? money_to_humanized(shipping_fee) : 'TBD'
+          %span= shipping_fee > 0 ? money_to_humanized(shipping_fee) : t('transactions.label.tbd')
         .tax-fee.items
-          %span Tax
+          %span= t('transactions.label.tax')
           %span= money_to_humanized(@calculate_money.get_tax_fee(shipping_fee))
         .price-with-all-fee.items
-          %span Total (including tax)
+          %span= t('transactions.label.total_with_tax')
           %span= money_to_humanized(@calculate_money.final_price(shipping_fee))

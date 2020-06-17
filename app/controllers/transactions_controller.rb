@@ -379,7 +379,7 @@ class TransactionsController < ApplicationController
     }
     @transaction.shipper.update(shipper_params)
     @transaction.shipper.update(shipper_params)
-    @default_shipping_fee = shipping_selection.first['total_charge']['amount']
+    @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
     calculate_money_service(@transaction)
     respond_to do |format|
       format.html

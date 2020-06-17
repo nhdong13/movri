@@ -4,7 +4,7 @@
       .desktop-display
         .row
           .col-12
-            .header-checkout Shipment
+            .header-checkout= t('transactions.label.shipment')
         .row
           .col-8.margin-bt-20
             = render partial: "transactions/shipment_process/shipment_bar"
@@ -16,6 +16,19 @@
           .col-4.order-summary-box
             = render partial: "transactions/checkout_process/order_summary", locals: {state: @state, default_shipping_fee: @default_shipping_fee}
       .mobile-display
+        .row
+          .col-12
+            .header-checkout.padding-0= t('transactions.label.shipment')
+        .row
+          .col-12.margin-bt-20
+            = render partial: "transactions/shipment_process/shipment_bar"
+          .col-12.margin-bt-20.shipment-promo-code-partial
+            = render partial: "transactions/shipment_process/shipment_promo_code"
+        .row
+          .col-12.order-summary-box
+            = render partial: "transactions/checkout_process/order_summary", locals: {state: @state, default_shipping_fee: @default_shipping_fee}
+          .col-12.shipment-methods-partial
+            = render partial: "transactions/shipment_process/shipment_methods"
 
 - content_for :javascript do
   Shipment.run();

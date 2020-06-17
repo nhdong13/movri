@@ -3214,3 +3214,63 @@ en:
     thank_for_contacting:
       thank_you_contacting: Thank You for Contacting Us
       res_message: We'll email your ticket number within the next 15 minutes. If you do not receive an email within that time, please email %{support_email} or call Customer Service at %{support_phones}
+  transactions:
+    label:
+      price: Price
+      my_cart: My Cart
+      checkout: Checkout
+      shipment: Shipment
+      shipping: Shipping
+      contact: Contact
+      change: Change
+      ship_to: Ship to
+      coverage: Coverage
+      quantity: Quantity
+      total_days_rental: "%{total_days} days rental"
+      subtotal: Subtotal
+      tax: Tax
+      tbd: TBD
+      total_with_tax: Total (including tax)
+      total_without_tax: Total (including tax)
+      order_date: Order Date
+      arrival_date: Arrival Date
+      return_date: Return Date
+      rental_duration: Rental Duration
+      shipping_method: Shipping method
+      pick_up: Pick Up
+      free: Free
+      shipping_address: Shipping Address
+      promo_code: Promo Code
+      special_instructions: Special instructions for seller
+      move_to_wish_list: Move to wish list
+      remove: Remove
+    shipping_service:
+      delivery: Delivery
+      fedex_office:  Fedex Office
+      pick_up: Pick Up
+    order_summary:
+      header: Order Summary
+    contact_form:
+      noti: Keep me up to date on news and exclusive offers
+      title: Contact Information
+      email: Email
+      first_name: First name
+      last_name: Last name
+      company: Company(optional)
+      address: Address
+      apartment: Apartment, suite, etc. (Optional)
+      city: City
+      country: Country/Region
+      zip_code: Zip Code
+      phone: Phone
+    btn_label:
+      continue_to_shipping: Continue to Shipping
+      continue_shipping: Continue Shipping
+      return_to_cart: Return to cart
+      continue_to_payment: Continue to Payment
+  common:
+   copy_right: All rights reserved MOVRI
+   account_question: Already have an account?
+   log_in: Log in
+  placeholder:
+    special_instructions: Special instructions

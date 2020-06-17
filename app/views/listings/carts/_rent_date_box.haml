@@ -2,8 +2,8 @@
   .rent-date-box
     .listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
       .arrival-date
-        %p.center-title Arrival Date
+        %p.center-title= t('transactions.label.arrival_date')
         = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : '')
       .return-date
-        %p.center-title Return Date
+        %p.center-title= t('transactions.label.return_date')
         = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : '')

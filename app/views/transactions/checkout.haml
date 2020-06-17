@@ -4,7 +4,7 @@
       .desktop-display
         .row
           .col-12
-            .header-checkout Checkout
+            .header-checkout= t('transactions.label.checkout')
         .row
           .col-8.margin-bt-50
             = render partial: "transactions/checkout_process/rent_date_bar"
@@ -16,7 +16,7 @@
       .mobile-display
         .row
           .col-12
-            .header-checkout.padding-0 Checkout
+            .header-checkout.padding-0= t('transactions.label.checkout')
         .row
           .col-12
             = render partial: "transactions/checkout_process/rent_date_bar"
@@ -25,8 +25,8 @@
             = render partial: "transactions/checkout_process/mobile_design/order_summary", locals: {state: DEFAULT_STATE, default_shipping_fee: @default_shipping_fee}
           - unless @current_user
             .col-12.padding-0.fz-14.text-r
-              %span Already have an account?
-              = link_to "Log in", login_path
+              %span= t('common.account_question')
+              = link_to t('common.log_in'), login_path
           .col-12.mobile-contact-info
             = render partial: "transactions/checkout_process/mobile_design/contact_info"
 

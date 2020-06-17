@@ -1,15 +1,15 @@
 .common-box.desktop-shipping
-  %p.center-title SHIPPING
+  %p.center-title.uppercase= t('transactions.label.shipping')
   .shipping-box
     .options
       = radio_button_tag :shipping_type, 'delivery', false, class: "shipping_type_delivery", disabled: session[:booking][:start_date] == get_today
-      %span Delivery
+      %span= t('transactions.shipping_service.delivery')
     .options
       = radio_button_tag :shipping_type, 'fedex', false, class: "shipping_type_fedex", disabled: session[:booking][:start_date] == get_today
-      %span Fedex Office
+      %span= t('transactions.shipping_service.fedex_office')
     .options
       = radio_button_tag :shipping_type, 'pickup', session[:booking][:start_date] == get_today, class: "shipping_type_pickup"
-      %span Pickup
+      %span= t('transactions.shipping_service.pick_up')
     = text_field_tag :zip_code, zipcode, placeholder: "Zip code", class: "zip-code-input"
     %span.zipcode-error.alert-error.d-none
     = select_tag :select_shipping, options_for_select(shipping_options(session[:shipping]), selected: select_method_shipping(session[:shipping], session[:booking])), class: "desktop-custom-select-shipping"
