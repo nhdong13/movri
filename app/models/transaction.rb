@@ -4,7 +4,7 @@
 #
 #  id                                :integer          not null, primary key
 #  starter_id                        :string(255)
-#  starter_uuid                      :string(255)
+#  starter_uuid                      :binary(16)
 #  conversation_id                   :integer
 #  automatic_confirmation_after_days :string(255)
 #  community_id                      :string(255)

@@ -23,6 +23,7 @@ class TransactionMoneyCalculation
     else
       0
     end
+    discount
   end
 
   # this value is not including coverage
@@ -30,7 +31,7 @@ class TransactionMoneyCalculation
     price_cents = 0
     @transaction.transaction_items.each do |item|
       listing = Listing.find_by(id: item.listing_id)
-      price_cents += calculate_price_cents(listing, item.quantity)
+      price_cents += calculate_price_cents_without_promo_code(listing, item.quantity)
     end
     price_cents
   end
@@ -39,6 +40,11 @@ class TransactionMoneyCalculation
     return 0 unless quantity
     price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(@session)) * quantity
     price_with_promo_code(price_cents)
+  end
+
+  def calculate_price_cents_without_promo_code listing, quantity
+    return 0 unless quantity
+    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(@session)) * quantity
   end
 
   def price_with_promo_code price

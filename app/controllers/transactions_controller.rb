@@ -18,7 +18,7 @@ class TransactionsController < ApplicationController
   end
 
   before_action :find_transaction, only: [:update_promo_code, :change_shipping_selection, :shipment, :checkout]
-  before_action :calculate_money_service, only: [:update_promo_code, :change_shipping_selection, :shipment, :checkout]
+  before_action :calculate_money_service, only: [:shipment, :checkout]
 
   before_action except: [:checkout, :create, :shipment, :change_shipping_selection, :update_promo_code] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
@@ -380,6 +380,7 @@ class TransactionsController < ApplicationController
     @transaction.shipper.update(shipper_params)
     @transaction.shipper.update(shipper_params)
     @default_shipping_fee = shipping_selection.first['total_charge']['amount']
+    calculate_money_service(@transaction)
     respond_to do |format|
       format.html
       format.js {render layout: false}
@@ -394,6 +395,7 @@ class TransactionsController < ApplicationController
     end
     @state = @transaction.shipping_address.state_or_province
     @default_shipping_fee = @transaction.shipper.amount
+    calculate_money_service(@transaction)
     respond_to do |format|
       format.html
       format.js {render layout: false}
@@ -648,8 +650,9 @@ class TransactionsController < ApplicationController
     end
   end
 
-  def calculate_money_service
-    @calculate_money = TransactionMoneyCalculation.new(@transaction, session)
+  def calculate_money_service(transaction=nil)
+    transaction = transaction || @transaction
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session)
   end
 
   def transaction_service
