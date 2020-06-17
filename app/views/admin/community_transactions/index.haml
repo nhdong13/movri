@@ -12,11 +12,12 @@
       %h2= t("admin.communities.manage_orders.manage_orders", community_name: @current_community.name(I18n.locale))
     .col-6
       %btn.button.create-order-button=t("admin.communities.manage_orders.create_order")
+
   = form_tag '', :method => :get do
     .row
-      .col-11
+      .col-10
         = text_field_tag :q, params[:q], placeholder: t('admin.communities.transactions.search_by_title_parties')
-      .col-1
+      .col-2
         = submit_tag t("admin.communities.transactions.search"), class: 'button search-button'
 
   .row
@@ -37,12 +38,12 @@
       %table#admin_manage_fulfilled_orders.mytabs
         = render 'table_head'
         %tbody
-          - @transactions_presenter.transactions.map{|t| t if t.current_state == "fulfilled"}.reject(&.nil).each do |transaction|
+          - @transactions_presenter.transactions.map{|t| t if t.current_state == "fulfilled"}.reject(&:nil?).each do |transaction|
             = render 'order', order: transaction
       %table#admin_manage_unfulfilled_orders.mytabs
         = render 'table_head'
         %tbody
-          - @transactions_presenter.transactions.map{|t| t if t.current_state == "unfulfilled"}.reject(&.nil).each do |transaction|
+          - @transactions_presenter.transactions.map{|t| t if t.current_state == "unfulfilled"}.reject(&:nil?).each do |transaction|
             = render 'order', order: transaction
   .row
     .col-12
