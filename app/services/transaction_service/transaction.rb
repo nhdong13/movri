@@ -124,8 +124,11 @@ module TransactionService::Transaction
         price_cents: listing.price_cents
       )
     end
+    transaction.create_booking(
+      start_on: DatetimeService.convert_date(session[:booking][:start_date]),
+      end_on: DatetimeService.convert_date(session[:booking][:end_date])
+    )
     transaction
-
     # opts_tx = opts[:transaction].to_hash
 
     # set_adapter = settings_adapter(opts_tx[:payment_gateway])
@@ -144,6 +147,34 @@ module TransactionService::Transaction
     # res.maybe()
     #   .map { |gw_fields| Result::Success.new(create_transaction_response(tx, gw_fields)) }
     #   .or_else(res)
+  end
+
+  def update session, transaction, promo_code, instructions
+    promo_code = PromoCode.find_by(code: promo_code)
+    transaction_params = {
+      instructions_from_seller: instructions
+    }
+    transaction_params.merge!(promo_code_id: promo_code.id) if promo_code
+    transaction.update(transaction_params)
+    # remove all transaction_items
+    transaction.transaction_items.delete_all
+    # create new items
+    session[:cart].each do |key, value|
+      listing = Listing.find_by(id: key)
+      transaction.transaction_items.create(
+        listing_id: listing.id,
+        listing_uuid: listing.uuid,
+        listing_title: listing.title,
+        quantity: value,
+        coverage_price_cents: InsuranceCalculationService.call(listing, session[:booking][:total_days]),
+        price_cents: listing.price_cents
+      )
+    end
+    transaction.booking.update(
+      start_on: DatetimeService.convert_date(session[:booking][:start_date]),
+      end_on: DatetimeService.convert_date(session[:booking][:end_date])
+    )
+    transaction
   end
 
   def find_tx_model(community_id:, transaction_id:)

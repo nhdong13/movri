@@ -14,7 +14,7 @@ class CartsController < ApplicationController
         # @message = "The listing has not dimensions to calculate"
       end
     end
-    result = ShippingRatesService.get_shipping_rates_for_cart_page(params, session[:cart])
+    result = ShippingRatesService.get_shipping_rates_for_cart_page(listing_ids, params[:zipcode], session[:cart].values.sum)
     if result[:success]
       @shipping_selection = result[:shipping_selection]
       session[:shipping][:fedex] = @shipping_selection
@@ -40,7 +40,7 @@ class CartsController < ApplicationController
       @success = false
     end
 
-    data = BookingDaysCalculation.call(params)
+    data = BookingDaysCalculation.call(params[:start_date], params[:end_date])
 
     # Set to session
     session[:booking] ||= {}

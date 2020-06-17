@@ -1,6 +1,9 @@
 validateShippingAddressForm = ->
   $(".desktop-shipping-address").validate
     rules:
+      'shipping_address[email]':
+        required: true
+        emailFormat: true
       'shipping_address[first_name]':
         required: true
         minlength: 2
@@ -13,14 +16,17 @@ validateShippingAddressForm = ->
         required: true
       'shipping_address[postal_code]':
         required: true
-        minlength: 4
-        number: true
+        minlength: 6
+        cdnPostal: true
       'shipping_address[phone]':
         required: true
 
 validateMobileShippingAddressForm = ->
   $(".mobile-shipping-address").validate
     rules:
+      'shipping_address[email]':
+        required: true
+        emailFormat: true
       'shipping_address[first_name]':
         required: true
         minlength: 2
@@ -33,13 +39,14 @@ validateMobileShippingAddressForm = ->
         required: true
       'shipping_address[postal_code]':
         required: true
-        minlength: 4
-        number: true
+        minlength: 6
+        cdnPostal: true
       'shipping_address[phone]':
         required: true
 
 onInputRequiredShippingFormField = ->
-  $('#shipping_address_first_name,
+  $('#shipping_address_email,
+    #shipping_address_first_name,
     #shipping_address_last_name,
     #shipping_address_street1,
     #shipping_address_city,
@@ -53,7 +60,7 @@ onInputRequiredShippingFormField = ->
       $(this).animate({backgroundColor:'white'}, 500);
 
 onInputUnrequiredShippingFormField = ->
-  $('#shipping_address_company, #shipping_address_apartment, #email').change ->
+  $('#shipping_address_company, #shipping_address_apartment').change ->
     if $(this).val() != ""
       $(this).animate({backgroundColor:'#e8f0fe'}, 500);
       $(this).parent().find('.fa-check').css("display", 'inline-block');

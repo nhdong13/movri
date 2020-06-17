@@ -4,7 +4,7 @@
 #
 #  id                                :integer          not null, primary key
 #  starter_id                        :string(255)
-#  starter_uuid                      :string(255)
+#  starter_uuid                      :binary(16)
 #  conversation_id                   :integer
 #  automatic_confirmation_after_days :string(255)
 #  community_id                      :string(255)
@@ -62,6 +62,7 @@ class Transaction < ApplicationRecord
   belongs_to :listing_author, class_name: 'Person'
   has_many :stripe_payments, dependent: :destroy
   has_many :transaction_items, dependent: :destroy
+  has_one :shipper, dependent: :destroy
 
   delegate :author, to: :listing
   delegate :title, to: :listing, prefix: true
@@ -72,10 +73,10 @@ class Transaction < ApplicationRecord
   # validates :community_uuid, presence: true, on: :create
   # validates :unit_type, inclusion: ["hour", "day", "night", "week", "month", "custom", "unit", nil, :hour, :day, :night, :week, :month, :custom, :unit], on: :create
   # validates :availability, inclusion: ["none", "booking", :none, :booking], on: :create
-  # validates :delivery_method, inclusion: ["none", "shipping", "pickup", nil, :none, :shipping, :pickup], on: :create
   # validates :payment_process, inclusion: [:none, :postpay, :preauthorize], on: :create
   # validates :payment_gateway, inclusion: [:paypal, :checkout, :braintree, :stripe, :none], on: :create
   # validates :automatic_confirmation_after_days, numericality: {only_integer: true}, on: :create
+  validates :delivery_method, inclusion: ["none", "shipping", "pickup", :none, :shipping, :pickup], on: :create
 
   # monetize :unit_price_cents, with_model_currency: :unit_price_currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :unit_price_currency
@@ -135,6 +136,14 @@ class Transaction < ApplicationRecord
     where("NOT starter_skipped_feedback AND NOT #{Testimonial.with_tx_starter.select('1').arel.exists.to_sql}
            OR NOT author_skipped_feedback AND NOT #{Testimonial.with_tx_author.select('1').arel.exists.to_sql}")
   }
+
+  def will_pickup?
+    delivery_method == "pickup"
+  end
+
+  def will_shipping?
+    delivery_method == "shipping"
+  end
 
   def uuid_object
     if self[:uuid].nil?
@@ -324,4 +333,10 @@ class Transaction < ApplicationRecord
     (unit_price * quantity) + shipping_price + buyer_commission
   end
 
+  def total_quantity
+    quantity = 0
+    return quantity unless transaction_items.any?
+    transaction_items.map { |item| quantity += item.quantity}
+    quantity
+  end
 end

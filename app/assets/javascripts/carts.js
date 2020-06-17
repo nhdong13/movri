@@ -158,7 +158,7 @@ window.ST = window.ST || {};
   });
 
   $('body').on('click', '.btn-checkout', function(){
-    createTransactionURL = "/en//transactions";
+    createTransactionURL = "/en/transactions";
     instructions = $('#instructions').val();
     promoCode = getPromoCode();
     $.ajax({

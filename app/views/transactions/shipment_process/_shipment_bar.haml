@@ -1,0 +1,15 @@
+.shipment-bar
+  .contact-info.flex-items
+    .item-1
+      %span= t('transactions.label.contact')
+    .item-2
+      %span= @shipping_address.email
+    .item-3
+      = link_to t('transactions.label.change'), checkout_transaction_path(@transaction.uuid_object)
+  .shipping-address.flex-items
+    .item-1
+      %span= t('transactions.label.ship_to')
+    .item-2
+      %span= @shipping_address.full_address
+    .item-3
+      = link_to t('transactions.label.change'), checkout_transaction_path(@transaction.uuid_object)

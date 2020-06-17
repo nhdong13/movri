@@ -518,7 +518,7 @@ class ListingsController < ApplicationController
       }
     end
 
-    data = BookingDaysCalculation.call(params)
+    data = BookingDaysCalculation.call(params[:start_date], params[:end_date])
 
     # Set to session
     session[:booking] ||= {}

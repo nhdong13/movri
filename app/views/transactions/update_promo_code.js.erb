@@ -1,0 +1,6 @@
+//desktop-display
+<% unless @promo_code %>
+  $('.promo-code-error').html("This code is invalid or already used.").css('display', 'block');;
+<% end %>
+$(".checkout-section .order-summary-box").html("<%= j render(partial: 'transactions/checkout_process/order_summary', locals: { state: @state, default_shipping_fee: @default_shipping_fee }) %>");
+//mobile-display

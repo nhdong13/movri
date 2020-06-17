@@ -17,7 +17,10 @@ class TransactionsController < ApplicationController
     end
   end
 
-  before_action except: [:checkout, :create] do |controller|
+  before_action :find_transaction, only: [:update_promo_code, :change_shipping_selection, :shipment, :checkout]
+  before_action :calculate_money_service, only: [:shipment, :checkout]
+
+  before_action except: [:checkout, :create, :shipment, :change_shipping_selection, :update_promo_code] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -59,35 +62,34 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    # if user have at least one transaction
     if @current_user
       if @current_user.starter_transactions.any?
-        return render json: {redirect_url: checkout_transaction_path(@current_user.starter_transactions.last.uuid_object)}
-      # if user don't have any transaction but they click checkout before login
+        update_transaction_with_current_user(@current_user.starter_transactions.last, params)
       else
+        # TODO: check if transaction is pending
         if session[:transaction] && session[:transaction][:transaction_id]
-          @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
-          # TODO: check if transaction is pending
+          @transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
+          if @transaction
+            @transaction = update_transaction_with_current_user(@transaction, params)
+          else
+            @transaction = create_transaction_with_current_user(params)
+          end
         else
-          @transaction = transaction_service.create(session, params)
-        end
-        if @transaction
-          @transaction.update(starter_id: @current_user.id)
-          return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
+          @transaction = create_transaction_with_current_user(params)
         end
       end
     else
       if session[:transaction] && session[:transaction][:transaction_id]
         @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
         if @transaction
-          return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
+          @transaction = update_transaction_without_current_user(@transaction, params)
         else
-          @transaction = transaction_service.create(session, params)
+          @transaction = create_transaction_without_current_user(params)
         end
+        return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
       else
-        @transaction = transaction_service.create(session, params)
+        @transaction = create_transaction_without_current_user(params)
       end
-      session[:transaction] = {transaction_id: @transaction.id}
     end
 
     respond_to do |format|
@@ -153,6 +155,30 @@ class TransactionsController < ApplicationController
     #   flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
     #   redirect_to(session[:return_to_content] || root)
     # }
+  end
+
+  def create_transaction_with_current_user params
+    @transaction = transaction_service.create(session, params)
+    @transaction.update(starter_id: @current_user.id)
+    @transaction
+  end
+
+  def create_transaction_without_current_user params
+    @transaction = transaction_service.create(session, params)
+    session[:transaction] = {transaction_id: @transaction.id}
+    @transaction
+  end
+
+  def update_transaction_with_current_user transaction, params
+    @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
+    @transaction.update(starter_id: @current_user.id)
+    @transaction
+  end
+
+  def update_transaction_without_current_user transaction, params
+    @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
+    session[:transaction] = {transaction_id: @transaction.id}
+    @transaction
   end
 
   def show
@@ -267,16 +293,119 @@ class TransactionsController < ApplicationController
     }
   end
 
-  def checkout
-    @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
-    if @current_user && @current_user.starter_transactions && @current_user.starter_transactions.last.shipping_address
-      @shipping_address = @current_user.starter_transactions.last.shipping_address
+  def check_booking_date_session_was_change transaction
+    if transaction.booking
+      if transaction.booking.start_on != datetime_service.convert_date(session[:booking][:start_date]) ||
+        transaction.booking.end_on != datetime_service.convert_date(session[:booking][:end_date])
+          transaction.booking.update(
+          start_on: datetime_service.convert_date(session[:booking][:start_date]),
+          end_on: datetime_service.convert_date(session[:booking][:end_date])
+        )
+      end
     else
-      @shipping_address = @transaction.build_shipping_address
+      transaction.create_booking(
+        start_on: datetime_service.convert_date(session[:booking][:start_date]),
+        end_on: datetime_service.convert_date(session[:booking][:end_date])
+      )
+    end
+  end
+
+  def checkout
+    check_booking_date_session_was_change(@transaction)
+    if session[:booking][:start_date] == get_today
+      if @transaction.shipping_address && @transaction.shipping_address.is_office_address?
+        @shipping_address = @transaction.shipping_address
+      else
+        @shipping_address = @transaction.create_shipping_address(OFFICE_ADDRESS)
+      end
+    else
+      if @current_user && @current_user.starter_transactions && @current_user.starter_transactions.last.shipping_address
+        @shipping_address = @current_user.starter_transactions.last.shipping_address
+      else
+        @shipping_address = @transaction.build_shipping_address
+      end
+    end
+  end
+
+  def shipment
+    session[:cart] = {"1" => 2}
+    return unless  @transaction.transaction_items.any?
+    listing_ids = @transaction.transaction_items.pluck(:listing_id)
+    listings = Listing.where(id: listing_ids)
+
+    zipcode = @transaction.shipping_address.postal_code
+    return unless zipcode
+
+    listings.each do |listing|
+      if listing.packing_dimensions.blank?
+        # TODO: create packing_dimension only for test, remove this line when app release
+        PackingDimension.create(height: 10, length:10, width: 10, weight: 10, listing_id: listing.id)
+        # @message = "The listing has not dimensions to calculate"
+      end
+    end
+
+    total_quantity = @transaction.total_quantity
+    @shipping_address = @transaction.shipping_address
+    @state = @shipping_address.state_or_province
+    @promo_code = @transaction.promo_code ? @transaction.promo_code.code : nil
+    result = ShippingRatesService.get_shipping_rates_for_cart_page(listing_ids, zipcode, total_quantity)
+    if result[:success]
+      @shipping_selection = result[:shipping_selection]
+      session[:shipping][:fedex] = @shipping_selection
+      shipper_params = {
+        service_delivery: 'fedex',
+        service_type: @shipping_selection.first['service_type'],
+        service_name: @shipping_selection.first['service_name'],
+        amount: @shipping_selection.first['total_charge']['amount'],
+        currency: @shipping_selection.first['total_charge']['currency'],
+      }
+      @transaction.create_shipper(shipper_params) unless @transaction.shipper
+      @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
+    else
+      @message = result[:message]
+    end
+
+  end
+
+  def change_shipping_selection
+    @state = @transaction.shipping_address.state_or_province
+    @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
+    shipper_params = {
+      service_delivery: 'fedex',
+      service_type: @shipping_selection.first['service_type'],
+      service_name: @shipping_selection.first['service_name'],
+      amount: @shipping_selection.first['total_charge']['amount'],
+      currency: @shipping_selection.first['total_charge']['currency'],
+    }
+    @transaction.shipper.update(shipper_params)
+    @transaction.shipper.update(shipper_params)
+    @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
+    calculate_money_service(@transaction)
+    respond_to do |format|
+      format.html
+      format.js {render layout: false}
+    end
+  end
+
+  def update_promo_code
+    @promo_code = PromoCode.find_by(code: params[:promo_code])
+    if @promo_code
+      session[:promo_code] = {code: @promo_code.code}
+      @transaction.update(promo_code_id: @promo_code.id)
+    end
+    @state = @transaction.shipping_address.state_or_province
+    @default_shipping_fee = @transaction.shipper.amount
+    calculate_money_service(@transaction)
+    respond_to do |format|
+      format.html
+      format.js {render layout: false}
     end
   end
 
   private
+  def find_transaction
+    @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
+  end
 
   def handle_finalize_proc_result(response)
     response_data = response[:data] || {}
@@ -521,8 +650,17 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def calculate_money_service(transaction=nil)
+    transaction = transaction || @transaction
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session)
+  end
+
   def transaction_service
     TransactionService::Transaction
+  end
+
+  def datetime_service
+    DatetimeService
   end
 
   def transaction_process_tokens

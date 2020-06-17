@@ -1,5 +1,5 @@
 .common-box.desktop-promo-code
-  %p.title Promo Code
+  %p.title= t('transactions.label.promo_code')
   .promo-code-field
     = text_field_tag :promo_code, nil, class: "promo-code-val"
     = button_tag 'Apply', :class => "common-btn"

@@ -42,7 +42,8 @@ class ApplicationController < ActionController::Base
     :set_display_expiration_notice,
     :setup_intercom_user,
     :setup_custom_footer,
-    :disarm_custom_head_script
+    :disarm_custom_head_script,
+    :update_booking_session
 
   # This updates translation files from WTI on every page load. Only useful in translation test servers.
   before_action :fetch_translations if APP_CONFIG.update_translations_on_every_page_load == "true"
@@ -447,6 +448,27 @@ class ApplicationController < ActionController::Base
     uuid_object = UUIDTools::UUID.parse(string_uuid)
     uuid_raw = UUIDUtils.raw(uuid_object)
   end
+
+  def update_booking_session
+    if session[:booking] && session[:booking][:start_date]
+      session[:booking][:start_date] = get_today if session[:booking][:start_date] < get_today
+      session[:booking][:end_date] = get_next_day(session[:booking][:start_date])if session[:booking][:end_date] <= session[:booking][:start_date]
+      data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
+      session[:booking][:total_days] = data[:total_days]
+    else
+      session[:booking] = {}
+    end
+  end
+
+  def get_today
+    Date.today.strftime("%m/%d/%Y")
+  end
+
+  def get_next_day current_day
+    next_day = Date.strptime(current_day, "%m/%d/%Y") + 1.day
+    next_day.strftime("%m/%d/%Y")
+  end
+
   private
 
   # Override basic instrumentation and provide additional info for

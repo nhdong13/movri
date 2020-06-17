@@ -20,6 +20,8 @@
 #  last_name         :string(255)
 #  company           :string(255)
 #  apartment         :string(255)
+#  email             :string(255)
+#  is_office_address :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -28,10 +30,35 @@
 
 class ShippingAddress < ApplicationRecord
   belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :shipping_address
-  validates_length_of :phone, :in => 10..16, :allow_nil => false
+  belongs_to :person
+  validates_length_of :phone, :in => 10..16, :allow_nil => false, unless: :is_office_address?
 
   before_save :convert_phone
+  before_create :add_country
+
+  validate :change_office_address, on: :update
+
+  def add_country
+    self.country = 'Canada'
+  end
+
   def convert_phone
+    return unless self.phone
     self.phone = phone.tr("(), ,-", "")
+  end
+
+  def is_office_address?
+    self.is_office_address
+  end
+
+  def change_office_address
+    if is_office_address?
+     if postal_code_changed? || city_changed? || country_changed? || state_or_province_changed? || street1_changed?
+        errors.add(:shipping_address, "you cannot change office address")
+      end
+    end
+  end
+  def full_address
+    "#{street1}, #{city}, #{CANADA_PROVINCES.key(state_or_province)}, #{country}, #{postal_code} "
   end
 end

@@ -1,0 +1,9 @@
+.common-box.margin-0
+  .shipping-promo-code{'data-uuid': @transaction.uuid_object}
+    %span.fz-18= t('transactions.label.promo_code')
+    .group.flex-items
+      .input-promo-code
+        = text_field_tag :promo_code, @promo_code
+      .btn-promo-code
+        = button_tag 'Apply', :class => "common-btn margin-0"
+    %span.promo-code-error.alert-error.d-none
