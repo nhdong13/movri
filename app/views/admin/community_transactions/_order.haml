@@ -1,0 +1,21 @@
+%tr
+  %td
+    = "##{order.id}"
+  %td
+    = order.created_at.to_formatted_s(:long)
+  %td
+    = order.buyer.given_name
+  %td
+    %span.order-payment-process{class: (order.paid? ? "pending-span" : "grey-span")}
+      %i.icon-circle-blank
+      = order.payment_process.capitalize
+  %td
+    %span.order-fulfillment{class: (order.fulfilled? ? "grey-span" : "unfulfilled-span")}
+      %i.icon-circle
+      = order.status.capitalize
+  %td
+    = number_to_currency(order.item_total)
+  %td
+    = "#{order.listing_quantity} #{order.listing_quantity > 1 ? 'items' : 'item'}"
+  %td
+    = order.delivery_method.capitalize

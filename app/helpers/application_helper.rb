@@ -383,8 +383,8 @@ module ApplicationHelper
       },
       {
         :topic => :manage,
-        :text => t("admin.communities.transactions.transactions"),
-        :icon_class => icon_class("coins"),
+        :text => t("admin.communities.manage_orders.manage_orders"),
+        :icon_class => icon_class("orders"),
         :path => admin_community_transactions_path(@current_community, sort: "last_activity", direction: "desc"),
         :name => "transactions"
       },

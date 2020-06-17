@@ -136,6 +136,8 @@ class Transaction < ApplicationRecord
     where("NOT starter_skipped_feedback AND NOT #{Testimonial.with_tx_starter.select('1').arel.exists.to_sql}
            OR NOT author_skipped_feedback AND NOT #{Testimonial.with_tx_author.select('1').arel.exists.to_sql}")
   }
+  scope :fulfilled_orders, -> { where(current_state: "fulfilled")}
+  scope :unfulfilled_orders, -> { where(current_state: "unfulfilled")}
 
   def will_pickup?
     delivery_method == "pickup"
@@ -338,5 +340,13 @@ class Transaction < ApplicationRecord
     return quantity unless transaction_items.any?
     transaction_items.map { |item| quantity += item.quantity}
     quantity
+  end
+
+  def paid?
+    payment_process == :paid
+  end
+
+  def fulfilled?
+    current_state == "fulfilled"
   end
 end
