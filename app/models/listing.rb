@@ -419,7 +419,11 @@ class Listing < ApplicationRecord
   end
 
   def main_image
-    listing_images.first&.image&.url
+    if listing_images.any?
+      listing_images.first&.image&.url
+    else
+      "missing_image.png"
+    end
   end
 
   def as_json
