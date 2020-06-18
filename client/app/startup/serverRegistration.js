@@ -6,6 +6,8 @@ import OnboardingTopBar from './OnboardingTopBarApp';
 import TopbarApp from './TopbarApp';
 import SearchPageApp from './SearchPageApp';
 import CartPage from '../components/sections/CartPage/CartPage';
+import OnlineStore from './OnlineStore';
+
 
 
 ReactOnRails.register({
@@ -13,7 +15,8 @@ ReactOnRails.register({
   OnboardingTopBar,
   TopbarApp,
   SearchPageApp,
-  CartPage
+  CartPage, 
+  OnlineStore
 });
 
 ReactOnRails.registerStore({

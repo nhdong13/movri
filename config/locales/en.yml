@@ -722,6 +722,8 @@ en:
         search_by_customer_name: "Search for transactions customer name"
         search: Search
         create_order: "Create Order"
+      manager_online_store:
+        online_store: Online Store
     landing_page_versions:
       sections:
         hero:

@@ -1,0 +1,46 @@
+#community-store {
+  .left-navi {
+    width: 20%;
+    float: left;
+  }
+  .store-main-content {
+    width: 80%;
+    float: left;
+    .store-sections {
+      width: 20%;
+      float: left;
+      border-left: 1px solid #e8e8e8;
+      .section-list {
+        padding-left: 0;
+        .section-item {
+          list-style: none;
+          padding: 15px;
+          border-top: 1px solid #e8e8e8;
+          border-bottom: 1px solid #e8e8e8;
+          margin-top: 15px;
+          &:hover {
+            cursor: pointer;
+          }
+          .title {
+            width: 100%;
+            text-transform: capitalize;
+          } 
+        }
+      }
+
+      .store-header {
+        width: 100%;
+        .breabcrum {
+          background-color: #f4f6f8;
+          border-bottom: 1px solid #e8e8e8;
+          padding: 15px;
+          text-align: center;
+          cursor: pointer;
+          i {
+            float: left;
+          }
+        }
+      }
+    }
+  }
+}
