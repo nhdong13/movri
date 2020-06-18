@@ -157,10 +157,13 @@ module TransactionService::Transaction
     transaction_params.merge!(promo_code_id: promo_code.id) if promo_code
     transaction.update(transaction_params)
     # remove all transaction_items
-    transaction.booking.update(
-      start_on: DatetimeService.convert_date(session[:booking][:start_date]),
-      end_on: DatetimeService.convert_date(session[:booking][:end_date])
-    )
+    start_date = DatetimeService.convert_date(session[:booking][:start_date])
+    end_date = DatetimeService.convert_date(session[:booking][:end_date])
+    if transaction.booking
+      transaction.booking.update(start_on: start_date, end_on: end_date)
+    else
+      transaction.create_booking(start_on: start_date, end_on: end_date)
+    end
     transaction
   end
 
