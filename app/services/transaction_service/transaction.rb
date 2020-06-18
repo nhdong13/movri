@@ -110,7 +110,7 @@ module TransactionService::Transaction
     transaction_params = {
       instructions_from_seller: params[:instructions]
     }
-    transaction_params.merge(promo_code_id: promo_code.id)  if promo_code
+    transaction_params.merge(promo_code_id: promo_code.id) if promo_code
     transaction =  Transaction.create(transaction_params)
 
     session[:cart].each do |key, value|
@@ -157,19 +157,6 @@ module TransactionService::Transaction
     transaction_params.merge!(promo_code_id: promo_code.id) if promo_code
     transaction.update(transaction_params)
     # remove all transaction_items
-    transaction.transaction_items.delete_all
-    # create new items
-    session[:cart].each do |key, value|
-      listing = Listing.find_by(id: key)
-      transaction.transaction_items.create(
-        listing_id: listing.id,
-        listing_uuid: listing.uuid,
-        listing_title: listing.title,
-        quantity: value,
-        coverage_price_cents: InsuranceCalculationService.call(listing, session[:booking][:total_days]),
-        price_cents: listing.price_cents
-      )
-    end
     transaction.booking.update(
       start_on: DatetimeService.convert_date(session[:booking][:start_date]),
       end_on: DatetimeService.convert_date(session[:booking][:end_date])

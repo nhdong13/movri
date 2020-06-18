@@ -343,6 +343,7 @@ class ListingsController < ApplicationController
     session[:cart] ||= {}
     listing_id = params[:id]
     session[:cart][listing_id] = session[:cart][listing_id] ? (session[:cart][listing_id] + 1) : 1
+    transaction_items_service.add_new_transaction_items(listing_id) if transaction_items_service
 
     # Get total items in cart
     cart_total_items = session[:cart].values.sum
@@ -376,6 +377,8 @@ class ListingsController < ApplicationController
 
     cart_total_items = session[:cart].values.sum
 
+    transaction_items_service.remove_listing_item_out_of_transaction(listing_id) if transaction_items_service
+
     render json: {
       success: true,
       message: "Remove item sucessfully",
@@ -405,6 +408,8 @@ class ListingsController < ApplicationController
     price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing_id]
     number_price = Money.new(price_cents, 'USD')
     value_in_cart = MoneyViewUtils.to_humanized(number_price)
+
+    transaction_items_service.increase_quantity_of_transaction_items(listing_id) if transaction_items_service
 
     render json: {
       success: true,
@@ -450,6 +455,8 @@ class ListingsController < ApplicationController
       value_in_cart = MoneyViewUtils.to_humanized(number_price)
     end
 
+    transaction_items_service.reduce_quantity_of_transaction_items(listing_id) if transaction_items_service
+
     render json: {
       success: true,
       message: "Minus item sucessfully",
@@ -471,6 +478,9 @@ class ListingsController < ApplicationController
     end
     @promo_code = PromoCode.find_by(code: params[:promo_code])
     @listing = Listing.find_by_id(id)
+
+    transaction_items_service.increase_quantity_of_transaction_items(@listing.id, @item_count) if transaction_items_service
+
     # Get total items in cart
     @cart_total_items = session[:cart].values.sum
     respond_to do |format|
@@ -842,5 +852,16 @@ class ListingsController < ApplicationController
   def set_sessions
     session[:shipping] ||= {}
     session[:shipping][:fedex] = []
+  end
+
+  def transaction_items_service
+    if @current_user && @current_user.starter_transactions.last
+      TransactionItemsService.new(@current_user.starter_transactions.last, session, @current_user)
+    else
+      if session[:transaction] && session[:transaction][:transaction_id]
+        transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
+        TransactionItemsService.new(transaction, session, nil)
+      end
+    end
   end
 end

@@ -107,7 +107,8 @@ module ShippingRatesService
       "postmen-api-key" => APP_CONFIG.test_postmen_api_key
     )
     response_body = JSON.parse(response.body)
-    if response_body["meta"]["code"] == 200 && response_body["data"]["rates"][0]["total_charge"].nil?
+
+    if response_body["meta"]["code"] == 200 && response_body["data"]["rates"][0]["total_charge"]
       shipping_selection = convert_to_shipping_selection(response_body)
       return {success: true, shipping_selection: shipping_selection}
     else
