@@ -134,6 +134,8 @@ Rails.application.routes.draw do
     get "/transactions/:uuid/shipment" => "transactions#shipment", as: :shipment_transaction
     get "/transactions/:uuid/change_shipping_selection" => "transactions#change_shipping_selection", as: :change_shipping_selection_transaction
     get "/transactions/:uuid/update_promo_code" => "transactions#update_promo_code", as: :update_promo_code_transaction
+    get "/transactions/:uuid/change_state_shipping_form" => "transactions#change_state_shipping_form", as: :change_state_shipping_form
+    get "/transactions/:uuid/payment" => "transactions#payment", as: :payment_transaction
 
     # preauthorize flow
 
@@ -192,11 +194,7 @@ Rails.application.routes.draw do
       resources :shipping_addresses, only: [:create, :update]
     end
 
-    resources :shipping_addresses, only: [:create, :update] do
-      collection do
-        get 'change_state_shipping_form'
-      end
-    end
+    resources :shipping_addresses, only: [:create, :update]
 
     resources :carts, only: [] do
       collection do

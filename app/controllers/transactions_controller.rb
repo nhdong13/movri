@@ -17,10 +17,25 @@ class TransactionsController < ApplicationController
     end
   end
 
-  before_action :find_transaction, only: [:update_promo_code, :change_shipping_selection, :shipment, :checkout]
-  before_action :calculate_money_service, only: [:shipment, :checkout]
+  before_action :find_transaction, only: [
+    :update_promo_code,
+    :change_shipping_selection,
+    :shipment,
+    :checkout,
+    :change_state_shipping_form,
+    :payment
+  ]
 
-  before_action except: [:checkout, :create, :shipment, :change_shipping_selection, :update_promo_code] do |controller|
+  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form]
+
+  before_action except: [
+    :checkout,
+    :create,
+    :shipment,
+    :change_shipping_selection,
+    :update_promo_code,
+    :change_state_shipping_form,
+    :payment] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -366,6 +381,14 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def change_state_shipping_form
+    @state = params[:state]
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false}
+    end
+  end
+
   def change_shipping_selection
     @state = @transaction.shipping_address.state_or_province
     @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
@@ -399,6 +422,10 @@ class TransactionsController < ApplicationController
       format.html
       format.js {render layout: false}
     end
+  end
+
+  def payment
+    @shipping_address = @transaction.shipping_address
   end
 
   private

@@ -14,7 +14,7 @@
           .col-8
             = render partial: "transactions/shipment_process/shipment_methods"
           .col-4.order-summary-box
-            = render partial: "transactions/checkout_process/order_summary", locals: {state: @state, default_shipping_fee: @default_shipping_fee}
+            = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}
       .mobile-display
         .row
           .col-12
@@ -26,7 +26,7 @@
             = render partial: "transactions/shipment_process/shipment_promo_code"
         .row
           .col-12.order-summary-box
-            = render partial: "transactions/checkout_process/order_summary", locals: {state: @state, default_shipping_fee: @default_shipping_fee}
+            = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}
           .col-12.shipment-methods-partial
             = render partial: "transactions/shipment_process/shipment_methods"
 

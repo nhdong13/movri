@@ -13,17 +13,9 @@ class ShippingAddressesController < ApplicationController
     if success
       redirect_to shipment_transaction_path(@transaction.uuid_object)
     else
+      flash[:error] = @shipping_address.errors.full_messages.first
       redirect_to checkout_transaction_path(@transaction.uuid_object)
-      # flash[:error] = @shipping_address.full_message
       # redirect_to shipment_transaction_path(@transaction.uuid_object)
-    end
-  end
-
-  def change_state_shipping_form
-    @state = params[:state]
-    respond_to do |format|
-      format.html
-      format.js { render :layout => false}
     end
   end
 

@@ -70,9 +70,10 @@ onInputUnrequiredShippingFormField = ->
 
 onChangeState = ->
   $('.shipping-address-state').change ->
+    uuid = $('.order-summary-products').data('uuid')
     state = $(this).val();
     $.ajax
-      url: '/shipping_addresses/change_state_shipping_form.js'
+      url: "/transactions/#{uuid}/change_state_shipping_form.js"
       type: "GET",
       data:
         state: state
