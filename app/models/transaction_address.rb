@@ -28,7 +28,7 @@
 #  index_shipping_addresses_on_transaction_id  (transaction_id)
 #
 
-class ShippingAddress < ApplicationRecord
+class TransactionAddress < ApplicationRecord
   belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :shipping_address
   belongs_to :person
   validates_length_of :phone, :in => 10..16, :allow_nil => false, unless: :is_office_address?
@@ -37,6 +37,8 @@ class ShippingAddress < ApplicationRecord
   before_create :add_country
 
   validate :change_office_address, on: :update
+
+  enum address_type: [:shipping_address, :billing_address]
 
   def add_country
     self.country = 'Canada'

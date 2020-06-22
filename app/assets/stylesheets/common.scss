@@ -45,6 +45,8 @@
 .fz-14{font-size: 14px;}
 .fz-16{font-size: 16px;}
 .fz-18{font-size: 18px;}
+.fz-22{font-size: 22px;}
+.f-color-common{color: #616161}
 
 #arrival_date, #return_date {
   background: url(mf_icons/icon-movri-calendar.svg) no-repeat 325px center;
@@ -125,6 +127,10 @@
   color: white;
   font-size: 20px;
   background-color: #4eb857;
+}
+
+.btn-process{
+  min-width: 200px;
 }
 
 .cut-text{

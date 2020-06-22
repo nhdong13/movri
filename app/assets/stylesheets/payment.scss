@@ -1,0 +1,24 @@
+.payment-section{
+  .card-info-box{
+    .available-card{
+      padding: 0 20px;
+      .card-title{
+        width:20%
+      }
+      .logo-card{
+        width:80%;
+        text-align: right;
+      }
+    }
+    .info{
+      border-radius: 0 0 5px 5px;
+      padding: 10px;
+      background: #f0f0f0;
+    }
+  }
+}
+
+.common-border{
+  border: 1px solid #bdbdbd;
+  border-radius: 5px;
+}

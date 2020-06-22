@@ -141,23 +141,35 @@
 
 .shipment-bar{
   background: white;
-  .contact-info, .shipping-address{
+  .contact-info, .shipping-address, .shipping-method{
     .item-1{
       color: #757575;
-      width:20%}
+      width:10%}
     .item-2{
-      width:60%;
-      overflow: hidden;
+      width:80%;
     }
-    .item-3{width:10%}
-     padding: 10px;
+    .item-3{
+      text-align: right;
+      width:10%
+    }
+     padding: 10px 20px;
   }
   .contact-info{border-bottom: 1px solid #9e9e9e;}
-  .contact-info{border-bottom: 1px solid #9e9e9e;}
+  .shipping-method{border-top: 1px solid #9e9e9e;}
   border: 1px solid #9e9e9e;
   border-radius: 5px;
 }
 
+.mobile-display{
+  .shipment-bar{
+    .contact-info, .shipping-address, .shipping-method{
+      .item-1{width:20%}
+      .item-2{width:60%;}
+      .item-3{width:10%}
+       padding: 10px 20px;
+    }
+  }
+}
 .shipment-promo-code-partial{
   .common-box{padding: 0 15px;}
   .shipping-promo-code{
