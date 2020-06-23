@@ -11,17 +11,13 @@ export default (props) => {
   const combinedReducer = combineReducers(reducers);
   const initialStoreState = {
     onlineStore: {
-      default_sections: props.default_sections,
-      header: props.header,
-      slideshow: props.slideshow
+      sections: props.sections,
     }
   };
   const store = applyMiddleware(middleware)(createStore)(combinedReducer, initialStoreState);
 
   const containerProps = {
-    default_sections: props.default_sections,
-    header: {},
-    slideshow: {}
+    sections: props.sections,
   };
 
   return r(Provider, { store }, [

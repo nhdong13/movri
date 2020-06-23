@@ -371,7 +371,7 @@ module ApplicationHelper
         :topic => :manage,
         :text => t("admin.communities.manager_online_store.online_store"),
         :icon_class => icon_class("store"),
-        :path => admin_community_online_stores_path(@current_community),
+        :path => admin_community_online_store_path(@current_community, @current_community.online_store),
         :name => "online_store"
       },
       {

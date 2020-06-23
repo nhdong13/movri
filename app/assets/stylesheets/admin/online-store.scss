@@ -30,6 +30,8 @@
 
       .store-header {
         width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
         .breabcrum {
           background-color: #f4f6f8;
           border-bottom: 1px solid #e8e8e8;
@@ -39,6 +41,25 @@
           i {
             float: left;
           }
+        }
+
+        .logo-image {
+          img {
+            max-width: 100%;
+          }
+        }
+
+        .logo-uploader {
+          input[type='file'] {
+            opacity: 0;
+          }
+        }
+
+        .color-box {
+          border: 1px solid #e8e8e8;
+          float: left;
+          margin-top: 0;
+          margin-bottom: 0;
         }
       }
     }

@@ -26,4 +26,13 @@
 class Header < ApplicationRecord
   belongs_to :online_store
   has_one :slideshow, dependent: :destroy
+  has_attached_file :logo, default_url: "/images/missing_image.png"
+  validates_attachment_content_type :logo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif", "application/pdf"]
+
+
+  def as_json
+    json = super
+    json['logo_url'] = logo
+    json
+  end
 end

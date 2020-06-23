@@ -14,5 +14,7 @@
 
 class OnlineStore < ApplicationRecord
   belongs_to :community
+  has_many :sections, dependent: :destroy
   has_one :header, dependent: :destroy
+  has_one :slideshow, through: :header
 end
