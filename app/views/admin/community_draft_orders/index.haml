@@ -1,0 +1,14 @@
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section#manage-draft-orders
+  .row
+    .col-6
+      %h2= t("admin.communities.manage_draft_orders.draft_orders")
+    .col-6
+      %btn.button.create-order-button=t("admin.communities.manage_orders.create_order")
+  .row
+    .col-12
+      = text_field_tag :q, params[:q], placeholder: t('admin.communities.manage_draft_orders.search_by_customer_name')
+  .row
+    .col-12
+      = render "table"

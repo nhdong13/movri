@@ -321,6 +321,7 @@ Rails.application.routes.draw do
             get 'export_status'
           end
         end
+        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit]
         resources :conversations, controller: :community_conversations, only: [:index, :show]
         resources :testimonials, controller: :community_testimonials, only: [:index, :edit, :update, :new, :create] do
           collection do

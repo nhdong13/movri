@@ -1,0 +1,28 @@
+.payment
+  %h3= @order.payment_process.capitalize
+  .row
+    .col-2
+      = "Subtotal"
+    .col-8
+      = "#{order.transaction_items.size} #{order.transaction_items.size > 1 ? 'items' : 'item'}"
+    .col-2
+      %p= number_to_currency(order.total_price_cents)
+  .row.tax
+    .col-2
+      = "Tax"
+    .col-8
+      %p= "GST #{@rate_type[:GST]}%"
+      %p= "PST #{@rate_type[:PST]}%"
+    .col-2
+      %p= "#{number_to_currency(order.total_price_cents * @rate_type[:GST] / 100)}"
+      %p= "#{number_to_currency(order.total_price_cents * @rate_type[:PST] / 100)}"
+  .row
+    .col-10
+      = "Total"
+    .col-2
+      %p= number_to_currency(order.total_price_cents + (order.total_price_cents * @rate_type[:GST] / 100) + (order.total_price_cents * @rate_type[:PST] / 100))
+.row
+  .col-10
+    = "Paid by customer"
+  .col-2
+    %p= number_to_currency(order.total_price_cents + (order.total_price_cents * @rate_type[:GST] / 100) + (order.total_price_cents * @rate_type[:PST] / 100))

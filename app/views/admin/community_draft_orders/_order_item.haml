@@ -1,0 +1,8 @@
+.row
+  .col-8
+    = image_tag transaction_item.listing.main_image, class: 'img-responsive-cart'
+    %span= transaction_item.listing.title
+  .col-2
+    = "#{number_to_currency(transaction_item.price_cents)} x #{transaction_item.quantity}"
+  .col-2.total
+    = "#{number_to_currency(transaction_item.price_cents * transaction_item.quantity)}"

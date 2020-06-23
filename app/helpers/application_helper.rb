@@ -368,6 +368,23 @@ module ApplicationHelper
 
     links += [
       {
+        :topic => :orders,
+        :text => t("admin.communities.manage_orders.manage_orders"),
+        :icon_class => icon_class("orders"),
+        :path => admin_community_transactions_path(@current_community, sort: "last_activity", direction: "desc"),
+        :name => "transactions"
+      },
+      {
+        :topic => :orders,
+        :text => t("admin.communities.manage_draft_orders.draft_orders"),
+        :icon_class => icon_class("orders"),
+        :path => admin_community_draft_orders_path(@current_community, sort: "last_activity", direction: "desc"),
+        :name => "draft_orders"
+      }
+    ]
+
+    links += [
+      {
         :topic => :manage,
         :text => t("admin.communities.manage_members.manage_members"),
         :icon_class => icon_class("community"),
@@ -380,13 +397,6 @@ module ApplicationHelper
         :icon_class => icon_class("thumbnails"),
         :path => admin_community_listings_path(@current_community, sort: "updated"),
         :name => "listings"
-      },
-      {
-        :topic => :manage,
-        :text => t("admin.communities.manage_orders.manage_orders"),
-        :icon_class => icon_class("orders"),
-        :path => admin_community_transactions_path(@current_community, sort: "last_activity", direction: "desc"),
-        :name => "transactions"
       },
       {
         :topic => :manage,

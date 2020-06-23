@@ -1,0 +1,109 @@
+$color-grey: #617480;
+$border-color: #E1E3E5;
+
+#manage-draft-orders {
+  .create-order-button {
+    float: right;
+    margin: 0;
+  }
+}
+
+#edit-orders-info {
+  .mark-fulfilled-button,
+  .save-button {
+    float: right;
+  }
+
+  a {
+    color: $color-grey;
+  }
+
+  .overall-status {
+    word-spacing: 2px;
+
+    .id {
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    .payment-process,
+    .current-state {
+      margin-left: 5px;
+      border-radius: 15px;
+      padding: 3px 8px;
+    }
+
+    .grey-span {
+      background-color: #DFE3E8;
+    }
+
+    .pending-span {
+      background-color: #FFC28F;
+    }
+
+    .unfulfilled-span {
+      background-color: #FAE28E;
+    }
+  }
+
+  .order-info,
+  .payment-info,
+  .edit-note,
+  .edit-customer-info {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+
+    & > i {
+      font-size: 16px;
+    }
+  }
+
+  .order-info {
+    .order-items {
+      margin-top: 0.75em;
+
+      .order-item {
+        border-bottom: 1px solid $border-color;
+        margin-top: 15px;
+
+        img {
+          width: 10%;
+          vertical-align: text-top;
+          margin-right: 5px;
+        }
+
+        .total {
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .payment-info {
+    .payment {
+      margin: 0.75em 0;
+      border-bottom: 1px solid $border-color;
+    }
+  }
+
+  .edit-note {
+    .row:first-of-type {
+      margin-top: 0.75em;
+    }
+  }
+
+  .edit-customer-info {
+    .customer {
+      margin-top: 0.75em;
+    }
+  }
+
+  .action {
+    i {
+      font-size: 18px;
+      margin-right: 15px;
+    }
+  }
+}
