@@ -1,0 +1,33 @@
+= javascript_include_tag "#{STRIPE_JS_HOST}/v3/"
+
+= form_for [@transaction, @billing_address], html: {class: "desktop-payment-form"} do |form|
+  .common-box
+    .header-title
+      %span.fz-22 Payment
+      %p.f-color-common All transactions are secure and encrypted.
+    .row
+      .col-9
+        .card-info-box.common-border
+          .available-card.br-bottom.flex-items
+            .card-title
+              Credit Card
+            .logo-card
+              = image_tag "visa.png"
+              = image_tag "master-card.png"
+              = image_tag "amex.png"
+          .info
+            .row
+              .col-12
+                #card-number
+            .row
+              .col-12.uppercase
+                = text_field_tag 'card[name]', nil, placeholder: 'Name on Card'
+            .row
+              .col-6
+                #card-expiry
+              .col-6
+                #card-cvc
+            .row
+              .col-12
+                %span.stripe-errors.alert-error.d-none
+  = render partial: "transactions/payment_process/billing_address", locals: {form: form}

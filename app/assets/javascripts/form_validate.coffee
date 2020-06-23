@@ -21,6 +21,26 @@ validateShippingAddressForm = ->
       'shipping_address[phone]':
         required: true
 
+validateBillingAddressForm = ->
+  $(".desktop-payment-form").validate
+    rules:
+      'transaction_address[first_name]':
+        required: true
+        minlength: 2
+      'transaction_address[last_name]':
+        required: true
+        minlength: 2
+      'transaction_address[street1]':
+        required: true
+      'transaction_address[city]':
+        required: true
+      'transaction_address[postal_code]':
+        required: true
+        minlength: 6
+        cdnPostal: true
+      'transaction_address[phone]':
+        required: true
+
 validateMobileShippingAddressForm = ->
   $(".mobile-shipping-address").validate
     rules:
@@ -45,13 +65,7 @@ validateMobileShippingAddressForm = ->
         required: true
 
 onInputRequiredShippingFormField = ->
-  $('#shipping_address_email,
-    #shipping_address_first_name,
-    #shipping_address_last_name,
-    #shipping_address_street1,
-    #shipping_address_city,
-    #shipping_address_postal_code,
-    #shipping_address_phone').change ->
+  $('.transaction-address-req-field').change ->
     if $(this).valid()
       $(this).animate({backgroundColor:'#e8f0fe'}, 500);
       $(this).parent().find('.fa-check').css("display", 'inline-block');
@@ -60,7 +74,7 @@ onInputRequiredShippingFormField = ->
       $(this).animate({backgroundColor:'white'}, 500);
 
 onInputUnrequiredShippingFormField = ->
-  $('#shipping_address_company, #shipping_address_apartment').change ->
+  $('.transaction-address-field').change ->
     if $(this).val() != ""
       $(this).animate({backgroundColor:'#e8f0fe'}, 500);
       $(this).parent().find('.fa-check').css("display", 'inline-block');
@@ -77,6 +91,14 @@ onChangeState = ->
       type: "GET",
       data:
         state: state
+
+onShowHideBillingAddress = ->
+  $('.desktop-payment-form input[name=address_type]').click ->
+    address_type = $('input[name=address_type]:checked').val()
+    if address_type == 'shipping_address'
+      $('.desktop-payment-form .billing-address-info').slideUp()
+    else
+      $('.desktop-payment-form .billing-address-info').slideDown()
 
 onFillColorToShippingInput = ->
   inputs = [
@@ -99,7 +121,7 @@ onFillColorToShippingInput = ->
   )
 
 handleSubmitForm = ->
-  $("body").on "click", ".btn-submit", (e) ->
+  $(".checkout-section").on "click", ".btn-submit", (e) ->
     e.preventDefault();
     if $(this).parents("form").valid()
       $(this).parents("form").submit();
@@ -114,3 +136,5 @@ window.ValidateForm =
       onChangeState()
       onFillColorToShippingInput()
       handleSubmitForm()
+      onShowHideBillingAddress()
+      validateBillingAddressForm()

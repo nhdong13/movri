@@ -23,10 +23,11 @@ class TransactionsController < ApplicationController
     :shipment,
     :checkout,
     :change_state_shipping_form,
-    :payment
+    :payment,
+    :pay_order
   ]
 
-  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form]
+  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :pay_order]
 
   before_action except: [
     :checkout,
@@ -35,7 +36,8 @@ class TransactionsController < ApplicationController
     :change_shipping_selection,
     :update_promo_code,
     :change_state_shipping_form,
-    :payment] do |controller|
+    :payment,
+    :pay_order] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -331,7 +333,7 @@ class TransactionsController < ApplicationController
       if @transaction.shipping_address && @transaction.shipping_address.is_office_address?
         @shipping_address = @transaction.shipping_address
       else
-        @shipping_address = @transaction.create_shipping_address(OFFICE_ADDRESS)
+        @shipping_address = @transaction.transaction_addresses.create(OFFICE_ADDRESS)
       end
     else
       if @current_user && @current_user.starter_transactions && @current_user.starter_transactions.last.shipping_address
@@ -426,6 +428,11 @@ class TransactionsController < ApplicationController
 
   def payment
     @shipping_address = @transaction.shipping_address
+    @billing_address = @transaction.transaction_addresses.build
+  end
+
+  def pay_order
+    stripe_api.create_payment_intent(params[:payment_method_id])
   end
 
   private

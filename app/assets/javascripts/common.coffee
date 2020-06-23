@@ -7,7 +7,7 @@ window.Commons =
     ), "Invalid email"
 
   formatPhone: ->
-    $phoneInput = $('.shipping-address-phone')
+    $phoneInput = $('.phone-input ')
     $phoneInput.inputmask({mask: "9 (999) 999-9999", placeholder: ""});
 
   CanadianZipCodeRule: ->

@@ -55,7 +55,7 @@ class Transaction < ApplicationRecord
   has_and_belongs_to_many :listings
   has_many :transaction_transitions, dependent: :destroy, foreign_key: :transaction_id, inverse_of: :tx
   has_one :booking, dependent: :destroy
-  has_one :shipping_address, dependent: :destroy
+  has_many :transaction_addresses, dependent: :destroy
   belongs_to :starter, class_name: "Person", foreign_key: :starter_id, inverse_of: :starter_transactions
   belongs_to :conversation
   has_many :testimonials, dependent: :destroy
@@ -138,6 +138,10 @@ class Transaction < ApplicationRecord
   }
   scope :fulfilled_orders, -> { where(current_state: "fulfilled")}
   scope :unfulfilled_orders, -> { where(current_state: "unfulfilled")}
+
+  def shipping_address
+    transaction_addresses.where(address_type: 0)&.first
+  end
 
   def will_pickup?
     delivery_method == "pickup"
@@ -348,5 +352,9 @@ class Transaction < ApplicationRecord
 
   def fulfilled?
     current_state == "fulfilled"
+  end
+
+  def shipping_method_label
+    "#{shipper.service_name} #{shipper.amount} #{shipper.currency}"
   end
 end

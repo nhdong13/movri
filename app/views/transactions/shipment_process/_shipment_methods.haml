@@ -30,6 +30,7 @@
     .col-9.center-items.back-to-cart
       = fa_icon "angle-left"
       = link_to t('transactions.btn_label.return_to_cart'), show_cart_path
+      = link_to t('transactions.btn_label.continue_to_payment'), payment_transaction_path(@transaction.uuid_object)
     .row
       .col-9.br-top.copy-right
         %span= t('common.copy_right')

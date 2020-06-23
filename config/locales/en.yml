@@ -3281,7 +3281,9 @@ en:
       continue_to_shipping: Continue to Shipping
       continue_shipping: Continue Shipping
       return_to_cart: Return to cart
+      return_to_shipping: Return to Shipping
       continue_to_payment: Continue to Payment
+      pay_now: Pay now
   common:
    copy_right: All rights reserved MOVRI
    account_question: Already have an account?

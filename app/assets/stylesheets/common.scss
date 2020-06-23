@@ -139,3 +139,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.common-btn-with-spinner{
+  .spinner-gif{
+    margin-left: 5px;
+    width: 30px;
+    position: absolute;
+    display: none;
+  }
+}

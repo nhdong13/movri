@@ -13,3 +13,10 @@
       %span= @shipping_address.full_address
     .item-3
       = link_to t('transactions.label.change'), checkout_transaction_path(@transaction.uuid_object)
+  .shipping-method.flex-items
+    .item-1
+      %span Method
+    .item-2
+      %span= @transaction.shipping_method_label
+    .item-3
+      = link_to t('transactions.label.change'), shipment_transaction_path(@transaction.uuid_object)
