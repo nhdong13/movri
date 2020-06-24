@@ -263,6 +263,12 @@ Rails.application.routes.draw do
         post :upload_logo, on: :member
       end
 
+      resources :slideshows, only: [:update] do
+        resources :slide_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
       resources :communities do
         member do
           get :edit_welcome_email
