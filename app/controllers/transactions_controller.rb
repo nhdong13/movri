@@ -23,11 +23,10 @@ class TransactionsController < ApplicationController
     :shipment,
     :checkout,
     :change_state_shipping_form,
-    :payment,
-    :pay_order
+    :payment
   ]
 
-  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :pay_order]
+  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment]
 
   before_action except: [
     :checkout,
@@ -36,8 +35,7 @@ class TransactionsController < ApplicationController
     :change_shipping_selection,
     :update_promo_code,
     :change_state_shipping_form,
-    :payment,
-    :pay_order] do |controller|
+    :payment] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -48,6 +46,8 @@ class TransactionsController < ApplicationController
     [:start_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) }],
     [:end_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) }]
   )
+
+  before_action :ensure_can_countinue_transactions, only: [:checkout, :shipment, :payment]
 
   def new
     Result.all(
@@ -98,7 +98,7 @@ class TransactionsController < ApplicationController
     else
       if session[:transaction] && session[:transaction][:transaction_id]
         @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
-        if @transaction
+        if @transaction && !@transaction.completed?
           @transaction = update_transaction_without_current_user(@transaction, params)
         else
           @transaction = create_transaction_without_current_user(params)
@@ -329,6 +329,7 @@ class TransactionsController < ApplicationController
 
   def checkout
     check_booking_date_session_was_change(@transaction)
+    @default_shipping_fee = 0
     if session[:booking][:start_date] == get_today
       if @transaction.shipping_address && @transaction.shipping_address.is_office_address?
         @shipping_address = @transaction.shipping_address
@@ -339,7 +340,7 @@ class TransactionsController < ApplicationController
       if @current_user && @current_user.starter_transactions && @current_user.starter_transactions.last.shipping_address
         @shipping_address = @current_user.starter_transactions.last.shipping_address
       else
-        @shipping_address = @transaction.build_shipping_address
+        @shipping_address = @transaction.transaction_addresses.build
       end
     end
   end
@@ -364,6 +365,7 @@ class TransactionsController < ApplicationController
     @shipping_address = @transaction.shipping_address
     @state = @shipping_address.state_or_province
     @promo_code = @transaction.promo_code ? @transaction.promo_code.code : nil
+    byebug
     result = ShippingRatesService.get_shipping_rates_for_cart_page(listing_ids, zipcode, total_quantity)
     if result[:success]
       @shipping_selection = result[:shipping_selection]
@@ -429,13 +431,22 @@ class TransactionsController < ApplicationController
   def payment
     @shipping_address = @transaction.shipping_address
     @billing_address = @transaction.transaction_addresses.build
-  end
-
-  def pay_order
-    stripe_api.create_payment_intent(params[:payment_method_id])
+    @default_shipping_fee = @transaction.shipper.amount
   end
 
   private
+
+  def ensure_can_countinue_transactions
+    if @transaction.completed?
+      flash[:error] = "The transaction is already completed."
+      return redirect_to show_cart_path
+    end
+    if @transaction.is_overweight?
+      flash[:error] = "Please contact us for this. This package is overweight. We'd love to help you with completing the transaction."
+      return redirect_to show_cart_path
+    end
+  end
+
   def find_transaction
     @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
   end

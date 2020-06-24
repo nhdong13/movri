@@ -2,10 +2,10 @@
   .payment-section
     .wrapper
       .desktop-display
-        = render partial: "transactions/process_bar"
+        = render partial: "transactions/process_bar", locals: {transaction: @transaction, current_page: 'payment'}
         .row
           .col-8.margin-bt-20
-            = render partial: "transactions/shipment_process/shipment_bar"
+            = render partial: "transactions/shipment_process/shipment_bar", locals: {show_methos_row: true}
           .col-4.margin-bt-20.shipment-promo-code-partial
             = render partial: "transactions/shipment_process/shipment_promo_code"
         .row

@@ -6,6 +6,7 @@
         width:20%
       }
       .logo-card{
+        img{width: 35px}
         width:80%;
         text-align: right;
       }
@@ -16,9 +17,25 @@
       background: #f0f0f0;
     }
   }
+  .billing-address-partial{
+    .label-radio-btn{cursor: pointer; color: #616161; font-style: normal;}
+    input[type=radio]{
+      margin-right: 15px;
+      transform: scale(1.5)
+    }
+  }
 }
 
-.common-border{
+.common-br{
   border: 1px solid #bdbdbd;
   border-radius: 5px;
+}
+
+.process-bar{
+  margin-top: 20px;
+  a{color: black;}
+  a:hover{color: black}
+  a.active-el{color: #424242;font-weight: bold;}
+  a{margin-left:10px; margin-right:10px;}
+  a:first-child{margin-left:0px; margin-right:10px;}
 }

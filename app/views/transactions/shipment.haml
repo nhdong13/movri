@@ -7,7 +7,7 @@
             .header-checkout= t('transactions.label.shipment')
         .row
           .col-8.margin-bt-20
-            = render partial: "transactions/shipment_process/shipment_bar"
+            = render partial: "transactions/shipment_process/shipment_bar", locals: {show_methos_row: false}
           .col-4.margin-bt-20.shipment-promo-code-partial
             = render partial: "transactions/shipment_process/shipment_promo_code"
         .row
@@ -21,7 +21,7 @@
             .header-checkout.padding-0= t('transactions.label.shipment')
         .row
           .col-12.margin-bt-20
-            = render partial: "transactions/shipment_process/shipment_bar"
+            = render partial: "transactions/shipment_process/shipment_bar", locals: {show_methos_row: false}
           .col-12.margin-bt-20.shipment-promo-code-partial
             = render partial: "transactions/shipment_process/shipment_promo_code"
         .row

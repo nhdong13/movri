@@ -152,40 +152,49 @@ window.ST = window.ST || {};
       formAction = form.attr('action');
 
     var submitSuccess = function(data, responseStatus) {
+      ST.transaction.submitAnimation(false);
       if (data.redirect_url) {
-       swal("Successfully!", "1 Item Added to Your Cart!", "success", {
+       swal("Successfully!", "Payment Successful!", "success", {
           buttons: false,
-          timer: 1000,
+          timer: 2000,
         });
         // window.location = data.redirect_url;
-        ST.transaction.submitAnimation(false);
         return;
-      } else if (data.stripe_payment_intent) {
-        handleCreatedPaymentIntent(data);
-      } else if (data.error) {
-        swal("Failure!", "Something went wrong!", "error");
+      } else if (data.errors) {
+        swal("Failure!", data.errors, "error");
         // showError(data.error);
       }
     };
     $.post(formAction, form.serialize(), submitSuccess, 'json');
   };
 
+  var isCreatingBillingAddress = function() {
+    address_type = $('.desktop-payment-form input[name=address_type]:checked').val()
+    if(address_type == "billing_address"){
+      return true;
+    } else {
+      return false;
+    }
+  }
   var initIntent = function(options){
     stripe = Stripe('pk_test_51GvgLeA1vyHsG6ncDQW9tgCvB5mAJ4rAkwG1xCfQlSNO1VLeIHQHxWVrL3IQPGapxidDMW3DTqobIWCUjuVeBd7I00aqZRggKi');
     var card = createCard();
     var form = $(".desktop-payment-form");
 
+    card.on('ready', function(){card.focus();});
     form.on('stripe-submit', formSubmit);
     $("#send-add-card").on('click', function(event) {
       event.preventDefault();
-      // if (!validateForm(form)) {
-      //   return false;
-      // }
+      if(isCreatingBillingAddress()){
+        if (!validateForm(form)) {
+          return false;
+        }
+      }
       ST.transaction.submitAnimation(true);
       stripe.createPaymentMethod('card', card, {}).then(function(result) {
         if (result.error) {
-          card.focus()
           ST.transaction.submitAnimation(false);
+          card.focus()
           showError(ST.t('error_messages.stripe.generic_error'));
         } else {
           // Otherwise send paymentMethod.id to server
@@ -196,7 +205,11 @@ window.ST = window.ST || {};
             var input = $('<input/>', {type: 'hidden', name: 'stripe_payment_method_id', id: 'stripe_payment_method_id', value: result.paymentMethod.id});
             form.append(input);
           }
-          if(form.valid()) {
+          if(isCreatingBillingAddress()){
+            if(form.valid()) {
+              form.trigger('stripe-submit');
+            }
+          } else {
             form.trigger('stripe-submit');
           }
         }

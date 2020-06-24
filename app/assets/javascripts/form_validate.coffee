@@ -1,24 +1,24 @@
 validateShippingAddressForm = ->
   $(".desktop-shipping-address").validate
     rules:
-      'shipping_address[email]':
+      'transaction_address[email]':
         required: true
         emailFormat: true
-      'shipping_address[first_name]':
+      'transaction_address[first_name]':
         required: true
         minlength: 2
-      'shipping_address[last_name]':
+      'transaction_address[last_name]':
         required: true
         minlength: 2
-      'shipping_address[street1]':
+      'transaction_address[street1]':
         required: true
-      'shipping_address[city]':
+      'transaction_address[city]':
         required: true
-      'shipping_address[postal_code]':
+      'transaction_address[postal_code]':
         required: true
         minlength: 6
         cdnPostal: true
-      'shipping_address[phone]':
+      'transaction_address[phone]':
         required: true
 
 validateBillingAddressForm = ->
@@ -44,24 +44,24 @@ validateBillingAddressForm = ->
 validateMobileShippingAddressForm = ->
   $(".mobile-shipping-address").validate
     rules:
-      'shipping_address[email]':
+      'transaction_address[email]':
         required: true
         emailFormat: true
-      'shipping_address[first_name]':
+      'transaction_address[first_name]':
         required: true
         minlength: 2
-      'shipping_address[last_name]':
+      'transaction_address[last_name]':
         required: true
         minlength: 2
-      'shipping_address[street1]':
+      'transaction_address[street1]':
         required: true
-      'shipping_address[city]':
+      'transaction_address[city]':
         required: true
-      'shipping_address[postal_code]':
+      'transaction_address[postal_code]':
         required: true
         minlength: 6
         cdnPostal: true
-      'shipping_address[phone]':
+      'transaction_address[phone]':
         required: true
 
 onInputRequiredShippingFormField = ->
@@ -96,9 +96,13 @@ onShowHideBillingAddress = ->
   $('.desktop-payment-form input[name=address_type]').click ->
     address_type = $('input[name=address_type]:checked').val()
     if address_type == 'shipping_address'
+      $('.desktop-payment-form #will_create_billing_address').val(false)
       $('.desktop-payment-form .billing-address-info').slideUp()
+      $('.desktop-payment-form .billing-address-info .billing-address').prop('disabled', true)
     else
+      $('.desktop-payment-form #will_create_billing_address').val(true)
       $('.desktop-payment-form .billing-address-info').slideDown()
+      $('.desktop-payment-form .billing-address-info .billing-address').prop('disabled', false)
 
 onFillColorToShippingInput = ->
   inputs = [

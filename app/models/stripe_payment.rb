@@ -46,11 +46,19 @@ class StripePayment < ApplicationRecord
   PAYMENT_INTENT_CANCELED = 'canceled'.freeze
   PAYMENT_INTENT_FAILED = 'failed'.freeze
 
+  after_create :update_transaction_status
+
   def intent?
     stripe_payment_intent_id.present?
   end
 
   def intent_requires_action?
     intent? && stripe_payment_intent_status == PAYMENT_INTENT_REQUIRES_ACTION
+  end
+
+  def update_transaction_status
+    if stripe_payment_intent_status == 'succeeded'
+      tx.update(current_state: 'paid')
+    end
   end
 end

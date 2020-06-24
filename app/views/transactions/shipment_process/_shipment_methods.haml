@@ -3,34 +3,34 @@
     .col-9
       .header-title
         %h2= t('transactions.label.shipping_method')
-  .row
-    .col-9
-      .shipping-select-box{'data-uuid': @transaction.uuid_object }
-        - if @shipping_address.is_office_address?
-          .items
-            .radio-btn.center-items
-              = radio_button_tag :shipment, 'pick_up', @shipping_address.is_office_address?
-            .shipping-service
-              %span= t('transactions.label.pick_up')
-            .price
-              %strong= t('transactions.label.free')
-        - @shipping_selection.each_with_index do |shipment, index|
-          .items{class: @shipping_address.is_office_address? ? 'disabled-shipping-select': 'enabled-shipping-select'}
-            .radio-btn.center-items
-              = radio_button_tag :shipment, shipment['service_type'], (!@shipping_address.is_office_address? && index == 0) ? true : false, disabled: @shipping_address.is_office_address?
-            .shipping-service
-              %span= shipment["service_name"]
-              .days-shippment
-                %span= shipping_type_to_humanized(shipment["service_type"])
-            .price
-              %strong= "#{shipment["total_charge"]['amount']} #{shipment["total_charge"]['currency']}"
-  .row
-    .col-9.center-items
-      = submit_tag t('transactions.btn_label.continue_to_payment'), class: "btn btn-submit"
-    .col-9.center-items.back-to-cart
-      = fa_icon "angle-left"
-      = link_to t('transactions.btn_label.return_to_cart'), show_cart_path
-      = link_to t('transactions.btn_label.continue_to_payment'), payment_transaction_path(@transaction.uuid_object)
+  = form_for [@transaction, @transaction.shipper] do |form|
+    .row
+      .col-9
+        .shipping-select-box{'data-uuid': @transaction.uuid_object }
+          - if @shipping_address.is_office_address?
+            .items
+              .radio-btn.center-items
+                = radio_button_tag :shipment, 'pick_up', @shipping_address.is_office_address?
+              .shipping-service
+                %span= t('transactions.label.pick_up')
+              .price
+                %strong= t('transactions.label.free')
+          - @shipping_selection.each_with_index do |shipment, index|
+            .items{class: @shipping_address.is_office_address? ? 'disabled-shipping-select': 'enabled-shipping-select'}
+              .radio-btn.center-items
+                = form.radio_button :service_type, shipment['service_type'], checked: (!@shipping_address.is_office_address? && (form.object.service_type == shipment['service_type'])) ? true : false, disabled: @shipping_address.is_office_address?
+              .shipping-service
+                %span= shipment["service_name"]
+                .days-shippment
+                  %span= shipping_type_to_humanized(shipment["service_type"])
+              .price
+                %strong= "#{shipment["total_charge"]['amount']} #{shipment["total_charge"]['currency']}"
+    .row
+      .col-9.center-items
+        = form.submit t('transactions.btn_label.continue_to_payment'), class: "btn btn-submit"
+      .col-9.center-items.back-to-cart
+        = fa_icon "angle-left"
+        = link_to t('transactions.btn_label.return_to_cart'), show_cart_path
     .row
       .col-9.br-top.copy-right
         %span= t('common.copy_right')

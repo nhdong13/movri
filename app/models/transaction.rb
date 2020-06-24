@@ -357,4 +357,17 @@ class Transaction < ApplicationRecord
   def shipping_method_label
     "#{shipper.service_name} #{shipper.amount} #{shipper.currency}"
   end
+
+  def completed?
+    current_state == "paid"
+  end
+
+  def is_overweight?
+    weight = 0
+    transaction_items.each do |item|
+      packing_dimension = item.listing.packing_dimensions.first
+      weight += (packing_dimension.weight) * item.quantity
+    end
+    weight > LIMIT_WEIGHT_OF_FEDEX_SERVICE
+  end
 end

@@ -64,7 +64,7 @@ class TransactionAddress < ApplicationRecord
 
   def limit_of_transaction_address
     if tx && tx.transaction_addresses.size > 2
-      errors.add(:transaction, 'transaction can only have 2 transaction address: shipping and billing address')
+      errors.add(:transaction, 'can only have 2 transaction address: shipping and billing address')
     end
   end
 

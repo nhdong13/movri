@@ -1,13 +1,13 @@
 = javascript_include_tag "#{STRIPE_JS_HOST}/v3/"
 
-= form_for [@transaction, @billing_address], html: {class: "desktop-payment-form"} do |form|
+= form_for [@transaction, @billing_address], url: transaction_billing_address_path(@transaction), html: {class: "desktop-payment-form"} do |form|
   .common-box
     .header-title
       %span.fz-22 Payment
       %p.f-color-common All transactions are secure and encrypted.
     .row
       .col-9
-        .card-info-box.common-border
+        .card-info-box.common-br
           .available-card.br-bottom.flex-items
             .card-title
               Credit Card
@@ -30,4 +30,5 @@
             .row
               .col-12
                 %span.stripe-errors.alert-error.d-none
-  = render partial: "transactions/payment_process/billing_address", locals: {form: form}
+  .billing-address-partial
+    = render partial: "transactions/payment_process/billing_address", locals: {form: form}

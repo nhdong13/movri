@@ -4,16 +4,15 @@
     %p.f-color-common Select the address that matches your card or payment method
   .row
     .col-9
-      .form-group
-        .row
-          .col-12
-            %label
-              = radio_button_tag :address_type, 'shipping_address', false
-              %span Same as shipping address
-          .col-12
-            %label
-              = radio_button_tag :address_type, 'billing_address', true
-              %span Use a different billing address
+      .form-group.choose-shipping-type.common-br
+        %label.br-bottom.margin-0.padding-15.label-radio-btn
+          = radio_button_tag :address_type, 'shipping_address', false
+          %span Same as shipping address
+        %label.margin-0.padding-15.label-radio-btn
+          = radio_button_tag :address_type, 'billing_address', true
+          %span Use a different billing address
+  .row
+    .col-9.padding-0
       .billing-address-info
         = hidden_field_tag 'transaction_address[address_type]', 'billing_address'
         .form-group
@@ -47,9 +46,9 @@
         .form-group
           .row
             .col-4
-              = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true
+              = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true, class: 'billing-address'
             .col-4
-              = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, {:class => "shipping-address-state"}
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {}, {:class => "shipping-address-state billing-address"}
             .col-4
               = form.text_field :postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "billing-address-postal-code billing-address transaction-address-req-field"
               = fa_icon "check", class: "d-none"
@@ -58,19 +57,30 @@
             .col-12
               = form.text_field :phone, placeholder: t('transactions.contact_form.phone'), class: "phone-input billing-address-phone billing-address transaction-address-req-field"
               = fa_icon "check", class: "d-none"
-      .form-group
-        .row.stripe-payment
-          .col-12.payment-button-wrapper.paypal-button-wrapper.center-items.common-btn-with-spinner
-            .flex-items
-              = form.submit t('transactions.btn_label.pay_now'), id: "send-add-card", class:"btn btn-submit btn-process uppercase", formnovalidate: "formnovalidate"
-            .flex-items
-              = image_tag 'spinner.gif', class: "spinner-gif"
-          .col-12.center-items.back-to-cart
-            = fa_icon "angle-left"
-            = link_to t('transactions.btn_label.return_to_cart'), show_cart_path
-        .row
-          .col-12.br-top.copy-right
-            %span= t('common.copy_right')
+  .header-title
+    %p.fz-22 Remember me
+    .row
+      .col-9.padding-0
+        .form-group
+          .row
+            .col-12
+              %label.padding-15.margin-0.common-br.label-radio-btn
+                = radio_button_tag :remember_me, true, false
+                %span Save my information for a faster checkout
+
+        .form-group
+          .row.stripe-payment
+            .col-12.payment-button-wrapper.paypal-button-wrapper.center-items.common-btn-with-spinner
+              .flex-items
+                = form.submit t('transactions.btn_label.pay_now'), id: "send-add-card", class:"btn btn-submit btn-process uppercase"
+              .flex-items
+                = image_tag 'spinner.gif', class: "spinner-gif"
+            .col-12.center-items.back-to-cart
+              = fa_icon "angle-left"
+              = link_to t('transactions.btn_label.return_to_cart'), show_cart_path
+          .row
+            .col-12.br-top.copy-right
+              %span= t('common.copy_right')
 
 - content_for :javascript do
   ValidateForm.run();
