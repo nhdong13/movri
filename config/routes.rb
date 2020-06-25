@@ -269,6 +269,12 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :highlight_banners, ony: [:update] do
+        resources :banner_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
       resources :communities do
         member do
           get :edit_welcome_email

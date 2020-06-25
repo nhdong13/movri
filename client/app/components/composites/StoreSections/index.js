@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import StoreHeader from '../StoreHeader'
 import Slideshow from '../Slideshow'
+import HighlightBanner from '../HighlightBanner'
 
 import { onlineStoreActions } from '../../../actions/OnlineStoreActions'
 
@@ -66,7 +67,8 @@ class StoreSections extends Component {
         return <StoreHeader toggleActiveSub={this.toggleActiveSub} object={item.object}/>
       case 'Slideshow':
         return <Slideshow toggleActiveSub={this.toggleActiveSub} object={item.object}/>
-
+      case 'HighlightBanner':
+        return <HighlightBanner toggleActiveSub={this.toggleActiveSub} object={item.object}/>
       default:
         return (
           <div>

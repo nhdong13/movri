@@ -605,7 +605,7 @@ class ApplicationController < ActionController::Base
         logout_path: logout_path,
         store_header: @current_online_store.header
       }
-    }.or_else({})
+    }.or_else({store_header: @current_online_store.header})
 
     locale_change_links = available_locales.map { |(title, locale_code)|
       {

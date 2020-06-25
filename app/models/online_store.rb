@@ -17,4 +17,5 @@ class OnlineStore < ApplicationRecord
   has_many :sections, dependent: :destroy
   has_one :header, dependent: :destroy
   has_one :slideshow, through: :header
+  has_one :highlight_banner, dependent: :destroy
 end
