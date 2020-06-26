@@ -1,0 +1,13 @@
+%tr
+  %td
+    %a{href: edit_admin_community_draft_order_path(order.community.id, order.id)}= "#D#{order.id}"
+  %td
+    = order.created_at.to_formatted_s(:long)
+  %td
+    = order.starter.given_name
+  %td
+    %span.order-fulfillment{class: (order.fulfilled? ? "grey-span" : "unfulfilled-span")}
+      %i.icon-circle
+      = order.status.capitalize
+  %td
+    = number_to_currency(order.total_price_cents)

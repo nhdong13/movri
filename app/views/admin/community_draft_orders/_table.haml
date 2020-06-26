@@ -1,0 +1,16 @@
+%table#admin-draft-orders
+  %thead
+    %tr
+      %th
+        = render partial: "layouts/sort_link", locals: { column: "draft", direction: sort_link_direction("draft"), title: t("admin.communities.manage_draft_orders.draft")}
+      %th
+        = render partial: "layouts/sort_link", locals: { column: "date", direction: sort_link_direction("date"), title: t("admin.communities.manage_draft_orders.date")}
+      %th
+        = t("admin.communities.manage_draft_orders.customer")
+      %th
+        = render partial: "layouts/sort_link", locals: { column: "date", direction: sort_link_direction("date"), title: t("admin.communities.manage_draft_orders.status")}
+      %th
+        = render partial: "layouts/sort_link", locals: { column: "date", direction: sort_link_direction("date"), title: t("admin.communities.manage_draft_orders.total")}
+  %tbody
+    - @service.orders.each do |order|
+      = render 'order', order: order
