@@ -119,8 +119,8 @@ class BannerItem extends Component {
     return (
       <div className='collapsible slideshow-item'>
         <div className='row section-column-header-toggle' onClick={this.handleToggleItem}>
-          <i className="icon-caret-right"></i>
-          <div className='slide-image-placeholder'>
+          <i className={`icon-caret-right ${this.state.collapsed ? 'down' : ''}`}></i>
+          <div className='slide-image-placeholder banner-item'>
             <img src={this.state.item.image_url} alt=''></img>
           </div>
           <div className='heading-title'>{this.state.item.heading}</div>

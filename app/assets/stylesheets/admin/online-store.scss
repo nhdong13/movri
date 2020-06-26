@@ -72,16 +72,27 @@
               width: 22px;
               float: left;
               line-height: 50px;
+              &.down:before {
+                content: "\f0d7";
+              }
             }
             .slide-image-placeholder {
               width: 50px;
               float: left;
+              overflow: hidden;
+              border-radius: 6px;
+              &.banner-item {
+                
+                img {
+                  max-width: 100%;
+                }
+              }
               img {
-                max-width: 100%;
                 max-height: 50px;
               }
             }
             .heading-title {
+              margin-left: 5px;
               float: left;
               line-height: 50px;
             }
