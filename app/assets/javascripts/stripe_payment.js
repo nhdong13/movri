@@ -177,7 +177,7 @@ window.ST = window.ST || {};
     }
   }
   var initIntent = function(options){
-    stripe = Stripe('pk_test_51GvgLeA1vyHsG6ncDQW9tgCvB5mAJ4rAkwG1xCfQlSNO1VLeIHQHxWVrL3IQPGapxidDMW3DTqobIWCUjuVeBd7I00aqZRggKi');
+    stripe = Stripe(options.publishable_key);
     var card = createCard();
     var form = $(".desktop-payment-form");
 

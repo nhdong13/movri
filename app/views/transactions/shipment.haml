@@ -25,8 +25,8 @@
           .col-12.margin-bt-20.shipment-promo-code-partial
             = render partial: "transactions/shipment_process/shipment_promo_code"
         .row
-          .col-12.order-summary-box
-            = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}
+          .col-12.mobile-order-summary-box
+            = render partial: "transactions/checkout_process/mobile_design/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}
           .col-12.shipment-methods-partial
             = render partial: "transactions/shipment_process/shipment_methods"
 

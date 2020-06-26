@@ -29,3 +29,12 @@ OFFICE_ADDRESS = {
   country: 'Canada',
   is_office_address: true
 }
+
+EMPTY_SHIPPING_ADDRESS = {
+  state_or_province: '',
+  postal_code: '',
+  street1: '',
+  city: '',
+  country: '',
+  is_office_address: false
+}

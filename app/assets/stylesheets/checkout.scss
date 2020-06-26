@@ -1,3 +1,6 @@
+$mobile: "(max-width: 767px)";
+$tablet: "(min-width: 768px) and (max-width: 1024px)";
+
 .checkout-section{
   .common-box{
     padding-top: 20px;
@@ -237,5 +240,28 @@
         font-size: 14px;
       }
     }
+  }
+}
+
+.payment-section{
+  padding: 0 15px;
+}
+
+.mobile-order-summary-box{
+  .common-box{
+    padding: 10px !important;
+    margin-bottom: 0px;
+    span{ font-size: 15px; }
+    .order-summary-prices{
+      padding: 0 10px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+}
+
+@media #{$mobile}, #{$tablet} {
+  .common-box{
+    padding: 10px !important;
   }
 }

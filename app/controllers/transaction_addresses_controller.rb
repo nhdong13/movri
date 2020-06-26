@@ -5,10 +5,13 @@ class TransactionAddressesController < ApplicationController
 
   def create
     @transaction_address = @transaction.transaction_addresses.create(transaction_address_params)
+    @transaction_address.update(person_id: @current_user.id)  if @current_user
     redirect_to shipment_transaction_path(@transaction.uuid_object)
   end
 
   def create_billing_address
+    session[:billing_address] = transaction_address_params if params[:remember_me] == "true"
+
     if params[:address_type] == "billing_address"
       result = stripe_api.create_billing_address_and_payment_intent(params, transaction_address_params)
       return render json: {errors: result[:error]} unless (result[:success])
@@ -16,6 +19,7 @@ class TransactionAddressesController < ApplicationController
       result = stripe_api.create_payment_intent(params[:stripe_payment_method_id])
       return render json: {errors: result[:error]} unless (result[:success])
     end
+
     # refesh session
     session[:cart] = {}
     respond_to do |format|
@@ -26,6 +30,7 @@ class TransactionAddressesController < ApplicationController
 
   def update
     success = @transaction_address.update(transaction_address_params)
+    @transaction_address.update(person_id: @current_user.id)  if @current_user
     if success
       redirect_to shipment_transaction_path(@transaction.uuid_object)
     else

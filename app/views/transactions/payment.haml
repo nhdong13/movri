@@ -1,23 +1,33 @@
 .brown-background
   .payment-section
     .wrapper
-      .desktop-display
-        = render partial: "transactions/process_bar", locals: {transaction: @transaction, current_page: 'payment'}
-        .row
+      -# .desktop-display
+      = render partial: "transactions/process_bar", locals: {transaction: @transaction, current_page: 'payment'}
+      .row
+        .desktop-display
           .col-8.margin-bt-20
             = render partial: "transactions/shipment_process/shipment_bar", locals: {show_methos_row: true}
-          .col-4.margin-bt-20.shipment-promo-code-partial
-            = render partial: "transactions/shipment_process/shipment_promo_code"
-        .row
+        .mobile-display
           .col-8.margin-bt-20
-            = render partial: "transactions/payment_process/card_info"
+            = render partial: "transactions/shipment_process/shipment_bar", locals: {show_methos_row: true}
+        .col-4.margin-bt-20.shipment-promo-code-partial
+          = render partial: "transactions/shipment_process/shipment_promo_code"
+        .mobile-display
+          .row
+            .col-8.mobile-order-summary-box
+              = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}
+      .row
+        .col-8.margin-bt-20
+          = render partial: "transactions/payment_process/card_info"
+        .desktop-display
           .col-4.order-summary-box
             = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}
-      .mobile-display
 
 - content_for :extra_javascript do
   :javascript
     window.ST.StripePayment.initIntent({
-      publishable_key: 'pk_test_51GvgLeA1vyHsG6ncDQW9tgCvB5mAJ4rAkwG1xCfQlSNO1VLeIHQHxWVrL3IQPGapxidDMW3DTqobIWCUjuVeBd7I00aqZRggKi'
+      publishable_key: '#{APP_CONFIG.stripe_api_test_publishable_key}'
     });
+    Shipment.run();
+
 

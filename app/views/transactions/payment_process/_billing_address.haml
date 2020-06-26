@@ -46,9 +46,9 @@
         .form-group
           .row
             .col-4
-              = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true, class: 'billing-address'
+              = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true, class: ''
             .col-4
-              = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {}, {:class => "shipping-address-state billing-address"}
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {}, {:class => "shipping-address-state"}
             .col-4
               = form.text_field :postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "billing-address-postal-code billing-address transaction-address-req-field"
               = fa_icon "check", class: "d-none"
@@ -65,7 +65,7 @@
           .row
             .col-12
               %label.padding-15.margin-0.common-br.label-radio-btn
-                = radio_button_tag :remember_me, true, false
+                = radio_button_tag :remember_me, true, checked: session[:billing_address].present?
                 %span Save my information for a faster checkout
 
         .form-group

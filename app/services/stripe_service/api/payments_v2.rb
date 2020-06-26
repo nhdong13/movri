@@ -3,7 +3,7 @@ module StripeService::API
     def initialize(transaction, session)
       @session = session
       @transaction = transaction
-      Stripe.api_key = 'sk_test_51GvgLeA1vyHsG6ncWtahmTkplffeTuDyVGisy1wHXThu4IzsXn6GgjgvR6fOK50qLwDBMTjLEe1CLTDhBX73zZop00PrIu5PWB'
+      Stripe.api_key = APP_CONFIG.stripe_api_test_secret_key
       @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session)
       @amount = @calculate_money_service.final_price.to_i
     end

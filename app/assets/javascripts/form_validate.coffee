@@ -114,7 +114,8 @@ onFillColorToShippingInput = ->
     '.shipping-address-phone',
     '.shipping-address-company',
     '.shipping-address-apartment',
-    '.shipping-address-email'
+    '.shipping-address-email',
+    '.billing-address'
   ]
   _.map(inputs, (i) ->
     _.map($(i), ($i) ->

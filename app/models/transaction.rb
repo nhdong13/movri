@@ -139,6 +139,12 @@ class Transaction < ApplicationRecord
   scope :fulfilled_orders, -> { where(current_state: "fulfilled")}
   scope :unfulfilled_orders, -> { where(current_state: "unfulfilled")}
 
+  before_create :add_current_state
+
+  def add_current_state
+    self.current_state = 'unfulfilled'
+  end
+
   def shipping_address
     transaction_addresses.where(address_type: 0)&.first
   end
@@ -355,7 +361,7 @@ class Transaction < ApplicationRecord
   end
 
   def shipping_method_label
-    "#{shipper.service_name} #{shipper.amount} #{shipper.currency}"
+    will_pickup? ? 'Free' : "#{shipper.service_name} #{shipper.amount} #{shipper.currency}"
   end
 
   def completed?

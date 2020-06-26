@@ -3,12 +3,16 @@ class ShippersController < ApplicationController
   before_action :find_transaction
 
   def update
-    shipper = @transaction.shipper.update(get_shipper_params)
-    if shipper
-      redirect_to payment_transaction_path(@transaction.uuid_object)
+    if @transaction.will_pickup?
+      return redirect_to payment_transaction_path(@transaction.uuid_object)
     else
-      flash[:error] = 'Something went wrong!'
-      redirect_to shipment_transaction_path(@transaction.uuid_object)
+      shipper = @transaction.shipper.update(get_shipper_params)
+      if shipper
+        return redirect_to payment_transaction_path(@transaction.uuid_object)
+      else
+        flash[:error] = 'Something went wrong!'
+        return redirect_to shipment_transaction_path(@transaction.uuid_object)
+      end
     end
   end
 
