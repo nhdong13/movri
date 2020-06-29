@@ -13,8 +13,8 @@
     %input{name: "authenticity_token", value: "#{ form_authenticity_token}", type: "hidden"}
     = react_component("OnlineStore", props: {default_sections: default_sections, sections: @sections.as_json })
     %iframe{id: 'homepage-preview-iframe', src: 'http://localhost:3000', style: 'width: 80%; height: 100vh'}
-  = render layout: "layouts/lightbox", locals: { id: "store-section-modal"} do
-    %h2 Select section
-    = form_tag("/admin/online_stores/#{@online_store.id}/store_sections", remote: true, method: :post, id: 'store-section-form') do |f|
-      = select_tag 'name', options_for_select([ "Header", "Slideshow" ])
-      = submit_tag 'Submit'
+  -# = render layout: "layouts/lightbox", locals: { id: "store-section-modal"} do
+  -#   %h2 Select section
+  -#   = form_tag("/admin/online_stores/#{@online_store.id}/store_sections", remote: true, method: :post, id: 'store-section-form') do |f|
+  -#     = select_tag 'name', options_for_select([ "Header", "Slideshow" ])
+  -#     = submit_tag 'Submit'

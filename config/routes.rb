@@ -275,6 +275,10 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :store_categories, only: [:create, :update, :destroy] do
+        resources :store_category_items, only: [:new, :create, :update, :destroy]
+      end
+
       resources :communities do
         member do
           get :edit_welcome_email
