@@ -1,0 +1,18 @@
+.brown-background
+  .payment-section
+    .wrapper
+      .row
+        .col-12
+          %p
+          .header-checkout= "Thank you #{@transaction.shipping_address.first_name}!"
+      .row
+        .col-8
+          = render partial: "transactions/thank_you_process/confirmation_order"
+          .mobile-display
+            .mobile-order-summary-box.margin-bt-30
+              = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}
+          .transaction-info-summary-partial
+            = render partial: "transactions/thank_you_process/transaction_info_summary"
+        .col-4.order-summary-box
+          .desktop-display
+            = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee}

@@ -146,11 +146,11 @@ class Transaction < ApplicationRecord
   end
 
   def shipping_address
-    transaction_addresses.shipping_address.first
+    transaction_addresses.shipping_address.last
   end
 
   def billing_address
-    transaction_addresses.billing_address.first
+    transaction_addresses.billing_address.any? ? transaction_addresses.billing_address.last : shipping_address
   end
 
   def will_pickup?

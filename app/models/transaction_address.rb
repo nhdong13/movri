@@ -75,4 +75,9 @@ class TransactionAddress < ApplicationRecord
   def fullname
     first_name + " " + last_name
   end
+
+  def format_phone
+    phone_arr = phone.split("")
+    "#{phone_arr[0]} (#{phone_arr[1..3].join()}) #{phone_arr[4..6].join()}-#{phone_arr[7..10].join()}"
+  end
 end

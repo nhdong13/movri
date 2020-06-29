@@ -265,3 +265,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     padding: 10px !important;
   }
 }
+
+.address-info-summary{
+  span{display: block;}
+  .label-title{
+    font-weight: bold;
+    color: #757575;
+  }
+
+}

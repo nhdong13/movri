@@ -1237,6 +1237,10 @@ $home-list-avatar-padding: lines(0.25);
   align-items: center;
 }
 
+.display-flex{
+  display: flex;
+}
+
 .footer-signup{
   text-align: center;
   input.email-address{
