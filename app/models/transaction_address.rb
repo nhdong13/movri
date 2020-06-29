@@ -71,4 +71,8 @@ class TransactionAddress < ApplicationRecord
   def full_address
     "#{street1}, #{city}, #{CANADA_PROVINCES.key(state_or_province)}, #{country}, #{postal_code} "
   end
+
+  def fullname
+    first_name + " " + last_name
+  end
 end

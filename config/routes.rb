@@ -136,6 +136,7 @@ Rails.application.routes.draw do
     get "/transactions/:uuid/update_promo_code" => "transactions#update_promo_code", as: :update_promo_code_transaction
     get "/transactions/:uuid/change_state_shipping_form" => "transactions#change_state_shipping_form", as: :change_state_shipping_form
     get "/transactions/:uuid/payment" => "transactions#payment", as: :payment_transaction
+    get "/transactions/:uuid/thank_you" => "transactions#thank_you", as: :thank_you_transaction
     post "/transactions/:transaction_id/billing_addresses" => "transaction_addresses#create_billing_address", as: :transaction_billing_address
 
     # preauthorize flow

@@ -23,10 +23,11 @@ class TransactionsController < ApplicationController
     :shipment,
     :checkout,
     :change_state_shipping_form,
-    :payment
+    :payment,
+    :thank_you
   ]
 
-  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment]
+  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :thank_you]
 
   before_action except: [
     :checkout,
@@ -35,7 +36,8 @@ class TransactionsController < ApplicationController
     :change_shipping_selection,
     :update_promo_code,
     :change_state_shipping_form,
-    :payment] do |controller|
+    :payment,
+    :thank_you] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -473,6 +475,13 @@ class TransactionsController < ApplicationController
       @billing_address = @transaction.transaction_addresses.build
     end
     @default_shipping_fee = @transaction.shipper.amount
+  end
+
+  def thank_you
+    @shipping_address = @transaction.shipping_address
+    @billing_address = @transaction.billing_address
+    @state = @transaction.shipping_address.state_or_province
+    @default_shipping_fee = 0
   end
 
   private

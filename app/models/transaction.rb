@@ -146,7 +146,11 @@ class Transaction < ApplicationRecord
   end
 
   def shipping_address
-    transaction_addresses.where(address_type: 0)&.first
+    transaction_addresses.shipping_address.first
+  end
+
+  def billing_address
+    transaction_addresses.billing_address.first
   end
 
   def will_pickup?
