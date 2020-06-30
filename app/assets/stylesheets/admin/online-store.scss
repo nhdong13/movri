@@ -3,6 +3,13 @@
     width: 20%;
     float: left;
   }
+
+  .btn {
+    background: transparent;
+    color: blue;
+    padding: 0;
+    font-size: 16px;
+  }
   .store-main-content {
     width: 80%;
     float: left;
@@ -78,17 +85,37 @@
             }
             .slide-image-placeholder {
               width: 50px;
+              height: 50px;
               float: left;
               overflow: hidden;
               border-radius: 6px;
+              position: relative;
               &.banner-item {
                 
                 img {
                   max-width: 100%;
+                  max-width: 100%;
+                  width: auto;
+                  height: auto;
+                  position: absolute;
+                  top: 0;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  margin: auto;
                 }
               }
               img {
                 max-height: 50px;
+                max-width: 100%;
+                width: auto;
+                height: auto;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
               }
             }
             .heading-title {
@@ -99,6 +126,7 @@
 
             .background-image {
               img {
+                width: 100%;
                 max-width: 100%;
               }
             }

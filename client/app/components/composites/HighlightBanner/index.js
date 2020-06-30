@@ -219,7 +219,7 @@ class HighlightBanner extends Component {
                 </div>
               }
             </div>
-            <button type='submit'>{this.state.saving ? 'Saving...' : 'Save'}</button>
+            <button className='btn' type='submit'>{this.state.saving ? 'Saving...' : 'Save'}</button>
           </form>
         </div>
         <h1>Contents</h1>
@@ -238,7 +238,7 @@ class HighlightBanner extends Component {
           }
         </ul>
         <div className='add-more-slide'>
-          <button type='button' onClick={this.handleAddItem}>Add block</button>
+          <button className='btn' type='button' onClick={this.handleAddItem}>Add block</button>
         </div>
       </div>
     )

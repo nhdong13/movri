@@ -101,13 +101,13 @@ class StoreSections extends Component {
                 })
               }
             </ul>
-            <button onClick={this.addMoreSection}>Add section</button>
+            <button className='btn p-2' onClick={this.addMoreSection}>Add section</button>
           </div>
         )
     }
   }
 
-  render() {
+  render() { 
     return (
       <div className='store-sections'>
         { this.state.alertDisplayed && <div className='flash-icon ss-info'>{this.state.alertMessage}</div> }

@@ -3,6 +3,7 @@ import { SketchPicker } from 'react-color';
 import axios from 'axios'
 import ImageUploader from 'react-images-upload';
 import './style.css'
+import { previewUploadImageSrc } from '../../../utils/common';
 
 class StoreHeader extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class StoreHeader extends Component {
     this.handleTextColorChangeComplete = this.handleTextColorChangeComplete.bind(this)
     this.handleBgColorChangeComplete  = this.handleBgColorChangeComplete.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    this.onloadCallback = this.onloadCallback.bind(this)
     this.onDrop = this.onDrop.bind(this)
 
     this.axiosDefaultParams = {
@@ -73,7 +75,17 @@ class StoreHeader extends Component {
     })
   }
 
+  onloadCallback(src){
+    this.setState({
+      object: {
+        ...this.state.item,
+        logo_url: src
+      }
+    })
+  }
+
   onDrop(image) {
+    previewUploadImageSrc(image, this.onloadCallback)
     const formData = new FormData()
     formData.append('authenticity_token', $('input[name ="authenticity_token"]').val())
     formData.append('logo', image[0])
@@ -225,7 +237,7 @@ class StoreHeader extends Component {
                 </div>}
               </div>
             </div>
-                <button type='submit'>{ this.state.loading ? 'Saving...' : 'Save' }</button>
+                <button className='btn' type='submit'>{ this.state.loading ? 'Saving...' : 'Save' }</button>
           </form>
         </div>
       </div>

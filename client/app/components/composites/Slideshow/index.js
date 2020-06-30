@@ -123,7 +123,7 @@ class Slideshow extends Component {
               <label className='col-8'>Autoplay duration(sec)</label>
               <input className='col-4' type='number' name='slide_duration' value= {this.state.object.slide_duration}  onChange={this.handleFormOnChange}></input>
             </div>
-            <button type='submit'>{this.state.loading ? 'Saving...' : 'Save'}</button>
+            <button className='btn' type='submit'>{this.state.loading ? 'Saving...' : 'Save'}</button>
           </form>
         </div>
         <hr/>
@@ -142,7 +142,7 @@ class Slideshow extends Component {
           }
         </ul>
         <div className='add-more-slide'>
-          <button type='button' onClick={this.handleAddItem}>Add slide</button>
+          <button className='btn' type='button' onClick={this.handleAddItem}>Add slide</button>
         </div>
       </div>
     )

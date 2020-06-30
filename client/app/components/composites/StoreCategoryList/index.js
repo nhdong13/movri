@@ -7,6 +7,8 @@ class StoreCategoryList extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      saving: false,
+      removing: false,
       object: props.object
     }
 
@@ -45,17 +47,17 @@ class StoreCategoryList extends Component {
       data: data
     }
 
+    this.setState({ saving: true })
+
     axios(axiosOptions).then(res => {
       if (res.status == 200 && res.data.success) {
         this.setState({
           object: res.data.store_category
         })
-      } else {
-        this.setState({
-          alertDisplayed: true,
-          alertMessage: res.data.message
-        })
       }
+      this.setState({
+        saving: false,
+      })
     })
   }
 
@@ -86,23 +88,24 @@ class StoreCategoryList extends Component {
 
   handleRemoveItem(item) {
     // TODO
-    
-    // const params = {
-    //   authenticity_token: this.state.authenticity_token
-    // }
-    // axios.delete(`/admin/highlight_banners/${item.highlight_banner_id}/banner_items/${item.id}`, {data: params}).then(res => {
-    //   this.setState({removing: false})
-    //   let bannerItems = this.state.object.banner_items.filter(it => it.id != item.id)
-    //   this.setState({
-    //     object: {
-    //       ...this.state.object,
-    //       banner_items: bannerItems
-    //     }
-    //   })
-    //   $("#homepage-preview-iframe").attr("src", function(index, attr){ 
-    //     return attr;
-    //   });
-    // })
+    this.setState({ removing: true })
+  
+    axios.delete(`/admin/store_categories/${item.store_category_id}/store_category_items/${item.id}`, {data: this.axiosDefaultParams}).then(res => {
+      this.setState({removing: false})
+      let items = this.state.object.items.filter(it => it.id != item.id)
+      this.setState({
+        object: {
+          ...this.state.object,
+          items: items
+        }
+      })
+
+      this.setState({ removing: false })
+
+      $("#homepage-preview-iframe").attr("src", function(index, attr){ 
+        return attr;
+      });
+    })
   }
 
   render() {
@@ -119,7 +122,7 @@ class StoreCategoryList extends Component {
               <label>Heading</label>
               <input name='heading' value={this.state.object.heading || ''} type='text' onChange={this.handleOnChange}/>
             </div>
-            <button type='submit'>Save</button> 
+            <button className='btn' type='submit'>{ this.state.saving ? 'Saving...' : 'Save'} </button> 
           </form>
         </div>
         <h1>Contents</h1>
@@ -130,6 +133,7 @@ class StoreCategoryList extends Component {
                 <StoreCategoryItem 
                   key={item.id || randomString()} 
                   item={item}
+                  removing={this.state.removing}
                   handleUpdateNewItem={this.handleUpdateNewItem}
                   handleRemoveItem={this.handleRemoveItem}
                 />
@@ -138,7 +142,7 @@ class StoreCategoryList extends Component {
           }
         </ul>
         <div className='add-more-slide'>
-          <button type='button' onClick={this.handleAddItem}>Add category</button>
+          <button className='btn' type='button' onClick={this.handleAddItem}>Add category</button>
         </div>
       </div>
     )

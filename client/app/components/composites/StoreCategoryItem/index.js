@@ -1,6 +1,7 @@
 import React, { Component } from  'react'
 import ImageUploader from 'react-images-upload';
 import axios from 'axios'
+import { previewUploadImageSrc } from '../../../utils/common'
 
 
 class StoreCategoryItem extends Component {
@@ -20,6 +21,7 @@ class StoreCategoryItem extends Component {
     this.handleSubmitForm = this.handleSubmitForm.bind(this)
     this.onDrop = this.onDrop.bind(this)
     this.fectchingCategories = this.fectchingCategories.bind(this)
+    this.onloadCallback = this.onloadCallback.bind(this)
     this.axiosDefaultParams = {
       authenticity_token: $('input[name ="authenticity_token"]').val()
     }
@@ -80,7 +82,6 @@ class StoreCategoryItem extends Component {
       this.setState({
         saving: false,
         collapsed: false,
-        // item: res.data.banner_item
       })
       this.props.handleUpdateNewItem(item.id, res.data.store_category_item)
       $("#homepage-preview-iframe").attr("src", function(index, attr){ 
@@ -89,13 +90,24 @@ class StoreCategoryItem extends Component {
     })
   }
 
+  onloadCallback(src){
+    this.setState({
+      item: {
+        ...this.state.item,
+        image_url: src
+      }
+    })
+  }
+
   onDrop(image) {
+    previewUploadImageSrc(image, this.onloadCallback)
     this.setState({
       item: {
         ...this.state.item,
         image: image
       }
     })
+   
   }
 
   fectchingCategories() {
@@ -137,7 +149,7 @@ class StoreCategoryItem extends Component {
               </div>
               <div className='background-image'>
                 <label>Image</label>
-                { this.state.item.image_url && <img src={this.state.item.image_url} alt='item-image' />}
+                { this.state.item.image_url && <img src={this.state.item.image_url} alt='item-image'/>}
                 <ImageUploader
                   className='logo-uploader'
                   withLabel={false}
@@ -152,10 +164,10 @@ class StoreCategoryItem extends Component {
               </div>
               <div className='row'>
                 <div className='col-8'>
-                  <button className='p-2' type='button' onClick={() => this.props.handleRemoveItem(this.state.item)}>{ this.state.removing ? 'Removing...' : 'Remove content'}</button>
+                  <button className='p-2 btn' type='button' onClick={() => this.props.handleRemoveItem(this.state.item)}>{ this.props.removing ? 'Removing...' : 'Remove content'}</button>
                 </div>
                 <div className='col-4'>
-                  <button className='p-2' type='submit'>{ this.state.saving ? 'Saving' : 'Save' }</button>
+                  <button className='p-2 btn' type='submit'>{ this.state.saving ? 'Saving' : 'Save' }</button>
                 </div>
               </div>
             </form>
