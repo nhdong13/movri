@@ -291,6 +291,7 @@ ICON_MAP = {
       "minus" => "icon-minus",
       "trash" => "icon-trash",
       "rocket" => "icon-magic",
-      "orders" => "icon-truck"
+      "orders" => "icon-truck",
+      "store" => "icon-home"
     }
   }

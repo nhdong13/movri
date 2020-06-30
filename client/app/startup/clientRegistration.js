@@ -8,6 +8,9 @@ import TopbarApp from './TopbarApp';
 import SearchPageApp from './SearchPageApp';
 import ManageAvailabilityApp from './ManageAvailabilityApp';
 import ListingWorkingHoursApp from './ListingWorkingHoursApp';
+import OnlineStore from './OnlineStore';
+
+
 
 ReactOnRails.register({
   OnboardingGuideApp,
@@ -16,6 +19,7 @@ ReactOnRails.register({
   SearchPageApp,
   ManageAvailabilityApp,
   ListingWorkingHoursApp,
+  OnlineStore
 });
 
 ReactOnRails.registerStore({

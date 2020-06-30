@@ -730,6 +730,8 @@ en:
         status: "Status"
         total: "Total"
         search_by_customer_name: "Search by customer name"
+      manager_online_store:
+        online_store: Online Store
     landing_page_versions:
       sections:
         hero:

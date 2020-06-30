@@ -18,6 +18,15 @@
     margin-bottom: -5px;
   }
 -# Hide header in map view if mobile
+%header.header.sticky-heade
+  - if store_header.sticky_enabled
+    - style = "color:  #{store_header.text_color};"
+    - style += "background: #{store_header.background_color};"
+    - style += "text-align: center;"
+    - style += "height: 50px;"
+    .header-wrapper.clearfix{style: style}
+      %h2{style: "color: #{store_header.text_color};line-height: 50px;"}= store_header.title.html_safe
+
 %header.header.info-header
   .header-wrapper.clearfix
     .header-left
@@ -95,7 +104,7 @@
             -# Logo is here, it's a CSS background
         - if @current_community.wide_logo.present?
           .header-wide-logo
-            = image_tag('homepage_icons/movri_logo.png')
+            = image_tag(store_header.logo.url)
         - else
           %span.header-wide-logo-text.visible-tablet
             = @current_community.name(I18n.locale)

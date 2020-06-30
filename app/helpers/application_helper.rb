@@ -386,6 +386,13 @@ module ApplicationHelper
     links += [
       {
         :topic => :manage,
+        :text => t("admin.communities.manager_online_store.online_store"),
+        :icon_class => icon_class("store"),
+        :path => admin_community_online_store_path(@current_community, @current_community.online_store),
+        :name => "online_store"
+      },
+      {
+        :topic => :manage,
         :text => t("admin.communities.manage_members.manage_members"),
         :icon_class => icon_class("community"),
         :path => admin_community_community_memberships_path(@current_community, sort: "join_date", direction: "desc"),
