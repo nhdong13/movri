@@ -25,6 +25,14 @@ class Admin::StoreCategoryItemsController < Admin::AdminBaseController
     end
   end
 
+  def destroy
+    if @store_category_item.destroy
+      render json: { success: true }
+    else
+      render json: { success: false, messages: @store_category_item.errors.full_messages }
+    end
+  end
+
   private
   def set_store_category
     @store_category = StoreCategory.find params[:store_category_id]

@@ -21,7 +21,7 @@ class SectionMore extends Component {
     const { currentSection } = this.state
     switch(currentSection) {
       case 'CollectionList':
-        return <StoreCategoryList setCurrentSection={this.setCurrentSection} />
+        return <StoreCategoryList callback={this.setCurrentSection} />
       default:
         return (
           <div className='store-header add-more-section'>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import ImageUploader from 'react-images-upload';
 import { SketchPicker } from 'react-color';
+import { previewUploadImageSrc } from '../../../utils/common';
 
 
 class SlideItem extends Component {
@@ -13,6 +14,7 @@ class SlideItem extends Component {
     this.handleColorClose = this.handleColorClose.bind(this)
     this.colorPickToggle = this.colorPickToggle.bind(this)
     this.handleToggleItem = this.handleToggleItem.bind(this)
+    this.onloadCallback = this.onloadCallback.bind(this)
     this.onDrop = this.onDrop.bind(this)
     
     this.state = {
@@ -103,7 +105,17 @@ class SlideItem extends Component {
     })
   }
 
+  onloadCallback(src){
+    this.setState({
+      item: {
+        ...this.state.item,
+        image_url: src
+      }
+    })
+  }
+
   onDrop(image) {
+    previewUploadImageSrc(image, this.onloadCallback)
     this.setState({
       item: {
         ...this.state.item,
@@ -199,10 +211,10 @@ class SlideItem extends Component {
               </div>
               <div className='row'>
                 <div className='col-8'>
-                  <button className='p-2' type='button' onClick={() => this.props.handleRemoveItem(this.state.item)}>{ this.state.removing ? 'Removing...' : 'Remove content'}</button>
+                  <button className='p-2 btn' type='button' onClick={() => this.props.handleRemoveItem(this.state.item)}>{ this.state.removing ? 'Removing...' : 'Remove content'}</button>
                 </div>
                 <div className='col-4'>
-                  <button className='p-2' type='submit'>{ this.state.saving ? 'Saving' : 'Save' }</button>
+                  <button className='p-2 btn' type='submit'>{ this.state.saving ? 'Saving' : 'Save' }</button>
                 </div>
               </div>
             </form>
