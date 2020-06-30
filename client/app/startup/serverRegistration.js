@@ -14,7 +14,6 @@ ReactOnRails.register({
   OnboardingTopBar,
   TopbarApp,
   SearchPageApp,
-  CartPage, 
   OnlineStore
 });
 
