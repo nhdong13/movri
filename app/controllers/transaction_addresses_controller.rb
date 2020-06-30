@@ -24,7 +24,7 @@ class TransactionAddressesController < ApplicationController
     session[:cart] = {}
     respond_to do |format|
       format.html
-      format.json { render json: { redirect_url: shipment_transaction_path(@transaction.uuid_object) } }
+      format.json { render json: { redirect_url: thank_you_transaction_path(@transaction.uuid_object) } }
     end
   end
 

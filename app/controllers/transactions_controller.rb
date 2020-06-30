@@ -482,6 +482,7 @@ class TransactionsController < ApplicationController
     @billing_address = @transaction.billing_address
     @state = @transaction.shipping_address.state_or_province
     @default_shipping_fee = 0
+    @helping_request = @transaction.helping_requests.build
   end
 
   private

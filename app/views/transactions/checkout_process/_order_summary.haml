@@ -4,8 +4,8 @@
       .header-title.margin-bt-0
         %span= t('transactions.order_summary.header')
   .order-summary-products{'data-uuid': transaction.uuid_object }
-    - session[:cart].each do |key, value|
-      - listing = Listing.find_by(id: key)
+    - transaction.transaction_items.each do |item|
+      - listing = Listing.find_by(id: item.listing_id)
       .row
         .col-12
           .listing-row
@@ -21,11 +21,11 @@
               .sku-quantity
                 .quantity
                   %span= "#{t('transactions.label.quantity')}:"
-                  %span= value
+                  %span= item.quantity
               .price
                 %span.number-price
                   -# with coverage fee
-                  - listing_subtotal = @calculate_money.listing_subtotal(listing, value)
+                  - listing_subtotal = @calculate_money.listing_subtotal(listing, item.quantity)
                   = money_to_humanized(listing_subtotal)
                 %span.day-rent
                   \/

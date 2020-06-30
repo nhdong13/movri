@@ -32,7 +32,10 @@
         .flex-items
           .helping.width-50
             %span Need help?
-            %span= link_to 'Contact us', ""
+            %span.fake-link.contact-us-link Contact us
           .btn-group.width-50.align-right
             .common-link-btn
               = link_to t('transactions.btn_label.continue_shopping'), homepage_with_locale_path
+
+  .helping-request-partial
+    = render partial: "transactions/thank_you_process/helping_request"

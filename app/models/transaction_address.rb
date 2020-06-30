@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: shipping_addresses
+# Table name: transaction_addresses
 #
 #  id                :integer          not null, primary key
 #  transaction_id    :integer          not null
@@ -22,10 +22,11 @@
 #  apartment         :string(255)
 #  email             :string(255)
 #  is_office_address :boolean          default(FALSE)
+#  address_type      :integer          default("shipping_address")
 #
 # Indexes
 #
-#  index_shipping_addresses_on_transaction_id  (transaction_id)
+#  index_transaction_addresses_on_transaction_id  (transaction_id)
 #
 
 class TransactionAddress < ApplicationRecord

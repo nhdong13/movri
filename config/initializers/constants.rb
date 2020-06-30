@@ -38,3 +38,5 @@ EMPTY_SHIPPING_ADDRESS = {
   country: '',
   is_office_address: false
 }
+
+DEFAULT_ADMIN_EMAIL = 'admin-movri@yopmail.com'

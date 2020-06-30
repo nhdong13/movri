@@ -195,6 +195,7 @@ Rails.application.routes.draw do
     resources :transactions, only: [:show, :new, :create] do
       resources :transaction_addresses, only: [:create, :update]
       resources :shippers, only: [:create, :update]
+      resources :helping_requests, only: [:create]
     end
 
     resources :transaction_addresses, only: [:create, :update]

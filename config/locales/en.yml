@@ -3288,11 +3288,25 @@ en:
       phone: Phone
     btn_label:
       continue_to_shipping: Continue to Shipping
+      continue_shipping: Continue Shipping
       continue_shopping: Continue Shopping
       return_to_cart: Return to cart
       return_to_shipping: Return to Shipping
       continue_to_payment: Continue to Payment
       pay_now: Pay now
+      send: Send
+      close: Close
+    thank_you:
+      comfirmed_order:  Your order is confirmed
+      will_recieve_mail: You'll recieve a confirmation email with your order number shortly.
+    contact:
+      title: Contact Us
+      question_helping: Hi - what may we help you with?
+      name: Name
+      subject: Subject(*)
+      email: Email(*)
+      order: 'Order #'
+      message: Message(*)
   common:
    copy_right: All rights reserved MOVRI
    account_question: Already have an account?

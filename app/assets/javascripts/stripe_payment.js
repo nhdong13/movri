@@ -158,7 +158,7 @@ window.ST = window.ST || {};
           buttons: false,
           timer: 2000,
         });
-        // window.location = data.redirect_url;
+        window.location = data.redirect_url;
         return;
       } else if (data.errors) {
         swal("Failure!", data.errors, "error");
