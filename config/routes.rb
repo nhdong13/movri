@@ -257,6 +257,30 @@ Rails.application.routes.draw do
       # Landing page menu
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
+      resources :online_stores, only: [] do 
+        resources :store_sections, only: [:create]
+      end
+
+      resources :store_headers, only: [:update] do
+        post :upload_logo, on: :member
+      end
+
+      resources :slideshows, only: [:update] do
+        resources :slide_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
+      resources :highlight_banners, ony: [:update] do
+        resources :banner_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
+      resources :store_categories, only: [:create, :update, :destroy] do
+        resources :store_category_items, only: [:new, :create, :update, :destroy]
+      end
+
       resources :communities do
         member do
           get :edit_welcome_email
@@ -307,6 +331,7 @@ Rails.application.routes.draw do
           get "getting_started_guide/invitation",             to: redirect("/admin/getting_started_guide/invitation")
 
         end
+        resources :online_store, only: [:show, :index]
         resources :listings, controller: :community_listings, only: [:index, :edit, :update] do
           member do
             get :approve

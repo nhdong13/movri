@@ -45,7 +45,19 @@ config.module.rules.push(
   },
   {
     test: /\.scss$/,
-    loaders: ['style-loader', 'css-loader', 'sass-loader'],
+    loaders: [
+      'style-loader', 
+      {
+        loader: 'css-loader',
+        options: {
+          modules: {
+            mode: 'local',
+            localIdentName: '[name]__[local]__[hash:base64:5]',
+          },
+        },
+      }, 
+      'sass-loader'
+    ],
   },
   {
     test: require.resolve('react'),

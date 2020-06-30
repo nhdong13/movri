@@ -1,0 +1,20 @@
+- content_for :javascript do
+  ST.initializeManageMembers();
+#community-store.row
+  - content_for :title_header do
+    %h1
+      = t("layouts.admin.admin")
+      = "-"
+      = t("admin.communities.manage_members.manage_members")
+
+  = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+  - default_sections = %w(header slideshow)
+  .store-main-content.col-md-10
+    %input{name: "authenticity_token", value: "#{ form_authenticity_token}", type: "hidden"}
+    = react_component("OnlineStore", props: {default_sections: default_sections, sections: @sections.as_json })
+    %iframe{id: 'homepage-preview-iframe', src: "#{request.base_url}", style: 'width: 80%; height: 100vh'}
+  -# = render layout: "layouts/lightbox", locals: { id: "store-section-modal"} do
+  -#   %h2 Select section
+  -#   = form_tag("/admin/online_stores/#{@online_store.id}/store_sections", remote: true, method: :post, id: 'store-section-form') do |f|
+  -#     = select_tag 'name', options_for_select([ "Header", "Slideshow" ])
+  -#     = submit_tag 'Submit'
