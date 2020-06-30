@@ -1,4 +1,4 @@
-module ShippingAddressesHelper
+module TransactionAddressesHelper
   def shipping_type_to_humanized shipping_type
     case shipping_type
     when "fedex_ground"

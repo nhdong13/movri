@@ -663,6 +663,10 @@ $home-list-avatar-padding: lines(0.25);
 .feature-products {
   margin-top: 25px;
 
+  & p:first-child {
+    margin-left: 0.75em;
+  }
+
   p {
     font-size: 34px;
   }
@@ -1107,6 +1111,12 @@ $home-list-avatar-padding: lines(0.25);
 
 @media screen and (max-width: 425px) {
   .homepage-carousel {
+    .slick-next,
+    .slick-prev {
+      top: 30%;
+      font-size: 24px;
+    }
+
     .slick-next {
       right: 10px;
     }
@@ -1135,7 +1145,6 @@ $home-list-avatar-padding: lines(0.25);
     }
   }
 
-  .icon-chevron-right,
   .footer,
   .contact-us {
     display: none;
@@ -1157,6 +1166,10 @@ $home-list-avatar-padding: lines(0.25);
     margin-bottom: 25px;
     padding-bottom: 10px;
     border-bottom: 1px solid #e0e0e0;
+
+    .icon-chevron-right {
+      display: none;
+    }
   }
 
   .mobile-footer {

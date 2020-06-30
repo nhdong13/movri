@@ -15,4 +15,8 @@
 
 class Shipper < ApplicationRecord
   belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id"
+
+  def amount_to_cents
+    amount * CONVERT_TO_CENT_VALUE
+  end
 end

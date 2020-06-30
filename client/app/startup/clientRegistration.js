@@ -8,7 +8,6 @@ import TopbarApp from './TopbarApp';
 import SearchPageApp from './SearchPageApp';
 import ManageAvailabilityApp from './ManageAvailabilityApp';
 import ListingWorkingHoursApp from './ListingWorkingHoursApp';
-import CartApp from './CartApp';
 import OnlineStore from './OnlineStore';
 
 
@@ -20,7 +19,6 @@ ReactOnRails.register({
   SearchPageApp,
   ManageAvailabilityApp,
   ListingWorkingHoursApp,
-  CartApp,
   OnlineStore
 });
 

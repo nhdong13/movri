@@ -53,9 +53,8 @@
 %header.header.main-header
   .header-wrapper.header-nav.clearfix
     - if logged_in
-      .header-right.visible-tablet
-        #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
-    .header-right.visible-tablet
+      -# .header-right.visible-tablet
+      -#   #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
       #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
 
     .header-right.controls
@@ -88,6 +87,9 @@
             %span.number-on-cart.number-on-cart-style-desktop
               - session[:cart] ||= {}
               = session[:cart].values.sum
+            %strong
+              = "View Cart"
+            %i.icon-chevron-down
 
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
     = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}

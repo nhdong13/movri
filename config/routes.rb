@@ -134,6 +134,10 @@ Rails.application.routes.draw do
     get "/transactions/:uuid/shipment" => "transactions#shipment", as: :shipment_transaction
     get "/transactions/:uuid/change_shipping_selection" => "transactions#change_shipping_selection", as: :change_shipping_selection_transaction
     get "/transactions/:uuid/update_promo_code" => "transactions#update_promo_code", as: :update_promo_code_transaction
+    get "/transactions/:uuid/change_state_shipping_form" => "transactions#change_state_shipping_form", as: :change_state_shipping_form
+    get "/transactions/:uuid/payment" => "transactions#payment", as: :payment_transaction
+    get "/transactions/:uuid/thank_you" => "transactions#thank_you", as: :thank_you_transaction
+    post "/transactions/:transaction_id/billing_addresses" => "transaction_addresses#create_billing_address", as: :transaction_billing_address
 
     # preauthorize flow
 
@@ -189,14 +193,11 @@ Rails.application.routes.draw do
     end
 
     resources :transactions, only: [:show, :new, :create] do
-      resources :shipping_addresses, only: [:create, :update]
+      resources :transaction_addresses, only: [:create, :update]
+      resources :shippers, only: [:create, :update]
     end
 
-    resources :shipping_addresses, only: [:create, :update] do
-      collection do
-        get 'change_state_shipping_form'
-      end
-    end
+    resources :transaction_addresses, only: [:create, :update]
 
     resources :carts, only: [] do
       collection do
@@ -346,6 +347,7 @@ Rails.application.routes.draw do
             get 'export_status'
           end
         end
+        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit]
         resources :conversations, controller: :community_conversations, only: [:index, :show]
         resources :testimonials, controller: :community_testimonials, only: [:index, :edit, :update, :new, :create] do
           collection do

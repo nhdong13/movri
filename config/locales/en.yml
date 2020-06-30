@@ -722,6 +722,14 @@ en:
         search_by_customer_name: "Search for transactions customer name"
         search: Search
         create_order: "Create Order"
+      manage_draft_orders:
+        draft_orders: "Draft Orders"
+        date: "Date"
+        draft: "Draft"
+        customer: "Customer"
+        status: "Status"
+        total: "Total"
+        search_by_customer_name: "Search by customer name"
       manager_online_store:
         online_store: Online Store
     landing_page_versions:
@@ -934,6 +942,7 @@ en:
       subscription: Subscription
       preview: "Preview site"
       whats_new: "What's new?"
+      orders: "Orders"
     listing_shapes:
       availability_title: Availability
       read_more: "Read more about automatic availability management."
@@ -3283,7 +3292,9 @@ en:
       continue_to_shipping: Continue to Shipping
       continue_shipping: Continue Shipping
       return_to_cart: Return to cart
+      return_to_shipping: Return to Shipping
       continue_to_payment: Continue to Payment
+      pay_now: Pay now
   common:
    copy_right: All rights reserved MOVRI
    account_question: Already have an account?

@@ -1,0 +1,4 @@
+// desktop-display
+$(".checkout-section .order-summary-box").html("<%= j render(partial: 'transactions/checkout_process/order_summary', locals: { transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee }) %>");
+// mobile-display
+$(".checkout-section .mobile-order-summary-box").html("<%= j render(partial: 'transactions/checkout_process/mobile_design/order_summary', locals: { transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee }) %>");

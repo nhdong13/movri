@@ -99,4 +99,35 @@ module PriceCalculationService
       5
     end
   end
+
+  def get_rate_type_of_canada_provinces canada_provinces
+    case canada_provinces
+    when 'alberta'
+      {GST: 5}
+    when 'british_columbia'
+      {GST: 7, PST: 5}
+    when 'manitoba'
+      {GST: 7, PST: 5}
+    when 'new_brunswick'
+      {HST: 15}
+    when 'newfoundland_and_labrador'
+      {HST: 15}
+    when 'northwest_territories'
+      {GST: 5}
+    when 'nova_scotia'
+      {HST: 15}
+    when 'nunavut'
+      {GST: 5}
+    when 'ontario'
+      {HST: 13}
+    when 'prince_edward_island'
+      {HST: 15}
+    when 'quebec'
+      {GST: 9.975, PST: 5}
+    when 'saskatchewan'
+      {GST: 6, PST: 5}
+    when 'yukon'
+      {GST: 5}
+    end
+  end
 end
