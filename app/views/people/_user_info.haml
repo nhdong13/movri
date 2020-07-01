@@ -1,0 +1,12 @@
+.row
+  .col-12.flex-items.padding-15
+    %span.fz-22 My Account
+  .row
+    .col-12
+      .account-header.white-background.padding-20
+        %p= @current_user.display_name
+        .flex-items
+          .common-link-btn.margin-r-15
+            %span.fz-24= link_to 'My Orders', person_path(@current_user, view: "orders")
+          .common-link-btn.active
+            %span.fz-24= link_to 'My Info', person_path(@current_user, view: "info")

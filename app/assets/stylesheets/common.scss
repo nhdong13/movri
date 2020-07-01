@@ -26,6 +26,21 @@
   margin: 18px 0px;
 }
 
+.common-label-btn{
+  margin-right: 15px;
+  span{
+    cursor: pointer;
+    color: #616161;
+    display: inline-block;
+    border: 1px solid #4eb857;
+    border-radius: 5px;
+    padding: 10px 15px;
+  }
+  span:hover{
+    opacity: 0.75;
+  }
+}
+
 .btn-checkout{
   background-color: #4eb857
 }
@@ -46,6 +61,7 @@
 .fz-16{font-size: 16px;}
 .fz-18{font-size: 18px;}
 .fz-22{font-size: 22px;}
+.fz-24{font-size: 24px;}
 .f-color-common{color: #616161}
 
 #arrival_date, #return_date {
@@ -77,27 +93,34 @@
 .brown-background{background: #f0f0f0;}
 .white-background{background: white;}
 .padding-0{padding: 0 !important}
+.padding-5{padding: 5px !important}
 .padding-15{padding: 15px !important}
+.padding-20{padding: 20px !important}
 .margin-0{margin: 0px !important}
 .margin-bt-0{margin-bottom: 0 !important}
 .margin-bt-20{margin-bottom: 20px !important}
 .margin-bt-30{margin-bottom: 30px !important}
 .margin-bt-50{margin-bottom: 50px !important}
+.margin-r-15{margin-right: 15px !important}
 .brown-font-color{color: #9e9e9e}
 .text-r{text-align: right}
 .padding-l-15{padding-left: 15px}
 .padding-10{padding: 10px !important}
 .width-50{width: 50%}
 .width-20{width: 20%; padding: 0 12px}
+.width-60{width: 60%; padding: 0 12px}
 .width-70{width: 70%; padding: 0 12px}
 .width-30{width: 30%; padding: 0 12px}
 .width-80{width: 80%; padding: 0 12px}
 .width-40{width: 40%; padding: 0 12px}
 .width-40{width: 40%; padding: 0 12px}
 .width-35{width: 35%; padding: 0 12px}
+.width-10{width: 10%; padding: 0 12px}
+.width-15{width: 15%; padding: 0 12px}
 .width-100{width: 100%}
 .align-right{text-align: right;}
 .fake-link{color: #13588d; cursor: pointer;}
+.bold{font-weight: bold;}
 
 .alert-error{
   margin: 5px 0;
@@ -163,13 +186,26 @@
 }
 
 .common-link-btn{
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #4eb857;
   a{
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
+    color: #616161;
     display: inline-block;
-    background: #4eb857;
-    padding: 10px;
+  }
+  a:hover{
+    color: unset;
+    opacity: 0.75;
+  }
+}
+
+.btn-link{
+  a{
+    color: white;
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background: #13588d;
   }
   a:hover{
     color: white;

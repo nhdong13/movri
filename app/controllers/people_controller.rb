@@ -21,11 +21,11 @@ class PeopleController < Devise::RegistrationsController
   helper_method :show_closed?
 
   def show
-    @service = Person::ShowService.new(community: @current_community, params: params, current_user: @current_user)
-    redirect_to landing_page_path and return unless @service.person
-    redirect_to landing_page_path and return if @current_community.private? && !@current_user
-    @selected_tribe_navi_tab = "members"
-    @seo_service.user = @service.person
+    if params[:sort] == "cancelled"
+      @user_orders = @current_user.cancelled_orders
+    else
+      @user_orders = @current_user.completed_orders
+    end
   end
 
   def new

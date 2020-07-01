@@ -400,4 +400,8 @@ class Transaction < ApplicationRecord
       end
     end
   end
+
+  def stripe_charge_cents
+    stripe_payments.last.sum_cents
+  end
 end

@@ -1,0 +1,49 @@
+- if user_orders.any?
+  - user_orders.each do |transaction|
+    .desktop-display
+      .row.margin-bt-20
+        .col-12
+          .order-summary
+            .flex-items
+              .width-70.padding-15.white-background
+                %p Shipped UPS #1Z10618933721147756323
+                .flex-items.data-header.padding-5
+                  .width-10
+                  .width-60
+                  .width-15.center-items
+                    %span QTY
+                  .width-15.center-items
+                    %span STATUS
+                - transaction.transaction_items.each do |item|
+                  - listing = item.listing
+                  .account-listing-item.br-bottom
+                    .flex-items.padding-5.margin-bt-20
+                      .width-10.center-items
+                        = image_tag listing.main_image, class: "width-100"
+                      .width-60
+                        %p.margin-0.title= listing.title
+                        %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"
+                      .width-15.center-items
+                        %p= item.quantity
+                      .width-15.center-items
+                        %p.status.fz-14 Shipping
+
+
+              .width-30.padding-20
+                %span= date_to_humanized(transaction.updated_at)
+                %p.margin-bt-15= "Order ##{transaction.order_number}"
+
+                %span Total
+                %p.margin-bt-15= money_to_humanized(transaction.stripe_charge_cents)
+
+                .btn-link
+                  = link_to "" do
+                    %span.fz-18 See Order Details
+    .mobile-display
+- else
+  .row.margin-bt-20
+    .col-12
+      .order-summary
+        .white-background
+          .center-items.padding-20
+            %span.fz-22 You have no orders

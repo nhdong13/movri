@@ -616,6 +616,14 @@ class Person < ApplicationRecord
     custom_field_values.by_question(custom_field).first
   end
 
+  def completed_orders
+    starter_transactions.where(current_state: ['paid']).order(updated_at: :desc)
+  end
+
+  def cancelled_orders
+    starter_transactions.where(current_state: ['cancelled']).order(updated_at: :desc)
+  end
+
   private
 
   def digest(password, salt)

@@ -170,4 +170,8 @@ module ListingsHelper
   def money_to_humanized value
     MoneyViewUtils.to_humanized(Money.new(value, 'USD'))
   end
+
+  def date_to_humanized date
+    date.to_date.to_formatted_s(:long)
+  end
 end
