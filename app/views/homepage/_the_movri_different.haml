@@ -1,6 +1,6 @@
 .movri-different.text-center
   %h1.title= I18n.t("homepage.movri_different.title")
-  .row
+  .row.center-items
     .col-6
       .assurred-quality
         = image_tag("homepage_icons/assured_quality.png", class: "assured_quality")
@@ -8,6 +8,7 @@
     .col-6
       = image_tag("homepage_icons/cancellations.png", class: "cancellation")
       %p= I18n.t("homepage.movri_different.easy_cancellation")
+  .row.center-items
     .col-6
       = image_tag("homepage_icons/shipping_agent.png")
       %p= I18n.t("homepage.movri_different.shipping_services")

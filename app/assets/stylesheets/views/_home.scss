@@ -792,7 +792,7 @@ $home-list-avatar-padding: lines(0.25);
 
     .sale_expert_advice,
     .customer_service {
-      line-height: 0.8;
+      line-height: 1.4;
 
       span:first-of-type {
         color: #7f7f7f;
@@ -809,7 +809,6 @@ $home-list-avatar-padding: lines(0.25);
           font-size: 30px;
           font-weight: bolder;
           color: #334455;
-          margin-bottom: 12px;
         }
 
         &.second_phone_number {
