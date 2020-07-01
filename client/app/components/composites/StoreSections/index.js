@@ -6,7 +6,7 @@ import Slideshow from '../Slideshow'
 import HighlightBanner from '../HighlightBanner'
 import SectionMore from '../SectionMore'
 import StoreCategoryList from '../StoreCategoryList'
-
+import StoreFeaturedList from '../StoreFeaturedList'
 
 import { onlineStoreActions } from '../../../actions/OnlineStoreActions'
 
@@ -86,6 +86,8 @@ class StoreSections extends Component {
         return <HighlightBanner toggleActiveSub={this.toggleActiveSub} object={item.object}/>
       case 'StoreCategory':
         return <StoreCategoryList callback={this.toggleActiveSub} object={item.object}/>
+      case 'FeaturedList':
+        return <StoreFeaturedList callback={this.toggleActiveSub} object={item.object}/>
       default:
         return (
           <div>
