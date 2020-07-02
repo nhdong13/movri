@@ -7,10 +7,18 @@
   }
 
   .btn {
-    background: transparent;
-    color: blue;
-    padding: 0;
+    background: #5b828e0d;
+    color: #0780ea;
+    padding: 5px 10px;
     font-size: 16px;
+    border: 1px solid #5b828e9e;
+    min-width: 80px;
+  }
+
+  hr {
+    border-bottom: 1px solid #ccc;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
   .store-main-content {
     width: 80%;
@@ -176,6 +184,17 @@
         //   }
         // }
       }
+
+      .featured-list {
+        .dropdown-content {
+          display: block;
+        }
+      }
     }
   }
+}
+
+form .form-control {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

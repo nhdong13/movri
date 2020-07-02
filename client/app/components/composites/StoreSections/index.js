@@ -7,9 +7,7 @@ import HighlightBanner from '../HighlightBanner'
 import SectionMore from '../SectionMore'
 import StoreCategoryList from '../StoreCategoryList'
 import StoreFeaturedList from '../StoreFeaturedList'
-
 import { onlineStoreActions } from '../../../actions/OnlineStoreActions'
-
 
 class StoreSections extends Component {
   constructor(props) {
@@ -87,7 +85,9 @@ class StoreSections extends Component {
       case 'StoreCategory':
         return <StoreCategoryList callback={this.toggleActiveSub} object={item.object}/>
       case 'FeaturedList':
-        return <StoreFeaturedList callback={this.toggleActiveSub} object={item.object}/>
+        return <StoreFeaturedList 
+          callback={this.toggleActiveSub}
+          section={item}/>
       default:
         return (
           <div>
@@ -103,7 +103,7 @@ class StoreSections extends Component {
                 })
               }
             </ul>
-            <button className='btn p-2' onClick={this.addMoreSection}>Add section</button>
+            <button className='btn p-2 m-3' onClick={this.addMoreSection}>Add section</button>
           </div>
         )
     }
@@ -130,7 +130,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  addSectionItem: onlineStoreActions.addSectionItem
+  addSectionItem: onlineStoreActions.addSectionItem,
+  updateSectionItem: onlineStoreActions.updateSectionItem
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoreSections)

@@ -7,6 +7,10 @@ class Admin::ListingsService
     @person = person
   end
 
+  def public_list
+    resource_scope.status_open
+  end
+
   def listing
     @listing ||= resource_scope.find(params[:id])
   end

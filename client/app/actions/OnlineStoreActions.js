@@ -7,6 +7,22 @@ const addSectionItem = (section) => {
   }
 }
 
+const updateSectionItem = (section) => {
+  return {
+    type: onlineStoreConstants.UPDATE_SECTION,
+    payload: section
+  }
+}
+
+const removeSectionItem = (sectionId) => {
+  return {
+    type: onlineStoreConstants.REMOVE_SECTION,
+    payload: sectionId
+  }
+}
+
 export const onlineStoreActions = {
-  addSectionItem
+  addSectionItem,
+  updateSectionItem,
+  removeSectionItem
 }

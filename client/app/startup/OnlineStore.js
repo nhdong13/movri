@@ -10,15 +10,11 @@ import OnlineStore from '../components/sections/OnlineStore/OnlineStore';
 export default (props) => {
   const combinedReducer = combineReducers(reducers);
   const initialStoreState = {
-    onlineStore: {
-      sections: props.sections,
-    }
+    onlineStore: props
   };
   const store = applyMiddleware(middleware)(createStore)(combinedReducer, initialStoreState);
 
-  const containerProps = {
-    sections: props.sections,
-  };
+  const containerProps = props;
 
   return r(Provider, { store }, [
     r(OnlineStore, containerProps),
