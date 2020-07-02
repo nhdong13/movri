@@ -25,7 +25,7 @@ set :linked_files, %w(config/database.yml config/config.yml)
 # Default value for linked_dirs is []
 set :linked_dirs, %w(log tmp/pids tmp/sockets vendor/bundle public/system public/uploads .bundle)
 
-remove :linked_dirs, "public/assets"
+# remove :linked_dirs, "public/assets"
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
@@ -40,3 +40,10 @@ set :keep_releases, 2
 
 set :rvm_ruby_version, '2.6.2'
 set :rvm_custom_path, '/usr/share/rvm'
+
+namespace :deploy do
+  task :remove_linked_dirs do
+    remove :linked_dirs, "public/assets"
+  end
+end
+after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
