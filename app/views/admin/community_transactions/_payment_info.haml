@@ -1,0 +1,30 @@
+.col-6.add-note
+  = "Notes"
+  = text_field_tag :note, params[:note], placeholder: 'Add a note...'
+.col-6.total-info
+  %table
+    %tr
+      %th
+        = "Add discount"
+      %td
+        = "----"
+    %tr
+      %th
+        = "Subtotal"
+      %td
+        = "$0.00"
+    %tr
+      %th
+        = "Add shipping"
+      %td
+        = "----"
+    %tr
+      %th
+        = "Taxes"
+      %td
+        = "$0.00"
+    %tr
+      %th
+        = "Total"
+      %td
+        = "$0.00"

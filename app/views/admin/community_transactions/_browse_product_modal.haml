@@ -1,0 +1,16 @@
+.modal#browse-product-modal
+  .row.title
+    = "Select Product"
+  .row.search-box
+    = text_field_tag :q, params[:q], placeholder: 'Search products'
+  .row.products
+    - listings.each do |listing|
+      .col-12
+        = image_tag listing.listing_image.image(:tiny), class: "left"
+        %span.left= listing.title
+        %span.right= "#{listing.available_quantity} in stock"
+  .row.footer
+    .col-12
+      %p.left= "No variant selected"
+      %button.button.right.margin-l-5= "Add to order"
+      %a.button.right{rel: "modal:close"}= "Cancel"

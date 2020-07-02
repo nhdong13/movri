@@ -1,0 +1,42 @@
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section#create-draft-order
+  .row
+    .col-12
+      %h2.margin-bt-0="Create order"
+  .row
+    .col-12
+      .row
+        .col-9.order-details
+          .col-12
+            %h3.left= "Order details"
+            %a.right{href: "#custom-item-modal", rel: "modal:open"}= "Add custom item"
+          .col-12
+            .row.search-product
+              = text_field_tag :product_name, params[:product_name], placeholder: 'Search products'
+              %a.button#browse-products{href: "#browse-product-modal", rel: "modal:open"}= "Browse products"
+            .row.payment-info
+              = render 'payment_info'
+          .col-12.email-invoice
+            .col-6
+              %i.icon-file-text-alt.left
+              %span.left= "EMAIL INVOICE"
+            .col-6
+              %a.button.right= "Email Invoice"
+          .col-12
+            .paid-type
+              %button.button.right= "Pay with credit card"
+              %button.button.right= "Mark as paid"
+              %p.right= "ACCEPT PAYMENT"
+              %i.icon-money.right
+        .col-3
+          .find-customer
+            .row
+              %h3= "Find or create a customer"
+            = text_field_tag :customer_name, params[:customer_name], placeholder: 'Search products'
+    .row
+      .col-12
+        %a.button.right= "Save Draft Order"
+
+= render 'browse_product_modal', listings: @current_community.listings
+= render 'add_custom_item_modal'
