@@ -15,12 +15,16 @@
 //= require categories
 //= require common
 //= require checkout
+//= require helping_requests
+//= require payment
 //= require font-awesome
 
 //= require ./reset
 //= require ./main
 //= require ./common
 //= require ./carts
+//= require_tree ./admin
+
 
 //= require_tree ./partials
 //= require_tree ./views

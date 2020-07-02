@@ -7,7 +7,7 @@ window.Commons =
     ), "Invalid email"
 
   formatPhone: ->
-    $phoneInput = $('.shipping-address-phone')
+    $phoneInput = $('.phone-input ')
     $phoneInput.inputmask({mask: "9 (999) 999-9999", placeholder: ""});
 
   CanadianZipCodeRule: ->
@@ -16,7 +16,12 @@ window.Commons =
       value.match(/^(?!.*[DFIOQU])[A-VXY][0-9][A-Z]●?[0-9][A-Z][0-9]$/);
     ), "Please specify a valid Canadian postal code."
 
+  formatCardName: ->
+    $('#card_name').keyup ->
+      $(this).val($(this).val().toUpperCase())
+
 $(document).ready ->
   Commons.formatPhone()
   Commons.CanadianZipCodeRule()
   Commons.formatEmail()
+  Commons.formatCardName()

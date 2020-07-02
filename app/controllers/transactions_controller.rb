@@ -17,10 +17,27 @@ class TransactionsController < ApplicationController
     end
   end
 
-  before_action :find_transaction, only: [:update_promo_code, :change_shipping_selection, :shipment, :checkout]
-  before_action :calculate_money_service, only: [:shipment, :checkout]
+  before_action :find_transaction, only: [
+    :update_promo_code,
+    :change_shipping_selection,
+    :shipment,
+    :checkout,
+    :change_state_shipping_form,
+    :payment,
+    :thank_you
+  ]
 
-  before_action except: [:checkout, :create, :shipment, :change_shipping_selection, :update_promo_code] do |controller|
+  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :thank_you]
+
+  before_action except: [
+    :checkout,
+    :create,
+    :shipment,
+    :change_shipping_selection,
+    :update_promo_code,
+    :change_state_shipping_form,
+    :payment,
+    :thank_you] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -31,6 +48,8 @@ class TransactionsController < ApplicationController
     [:start_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) }],
     [:end_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) }]
   )
+
+  before_action :ensure_can_countinue_transactions, only: [:checkout, :shipment, :payment]
 
   def new
     Result.all(
@@ -63,25 +82,23 @@ class TransactionsController < ApplicationController
 
   def create
     if @current_user
-      if @current_user.starter_transactions.any?
-        update_transaction_with_current_user(@current_user.starter_transactions.last, params)
-      else
-        # TODO: check if transaction is pending
-        if session[:transaction] && session[:transaction][:transaction_id]
-          @transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
-          if @transaction
-            @transaction = update_transaction_with_current_user(@transaction, params)
-          else
-            @transaction = create_transaction_with_current_user(params)
-          end
-        else
+      if @current_user.has_a_pending_transaction?
+        update_transaction_with_current_user(@current_user.pending_transaction, params)
+      elsif session[:transaction] && session[:transaction][:transaction_id]
+        # check if transaction is pending
+        @transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
+        if @transaction.completed?
           @transaction = create_transaction_with_current_user(params)
+        else
+          @transaction = update_transaction_with_current_user(@transaction, params)
         end
+      else
+        @transaction = create_transaction_with_current_user(params)
       end
     else
       if session[:transaction] && session[:transaction][:transaction_id]
         @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
-        if @transaction
+        if @transaction && !@transaction.completed?
           @transaction = update_transaction_without_current_user(@transaction, params)
         else
           @transaction = create_transaction_without_current_user(params)
@@ -312,23 +329,62 @@ class TransactionsController < ApplicationController
 
   def checkout
     check_booking_date_session_was_change(@transaction)
-    if session[:booking][:start_date] == get_today
-      if @transaction.shipping_address && @transaction.shipping_address.is_office_address?
+    @default_shipping_fee = 0
+    if @current_user
+      if @transaction.shipping_address
         @shipping_address = @transaction.shipping_address
       else
-        @shipping_address = @transaction.create_shipping_address(OFFICE_ADDRESS)
+        if @current_user.shipping_address
+          @shipping_address = create_shipping_address_with_current_user_params(@transaction)
+        else
+          @shipping_address = create_shipping_address_without_current_user_params(@transaction)
+        end
       end
     else
-      if @current_user && @current_user.starter_transactions && @current_user.starter_transactions.last.shipping_address
-        @shipping_address = @current_user.starter_transactions.last.shipping_address
+      if @transaction.shipping_address
+        @shipping_address = @transaction.shipping_address
       else
-        @shipping_address = @transaction.build_shipping_address
+        @shipping_address = create_shipping_address_without_current_user_params(@transaction)
       end
     end
   end
 
+  def create_shipping_address_with_current_user_params transaction
+    if session[:booking][:start_date] == get_today
+      shipping_address = transaction.transaction_addresses.create(OFFICE_ADDRESS)
+      shipping_address.update(
+        first_name: @current_user.shipping_address.first_name,
+        last_name: @current_user.shipping_address.first_name,
+        company: @current_user.shipping_address.company,
+        apartment: @current_user.shipping_address.apartment,
+      )
+    else
+      shipping_address = transaction.transaction_addresses.create(
+        first_name: @current_user.shipping_address.first_name,
+        last_name: @current_user.shipping_address.first_name,
+        company: @current_user.shipping_address.company,
+        apartment: @current_user.shipping_address.apartment,
+        phone: @current_user.shipping_address.phone,
+        postal_code: @current_user.shipping_address.postal_code,
+        city: @current_user.shipping_address.city,
+        state_or_province: @current_user.shipping_address.state_or_province,
+        street1: @current_user.shipping_address.street1,
+      )
+    end
+    shipping_address
+  end
+
+  def create_shipping_address_without_current_user_params transaction
+    if session[:booking][:start_date] == get_today
+      shipping_address = transaction.transaction_addresses.create(OFFICE_ADDRESS)
+    else
+      shipping_address = transaction.transaction_addresses.build
+    end
+    shipping_address
+  end
+
   def shipment
-    return unless  @transaction.transaction_items.any?
+    return unless @transaction.transaction_items.any?
     listing_ids = @transaction.transaction_items.pluck(:listing_id)
     listings = Listing.where(id: listing_ids)
 
@@ -351,18 +407,30 @@ class TransactionsController < ApplicationController
     if result[:success]
       @shipping_selection = result[:shipping_selection]
       session[:shipping][:fedex] = @shipping_selection
-      shipper_params = {
-        service_delivery: 'fedex',
-        service_type: @shipping_selection.first['service_type'],
-        service_name: @shipping_selection.first['service_name'],
-        amount: @shipping_selection.first['total_charge']['amount'],
-        currency: @shipping_selection.first['total_charge']['currency'],
-      }
-      @transaction.create_shipper(shipper_params) unless @transaction.shipper
       @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
+      if @transaction.will_pickup?
+        shipper_params = {service_delivery: 'free', amount: 0}
+      else
+        shipper_params = {
+          service_delivery: 'fedex',
+          service_type: @shipping_selection.first['service_type'],
+          service_name: @shipping_selection.first['service_name'],
+          amount: @shipping_selection.first['total_charge']['amount'],
+          currency: @shipping_selection.first['total_charge']['currency'],
+        }
+      end
+      @transaction.create_shipper(shipper_params) unless @transaction.shipper
     else
       flash[:notice] = result[:message]
       return redirect_to request.referer
+    end
+  end
+
+  def change_state_shipping_form
+    @state = params[:state]
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false}
     end
   end
 
@@ -370,13 +438,11 @@ class TransactionsController < ApplicationController
     @state = @transaction.shipping_address.state_or_province
     @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
     shipper_params = {
-      service_delivery: 'fedex',
       service_type: @shipping_selection.first['service_type'],
       service_name: @shipping_selection.first['service_name'],
       amount: @shipping_selection.first['total_charge']['amount'],
       currency: @shipping_selection.first['total_charge']['currency'],
     }
-    @transaction.shipper.update(shipper_params)
     @transaction.shipper.update(shipper_params)
     @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
     calculate_money_service(@transaction)
@@ -401,7 +467,37 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def payment
+    @shipping_address = @transaction.shipping_address
+    if session[:billing_address]
+      @billing_address = @transaction.transaction_addresses.build(session[:billing_address])
+    else
+      @billing_address = @transaction.transaction_addresses.build
+    end
+    @default_shipping_fee = @transaction.shipper.amount
+  end
+
+  def thank_you
+    @shipping_address = @transaction.shipping_address
+    @billing_address = @transaction.billing_address
+    @state = @transaction.shipping_address.state_or_province
+    @default_shipping_fee = 0
+    @helping_request = @transaction.helping_requests.build
+  end
+
   private
+
+  def ensure_can_countinue_transactions
+    if @transaction.completed?
+      flash[:error] = "The transaction is already completed."
+      return redirect_to show_cart_path
+    end
+    if @transaction.is_overweight?
+      flash[:error] = "Please contact us for this. This package is overweight. We'd love to help you with completing the transaction."
+      return redirect_to show_cart_path
+    end
+  end
+
   def find_transaction
     @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
   end

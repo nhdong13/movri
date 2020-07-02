@@ -121,6 +121,7 @@
 //= require manually_blocked_dates
 //= require carts
 //= require shipment
+//= require helping_requests
 //= require jquery.inputmask
 //= require jquery.inputmask.extensions
 //= require jquery.inputmask.numeric.extensions

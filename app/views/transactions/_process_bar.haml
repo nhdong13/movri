@@ -1,0 +1,7 @@
+.row.process-bar
+  .col-12
+    = link_to "Cart", show_cart_path, class: "#{current_page == 'cart' ? 'active-el' : ''}"
+    >
+    = link_to "Shipping", shipment_transaction_path(transaction.uuid_object), class: "#{current_page == 'shipment' ? 'active-el' : ''}"
+    >
+    = link_to "Payment", payment_transaction_path(transaction.uuid_object), class: "#{current_page == 'payment' ? 'active-el' : ''}"

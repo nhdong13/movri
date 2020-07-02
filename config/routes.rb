@@ -134,6 +134,10 @@ Rails.application.routes.draw do
     get "/transactions/:uuid/shipment" => "transactions#shipment", as: :shipment_transaction
     get "/transactions/:uuid/change_shipping_selection" => "transactions#change_shipping_selection", as: :change_shipping_selection_transaction
     get "/transactions/:uuid/update_promo_code" => "transactions#update_promo_code", as: :update_promo_code_transaction
+    get "/transactions/:uuid/change_state_shipping_form" => "transactions#change_state_shipping_form", as: :change_state_shipping_form
+    get "/transactions/:uuid/payment" => "transactions#payment", as: :payment_transaction
+    get "/transactions/:uuid/thank_you" => "transactions#thank_you", as: :thank_you_transaction
+    post "/transactions/:transaction_id/billing_addresses" => "transaction_addresses#create_billing_address", as: :transaction_billing_address
 
     # preauthorize flow
 
@@ -189,14 +193,12 @@ Rails.application.routes.draw do
     end
 
     resources :transactions, only: [:show, :new, :create] do
-      resources :shipping_addresses, only: [:create, :update]
+      resources :transaction_addresses, only: [:create, :update]
+      resources :shippers, only: [:create, :update]
+      resources :helping_requests, only: [:create]
     end
 
-    resources :shipping_addresses, only: [:create, :update] do
-      collection do
-        get 'change_state_shipping_form'
-      end
-    end
+    resources :transaction_addresses, only: [:create, :update]
 
     resources :carts, only: [] do
       collection do
@@ -255,6 +257,30 @@ Rails.application.routes.draw do
       # Landing page menu
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
+      resources :online_stores, only: [] do 
+        resources :store_sections, only: [:create]
+      end
+
+      resources :store_headers, only: [:update] do
+        post :upload_logo, on: :member
+      end
+
+      resources :slideshows, only: [:update] do
+        resources :slide_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
+      resources :highlight_banners, ony: [:update] do
+        resources :banner_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
+      resources :store_categories, only: [:create, :update, :destroy] do
+        resources :store_category_items, only: [:new, :create, :update, :destroy]
+      end
+
       resources :communities do
         member do
           get :edit_welcome_email
@@ -305,6 +331,7 @@ Rails.application.routes.draw do
           get "getting_started_guide/invitation",             to: redirect("/admin/getting_started_guide/invitation")
 
         end
+        resources :online_store, only: [:show, :index]
         resources :listings, controller: :community_listings, only: [:index, :edit, :update] do
           member do
             get :approve

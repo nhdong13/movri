@@ -185,6 +185,15 @@ class TransactionMailer < ActionMailer::Base
     end
   end
 
+  def send_helping_request_to_admin transaction, helping_request
+    @helping_request = helping_request
+    @transaction = transaction
+    premailer_mail( to: DEFAULT_ADMIN_EMAIL,
+                    from: @transaction.shipping_address.email,
+                    subject: @helping_request.subject
+                  )
+  end
+
   private
 
   def premailer_mail(opts, &block)

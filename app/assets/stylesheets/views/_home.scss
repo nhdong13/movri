@@ -663,6 +663,10 @@ $home-list-avatar-padding: lines(0.25);
 .feature-products {
   margin-top: 25px;
 
+  & p:first-child {
+    margin-left: 0.75em;
+  }
+
   p {
     font-size: 34px;
   }
@@ -788,7 +792,7 @@ $home-list-avatar-padding: lines(0.25);
 
     .sale_expert_advice,
     .customer_service {
-      line-height: 0.8;
+      line-height: 1.4;
 
       span:first-of-type {
         color: #7f7f7f;
@@ -805,7 +809,6 @@ $home-list-avatar-padding: lines(0.25);
           font-size: 30px;
           font-weight: bolder;
           color: #334455;
-          margin-bottom: 12px;
         }
 
         &.second_phone_number {
@@ -1107,6 +1110,12 @@ $home-list-avatar-padding: lines(0.25);
 
 @media screen and (max-width: 425px) {
   .homepage-carousel {
+    .slick-next,
+    .slick-prev {
+      top: 30%;
+      font-size: 24px;
+    }
+
     .slick-next {
       right: 10px;
     }
@@ -1135,7 +1144,6 @@ $home-list-avatar-padding: lines(0.25);
     }
   }
 
-  .icon-chevron-right,
   .footer,
   .contact-us {
     display: none;
@@ -1157,6 +1165,10 @@ $home-list-avatar-padding: lines(0.25);
     margin-bottom: 25px;
     padding-bottom: 10px;
     border-bottom: 1px solid #e0e0e0;
+
+    .icon-chevron-right {
+      display: none;
+    }
   }
 
   .mobile-footer {
@@ -1222,6 +1234,10 @@ $home-list-avatar-padding: lines(0.25);
 .flex-items{
   display: flex;
   align-items: center;
+}
+
+.display-flex{
+  display: flex;
 }
 
 .footer-signup{

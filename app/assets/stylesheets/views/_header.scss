@@ -60,7 +60,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .header-search-contain {
-  width: 48%;
+  width: 54%;
 
   &.header-search-logged-in {
     width: 38%;
@@ -1315,6 +1315,15 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       font-weight: bold;
       color: #f7a649;
     }
+  }
+}
+
+#header-menu-desktop-cart {
+  float: right;
+
+  span.number-on-cart {
+    padding-right: 3px;
+    margin-right: 5px;
   }
 }
 

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: shipping_addresses
+# Table name: transaction_addresses
 #
 #  id                :integer          not null, primary key
 #  transaction_id    :integer          not null
@@ -22,14 +22,15 @@
 #  apartment         :string(255)
 #  email             :string(255)
 #  is_office_address :boolean          default(FALSE)
+#  address_type      :integer          default("shipping_address")
 #
 # Indexes
 #
-#  index_shipping_addresses_on_transaction_id  (transaction_id)
+#  index_transaction_addresses_on_transaction_id  (transaction_id)
 #
 
-class ShippingAddress < ApplicationRecord
-  belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :shipping_address
+class TransactionAddress < ApplicationRecord
+  belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :transaction_addresses
   belongs_to :person
   validates_length_of :phone, :in => 10..16, :allow_nil => false, unless: :is_office_address?
 
@@ -37,6 +38,9 @@ class ShippingAddress < ApplicationRecord
   before_create :add_country
 
   validate :change_office_address, on: :update
+  validate :limit_of_transaction_address, on: :create
+
+  enum address_type: [:shipping_address, :billing_address]
 
   def add_country
     self.country = 'Canada'
@@ -58,7 +62,23 @@ class ShippingAddress < ApplicationRecord
       end
     end
   end
+
+  def limit_of_transaction_address
+    if tx && tx.transaction_addresses.size > 2
+      errors.add(:transaction, 'can only have 2 transaction address: shipping and billing address')
+    end
+  end
+
   def full_address
     "#{street1}, #{city}, #{CANADA_PROVINCES.key(state_or_province)}, #{country}, #{postal_code} "
+  end
+
+  def fullname
+    first_name + " " + last_name
+  end
+
+  def format_phone
+    phone_arr = phone.split("")
+    "#{phone_arr[0]} (#{phone_arr[1..3].join()}) #{phone_arr[4..6].join()}-#{phone_arr[7..10].join()}"
   end
 end
