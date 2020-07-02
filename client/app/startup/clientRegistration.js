@@ -10,8 +10,6 @@ import ManageAvailabilityApp from './ManageAvailabilityApp';
 import ListingWorkingHoursApp from './ListingWorkingHoursApp';
 import OnlineStore from './OnlineStore';
 
-
-
 ReactOnRails.register({
   OnboardingGuideApp,
   OnboardingTopBar,
