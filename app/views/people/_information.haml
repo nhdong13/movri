@@ -1,0 +1,59 @@
+.desktop-display
+  .row
+    .col-12
+      .account-info-form.white-background.padding-20
+        %span.account-header Account Details
+        %p.fz-14 Update your password, addresses, payment methods, language and currency settings.
+        %p.fz-14 Account information:
+        .row
+          .display-flex.items-group
+            .width-15
+              %span Name:
+            .width-20
+              %span.label-user-name.label-will-hide= @current_user.fullname
+              = text_field_tag :first_name, nil, class: 'd-none input-will-show margin-bt-10', placeholder: "First name"
+              = text_field_tag :last_name, nil, class: 'd-none input-will-show margin-bt-10', placeholder: "Last name"
+              %span.alert-error.d-none.width-100
+            .width-20
+              %span.update-name.dp-none.update-item Update
+              %span.edit-item Edit
+        .row
+          .display-flex.items-group
+            .width-15
+              %span Email Address:
+            .width-20
+              %span.label-user-email.label-will-hide= @current_user.get_email
+              = text_field_tag :address, nil, class: 'd-none input-will-show'
+              = hidden_field_tag 'address_id', @current_user.emails.last.id
+              %span.alert-error.d-none.width-100
+            .width-20
+              %span.update-email.dp-none.update-item Update
+              %span.edit-email.edit-item Edit
+        .row
+          .display-flex.items-group
+            .width-15
+              %span Current Password:
+            .width-20
+              %span.label-will-hide ******
+              = text_field_tag :current_password, nil, class: 'd-none input-will-show'
+              %span.alert-error.d-none.width-100
+            .width-20
+              %span.update-password.dp-none Update
+              %span.edit-password  Edit
+        .new-passwod
+          .row
+            .display-flex
+              .width-15
+                %span New Password:
+              .width-20
+                = text_field_tag :new_password, nil
+                %span.alert-error.d-none.width-100
+          .row
+            .display-flex
+              .width-15
+                %span Password Confirmation:
+              .width-20
+                = text_field_tag :password_confirmation, nil
+                %span.alert-error.d-none.width-100
+- content_for :javascript do
+  Accounts.run()

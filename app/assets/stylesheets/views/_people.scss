@@ -115,3 +115,34 @@ $profile-pic-gutter-mobile: lines(0.5);
   .sku{ color: #9e9e9e }
   .status{ color: #4eb857 }
 }
+
+.new-passwod{
+  display: none;
+}
+.account-info-form{
+  font-size: 14px;
+}
+.account-header{
+  font-size: 24px;
+  color: #4eb857
+}
+
+#billing-addresses, #shipping-addresses{
+  color: black;
+  .address-row{
+    padding-bottom: 15px;
+    padding-top: 15px;
+    .items:first-child{padding-left: 0 !important;}
+    .items:last-child{border-right: none;}
+    .items{
+      padding: 0 10px;
+      border-right: 1px solid black;
+    }
+  }
+  .set-as-default-address, .is-defaut-address{
+    cursor: pointer;
+    color: #757575;
+    font-style: italic;
+  }
+  .is-defaut-address{border-radius: 5px; padding: 5px;}
+}

@@ -1,12 +1,29 @@
 class TransactionAddressesController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token, only: [:create, :create_billing_address, :update]
   before_action :find_transaction
   before_action :find_transaction_address
 
   def create
-    @transaction_address = @transaction.transaction_addresses.create(transaction_address_params)
-    @transaction_address.update(person_id: @current_user.id)  if @current_user
-    redirect_to shipment_transaction_path(@transaction.uuid_object)
+    # @transaction_address = @transaction.transaction_addresses.create(transaction_address_params)
+    @transaction_address = TransactionAddress.create(transaction_address_params)
+    if @current_user
+      @transaction_address.update(person_id: @current_user.id)
+      @current_user.update(default_shipping_address: @transaction_address.id) if @transaction_address.shipping_address? && @current_user.default_shipping_address.nil?
+      @current_user.update(default_billing_address: @transaction_address.id) if @transaction_address.billing_address? && @current_user.default_billing_address.nil?
+    end
+    if params[:transaction_id]
+      return redirect_to shipment_transaction_path(@transaction.uuid_object)
+    else
+      return redirect_to person_path(@current_user, view: "info")
+    end
+  end
+
+  def new
+    @transaction_address = TransactionAddress.new
+    @is_shipping_address = params[:address_type] == 'shipping_address'
+  end
+
+  def edit
   end
 
   def create_billing_address
@@ -28,6 +45,18 @@ class TransactionAddressesController < ApplicationController
     end
   end
 
+  def set_default_address
+    if @transaction_address.billing_address?
+      @current_user.update(default_billing_address:  @transaction_address.id)
+    else
+      @current_user.update(default_shipping_address:  @transaction_address.id)
+    end
+    respond_to do |format|
+      format.html
+      format.json { render json: { success: true } }
+    end
+  end
+
   def update
     success = @transaction_address.update(transaction_address_params)
     @transaction_address.update(person_id: @current_user.id)  if @current_user
@@ -45,6 +74,11 @@ class TransactionAddressesController < ApplicationController
       format.html
       format.js { render :layout => false}
     end
+  end
+
+  def destroy
+    @transaction_address.soft_delete
+    redirect_to person_path(@current_user, view: "info")
   end
 
   private

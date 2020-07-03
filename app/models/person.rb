@@ -44,6 +44,8 @@
 #  cloned_from                        :string(22)
 #  google_oauth2_id                   :string(255)
 #  linkedin_id                        :string(255)
+#  default_shipping_address           :integer
+#  default_billing_address            :integer
 #
 # Indexes
 #
@@ -253,6 +255,14 @@ class Person < ApplicationRecord
     transaction_addresses.shipping_address.last
   end
 
+  def shipping_addresses
+    transaction_addresses.shipping_address
+  end
+
+  def billing_addresses
+    transaction_addresses.billing_address
+  end
+
   # Creates a new email
   def email_attributes=(attributes)
     ActiveSupport::Deprecation.warn(
@@ -300,6 +310,10 @@ class Person < ApplicationRecord
 
   def set_given_name(name)
     update({:given_name => name })
+  end
+
+  def fullname
+    "#{family_name.capitalize} #{given_name.capitalize}"
   end
 
   def street_address

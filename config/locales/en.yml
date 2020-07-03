@@ -3265,6 +3265,7 @@ en:
       pick_up: Pick Up
       free: Free
       shipping_address: Shipping Address
+      billing_address: Billing Address
       promo_code: Promo Code
       special_instructions: Special instructions for seller
       move_to_wish_list: Move to wish list

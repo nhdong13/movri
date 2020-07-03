@@ -34,6 +34,8 @@
 #  tax_cents                         :integer
 #  promo_code_discount_cents         :integer
 #  order_number                      :integer
+#  billing_address_id                :integer
+#  shipping_address_id               :integer
 #
 # Indexes
 #
@@ -56,7 +58,6 @@ class Transaction < ApplicationRecord
   has_and_belongs_to_many :listings
   has_many :transaction_transitions, dependent: :destroy, foreign_key: :transaction_id, inverse_of: :tx
   has_one :booking, dependent: :destroy
-  has_many :transaction_addresses, dependent: :destroy
   belongs_to :starter, class_name: "Person", foreign_key: :starter_id, inverse_of: :starter_transactions
   belongs_to :conversation
   has_many :testimonials, dependent: :destroy
@@ -65,6 +66,9 @@ class Transaction < ApplicationRecord
   has_many :transaction_items, dependent: :destroy
   has_one :shipper, dependent: :destroy
   has_many :helping_requests
+
+  belongs_to :shipping_address, class_name: "TransactionAddress", foreign_key: "shipping_address_id"
+  belongs_to :billing_address, class_name: "TransactionAddress", foreign_key: "billing_address_id"
 
   delegate :author, to: :listing
   delegate :title, to: :listing, prefix: true
@@ -147,14 +151,6 @@ class Transaction < ApplicationRecord
 
   def add_current_state
     self.current_state = 'unfulfilled'
-  end
-
-  def shipping_address
-    transaction_addresses.shipping_address.last
-  end
-
-  def billing_address
-    transaction_addresses.billing_address.any? ? transaction_addresses.billing_address.last : shipping_address
   end
 
   def will_pickup?

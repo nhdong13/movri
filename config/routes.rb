@@ -198,6 +198,12 @@ Rails.application.routes.draw do
       resources :helping_requests, only: [:create]
     end
 
+    resources :transaction_addresses, only: [:new, :edit, :destroy] do
+      member do
+        put 'set_default_address'
+      end
+    end
+
     resources :transaction_addresses, only: [:create, :update]
 
     resources :carts, only: [] do
@@ -257,7 +263,7 @@ Rails.application.routes.draw do
       # Landing page menu
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
-      resources :online_stores, only: [] do 
+      resources :online_stores, only: [] do
         resources :store_sections, only: [:create]
       end
 

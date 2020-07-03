@@ -123,65 +123,41 @@ class PeopleController < Devise::RegistrationsController
   end
 
   def update
-    target_user = Person.find_by!(username: params[:id], community_id: @current_community.id)
-    if @current_user != target_user
-      logger.info "ADMIN ACTION: admin='#{@current_user.id}' update person='#{target_user.id}' params=#{params.inspect}"
-    end
-    # If setting new location, delete old one first
-    if params[:person] && params[:person][:location] && (params[:person][:location][:address].empty? || params[:person][:street_address].blank?)
-      params[:person].delete("location")
-      if target_user.location
-        target_user.location.delete
-      end
-    end
-
-    #Check that people don't exploit changing email to be confirmed to join an email restricted community
-    if params["request_new_email_confirmation"] && @current_community && ! @current_community.email_allowed?(params[:person][:email])
-      flash[:error] = t("people.new.email_not_allowed")
-      redirect_back(fallback_location: homepage_url) and return
-    end
-
-    target_user.set_emails_that_receive_notifications(params[:person][:send_notifications])
-
-    begin
-      person_params = person_update_params(params, target_user)
-
-      Maybe(person_params)[:location].each { |loc|
-        person_params[:location] = loc.merge(location_type: :person)
-      }
-
-      m_email_address = Maybe(person_params)[:email_attributes][:address]
-      m_email_address.each { |new_email_address|
-        # This only builds the emails, they will be saved when `update_attributes` is called
-        target_user.emails.build(address: new_email_address, community_id: @current_community.id)
-      }
-
-      if target_user.custom_update(person_params.except(:email_attributes))
-        if params[:person][:password]
-          #if password changed Devise needs a new sign in.
-          bypass_sign_in(target_user)
-        end
-
-        m_email_address.each {
-          # A new email was added, send confirmation email to the latest address
-          Email.send_confirmation(target_user.emails.last, @current_community)
-        }
-
-        flash[:notice] = t("layouts.notifications.person_updated_successfully")
-
-        # Send new confirmation email, if was changing for that
-        if params["request_new_email_confirmation"]
-            target_user.send_confirmation_instructions(request.host_with_port, @current_community)
-            flash[:notice] = t("layouts.notifications.email_confirmation_sent_to_new_address")
-        end
+    if params[:person] && params[:person][:password]
+      if @current_user.valid_password?(params[:person][:password])
+        success = @current_user.update(password: params[:new_password])
       else
-        flash[:error] = t("layouts.notifications.#{target_user.errors.first}")
+        return render json: {success: false, message: "Invalid current password"}
       end
-    rescue RestClient::RequestFailed => e
-      flash[:error] = t("layouts.notifications.update_error")
     end
-
-    redirect_back(fallback_location: homepage_url)
+    if params[:email] && params[:email][:address].present?
+      email = Email.find_by(address: params[:email][:address])
+      if email
+        return render json: {success: false, message: "This email already exists"}
+      else
+        email = @current_user.emails.find_by(id: params[:email][:id])
+        success = email.update(address: params[:email][:address])
+        unless success
+          return render json: {success: success, message: 'Invalid email'}
+        else
+          return render json: {success: success, email: @current_user.get_email}
+        end
+      end
+    end
+    success = @current_user.update(person_params.reject{ |k, v| !v.present? })
+    # Send new confirmation email, if was changing for that
+    # if params["request_new_email_confirmation"]
+    #     target_user.send_confirmation_instructions(request.host_with_port, @current_community)
+    #     flash[:notice] = t("layouts.notifications.email_confirmation_sent_to_new_address")
+    # end
+    respond_to do |format|
+      format.html
+      if success
+        format.json { render json: {success: true, fullname: @current_user.fullname } }
+      else
+        format.json { render json: {success: false, message: @current_user.errors.full_messages.first } }
+      end
+    end
   end
 
   def destroy
@@ -383,5 +359,14 @@ class PeopleController < Devise::RegistrationsController
     end
 
     false
+  end
+
+  def person_params
+    params
+      .require(:person)
+      .permit(
+        :given_name,
+        :family_name,
+      )
   end
 end
