@@ -31,10 +31,12 @@ set :linked_dirs, %w(log tmp/pids tmp/sockets vendor/bundle public/system public
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
+set :npm_flags, '--production'
+set :nvm_node, 'v12.11.0'
+set :nvm_map_bins, %w{node npm yarn}
 
 # Default value for keep_releases is 5
 set :keep_releases, 2
-
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
