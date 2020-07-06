@@ -35,7 +35,7 @@ export const sectionData = [
     items: [
       {
         name: 'Grid',
-        model: 'Grid'
+        model: 'StoreGrid'
       },
       {
         name: 'Image with text overlay',
