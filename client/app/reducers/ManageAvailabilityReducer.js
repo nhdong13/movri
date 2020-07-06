@@ -1,3 +1,4 @@
+import 'react-dates/initialize';
 import Immutable from 'immutable';
 import moment from 'moment';
 import { isSameDay } from 'react-dates';

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { sectionData } from './data'
 import StoreCategoryList from '../StoreCategoryList'
+import StoreFeaturedList from '../StoreFeaturedList'
 
 class SectionMore extends Component {
   constructor(props) {
@@ -22,6 +23,8 @@ class SectionMore extends Component {
     switch(currentSection) {
       case 'CollectionList':
         return <StoreCategoryList callback={this.setCurrentSection} />
+      case 'FeaturedList':
+        return <StoreFeaturedList callback={this.setCurrentSection} />
       default:
         return (
           <div className='store-header add-more-section'>

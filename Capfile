@@ -22,6 +22,7 @@ install_plugin Capistrano::Puma::Workers
 
 # https://github.com/capistrano/npm/
 require 'capistrano/npm'
+require 'capistrano/nvm'
 #   https://github.com/capistrano/bundler
 require "capistrano/bundler"
 #   https://github.com/capistrano/rails
