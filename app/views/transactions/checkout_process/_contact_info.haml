@@ -6,7 +6,7 @@
           %h2= t('transactions.contact_form.title')
         .row
           .col-12
-            = form.text_field :email, placeholder: t('transactions.contact_form.email'), class: "shipping-address-email"
+            = form.text_field :email, placeholder: t('transactions.contact_form.email'), class: "shipping-address-email transaction-address-req-field"
             = fa_icon "check", class: "d-none"
           .col-12
             .shipping-noti
@@ -17,44 +17,44 @@
         .form-group
           .row
             .col-6
-              = form.text_field :first_name, placeholder: t('transactions.contact_form.first_name'), class: "shipping-address-first-name"
+              = form.text_field :first_name, placeholder: t('transactions.contact_form.first_name'), class: "shipping-address-first-name transaction-address-req-field"
               = fa_icon "check", class: "d-none"
             .col-6
-              = form.text_field :last_name, placeholder: t('transactions.contact_form.last_name'), class: "shipping-address-last-name"
+              = form.text_field :last_name, placeholder: t('transactions.contact_form.last_name'), class: "shipping-address-last-name transaction-address-req-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-12
-              = form.text_field :company, placeholder: t('transactions.contact_form.company'), class: "shipping-address-company"
+              = form.text_field :company, placeholder: t('transactions.contact_form.company'), class: "shipping-address-company transaction-address-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-12
-              = form.text_field :street1, placeholder: t('transactions.contact_form.address'), class: "shipping-address-street1"
+              = form.text_field :street1, placeholder: t('transactions.contact_form.address'), class: "shipping-address-street1 transaction-address-req-field", disabled: @shipping_address.is_office_address?
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-12
-              = form.text_field :apartment, placeholder: t('transactions.contact_form.apartment'), class: "shipping-address-apartment"
+              = form.text_field :apartment, placeholder: t('transactions.contact_form.apartment'), class: "shipping-address-apartment transaction-address-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-12
-              = form.text_field :city, placeholder: t('transactions.contact_form.city'), class: "shipping-address-city"
+              = form.text_field :city, placeholder: t('transactions.contact_form.city'), class: "shipping-address-city transaction-address-req-field", disabled: @shipping_address.is_office_address?
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-4
               = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true
             .col-4
-              = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, {:class => "shipping-address-state"}
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, {:class => "shipping-address-state", disabled: @shipping_address.is_office_address?}
             .col-4
-              = form.text_field :postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "shipping-address-postal-code"
+              = form.text_field :postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "shipping-address-postal-code transaction-address-req-field", disabled: @shipping_address.is_office_address?
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-12
-              = form.text_field :phone, placeholder: t('transactions.contact_form.phone'), class: "shipping-address-phone"
+              = form.text_field :phone, placeholder: t('transactions.contact_form.phone'), class: "phone-input shipping-address-phone transaction-address-req-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row

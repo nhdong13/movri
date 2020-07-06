@@ -50,6 +50,16 @@ window.ST.transaction = window.ST.transaction || {};
     }
   }
 
+  function submitAnimation(show) {
+    if(show){
+      $('.common-btn-with-spinner input[type=submit]').css('opacity', 0.5)
+      $('.common-btn-with-spinner input[type=submit]').prop('disabled', true)
+    } else {
+      $('.common-btn-with-spinner input[type=submit]').css('opacity', 1)
+      $('.common-btn-with-spinner input[type=submit]').prop('disabled', false)
+    }
+    $('.common-btn-with-spinner .spinner-gif').animate({width:'toggle'}, 350);
+  }
 
   function redirectFromOpResult(opResult) {
     window.location = opResult.data.redirect_url;
@@ -126,5 +136,6 @@ window.ST.transaction = window.ST.transaction || {};
   module.initializeCreatePaymentPoller = initializeCreatePaymentPoller;
   module.initializeFreeTransactionForm = initializeFreeTransactionForm;
   module.toggleSpinner = toggleSpinner;
+  module.submitAnimation = submitAnimation;
 
 })(window.ST.transaction, _);

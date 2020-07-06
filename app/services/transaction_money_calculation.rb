@@ -4,7 +4,7 @@ class TransactionMoneyCalculation
     @session = session
     @promo_code = @transaction.promo_code
     @state = @transaction.shipping_address ? @transaction.shipping_address.state_or_province : 'alberta'
-    @shipping_fee = @transaction.shipper ? @transaction.shipper.amount : 0
+    @shipping_fee = @transaction.shipper ? @transaction.shipper.amount_to_cents : 0
   end
 
   def get_discount_for_all_products_cart
@@ -73,15 +73,17 @@ class TransactionMoneyCalculation
     InsuranceCalculationService.call(listing, @session[:booking][:total_days]) * quantity
   end
 
-  def get_tax_fee shipping_fee=nil
-    shipping_fee = 0 if @transaction.will_pickup?
+  def get_tax_fee state=nil, shipping_fee=nil
+    shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
+    state = state ? state : @state
     all_fee = listings_subtotal - get_discount_for_all_products_cart + shipping_fee
-    PriceCalculationService.calculate_tax_fee(all_fee, @state)
+    PriceCalculationService.calculate_tax_fee(all_fee, state)
   end
 
-  def final_price shipping_fee=nil
-    shipping_fee = 0 if @transaction.will_pickup?
-    tax_fee = get_tax_fee(shipping_fee)
+  def final_price state=nil, shipping_fee=nil
+    shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
+    state = state ? state : @state
+    tax_fee = get_tax_fee(state, shipping_fee)
     listings_subtotal - get_discount_for_all_products_cart + shipping_fee + tax_fee
   end
 end

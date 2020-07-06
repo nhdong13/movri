@@ -33,6 +33,7 @@
 #  total_price_cents                 :integer
 #  tax_cents                         :integer
 #  promo_code_discount_cents         :integer
+#  order_number                      :integer
 #
 # Indexes
 #
@@ -55,7 +56,7 @@ class Transaction < ApplicationRecord
   has_and_belongs_to_many :listings
   has_many :transaction_transitions, dependent: :destroy, foreign_key: :transaction_id, inverse_of: :tx
   has_one :booking, dependent: :destroy
-  has_one :shipping_address, dependent: :destroy
+  has_many :transaction_addresses, dependent: :destroy
   belongs_to :starter, class_name: "Person", foreign_key: :starter_id, inverse_of: :starter_transactions
   belongs_to :conversation
   has_many :testimonials, dependent: :destroy
@@ -63,6 +64,7 @@ class Transaction < ApplicationRecord
   has_many :stripe_payments, dependent: :destroy
   has_many :transaction_items, dependent: :destroy
   has_one :shipper, dependent: :destroy
+  has_many :helping_requests
 
   delegate :author, to: :listing
   delegate :title, to: :listing, prefix: true
@@ -77,6 +79,7 @@ class Transaction < ApplicationRecord
   # validates :payment_gateway, inclusion: [:paypal, :checkout, :braintree, :stripe, :none], on: :create
   # validates :automatic_confirmation_after_days, numericality: {only_integer: true}, on: :create
   validates :delivery_method, inclusion: ["none", "shipping", "pickup", :none, :shipping, :pickup], on: :create
+  validates :order_number, uniqueness: true, allow_nil: true
 
   # monetize :unit_price_cents, with_model_currency: :unit_price_currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :unit_price_currency
@@ -138,6 +141,21 @@ class Transaction < ApplicationRecord
   }
   scope :fulfilled_orders, -> { where(current_state: "fulfilled")}
   scope :unfulfilled_orders, -> { where(current_state: "unfulfilled")}
+
+  before_create :add_current_state
+  after_save :update_order_number
+
+  def add_current_state
+    self.current_state = 'unfulfilled'
+  end
+
+  def shipping_address
+    transaction_addresses.shipping_address.last
+  end
+
+  def billing_address
+    transaction_addresses.billing_address.any? ? transaction_addresses.billing_address.last : shipping_address
+  end
 
   def will_pickup?
     delivery_method == "pickup"
@@ -348,5 +366,38 @@ class Transaction < ApplicationRecord
 
   def fulfilled?
     current_state == "fulfilled"
+  end
+
+  def shipping_method_label
+    will_pickup? ? 'Free' : "#{shipper.service_name} #{shipper.amount} #{shipper.currency}"
+  end
+
+  def completed?
+    current_state == "paid"
+  end
+
+  def is_overweight?
+    weight = 0
+    transaction_items.each do |item|
+      packing_dimension = item.listing.packing_dimensions.first
+      weight += (packing_dimension.weight) * item.quantity
+    end
+    weight > LIMIT_WEIGHT_OF_FEDEX_SERVICE
+  end
+
+  def update_order_number
+    current_max_value = Transaction.maximum("order_number")
+    if completed? && order_number.nil?
+      if current_max_value.nil?
+        self.update(order_number: 1)
+      else
+        current_max_value += 1
+        begin
+          self.update(order_number: current_max_value)
+        rescue Exception => e
+          update_order_number
+        end
+      end
+    end
   end
 end

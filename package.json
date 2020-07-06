@@ -2,7 +2,7 @@
   "repository": "sharetribe/sharetribe",
   "license": "MIT",
   "engines": {
-    "node": "10.15"
+    "node": "12.11"
   },
   "scripts": {
     "postinstall": "cd client && npm install",
@@ -11,5 +11,8 @@
   "cacheDirectories": [
     "node_modules",
     "client/node_modules"
-  ]
+  ],
+  "dependencies": {
+    "yarn": "^1.22.4"
+  }
 }

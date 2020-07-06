@@ -3,9 +3,9 @@
     .col-12
       .header-title.margin-bt-0
         %span= t('transactions.order_summary.header')
-  .order-summary-products{'data-uuid': @transaction.uuid_object }
-    - session[:cart].each do |key, value|
-      - listing = Listing.find_by(id: key)
+  .order-summary-products{'data-uuid': transaction.uuid_object }
+    - transaction.transaction_items.each do |item|
+      - listing = Listing.find_by(id: item.listing_id)
       .row
         .col-12
           .listing-row
@@ -21,11 +21,11 @@
               .sku-quantity
                 .quantity
                   %span= "#{t('transactions.label.quantity')}:"
-                  %span= value
+                  %span= item.quantity
               .price
                 %span.number-price
                   -# with coverage fee
-                  - listing_subtotal = @calculate_money.listing_subtotal(listing, value)
+                  - listing_subtotal = @calculate_money.listing_subtotal(listing, item.quantity)
                   = money_to_humanized(listing_subtotal)
                 %span.day-rent
                   \/
@@ -36,20 +36,20 @@
         .subtotal.items
           %span= t('transactions.label.subtotal')
           %span= money_to_humanized(@calculate_money.listings_subtotal)
-        - if @transaction.promo_code
+        - if transaction.promo_code
           .promo-code-discount.items
-            %span= "Promo Code (#{@transaction.promo_code.code})"
+            %span= "Promo Code (#{transaction.promo_code.code})"
             %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
         .shipping-fee.items
           %span= t('transactions.label.shipping')
           - shipping_fee = default_shipping_fee ? PriceCalculationService.to_cents(default_shipping_fee) : 0
-          - if @transaction.will_pickup?
+          - if transaction.will_pickup?
             %span Free
           -else
             %span= shipping_fee > 0 ? money_to_humanized(shipping_fee) : t('transactions.label.tbd')
         .tax-fee.items
           %span= t('transactions.label.tax')
-          %span= money_to_humanized(@calculate_money.get_tax_fee(shipping_fee))
+          %span= money_to_humanized(@calculate_money.get_tax_fee(state, shipping_fee))
         .price-with-all-fee.items
           %span= t('transactions.label.total_with_tax')
-          %span= money_to_humanized(@calculate_money.final_price(shipping_fee))
+          %span= money_to_humanized(@calculate_money.final_price(state, shipping_fee))

@@ -127,7 +127,7 @@ class Person < ApplicationRecord
   has_many :starter_transactions, :class_name => "Transaction", :foreign_key => "starter_id", :dependent => :destroy, :inverse_of => :starter
   has_many :payer_stripe_payments, :class_name => "StripePayment", :foreign_key => "payer_id", :dependent => :destroy, :inverse_of => :payer
   has_many :receiver_stripe_payments, :class_name => "StripePayment", :foreign_key => "receiver_id", :dependent => :destroy, :inverse_of => :receiver
-  has_many :shipping_addresses, :dependent => :destroy
+  has_many :transaction_addresses, :dependent => :destroy
 
   deprecate communities: "Use accepted_community instead.",
             community_memberships: "Use community_membership instead.",
@@ -249,6 +249,10 @@ class Person < ApplicationRecord
     end
   end
 
+  def shipping_address
+    transaction_addresses.shipping_address.last
+  end
+
   # Creates a new email
   def email_attributes=(attributes)
     ActiveSupport::Deprecation.warn(
@@ -257,6 +261,14 @@ class Person < ApplicationRecord
        "model individually inside a DB transaction in the controller."].join(" "))
 
     emails.build(attributes)
+  end
+
+  def has_a_pending_transaction?
+    starter_transactions.any? && starter_transactions.where.not(current_state: 'paid').any?
+  end
+
+  def pending_transaction
+    starter_transactions.where.not(current_state: 'paid').first
   end
 
   def set_emails_that_receive_notifications(email_ids)

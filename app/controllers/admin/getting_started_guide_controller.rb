@@ -1,10 +1,10 @@
 class Admin::GettingStartedGuideController < Admin::AdminBaseController
 
-  rescue_from ReactOnRails::PrerenderError do |err|
-    Rails.logger.error(err.message)
-    Rails.logger.error(err.backtrace.join("\n"))
-    redirect_to search_path, flash: { error: I18n.t('error_messages.onboarding.server_rendering') }
-  end
+  # rescue_from ReactOnRails::PrerenderError do |err|
+  #   Rails.logger.error(err.message)
+  #   Rails.logger.error(err.backtrace.join("\n"))
+  #   redirect_to search_path, flash: { error: I18n.t('error_messages.onboarding.server_rendering') }
+  # end
 
   def index
     @selected_left_navi_link = "getting_started_guide"

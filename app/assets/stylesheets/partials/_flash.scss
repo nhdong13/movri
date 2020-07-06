@@ -8,13 +8,8 @@
 
 .ajax-notification,
 .flash-notification {
-  margin-bottom: lines(0.5);
-  @include media(tablet) {
-    margin-bottom: lines(1);
-  }
   position: relative;
   padding: em(8) em(20) em(12) em(20);
-  @include border-radius(em(5));
   .ajax-icon, .flash-icon {
     position: absolute;
     top: em(10);

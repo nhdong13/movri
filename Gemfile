@@ -127,6 +127,7 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-npm', require: false
+  gem 'capistrano-nvm', require: false
   gem 'capistrano3-puma', require: false
   gem 'rb-fsevent', '~> 0.9.8', require: false
   gem 'guard-rspec', '~> 4.7.3', require: false
@@ -198,3 +199,4 @@ gem 'geocoder', '~> 1.6', '>= 1.6.1'
 gem 'whenever', '~> 1.0.0', require: false
 gem "font-awesome-rails"
 gem 'jquery-inputmask-rails'
+gem 'active_model_serializers'

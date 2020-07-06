@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   before_action :check_http_auth,
     :check_auth_token,
     :fetch_community,
+    :fetch_online_store,
     :fetch_community_plan_expiration_status,
     :perform_redirect,
     :fetch_logged_in_user,
@@ -304,6 +305,10 @@ class ApplicationController < ActionController::Base
     request.env[:community_id] = m_community.id.or_else(nil)
     fetch_categories
     setup_logger!(marketplace_id: m_community.id.or_else(nil), marketplace_ident: m_community.ident.or_else(nil))
+  end
+
+  def fetch_online_store
+    @current_online_store = @current_community && @current_community.online_store
   end
 
   # Performs redirect to correct URL, if needed.
@@ -597,9 +602,10 @@ class ApplicationController < ActionController::Base
         profile_path: person_path(u),
         manage_listings_path: person_path(u, show_closed: true),
         settings_path: person_settings_path(u),
-        logout_path: logout_path
+        logout_path: logout_path,
+        store_header: @current_online_store.header
       }
-    }.or_else({})
+    }.or_else({store_header: @current_online_store.header})
 
     locale_change_links = available_locales.map { |(title, locale_code)|
       {

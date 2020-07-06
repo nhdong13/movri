@@ -12,6 +12,10 @@ module StripeService
       def self.payments
         StripeService::API::Payments
       end
+
+      def self.payments_v2
+        StripeService::API::PaymentsV2
+      end
     end
   end
 end
