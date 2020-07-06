@@ -118,9 +118,10 @@
     "storybook-addon-specifications": "2.1.2",
     "stylelint": "10.0.1",
     "stylelint-config-standard": "18.3.0",
+    "terser-webpack-plugin": "^3.0.6",
+    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
     "webpack-dev-middleware": "3.6.1",
-    "webpack-dev-server": "3.3.1",
-    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony"
+    "webpack-dev-server": "3.3.1"
   },
   "browser": {
     "fs": false

@@ -7,7 +7,7 @@ const nodeEnv = devBuild ? 'development' : 'production';
 const { replacePercentChar } = require('./webpackConfigUtil');
 const assetHostEnv = typeof process.env.asset_host === 'string' ? `&asset_host=${process.env.asset_host}` : '';
 const assetHost = replacePercentChar(assetHostEnv);
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -81,10 +81,10 @@ module.exports = {
   optimization: {
     minimizer: [
       // we specify a custom UglifyJsPlugin here to get source maps in production
-      new UglifyJsPlugin({
+      new TerserPlugin({
         cache: true,
         parallel: true,
-        uglifyOptions: {
+        terserOptions: {
           compress: false,
           ecma: 6,
           mangle: true,
