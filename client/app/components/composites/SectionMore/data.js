@@ -50,5 +50,14 @@ export const sectionData = [
         model: 'Mosaic'
       }
     ]
+  },
+  {
+    categoryName: 'FOOTER',
+    items: [
+      {
+        name: 'Footer section(Contact us, sale & expert...)',
+        model: 'StoreFooter'
+      }
+    ]
   }
 ]
