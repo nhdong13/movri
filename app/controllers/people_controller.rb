@@ -126,6 +126,7 @@ class PeopleController < Devise::RegistrationsController
     if params[:person] && params[:person][:password]
       if @current_user.valid_password?(params[:person][:password])
         success = @current_user.update(password: params[:new_password])
+        return render json: {success: true, redirect_url: homepage_without_locale_path}
       else
         return render json: {success: false, message: "Invalid current password"}
       end

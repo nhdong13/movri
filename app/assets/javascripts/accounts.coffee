@@ -56,14 +56,14 @@ onClickUpdatePassword = ->
               buttons: false,
               timer: 2000,
             });
-            handleAnimationWhenDataChanges(_this)
+            window.location.href = response.redirect_url
           else
             swal("Failure!", response.message, "error");
 
 
 valid_email_fields = ->
   if $('#address').val().trim() == ""
-    $('#address').parent().find('.alert-error').html('This field is required').css("display", "inline-block")
+    $('#address').parents('#edit-email-account').find('.alert-error').html('This field is required').css("display", "inline-block")
     false
   else
     true
@@ -94,7 +94,7 @@ onClickUpdateEmail = ->
 
 valid_name_fields = ->
   if $('#first_name').val().trim() == "" || $('#first_name').val().trim() == ""
-    $('#first_name').parent().find('.alert-error').html('At least one field must be filled').css("display", "inline-block")
+    $('#first_name').parents('#edit-name-account').find('.alert-error').html('At least one field must be filled').css("display", "inline-block")
     false
   else
     true
@@ -129,14 +129,15 @@ handleAnimationWhenDataChanges = (element) ->
     this_item.removeClass('will-close')
     this_item.parent().find('.update-item').hide()
     $('.alert-error').slideUp("slow")
+    this_item.parents('.items-group').find(".input-will-show").slideUp()
     this_item.parents('.items-group').find(".label-will-hide").show()
-    this_item.parents('.items-group').find(".input-will-show").hide()
   else
     this_item.html('Cancel')
     this_item.addClass('will-close')
     this_item.parent().find('.update-item').show()
     this_item.parents('.items-group').find(".label-will-hide").hide()
-    this_item.parents('.items-group').find(".input-will-show").show().focus()
+    this_item.parents('.items-group').find(".input-will-show").slideDown()
+    this_item.parents('.items-group').find(".input-will-show input").first().focus()
 
 onClickEditItems = ->
   $(".edit-item").click ->
@@ -154,8 +155,9 @@ onClickSetDefaultAddress = ->
       success: (response) ->
         if response.success
           $('input[name=default_shipping_address]').not(_this_checkbox).prop('checked', false)
-          $(".is-defaut-address").hide()
-          $(".set-as-default-address").show()
+          $(_this).parents('.transaction-address').find(".is-defaut-address").hide()
+          $(_this).parents('.transaction-address').find(".set-as-default-address").show()
+          # show this
           $(_this).parent().find(".is-defaut-address").show()
           $(_this).hide()
         else

@@ -2,14 +2,18 @@ class TransactionAddressesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :create_billing_address, :update]
   before_action :find_transaction
   before_action :find_transaction_address
+  before_action :ensure_can_countinue_transactions, only: [:pay_order]
 
   def create
     # @transaction_address = @transaction.transaction_addresses.create(transaction_address_params)
     @transaction_address = TransactionAddress.create(transaction_address_params)
-    if @current_user
-      @transaction_address.update(person_id: @current_user.id)
-      @current_user.update(default_shipping_address: @transaction_address.id) if @transaction_address.shipping_address? && @current_user.default_shipping_address.nil?
-      @current_user.update(default_billing_address: @transaction_address.id) if @transaction_address.billing_address? && @current_user.default_billing_address.nil?
+    if @transaction_address
+      @transaction.update(shipping_address_id: @transaction_address.id) if @transaction
+      if @current_user
+        @transaction_address.update(person_id: @current_user.id)
+        @current_user.update(default_shipping_address: @transaction_address.id) if @transaction_address.shipping_address? && !@current_user.shipping_address
+        @current_user.update(default_billing_address: @transaction_address.id) if @transaction_address.billing_address? && !@current_user.billing_address
+      end
     end
     if params[:transaction_id]
       return redirect_to shipment_transaction_path(@transaction.uuid_object)
@@ -21,18 +25,22 @@ class TransactionAddressesController < ApplicationController
   def new
     @transaction_address = TransactionAddress.new
     @is_shipping_address = params[:address_type] == 'shipping_address'
+    @address_type = params[:address_type].titleize
   end
 
   def edit
+    @is_shipping_address = @transaction_address.shipping_address?
+    @address_type = @transaction_address.address_type.titleize
   end
 
-  def create_billing_address
+  def pay_order
     session[:billing_address] = transaction_address_params if params[:remember_me] == "true"
-
     if params[:address_type] == "billing_address"
-      result = stripe_api.create_billing_address_and_payment_intent(params, transaction_address_params)
+      result = stripe_api.processing_billing_address_and_payment_intent(params, transaction_address_params)
       return render json: {errors: result[:error]} unless (result[:success])
     else
+      #update billing address is the same as shipping address
+      @transaction.update(billing_address_id: @transaction.shipping_address.id)
       result = stripe_api.create_payment_intent(params[:stripe_payment_method_id])
       return render json: {errors: result[:error]} unless (result[:success])
     end
@@ -59,12 +67,19 @@ class TransactionAddressesController < ApplicationController
 
   def update
     success = @transaction_address.update(transaction_address_params)
-    @transaction_address.update(person_id: @current_user.id)  if @current_user
     if success
-      redirect_to shipment_transaction_path(@transaction.uuid_object)
+      if params[:transaction_id]
+        return redirect_to shipment_transaction_path(@transaction.uuid_object)
+      else
+        return redirect_to person_path(@current_user, view: "info")
+      end
     else
       flash[:error] = @transaction_address.errors.full_messages.first
-      redirect_to checkout_transaction_path(@transaction.uuid_object)
+      if params[:transaction_id]
+        return redirect_to checkout_transaction_path(@transaction.uuid_object)
+      else
+        return redirect_to edit_transaction_address_path(@transaction_address)
+      end
     end
   end
 
@@ -77,11 +92,27 @@ class TransactionAddressesController < ApplicationController
   end
 
   def destroy
+    if @current_user
+      if @transaction_address.shipping_address? && @current_user.shipping_address == @transaction_address
+        new_address = @current_user.shipping_addresses.where.not(id: @transaction_address.id).last
+        @current_user.update(default_shipping_address: new_address.id) if new_address
+      elsif @transaction_address.billing_address? && @current_user.billing_address == @transaction_address
+        new_address = @current_user.billing_addresses.where.not(id: @transaction_address.id).last
+        @current_user.update(default_billing_address: new_address.id) if new_address
+      end
+    end
     @transaction_address.soft_delete
     redirect_to person_path(@current_user, view: "info")
   end
 
   private
+  def ensure_can_countinue_transactions
+    if @transaction.completed?
+      flash[:error] = "The transaction is already completed."
+      return redirect_to show_cart_path
+    end
+  end
+
   def find_transaction_address
     @transaction_address = TransactionAddress.find_by(id: params[:id])
   end
@@ -109,6 +140,6 @@ class TransactionAddressesController < ApplicationController
   end
 
   def stripe_api
-    StripeService::API::Api.payments_v2.new(@transaction, session)
+    StripeService::API::Api.payments_v2.new(@transaction, session, @current_user)
   end
 end

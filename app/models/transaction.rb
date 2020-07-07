@@ -173,6 +173,10 @@ class Transaction < ApplicationRecord
     self.uuid = UUIDUtils.raw(uuid)
   end
 
+  def payment
+    stripe_payments.last
+  end
+
   before_create :add_uuid
   def add_uuid
     self.uuid ||= UUIDUtils.create_raw
@@ -299,6 +303,12 @@ class Transaction < ApplicationRecord
 
   def item_total
     unit_price * listing_quantity
+  end
+
+  def coverage_cents
+    fee = 0
+    transaction_items.map {|item| fee += item.coverage_price_cents * item.quantity}
+    fee
   end
 
   def payment_gateway

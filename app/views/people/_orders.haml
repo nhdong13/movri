@@ -37,7 +37,7 @@
                 %p.margin-bt-15= money_to_humanized(transaction.stripe_charge_cents)
 
                 .btn-link
-                  = link_to "" do
+                  = link_to order_details_transaction_path(transaction) do
                     %span.fz-18 See Order Details
     .mobile-display
       .row.margin-bt-20
@@ -76,7 +76,7 @@
                   %p.margin-bt-15= money_to_humanized(transaction.stripe_charge_cents)
               .center-items
                 .btn-link
-                  = link_to "" do
+                  = link_to order_details_transaction_path(transaction) do
                     %span.fz-18 See Order Details
 - else
   .row.margin-bt-20

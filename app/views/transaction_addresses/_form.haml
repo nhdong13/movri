@@ -14,10 +14,7 @@
                 = check_box_tag :notification, nil, true
                 %spant= t('transactions.contact_form.noti')
         .header-title
-          - if @is_shipping_address
-            %h2= t('transactions.label.shipping_address')
-          - else
-            %h2= t('transactions.label.billing_address')
+          %h2= @address_type
         .form-group
           - unless @is_shipping_address
             = hidden_field_tag 'transaction_address[address_type]', 'billing_address'

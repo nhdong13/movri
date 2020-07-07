@@ -1,6 +1,6 @@
 = javascript_include_tag "#{STRIPE_JS_HOST}/v3/"
 
-= form_for [@transaction, @billing_address], url: transaction_billing_address_path(@transaction), html: {class: "desktop-payment-form"} do |form|
+= form_for [@transaction, @billing_address], url: pay_order_transaction_path(@transaction), method: :get, html: {class: "desktop-payment-form"} do |form|
   .common-box
     .header-title
       %span.fz-22 Payment

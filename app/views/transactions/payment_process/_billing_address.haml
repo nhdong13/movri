@@ -15,6 +15,7 @@
     .col-9.padding-0
       .billing-address-info
         = hidden_field_tag 'transaction_address[address_type]', 'billing_address'
+        = hidden_field_tag 'billing_address_id', form.object.id
         .form-group
           .row
             .col-6

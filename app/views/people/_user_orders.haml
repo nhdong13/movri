@@ -14,9 +14,9 @@
     .col-12
       .account-header.white-background.padding-20
         .flex-items
-          .common-link-btn.margin-r-15.active
+          .common-link-btn.margin-r-15{class: params[:sort] != 'cancelled' ? 'active' : ''}
             %span.fz-16= link_to 'All Orders', person_path(@current_user, sort: 'all')
-          .common-link-btn
+          .common-link-btn{class: params[:sort] == 'cancelled' ? 'active' : ''}
             %span.fz-16= link_to 'Cancelled Orders', person_path(@current_user, sort: 'cancelled')
   .account-list-orders
     = render partial: "people/orders", locals: {user_orders: @user_orders}

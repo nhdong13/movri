@@ -66,7 +66,10 @@
         .row
           .col-12.br-top.copy-right
             %span= t('common.copy_right')
-    - unless @current_user
-      .col-3.padding-0.fz-14
+    .col-3.padding-0.fz-14
+      - unless @current_user
         %span= t('common.account_question')
         = link_to t('common.log_in'), login_path
+      - else
+        .align-right
+          = link_to "Manage Shipping Address", person_path(@current_user, view: "info")

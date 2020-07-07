@@ -39,6 +39,7 @@ class TransactionAddress < ApplicationRecord
   enum address_type: [:shipping_address, :billing_address]
 
   default_scope { where(is_deleted: false) }
+  scope :deleted, -> { unscope(:where).where(is_deleted: true) }
 
   def soft_delete
     update(is_deleted: true, deleted_at: DateTime.now)

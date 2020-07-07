@@ -252,11 +252,15 @@ class Person < ApplicationRecord
   end
 
   def shipping_address
-    transaction_addresses.shipping_address.last
+    transaction_addresses.find_by(id: default_shipping_address)
   end
 
   def shipping_addresses
     transaction_addresses.shipping_address
+  end
+
+  def billing_address
+    transaction_addresses.find_by(id: default_billing_address)
   end
 
   def billing_addresses

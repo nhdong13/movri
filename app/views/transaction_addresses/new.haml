@@ -3,7 +3,7 @@
     .wrapper
       .row.padding-15
         .col-12
-          .header-checkout= "New #{params[:address_type].split("_").join(" ").capitalize}"
+          .header-checkout= "New #{@address_type}"
         .col-8
           = render partial: "transaction_addresses/form"
 - content_for :javascript do
