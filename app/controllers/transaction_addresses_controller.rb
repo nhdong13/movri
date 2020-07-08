@@ -2,10 +2,8 @@ class TransactionAddressesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :create_billing_address, :update]
   before_action :find_transaction
   before_action :find_transaction_address
-  before_action :ensure_can_countinue_transactions, only: [:pay_order]
 
   def create
-    # @transaction_address = @transaction.transaction_addresses.create(transaction_address_params)
     @transaction_address = TransactionAddress.create(transaction_address_params)
     if @transaction_address
       @transaction.update(shipping_address_id: @transaction_address.id) if @transaction
@@ -106,13 +104,6 @@ class TransactionAddressesController < ApplicationController
   end
 
   private
-  def ensure_can_countinue_transactions
-    if @transaction.completed?
-      flash[:error] = "The transaction is already completed."
-      return redirect_to show_cart_path
-    end
-  end
-
   def find_transaction_address
     @transaction_address = TransactionAddress.find_by(id: params[:id])
   end
