@@ -792,7 +792,7 @@ $home-list-avatar-padding: lines(0.25);
 
     .sale_expert_advice,
     .customer_service {
-      line-height: 0.8;
+      line-height: 1.4;
 
       span:first-of-type {
         color: #7f7f7f;
@@ -809,7 +809,6 @@ $home-list-avatar-padding: lines(0.25);
           font-size: 30px;
           font-weight: bolder;
           color: #334455;
-          margin-bottom: 12px;
         }
 
         &.second_phone_number {
@@ -842,7 +841,7 @@ $home-list-avatar-padding: lines(0.25);
     margin-bottom: 0px;
     padding: 30px;
     background-color: #f3f3f3;
-    .col-2 {
+    .col-3 {
       p {
         color: #999999;
       }
@@ -892,13 +891,10 @@ $home-list-avatar-padding: lines(0.25);
 
   p {
     font-size: 18px;
-  }
 
-  .sign-up,
-  .other-sites,
-  .customer-services {
-    min-height: 215px;
-    border-right: 1px solid #bdbdbd;
+    &.title {
+      text-align: center;
+    }
   }
 
   .sign-up-group,
@@ -906,12 +902,14 @@ $home-list-avatar-padding: lines(0.25);
     color: #bdbdbd;
     font-size: 12px;
 
-    p {
-      font-size: 14px;
-    }
+    p { font-size: 14px; }
+    button { width: 30% }
   }
 
   .sign-up-group {
+    display: flex;
+    align-items: center;
+
     input {
       width: 75%;
       float: left;
@@ -928,55 +926,9 @@ $home-list-avatar-padding: lines(0.25);
     }
   }
 
-  .other-sites {
-    span {
-      font-size: 15px;
-      color: #999999;
-      line-height: 1.7;
-    }
-  }
-
-  .customer-services {
-    img {
-      float: left;
-      margin-right: 10px;
-    }
-
-    .description {
-      margin-top: 30px;
-
-      span:first-of-type {
-        display: block;
-        font-size: 14px;
-        width: 240px;
-      }
-
-      span {
-        font-size: 13px;
-        font-style: italic;
-      }
-    }
-  }
-
   input.email-address{
     width: 70%
   }
-
-  .workplace {
-    img:first-of-type {
-      margin-top: 15px;
-      width: 172px;
-    }
-
-    img {
-      width: 100px;
-    }
-  }
-  .sign-up-group{
-    display: flex;
-    align-items: center;
-  }
-
 }
 
 .security-social-media {
