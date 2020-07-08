@@ -10,6 +10,9 @@
 #  link            :string(255)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  content_type    :integer          default("normal")
+#  languages       :json
+#  currency        :json
 #
 # Indexes
 #
@@ -17,4 +20,7 @@
 #
 
 class StoreFooterItem < ApplicationRecord
+  serialize :languages, Array 
+  serialize :currency, Array
+  enum content_type: %w(normal language currency)
 end

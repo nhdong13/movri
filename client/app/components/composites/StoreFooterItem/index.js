@@ -1,5 +1,25 @@
 import React, { Component } from  'react'
 import axios from 'axios'
+import MultiSelect from "react-multi-select-component";
+import countryList from 'react-select-country-list'
+import currency_iso from '../../../assets/json/currency_iso.json'
+
+const renameKeys = (arr) => {
+  const newArray = arr.map(elm => {
+    return {value: elm.abbr, label: elm.name}
+  })
+
+  return newArray
+}
+
+const currencyOptions = () => {
+  const values = Object.keys(currency_iso)
+  let options = []
+  values.map(v => {
+    options.push({value: v, label: `${currency_iso[v].name}(${v.toUpperCase()})`})
+  })
+  return options
+}
 
 class StoreFooterItem extends Component {
   
@@ -8,11 +28,20 @@ class StoreFooterItem extends Component {
     this.handleToggleItem = this.handleToggleItem.bind(this)
     this.handleOnChange = this.handleOnChange.bind(this)
     this.handleSubmitForm = this.handleSubmitForm.bind(this)
+    this.setLanguageSelected = this.setLanguageSelected.bind(this)
+    this.setCurencySelected = this.setCurencySelected.bind(this)
+
+    this.languageOptions = countryList().getData()
+    this.currencyOptions = currencyOptions()
 
     this.state = {
       saving: false,
       removing: false,
       collapsed: false,
+      isLanguage: false,
+      isCurrency: false,
+      languageOptions: this.languageOptions,
+      currencyOptions: this.currencyOptions,
       item: props.item
     }
   }
@@ -57,8 +86,105 @@ class StoreFooterItem extends Component {
     })
   }
 
+  setLanguageSelected(items) {
+    this.setState({
+      item: {
+        ...this.state.item,
+        languages: items
+      }
+    })
+  }
+
+  setCurencySelected(items) {
+    this.setState({
+      item: {
+        ...this.state.item,
+        currency: items
+      }
+    })
+  }
+
+  isNormal() {
+    return this.state.item.content_type === 'normal'
+  }
+
+  isLanguage() {
+    return this.state.item.content_type === 'language'
+  }
+
+  isCurrency() {
+    return this.state.item.content_type === 'currency'
+  }
+
+  renderContent() {
+    const { item } = this.state
+    const languages = item.languages || []
+    const currencies = item.currency || []
+    if (this.isLanguage()) {
+      return (
+        <div>
+          <MultiSelect
+            options={this.state.languageOptions}
+            value={item.languages}
+            className='featured-list'
+            onChange={this.setLanguageSelected}
+            labelledBy={"Select languages"}
+          />
+          <ul>
+            {  
+              languages.map(l => {
+                return <li key={l.value}>
+                  <i className="icon-check"></i>
+                  {l.label}
+                </li>
+              })
+            }
+          </ul>
+        </div>
+      )
+    } else if (this.isCurrency()) {
+      return (
+        <div>
+          <MultiSelect
+            options={this.state.currencyOptions}
+            value={item.currency}
+            className='featured-list'
+            onChange={this.setCurencySelected}
+            labelledBy={"Select currency"}
+          />
+          <ul>
+            {  
+              currencies.map(l => {
+                return <li key={l.value}>
+                  <i className="icon-check"></i>
+                  {l.label}
+                </li>
+              })
+            }
+          </ul>
+        </div>
+      )
+    } else {
+      return <div>
+        <div className='form-control'>
+          <label>Sub Heading</label>
+          <input name='sub_heading' value={item.sub_heading} type='text' onChange={this.handleOnChange}/>
+        </div>
+        <div className='form-control'>
+          <label>Text</label>
+          <textarea name='text' value={item.text} type='text' onChange={this.handleOnChange}/>
+        </div>
+        <div className='form-control'>
+          <label>Link</label>
+          <input name='link' value={item.link} type='text' onChange={this.handleOnChange}/>
+        </div>
+      </div>
+    }
+  }
+
   render() {
     let { item } = this.state
+
     return(
       <div className='collapsible store-category-item slideshow-item'>
         <div className='row section-column-header-toggle' onClick={this.handleToggleItem}>
@@ -70,20 +196,51 @@ class StoreFooterItem extends Component {
             <form onSubmit={this.handleSubmitForm}>
               <div className='form-control'>
                 <label>Heading</label>
-                <input name='heading' value={item.heading} type='text' onChange={this.handleOnChange}/>
+                <input 
+                  name='heading' 
+                  value={item.heading} 
+                  type='text' 
+                  onChange={this.handleOnChange}
+                />
               </div>
               <div className='form-control'>
-                <label>Sub Heading</label>
-                <input name='sub_heading' value={item.sub_heading} type='text' onChange={this.handleOnChange}/>
+                <div className='checkbox-control'>
+                  <input type='radio' 
+                    name='content_type'
+                    value={'normal'}
+                    className='checkbox-input'
+                    id='normal-type'
+                    checked={this.isNormal()}
+                    onChange={this.handleOnChange}
+                  />
+                  <label className='checkbox-label' htmlFor='normal-type'>None</label>
+                </div>
+                <div className='checkbox-control'>
+                  <input type='radio'
+                    name='content_type'
+                    value='language'
+                    className='checkbox-input'
+                    id='language-type'
+                    checked={this.isLanguage()}
+                    onChange={this.handleOnChange}
+                  />
+                  <label className='checkbox-label' htmlFor='language-type'>Is Language</label>
+                </div>
+                <div className='checkbox-control'>
+                  <input type='radio'
+                    name='content_type'
+                    value='currency'
+                    className='checkbox-input'
+                    id='currency-type'
+                    checked={this.isCurrency()}
+                    onChange={this.handleOnChange}
+                  />
+                  <label className='checkbox-label' htmlFor='currency-type'>Is Currency</label>
+                </div>
               </div>
-              <div className='form-control'>
-                <label>Text</label>
-                <textarea name='text' value={item.text} type='text' onChange={this.handleOnChange}/>
-              </div>
-              <div className='form-control'>
-                <label>Link</label>
-                <input name='link' value={item.link} type='text' onChange={this.handleOnChange}/>
-              </div>
+              {
+                this.renderContent()
+              }
               <div className='row'>
                 <div className='col-8'>
                   <button className='p-2 btn' type='button' onClick={() => this.props.handleRemoveItem(this.state.item)}>{ this.props.removing ? 'Removing...' : 'Remove content'}</button>
@@ -92,6 +249,7 @@ class StoreFooterItem extends Component {
                   <button className='p-2 btn' type='submit'>{ this.state.saving ? 'Saving' : 'Save' }</button>
                 </div>
               </div>
+              
             </form>
           </div>
         }

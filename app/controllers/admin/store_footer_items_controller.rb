@@ -12,6 +12,7 @@ class Admin::StoreFooterItemsController < Admin::AdminBaseController
   end
 
   def update
+    binding.pry
     if @store_footer_item.update_attributes(store_footer_item_params)
       render_success
     else
@@ -38,7 +39,7 @@ class Admin::StoreFooterItemsController < Admin::AdminBaseController
 
   def store_footer_item_params
     params.require(:store_footer_item)
-      .permit(:heading, :sub_heading, :text, :link)
+      .permit(:heading, :sub_heading, :text, :link, :content_type, languages: [:value, :label], currency: [:value, :label])
   end
 
   def render_success
