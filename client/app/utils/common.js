@@ -12,3 +12,13 @@ export const previewUploadImageSrc = (file, callback) => {
   reader.readAsDataURL(file[0])
   return src
 }
+
+export const PickColorstyles = {
+  cover: {
+    position: 'fixed',
+    top: '0px',
+    right: '0px',
+    bottom: '0px',
+    left: '0px',
+  }
+}
