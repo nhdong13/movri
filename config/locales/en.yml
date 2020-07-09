@@ -3265,6 +3265,7 @@ en:
       pick_up: Pick Up
       free: Free
       shipping_address: Shipping Address
+      billing_address: Billing Address
       promo_code: Promo Code
       special_instructions: Special instructions for seller
       move_to_wish_list: Move to wish list
@@ -3309,9 +3310,17 @@ en:
       email: Email(*)
       order: 'Order #'
       message: Message(*)
+    order_details:
+      arrival_date: "Arrival Date: <strong>%{date}</strong>"
+      return_date: "Return Date: <strong>%{date}</strong>"
+      rental_duration: "Rental Duration: <strong>%{number} days</strong>"
+      order_number: "Order #%{number}"
+      total_quantity: "Total Items: <strong>%{quantity}</strong>"
+      coverage: 'MOVRI COVERAGE: %{coverage}'
   common:
    copy_right: All rights reserved MOVRI
    account_question: Already have an account?
    log_in: Log in
   placeholder:
     special_instructions: Special instructions
+

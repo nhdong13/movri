@@ -44,6 +44,8 @@
 #  cloned_from                        :string(22)
 #  google_oauth2_id                   :string(255)
 #  linkedin_id                        :string(255)
+#  default_shipping_address           :integer
+#  default_billing_address            :integer
 #
 # Indexes
 #

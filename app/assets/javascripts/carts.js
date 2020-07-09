@@ -80,9 +80,25 @@ window.ST = window.ST || {};
   });
 
 
-  $('#cart_deatail_arrival_date, #cart_deatail_return_date').datepicker({
-    autoclose: true
+  $('.input-arrival-date').datepicker({
+    daysOfWeekDisabled: '0',
+    autoclose: true,
+    startDate: new Date(),
+    todayHighlight: true,
   });
+
+  $('.input-return-date').datepicker({
+    daysOfWeekDisabled: '0',
+    autoclose: true,
+    startDate: next_day(new Date()),
+    todayHighlight: true,
+  });
+
+  function next_day(day){
+    new_day = day.setDate(day.getDate() + 1);
+
+    return new Date(new_day)
+  }
 
   $('#cart_deatail_arrival_date, #cart_deatail_return_date').datepicker()
     .on('changeDate', function(e) {
@@ -93,7 +109,6 @@ window.ST = window.ST || {};
         startDate = $("#cart_deatail_arrival_date").val();
         endDate = $(this).val();
       }
-
       if (!startDate || !endDate) {
         return;
       }

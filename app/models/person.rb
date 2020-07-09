@@ -44,6 +44,8 @@
 #  cloned_from                        :string(22)
 #  google_oauth2_id                   :string(255)
 #  linkedin_id                        :string(255)
+#  default_shipping_address           :integer
+#  default_billing_address            :integer
 #
 # Indexes
 #
@@ -250,7 +252,19 @@ class Person < ApplicationRecord
   end
 
   def shipping_address
-    transaction_addresses.shipping_address.last
+    transaction_addresses.find_by(id: default_shipping_address)
+  end
+
+  def shipping_addresses
+    transaction_addresses.shipping_address
+  end
+
+  def billing_address
+    transaction_addresses.find_by(id: default_billing_address)
+  end
+
+  def billing_addresses
+    transaction_addresses.billing_address
   end
 
   # Creates a new email
@@ -300,6 +314,10 @@ class Person < ApplicationRecord
 
   def set_given_name(name)
     update({:given_name => name })
+  end
+
+  def fullname
+    "#{family_name.capitalize} #{given_name.capitalize}"
   end
 
   def street_address
@@ -614,6 +632,14 @@ class Person < ApplicationRecord
 
   def custom_field_value_for(custom_field)
     custom_field_values.by_question(custom_field).first
+  end
+
+  def completed_orders
+    starter_transactions.where(current_state: ['paid']).order(updated_at: :desc)
+  end
+
+  def cancelled_orders
+    starter_transactions.where(current_state: ['cancelled']).order(updated_at: :desc)
   end
 
   private

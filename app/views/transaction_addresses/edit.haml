@@ -1,0 +1,11 @@
+.brown-background
+  .edit-address-section
+    .wrapper
+      .row.padding-15
+        .col-12
+          .header-checkout= "Edit #{@address_type}"
+        .col-8
+          = render partial: "transaction_addresses/form"
+
+- content_for :javascript do
+  ValidateForm.run();

@@ -17,7 +17,7 @@ class TransactionsController < ApplicationController
     end
   end
 
-  before_action :find_transaction, only: [
+  before_action :find_transaction_by_uuid, only: [
     :update_promo_code,
     :change_shipping_selection,
     :shipment,
@@ -27,7 +27,9 @@ class TransactionsController < ApplicationController
     :thank_you
   ]
 
-  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :thank_you]
+  before_action :find_transaction_by_id, only: [:order_details]
+
+  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :thank_you, :order_details]
 
   before_action except: [
     :checkout,
@@ -331,55 +333,47 @@ class TransactionsController < ApplicationController
     check_booking_date_session_was_change(@transaction)
     @default_shipping_fee = 0
     if @current_user
-      if @transaction.shipping_address
-        @shipping_address = @transaction.shipping_address
+      if @current_user.shipping_address
+        @shipping_address = update_shipping_address_with_current_user_params(@transaction, @current_user.shipping_address)
       else
-        if @current_user.shipping_address
-          @shipping_address = create_shipping_address_with_current_user_params(@transaction)
-        else
-          @shipping_address = create_shipping_address_without_current_user_params(@transaction)
-        end
+        @shipping_address = create_shipping_address_with_current_user_params(@transaction)
       end
     else
       if @transaction.shipping_address
         @shipping_address = @transaction.shipping_address
       else
-        @shipping_address = create_shipping_address_without_current_user_params(@transaction)
+        @shipping_address = create_shipping_address_without_current_user @transaction
       end
     end
+  end
+
+  def create_shipping_address_without_current_user transaction
+    if session[:booking][:start_date] == get_today
+      shipping_address = TransactionAddress.create(OFFICE_ADDRESS)
+    else
+      shipping_address = TransactionAddress.new
+    end
+    transaction.update(shipping_address_id: shipping_address.id)
+    shipping_address
   end
 
   def create_shipping_address_with_current_user_params transaction
     if session[:booking][:start_date] == get_today
-      shipping_address = transaction.transaction_addresses.create(OFFICE_ADDRESS)
-      shipping_address.update(
-        first_name: @current_user.shipping_address.first_name,
-        last_name: @current_user.shipping_address.first_name,
-        company: @current_user.shipping_address.company,
-        apartment: @current_user.shipping_address.apartment,
-      )
+      shipping_address = @current_user.transaction_addresses.create(OFFICE_ADDRESS)
     else
-      shipping_address = transaction.transaction_addresses.create(
-        first_name: @current_user.shipping_address.first_name,
-        last_name: @current_user.shipping_address.first_name,
-        company: @current_user.shipping_address.company,
-        apartment: @current_user.shipping_address.apartment,
-        phone: @current_user.shipping_address.phone,
-        postal_code: @current_user.shipping_address.postal_code,
-        city: @current_user.shipping_address.city,
-        state_or_province: @current_user.shipping_address.state_or_province,
-        street1: @current_user.shipping_address.street1,
-      )
+      shipping_address = TransactionAddress.new
     end
+    transaction.update(shipping_address_id: shipping_address.id)
     shipping_address
   end
 
-  def create_shipping_address_without_current_user_params transaction
+  def update_shipping_address_with_current_user_params transaction, shipping_address
     if session[:booking][:start_date] == get_today
-      shipping_address = transaction.transaction_addresses.create(OFFICE_ADDRESS)
+      shipping_address.update_columns(OFFICE_ADDRESS)
     else
-      shipping_address = transaction.transaction_addresses.build
+      shipping_address.update(EMPTY_SHIPPING_ADDRESS)
     end
+    transaction.update(shipping_address_id: @current_user.shipping_address.id)
     shipping_address
   end
 
@@ -469,10 +463,18 @@ class TransactionsController < ApplicationController
 
   def payment
     @shipping_address = @transaction.shipping_address
-    if session[:billing_address]
-      @billing_address = @transaction.transaction_addresses.build(session[:billing_address])
+    if @current_user
+      if @current_user.billing_address
+        @billing_address = @current_user.billing_address
+      else
+        @billing_address = @current_user.transaction_addresses.build
+      end
     else
-      @billing_address = @transaction.transaction_addresses.build
+      if session[:billing_address]
+        @billing_address = TransactionAddress.new(session[:billing_address])
+      else
+        @billing_address = TransactionAddress.new
+      end
     end
     @default_shipping_fee = @transaction.shipper.amount
   end
@@ -483,6 +485,10 @@ class TransactionsController < ApplicationController
     @state = @transaction.shipping_address.state_or_province
     @default_shipping_fee = 0
     @helping_request = @transaction.helping_requests.build
+  end
+
+  def order_details
+
   end
 
   private
@@ -498,8 +504,12 @@ class TransactionsController < ApplicationController
     end
   end
 
-  def find_transaction
+  def find_transaction_by_uuid
     @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
+  end
+
+  def find_transaction_by_id
+    @transaction = Transaction.find_by(id: params[:id])
   end
 
   def handle_finalize_proc_result(response)

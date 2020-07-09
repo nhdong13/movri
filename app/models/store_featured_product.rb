@@ -15,6 +15,8 @@
 #
 
 class StoreFeaturedProduct < ApplicationRecord
+  include Sectionable
+
   has_many :store_featured_product_items, dependent: :destroy
 
   def as_json
@@ -43,7 +45,7 @@ class StoreFeaturedProduct < ApplicationRecord
     end
   end
 
-  def section
-    Section.find_by(sectionable_id: self.id, sectionable_type: self.class.name)
-  end
+  # def section
+  #   Section.find_by(sectionable_id: self.id, sectionable_type: self.class.name)
+  # end
 end

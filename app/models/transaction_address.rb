@@ -3,7 +3,6 @@
 # Table name: transaction_addresses
 #
 #  id                :integer          not null, primary key
-#  transaction_id    :integer          not null
 #  status            :string(255)
 #  phone             :string(255)
 #  postal_code       :string(255)
@@ -15,7 +14,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  country_code      :string(8)
-#  person_id         :integer
+#  person_id         :string(255)
 #  first_name        :string(255)
 #  last_name         :string(255)
 #  company           :string(255)
@@ -23,24 +22,32 @@
 #  email             :string(255)
 #  is_office_address :boolean          default(FALSE)
 #  address_type      :integer          default("shipping_address")
-#
-# Indexes
-#
-#  index_transaction_addresses_on_transaction_id  (transaction_id)
+#  is_deleted        :boolean          default(FALSE)
+#  deleted_at        :datetime
 #
 
 class TransactionAddress < ApplicationRecord
-  belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :transaction_addresses
   belongs_to :person
+  has_many :transactions
   validates_length_of :phone, :in => 10..16, :allow_nil => false, unless: :is_office_address?
 
   before_save :convert_phone
   before_create :add_country
 
   validate :change_office_address, on: :update
-  validate :limit_of_transaction_address, on: :create
 
   enum address_type: [:shipping_address, :billing_address]
+
+  default_scope { where(is_deleted: false) }
+  scope :deleted, -> { unscope(:where).where(is_deleted: true) }
+
+  def soft_delete
+    update(is_deleted: true, deleted_at: DateTime.now)
+  end
+
+  def restore
+    update(is_deleted: false, deleted_at: nil)
+  end
 
   def add_country
     self.country = 'Canada'
@@ -63,18 +70,12 @@ class TransactionAddress < ApplicationRecord
     end
   end
 
-  def limit_of_transaction_address
-    if tx && tx.transaction_addresses.size > 2
-      errors.add(:transaction, 'can only have 2 transaction address: shipping and billing address')
-    end
-  end
-
   def full_address
     "#{street1}, #{city}, #{CANADA_PROVINCES.key(state_or_province)}, #{country}, #{postal_code} "
   end
 
   def fullname
-    first_name + " " + last_name
+    first_name.capitalize + " " + last_name.capitalize
   end
 
   def format_phone

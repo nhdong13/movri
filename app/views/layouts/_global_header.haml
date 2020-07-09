@@ -25,7 +25,7 @@
     - style += "text-align: center;"
     - style += "height: 50px;"
     .header-wrapper.clearfix{style: style}
-      %h2{style: "color: #{store_header.text_color};line-height: 50px;"}= store_header.title.html_safe
+      %h2{style: "color: #{store_header.text_color};line-height: 50px;"}= store_header.title.html_safe?
 
 %header.header.info-header
   .header-wrapper.clearfix
@@ -55,7 +55,7 @@
     - if logged_in
       -# .header-right.visible-tablet
       -#   #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
-      #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+    #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
 
     .header-right.controls
       = render :partial => "layouts/header_anchors"

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import { onlineStoreActions } from '../../../actions/OnlineStoreActions'
 import StoreHeader from '../StoreHeader'
 import Slideshow from '../Slideshow'
 import HighlightBanner from '../HighlightBanner'
 import SectionMore from '../SectionMore'
 import StoreCategoryList from '../StoreCategoryList'
 import StoreFeaturedList from '../StoreFeaturedList'
-import { onlineStoreActions } from '../../../actions/OnlineStoreActions'
+import StoreGrid from '../StoreGrid'
+import StoreFooter from '../StoreFooter'
 
 class StoreSections extends Component {
   constructor(props) {
@@ -70,6 +72,10 @@ class StoreSections extends Component {
     })
   }
 
+  renderTitle(item) {
+    return (item.object.heading || item.object.name || item.name)
+  }
+
   renderContent() {
     let item  = this.state.activeSub
     if (this.state.sectionAdding) {
@@ -88,6 +94,14 @@ class StoreSections extends Component {
         return <StoreFeaturedList 
           callback={this.toggleActiveSub}
           section={item}/>
+      case 'StoreGrid':
+        return <StoreGrid 
+          callback={this.toggleActiveSub}
+          section={item}/>
+      case 'StoreFooter':
+        return <StoreFooter 
+          callback={this.toggleActiveSub}
+          section={item}/>
       default:
         return (
           <div>
@@ -97,7 +111,7 @@ class StoreSections extends Component {
                 this.props.sections.map(item => {
                   return (
                     <li className='section-item' key={item.id} onClick={(e) => this.toggleActiveSub(item)}>
-                      <div className='title'>{item.object.heading || item.name}</div>
+                      <div className='title'>{this.renderTitle(item)}</div>
                     </li>
                   )
                 })

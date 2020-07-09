@@ -603,9 +603,9 @@ class ApplicationController < ActionController::Base
         manage_listings_path: person_path(u, show_closed: true),
         settings_path: person_settings_path(u),
         logout_path: logout_path,
-        store_header: @current_online_store.header
+        store_header: @current_online_store&.header
       }
-    }.or_else({store_header: @current_online_store.header})
+    }.or_else({store_header: @current_online_store&.header})
 
     locale_change_links = available_locales.map { |(title, locale_code)|
       {

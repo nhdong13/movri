@@ -35,7 +35,7 @@ export const sectionData = [
     items: [
       {
         name: 'Grid',
-        model: 'Grid'
+        model: 'StoreGrid'
       },
       {
         name: 'Image with text overlay',
@@ -48,6 +48,15 @@ export const sectionData = [
       {
         name: 'Mosaic',
         model: 'Mosaic'
+      }
+    ]
+  },
+  {
+    categoryName: 'FOOTER',
+    items: [
+      {
+        name: 'Footer section(Contact us, sale & expert...)',
+        model: 'StoreFooter'
       }
     ]
   }

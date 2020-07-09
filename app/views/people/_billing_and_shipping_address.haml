@@ -1,0 +1,70 @@
+.row
+  .col-12
+    .account-info-form.white-background.padding-20
+      %span.account-header Billing and Shipping
+      %p.fz-14 Make changes to your billing and shipping information and save them for future orders.
+      #billing-addresses.margin-bt-20.transaction-address
+        .flex-items
+          .width-50.padding-0
+            %span.fz-18 Billing Address
+          .width-50.align-right
+            .common-link-btn.active.align-center.btn-create-new-address
+              = link_to 'New', new_transaction_address_path(address_type: 'billing_address')
+        - if @current_user.billing_addresses.any?
+          - @current_user.billing_addresses.each do |address|
+            .flex-items.br-bottom.address-row
+              .item-1
+                .flex-items.transaction-full-label
+                  .span.items.bold= address.fullname
+                  - if address.company.present?
+                    .span.items= address.company
+                  - if address.apartment.present?
+                    .span.items= address.apartment
+                  .span.items= address.street1
+                  .span.items= "#{address.city}, #{CANADA_PROVINCES.key(address.state_or_province)} #{address.postal_code}"
+                .is-defaut-address{class: "#{@current_user.default_billing_address == address.id ? '' : 'd-none'}"}
+                  %span.active.padding-5 Default billing address
+                %label.set-as-default-address.margin-0{'data-transaction-address-id': "#{address.id}", class: "#{@current_user.default_billing_address == address.id ? 'd-none' : ''}"}
+                  .flex-items
+                    = check_box_tag :default_shipping_address
+                    %span Set as default billing address
+
+              .item-2.align-right
+                .flex-items
+                  %span.items= link_to 'Edit', edit_transaction_address_path(address)
+                  %span.items= link_to 'Remove', transaction_address_path(address), method: :delete, data: {confirm: "Are you sure?"}, class: "remove-link"
+        - else
+          .padding-15.center-items.br-bottom
+            %span You have no billing address
+      #shipping-addresses.transaction-address.padding-0
+        .flex-items
+          .width-50.padding-0
+            %span.fz-18 Shipping Address
+          .width-50.align-right
+            .common-link-btn.active.align-center.btn-create-new-address
+              = link_to 'New', new_transaction_address_path(address_type: 'shipping_address')
+        - if @current_user.shipping_addresses.any?
+          - @current_user.shipping_addresses.each do |address|
+            .flex-items.br-bottom.address-row
+              .item-1
+                .flex-items.transaction-full-label
+                  .span.items.bold= address.fullname
+                  - if address.company.present?
+                    .span.items= address.company
+                  - if address.apartment.present?
+                    .span.items= address.apartment
+                  .span.items= address.street1
+                  .span.items= "#{address.city}, #{CANADA_PROVINCES.key(address.state_or_province)} #{address.postal_code}"
+                .is-defaut-address{class: "#{@current_user.default_shipping_address == address.id ? '' : 'd-none'}"}
+                  %span.active.padding-5 Default shipping address
+                %label.set-as-default-address.margin-0{'data-transaction-address-id': "#{address.id}", class: "#{@current_user.default_shipping_address == address.id ? 'd-none' : ''}"}
+                  .flex-items
+                    = check_box_tag :default_shipping_address
+                    %span Set as default shipping address
+              .item-2.align-right
+                .flex-items
+                  %span.items= link_to 'Edit', edit_transaction_address_path(address)
+                  %span.items= link_to 'Remove', transaction_address_path(address), method: :delete, data: {confirm: "Are you sure?"}, class: "remove-link"
+        - else
+          .padding-15.center-items.br-bottom
+            %span You have no shipping address

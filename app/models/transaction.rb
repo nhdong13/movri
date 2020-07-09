@@ -34,6 +34,8 @@
 #  tax_cents                         :integer
 #  promo_code_discount_cents         :integer
 #  order_number                      :integer
+#  billing_address_id                :integer
+#  shipping_address_id               :integer
 #
 # Indexes
 #
@@ -56,7 +58,6 @@ class Transaction < ApplicationRecord
   has_and_belongs_to_many :listings
   has_many :transaction_transitions, dependent: :destroy, foreign_key: :transaction_id, inverse_of: :tx
   has_one :booking, dependent: :destroy
-  has_many :transaction_addresses, dependent: :destroy
   belongs_to :starter, class_name: "Person", foreign_key: :starter_id, inverse_of: :starter_transactions
   belongs_to :conversation
   has_many :testimonials, dependent: :destroy
@@ -65,6 +66,9 @@ class Transaction < ApplicationRecord
   has_many :transaction_items, dependent: :destroy
   has_one :shipper, dependent: :destroy
   has_many :helping_requests
+
+  belongs_to :shipping_address, class_name: "TransactionAddress", foreign_key: "shipping_address_id"
+  belongs_to :billing_address, class_name: "TransactionAddress", foreign_key: "billing_address_id"
 
   delegate :author, to: :listing
   delegate :title, to: :listing, prefix: true
@@ -149,14 +153,6 @@ class Transaction < ApplicationRecord
     self.current_state = 'unfulfilled'
   end
 
-  def shipping_address
-    transaction_addresses.shipping_address.last
-  end
-
-  def billing_address
-    transaction_addresses.billing_address.any? ? transaction_addresses.billing_address.last : shipping_address
-  end
-
   def will_pickup?
     delivery_method == "pickup"
   end
@@ -175,6 +171,10 @@ class Transaction < ApplicationRecord
 
   def uuid_object=(uuid)
     self.uuid = UUIDUtils.raw(uuid)
+  end
+
+  def payment
+    stripe_payments.last
   end
 
   before_create :add_uuid
@@ -305,6 +305,12 @@ class Transaction < ApplicationRecord
     unit_price_cents * total_quantity
   end
 
+  def coverage_cents
+    fee = 0
+    transaction_items.map {|item| fee += item.coverage_price_cents * item.quantity}
+    fee
+  end
+
   def payment_gateway
     read_attribute(:payment_gateway)&.to_sym
   end
@@ -399,5 +405,9 @@ class Transaction < ApplicationRecord
         end
       end
     end
+  end
+
+  def stripe_charge_cents
+    stripe_payments.last.sum_cents
   end
 end

@@ -13,7 +13,7 @@
     .col-3
       .listing-box
         .main-image
-          = image_tag 'len-10_288x288.jpg', :class => "design-image-too-wide"
+          = image_tag listing.main_image, :class => "design-image-too-wide"
         .listing-price
           %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
           %span /1 day

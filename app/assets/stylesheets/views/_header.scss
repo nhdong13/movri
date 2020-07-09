@@ -789,7 +789,11 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 .active {
   background-color: #4CAF50;
-  color: white;
+  color: white !important;
+  a, a:hover{
+    opacity: 1;
+    color: white !important;
+  }
 }
 
 .topnav .icon {

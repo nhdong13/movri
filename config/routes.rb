@@ -137,7 +137,7 @@ Rails.application.routes.draw do
     get "/transactions/:uuid/change_state_shipping_form" => "transactions#change_state_shipping_form", as: :change_state_shipping_form
     get "/transactions/:uuid/payment" => "transactions#payment", as: :payment_transaction
     get "/transactions/:uuid/thank_you" => "transactions#thank_you", as: :thank_you_transaction
-    post "/transactions/:transaction_id/billing_addresses" => "transaction_addresses#create_billing_address", as: :transaction_billing_address
+    post "/transactions/:transaction_id/pay_order" => "transaction_addresses#pay_order", as: :pay_order_transaction
 
     # preauthorize flow
 
@@ -196,6 +196,15 @@ Rails.application.routes.draw do
       resources :transaction_addresses, only: [:create, :update]
       resources :shippers, only: [:create, :update]
       resources :helping_requests, only: [:create]
+      member do
+        get 'order_details'
+      end
+    end
+
+    resources :transaction_addresses, only: [:new, :edit, :destroy] do
+      member do
+        put 'set_default_address'
+      end
     end
 
     resources :transaction_addresses, only: [:create, :update]
@@ -257,7 +266,7 @@ Rails.application.routes.draw do
       # Landing page menu
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
-      resources :online_stores, only: [] do 
+      resources :online_stores, only: [] do
         resources :store_sections, only: [:create]
       end
 
@@ -282,6 +291,14 @@ Rails.application.routes.draw do
       end
 
       resources :store_featured_products, only: [:create, :update, :destroy]
+
+      resources :store_grids, only: [:create, :update, :destroy] do
+        resources :store_grid_items, only: [:create, :update, :destroy]
+      end
+
+      resources :store_footers, only: [:create, :update, :destroy] do
+        resources :store_footer_items, only: [:create, :update, :destroy]
+      end
 
       resources :communities do
         member do

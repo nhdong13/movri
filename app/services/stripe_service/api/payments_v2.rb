@@ -1,8 +1,9 @@
 module StripeService::API
   class PaymentsV2
-    def initialize(transaction, session)
+    def initialize(transaction, session, current_user)
       @session = session
       @transaction = transaction
+      @current_user = current_user
       Stripe.api_key = APP_CONFIG.stripe_api_test_secret_key
       @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session)
       @amount = @calculate_money_service.final_price.to_i
@@ -38,11 +39,19 @@ module StripeService::API
       )
     end
 
-    def create_billing_address_and_payment_intent params, transaction_address_params
+    def processing_billing_address_and_payment_intent params, transaction_address_params
       begin
         ActiveRecord::Base.transaction do
           amount = @calculate_money_service.final_price
-          @transaction_address = @transaction.transaction_addresses.create(transaction_address_params)
+          if params[:billing_address_id]
+            @transaction_address = TransactionAddress.find_by(id: params[:billing_address_id])
+            @transaction_address.update(transaction_address_params)
+          else
+            @transaction_address = TransactionAddress.create(transaction_address_params)
+          end
+          @transaction.update(billing_address_id: @transaction_address.id)
+          @current_user.update(default_billing_address: @transaction_address.id) if @current_user && @current_user.billing_address.nil?
+
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
             currency: 'usd',
