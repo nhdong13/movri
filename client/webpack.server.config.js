@@ -22,7 +22,7 @@ module.exports = {
     publicPath: '/assets/',
   },
   resolve: {
-    extensions: ['*', '.js'],
+    extensions: ['*', '.js', '.jsx'],
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -38,6 +38,14 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: [/node_modules/, /i18n\/all.js/, /routes\/routes.js/],
+      },
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        query: {
+          presets: ["@babel/preset-env"]
+        }
       },
       {
         test: /\.css$/,

@@ -10,6 +10,8 @@ import StoreCategoryList from '../StoreCategoryList'
 import StoreFeaturedList from '../StoreFeaturedList'
 import StoreGrid from '../StoreGrid'
 import StoreFooter from '../StoreFooter'
+import HelpfulLink from '../HelpfulLink'
+
 
 class StoreSections extends Component {
   constructor(props) {
@@ -100,6 +102,10 @@ class StoreSections extends Component {
           section={item}/>
       case 'StoreFooter':
         return <StoreFooter 
+          callback={this.toggleActiveSub}
+          section={item}/>
+      case 'HelpfulLink':
+        return <HelpfulLink 
           callback={this.toggleActiveSub}
           section={item}/>
       default:
