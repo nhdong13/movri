@@ -54,7 +54,7 @@
 #  in_the_box                      :text(65535)
 #  not_in_the_box                  :text(65535)
 #  key_feature                     :text(65535)
-#  available_quantity              :integer
+#  available_quantity              :integer          default(0)
 #  sku                             :string(255)
 #  barcode                         :string(255)
 #  track_quantity                  :boolean
@@ -289,9 +289,6 @@ class Listing < ApplicationRecord
     custom_field_values.by_question(custom_field).first
   end
 
-  def available_quantity
-    return 0 if available_quantity.nil?
-  end
   def unit_type
     Maybe(read_attribute(:unit_type)).to_sym.or_else(nil)
   end
