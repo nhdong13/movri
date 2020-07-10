@@ -1,12 +1,11 @@
 <% if @success %>
   $(".show-cart-page .shipping-box").html("<%= j render(partial: 'listings/carts/shipping_box', locals: { zipcode:  params[:zipcode] }) %>");
   //desktop-display
-  $(".desktop-display .show-cart-page .header-checkout").html("<%= j render(partial: 'listings/carts/header_checkout', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
-  $(".desktop-display .show-cart-page .col-8").html("<%= j render(partial: 'listings/carts/list_listing', locals: { promo_code: @promo_code }) %>");
+  $(".show-cart-page .header-checkout").html("<%= j render(partial: 'listings/carts/header_checkout', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
+  $(".show-cart-page .desktop-cart-listings").html("<%= j render(partial: 'listings/carts/list_listing', locals: { promo_code: @promo_code }) %>");
   $(".show-cart-page .checkout-box").html("<%= j render(partial: 'listings/carts/checkout_box', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
   //mobile-display
-  $(".mobile-display .show-cart-page .mobile-cart-header").html("<%= j render(partial: 'listings/carts/mobile/cart_header', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
-  $(".mobile-display .show-cart-page .mobile-cart-listings").html("<%= j render(partial: 'listings/carts/mobile/list_listing', locals: { promo_code: @promo_code }) %>");
+  $(".show-cart-page .mobile-cart-listings").html("<%= j render(partial: 'listings/carts/mobile/list_listing', locals: { promo_code: @promo_code }) %>");
 <% else %>
   $('.zipcode-error').html('<%= @message %>').css('display', 'block').delay(5000).slideUp("slow");
 <% end %>

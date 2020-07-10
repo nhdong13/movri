@@ -140,6 +140,8 @@ class Listing < ApplicationRecord
   validates_presence_of :author_id
   validates_length_of :title, :in => 2..65, :allow_nil => false
 
+  validates :available_quantity, numericality: { greater_than_or_equal_to: 0 }
+
   scope :exist, -> { where(deleted: false) }
 
   scope :search_title_author_category, ->(pattern) do

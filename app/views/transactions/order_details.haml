@@ -61,7 +61,7 @@
               %span.block Shipped
               %span= "<strong>#{@transaction.total_quantity} products</strong> in this order".html_safe
               .btn-link
-                = link_to "Track Package", ""
+                = link_to "Track Package", TRACKING_PACKAGE_WEB, target: :_blank
         .account-list-orders
           .white-background
             .row.margin-bt-20
@@ -154,7 +154,7 @@
               %span.block Shipped
               %span= "<strong>#{@transaction.total_quantity} products</strong> in this order".html_safe
               .btn-link
-                = link_to "Track Package", ""
+                = link_to "Track Package", TRACKING_PACKAGE_WEB, target: :_blank
         .account-list-orders
           .white-background
             .row.margin-bt-20

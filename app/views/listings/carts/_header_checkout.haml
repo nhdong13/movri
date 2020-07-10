@@ -1,17 +1,36 @@
-.cart-header
-  .row
-    .col-3
-      %span= t('transactions.label.my_cart')
-    .col-7
-      %span= t('transactions.label.subtotal')
-      .price
-        %span
-          - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
-          = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
-        %span
-          \/
-          = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
-    .col-2
-      = button_tag class: "common-btn btn-checkout" do
-        %i.icon-lock.fa-fw
-        %span.uppercase= t('transactions.label.checkout')
+.mobile-display
+  .mobile-cart-header
+    .row
+      .col-2
+        %span.title= t('transactions.label.my_cart')
+      .col-6.price
+        %span.subtotal= t('transactions.label.subtotal')
+        .price
+          %span.number-price
+            - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
+            = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
+          %span.day-rent
+            \/
+            = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
+      .col-4
+        = button_tag class: "custom-btn" do
+          -# %i.icon-lock.fa-fw
+          %span.uppercase= t('transactions.label.checkout')
+.desktop-display
+  .cart-header
+    .row
+      .col-3
+        %span= t('transactions.label.my_cart')
+      .col-7
+        %span= t('transactions.label.subtotal')
+        .price
+          %span
+            - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
+            = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
+          %span
+            \/
+            = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
+      .col-2
+        = button_tag class: "common-btn btn-checkout" do
+          %i.icon-lock.fa-fw
+          %span.uppercase= t('transactions.label.checkout')
