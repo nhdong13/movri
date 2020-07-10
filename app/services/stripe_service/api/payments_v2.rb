@@ -11,16 +11,20 @@ module StripeService::API
 
     def create_payment_intent payment_method_id
       begin
-        intent = Stripe::PaymentIntent.create({
-          amount: @amount,
-          currency: 'usd',
-          payment_method: payment_method_id,
-          error_on_requires_action: true,
-          confirm: true
-        })
-        create_stripe_payment(intent) if intent
-        return {success: true}
-      rescue Stripe::CardError => e
+        ActiveRecord::Base.transaction(:requires_new => true) do
+          update_available_quantity
+
+          intent = Stripe::PaymentIntent.create({
+            amount: @amount,
+            currency: 'usd',
+            payment_method: payment_method_id,
+            error_on_requires_action: true,
+            confirm: true
+          })
+          create_stripe_payment(intent) if intent
+          return {success: true}
+        end
+      rescue => e
         # Display error on client
         return {success: false, error: e.message}
       end
@@ -39,11 +43,20 @@ module StripeService::API
       )
     end
 
+    def update_available_quantity
+      @transaction.transaction_items.each do |item|
+        listing = item.listing
+        listing_quantity = listing.available_quantity
+        new_quantity = listing_quantity - item.quantity
+        item.listing.update!(available_quantity: new_quantity)
+      end
+    end
+
     def processing_billing_address_and_payment_intent params, transaction_address_params
       begin
         ActiveRecord::Base.transaction do
           amount = @calculate_money_service.final_price
-          if params[:billing_address_id]
+          if params[:billing_address_id].present?
             @transaction_address = TransactionAddress.find_by(id: params[:billing_address_id])
             @transaction_address.update(transaction_address_params)
           else
@@ -51,6 +64,8 @@ module StripeService::API
           end
           @transaction.update(billing_address_id: @transaction_address.id)
           @current_user.update(default_billing_address: @transaction_address.id) if @current_user && @current_user.billing_address.nil?
+
+          update_available_quantity
 
           intent = Stripe::PaymentIntent.create({
             amount: @amount,

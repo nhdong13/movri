@@ -169,20 +169,12 @@
 
   .coverage {
     font-size: 14px;
-    margin-left: 33%;
-
     .coverage-selection {
-      width: 30px !important;
-
+      max-width:85px;
+      select{max-width:85px}
       .custom-select {
         border: 1px solid #0b0a0a;
         background: white;
-      }
-    }
-
-    .price-coverage {
-      .price {
-        margin-right: 10px;
       }
     }
   }
@@ -315,13 +307,6 @@
     font-size: 13px !important;
     padding: 0.75rem 1.5em;
     background: #4eb857;
-  }
-}
-
-.show-cart-page {
-  .col-4 {
-    width: 33% !important;
-    float: left
   }
 }
 
