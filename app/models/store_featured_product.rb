@@ -39,10 +39,13 @@ class StoreFeaturedProduct < ApplicationRecord
   end
   
   def selected_products
-    listings = Listing.where(id: product_ids)
     listings.map do |l|
       {value: l.id, label: l.title}
     end
+  end
+
+  def listings
+    Listing.where(id: product_ids)
   end
 
   # def section

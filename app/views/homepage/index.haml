@@ -58,8 +58,14 @@
     = t(".this_is_private_community")
 
 - else
+  = render 'slideshow'
   = render partial: "how_it_works"
   .wrapper
-    = render partial: "new_products"
-    = render partial: "feature_products"
-    = render partial: "the_movri_different"
+    - @extra_sections.each do |section|
+      - case section.sectionable_type
+      - when 'StoreFeaturedProduct'
+        = render "feature_products", featured_product: section.sectionable
+
+    -# = render partial: "new_products"
+    -# = render partial: "feature_products"
+    -# = render partial: "the_movri_different"

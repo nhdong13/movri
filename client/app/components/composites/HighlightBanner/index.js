@@ -57,7 +57,7 @@ class HighlightBanner extends Component {
   }
 
   handleBgColorClose() {
-    this.setState({textBgColorEnabled: false})
+    this.setState({bgColorEnabled: false})
   }
 
   colorPickToggle() {
@@ -94,7 +94,7 @@ class HighlightBanner extends Component {
       highlight_banner: {
         enabled: object.enabled,
         text_color: object.text_color,
-        backgroud_color: object.backgroud_color
+        background_color: object.background_color
       }
     }
     this.setState({saving: true})

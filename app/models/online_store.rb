@@ -14,8 +14,30 @@
 
 class OnlineStore < ApplicationRecord
   belongs_to :community
-  has_many :sections, dependent: :destroy
-  has_one :header, dependent: :destroy
-  has_one :slideshow, through: :header
-  has_one :highlight_banner, dependent: :destroy
+  has_many :sections, -> { includes :sectionable}, dependent: :destroy
+
+  DEFAULT_SECTIONS = %w(header slideshow highlight_banner)
+  # has_many :sectionable, through: :sections, source_type: 'Sectionable'
+  # has_one :slideshow, through: :header
+  # has_one :highlight_banner, dependent: :destroy
+  # def header 
+  #   sections.where(sectionable_type: 'Header').last&.sectionable
+  # end
+
+  # def slideshow
+
+  # end
+
+    # class << self
+      
+    # end
+  DEFAULT_SECTIONS.each do |model|
+    define_method model do 
+      sections.where(sectionable_type: model.camelize).last&.sectionable
+    end
+  end
+
+  def extra_sections
+    sections.where.not(sectionable_type: DEFAULT_SECTIONS.map(&:camelize))
+  end
 end

@@ -23,4 +23,16 @@ module HomepageHelper
     precision = (distance < 1) ? 1 : 2
     (distance < 0.1) ? "< #{number_with_delimiter(0.1, locale: locale)}" : number_with_precision(distance, precision: precision, significant: true, locale: locale)
   end
+
+  def is_homepage?
+    params[:controller] == "homepage" && params[:action] == "index"
+  end
+
+  def header_on_homepage?(header)
+    is_homepage? && header.sticky_enabled? && header.home_only_enabled?
+  end
+
+  def header_on_pages?(header)
+    header.sticky_enabled? && header.announcement_enabled?
+  end
 end
