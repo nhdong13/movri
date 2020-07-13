@@ -300,6 +300,10 @@ Rails.application.routes.draw do
         resources :store_footer_items, only: [:create, :update, :destroy]
       end
 
+      resources :helpful_links, only: [:create, :update, :destroy] do
+        resources :helpful_link_items, only: [:create, :update, :destroy]
+      end
+
       resources :communities do
         member do
           get :edit_welcome_email
