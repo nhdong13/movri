@@ -29,7 +29,7 @@ class Admin::HelpfulLinkItemsController < Admin::AdminBaseController
 
   def helpful_link_item_params
     params.require(:helpful_link_item)
-      .permit(:heading, :text, :heading_color, :text_color, :enabled, :content_type, footer_links_attributes: [:id, :sub_heading, :link], social_accounts_attributes: [])
+      .permit(:heading, :text, :heading_color, :text_color, :enabled, :content_type, footer_links_attributes: [:id, :sub_heading, :link], footer_social_accounts_attributes: [:id, :alt_text, :link, :image])
   end
 
   def admin_section_item_service

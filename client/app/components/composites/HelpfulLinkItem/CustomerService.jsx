@@ -47,6 +47,7 @@ class CustomerService extends Component {
           <label>Heading</label>
           <input name='heading' value={item.heading} type='text' onChange={this.props.handleOnChange}/>
         </div>
+        <hr></hr>
         {
           item.sub_items.map(sub => {
             return(

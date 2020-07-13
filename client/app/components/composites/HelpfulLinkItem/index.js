@@ -61,17 +61,40 @@ class HelpfulLinkItem extends Component {
       itemParams['footer_links_attributes'] = subItems
     }
     if (this.isSocialAccount()) {
-      itemParams['social_accounts_attributes'] = subItems
+      itemParams['footer_social_accounts_attributes'] = subItems
     }
 
-    const dataParams = {
+    let dataParams = {
       authenticity_token: $('input[name ="authenticity_token"]').val(),
       helpful_link_item: itemParams
     }
+    let formData = new FormData()
+
+    if (this.isSocialAccount()) {
+      formData.append('authenticity_token', $('input[name ="authenticity_token"]').val())
+      for (let key in itemParams) {
+        if (key === 'footer_social_accounts_attributes') {
+          itemParams['footer_social_accounts_attributes'].map((attr, index) => {
+            for (let k in attr) {
+              let value = null
+              if (k === 'image') {
+                value = attr[k][0]
+              } else {
+                value = attr[k]
+              }
+              formData.append(`helpful_link_item[footer_social_accounts_attributes][][${k}]`, value)
+            }
+          })
+        } else {
+          formData.append(`helpful_link_item[${key}]`, itemParams[key])
+        }
+      }
+    }
+
     const axiosOptions = {
       url: item.id ? `/admin/helpful_links/${item.helpful_link_id}/helpful_link_items/${item.id}` :  `/admin/helpful_links/${item.helpful_link_id}/helpful_link_items`,
       method: item.id ? 'put' : 'post',
-      data: dataParams
+      data: this.isSocialAccount() ? formData : dataParams
     }
     this.setState({saving: true})
     axios(axiosOptions).then(res => {
@@ -129,7 +152,10 @@ class HelpfulLinkItem extends Component {
         handleOnChange={this.handleOnChange}
       />
     } else if (this.isSocialAccount()) {
-      return <SocialAccount />
+      return <SocialAccount 
+        item={item}
+        handleOnChange={this.handleOnChange}
+      />
     } else {
       return <ContactInformation
         item={item}
