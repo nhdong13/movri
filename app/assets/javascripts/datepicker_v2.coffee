@@ -35,7 +35,7 @@ window.ST = window.ST or {}
     $('.input-arrival-date').datepicker
       autoclose: true
       startDate: new Date
-      todayHighlight: true
+      todayHighlight: true,
 
     $('.input-return-date').datepicker
       daysOfWeekDisabled: '0'
@@ -64,6 +64,7 @@ window.ST = window.ST or {}
       endDate = $('.input-return-date').datepicker('getDate')
       if oneDayMore <= endDate
         newDate = oneDayMore
+      $('#cart_deatail_return_date').focus().datepicker('setDate', '')
       $('#cart_deatail_arrival_date').datepicker 'hide'
       $('#cart_deatail_return_date').focus().datepicker 'show'
       $('#cart_deatail_return_date').focus().datepicker('setStartDate', oneDayMore)
@@ -72,14 +73,18 @@ window.ST = window.ST or {}
       changeBookingDayUrl = "/en/change_cart_detail_booking_days.js";
       end_date = $(this).val()
       start_date = $('.input-arrival-date').val()
-      $.ajax
-        url: changeBookingDayUrl,
-        type: "PUT",
-        data:
-           start_date: start_date,
-           end_date: end_date,
-           code: getPromoCode()
-      $('.input-return-date').datepicker 'hide'
+      if end_date != "" && start_date != ""
+        $.ajax
+          url: changeBookingDayUrl,
+          type: "PUT",
+          data:
+             start_date: start_date,
+             end_date: end_date,
+             code: getPromoCode()
+        $('.input-return-date').datepicker 'hide'
+
+    $('.fa-calendar').click ->
+      $(this).parent().find('input').datepicker('show')
 
   setupForDay = (options) ->
     # disabledDates = options.blocked_dates.map((d) ->

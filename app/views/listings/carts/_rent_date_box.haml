@@ -3,10 +3,16 @@
     .listing-shipping-date.arrival-date.input-daterange#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
       .arrival-date
         %p.center-title= t('transactions.label.arrival_date')
-        = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : ''), class: "input-arrival-date"
+        .common-input-date-with-icon
+          = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : ''), class: "input-arrival-date"
+          %i.fa.fa-calendar
+
+
       .return-date
         %p.center-title= t('transactions.label.return_date')
-        = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : ''), class: "input-return-date"
+        .common-input-date-with-icon
+          = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : ''), class: "input-return-date"
+          %i.fa.fa-calendar
 
 - content_for :extra_javascript do
   :javascript

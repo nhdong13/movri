@@ -253,3 +253,20 @@
 .remove-link{
   color: red;
 }
+
+.fa-calendar{
+  display: inline-flex !important;
+  height: 42px;
+  width: 42px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #9e9e9e;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  border-left: transparent !important;
+  margin-left: -3px
+}
+
+.common-input-date-with-icon{
+  display: flex;
+}
