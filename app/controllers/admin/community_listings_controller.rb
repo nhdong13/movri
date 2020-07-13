@@ -7,7 +7,10 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
 
   def index
     listings = @service.public_list
-    render json: listings, each_serializer: ListingSerializer
+    respond_to do |format|
+      format.html
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
   end
 
   def update
