@@ -54,7 +54,7 @@
 #  in_the_box                      :text(65535)
 #  not_in_the_box                  :text(65535)
 #  key_feature                     :text(65535)
-#  available_quantity              :integer          default(0)
+#  available_quantity              :integer
 #  sku                             :string(255)
 #  barcode                         :string(255)
 #  track_quantity                  :boolean
