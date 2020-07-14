@@ -1,39 +1,60 @@
 .brown-background
-  .mobile-display
-    .show-cart-page
+  -# .mobile-display
+  -#   .show-cart-page
+  -#     - if session[:cart].present?
+  -#       .mobile-cart-header.header-checkout
+  -#         = render partial: 'listings/carts/mobile/cart_header', locals: {promo_code: nil, shipping_type: nil}
+  -#       .mobile-cart-listings
+  -#         = render partial: 'listings/carts/mobile/list_listing', locals: {promo_code: nil}
+  -#       .row-empty-row
+  -#       .col-12.rent-date-box
+  -#         = render partial: 'listings/carts/rent_date_box'
+  -#       .col-12.promo-code-box
+  -#         = render partial: "listings/carts/promo_code_box"
+  -#       .col-12.instructions-box
+  -#         = render partial: "listings/carts/instructions_box"
+  -#       .col-12.shipping-box
+  -#         = render partial: "listings/carts/shipping_box", locals: {zipcode: nil}
+  -#       .col-12.checkout-box
+  -#         = render partial: "listings/carts/checkout_box", locals: {promo_code: nil, shipping_type: nil}
+  -#     - else
+  -#       = render partial: 'listings/carts/mobile/no_listing'
+  -#   = render partial: 'shares/mobile_footer'
+  -# .desktop-display
+  -#   .show-cart-page
+  -#     .wrapper
+  -#       .row
+  -#         - if session[:cart].present?
+  -#           .header-checkout
+  -#             = render partial: "listings/carts/header_checkout", locals: {promo_code: nil, shipping_type: nil}
+  -#           .col-8
+  -#             = render partial: "listings/carts/list_listing", locals: {promo_code: nil}
+  -#           .col-4
+  -#             = render partial: "listings/carts/info_boxes", locals: {promo_code: nil}
+  -#         - else
+  -#           .col-8
+  -#             = render partial: "listings/carts/list_listing", locals: {promo_code: nil}
+  -#           .col-4
+  -#             = render partial: "listings/carts/info_boxes", locals: {promo_code: nil}
+  -#           -# TODO:
+  -#           %h1 No products in the cart yet
+  .show-cart-page.padding-15
+    .wrapper
       - if session[:cart].present?
-        .mobile-cart-header.header-checkout
-          = render partial: 'listings/carts/mobile/cart_header', locals: {promo_code: nil, shipping_type: nil}
-        .mobile-cart-listings
-          = render partial: 'listings/carts/mobile/list_listing', locals: {promo_code: nil}
-        .row-empty-row
-        .col-12.rent-date-box
-          = render partial: 'listings/carts/rent_date_box'
-        .col-12.promo-code-box
-          = render partial: "listings/carts/promo_code_box"
-        .col-12.instructions-box
-          = render partial: "listings/carts/instructions_box"
-        .col-12.shipping-box
-          = render partial: "listings/carts/shipping_box", locals: {zipcode: nil}
-        .col-12.checkout-box
-          = render partial: "listings/carts/checkout_box", locals: {promo_code: nil, shipping_type: nil}
+        .header-checkout.padding-0
+          = render partial: "listings/carts/header_checkout", locals: {promo_code: nil, shipping_type: nil}
+        .row
+          .col-8
+            .mobile-display
+              .mobile-cart-listings
+                = render partial: 'listings/carts/mobile/list_listing', locals: {promo_code: nil}
+            .desktop-display
+              .desktop-cart-listings
+                = render partial: "listings/carts/list_listing", locals: {promo_code: nil}
+          .col-4
+            = render partial: "listings/carts/info_boxes", locals: {promo_code: nil}
       - else
         = render partial: 'listings/carts/mobile/no_listing'
-    = render partial: 'shares/mobile_footer'
-  .desktop-display
-    .show-cart-page
-      .wrapper
-        .row
-          - if session[:cart].present?
-            .header-checkout
-              = render partial: "listings/carts/header_checkout", locals: {promo_code: nil, shipping_type: nil}
-            .col-8
-              = render partial: "listings/carts/list_listing", locals: {promo_code: nil}
-            .col-4
-              = render partial: "listings/carts/info_boxes", locals: {promo_code: nil}
-          - else
-            -# TODO:
-            %h1 No products in the cart yet
 
 - content_for :javascript do
   window.ST.initCart();

@@ -35,3 +35,4 @@ EMPTY_SHIPPING_ADDRESS = {
 }
 
 DEFAULT_ADMIN_EMAIL = 'admin-movri@yopmail.com'
+TRACKING_PACKAGE_WEB = 'https://www.fedex.com/en-ca/home.html'

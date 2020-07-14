@@ -4,6 +4,7 @@ import StoreCategoryList from '../StoreCategoryList'
 import StoreFeaturedList from '../StoreFeaturedList'
 import StoreGrid from '../StoreGrid'
 import StoreFooter from '../StoreFooter'
+import HelpfulLink from '../HelpfulLink'
 
 class SectionMore extends Component {
   constructor(props) {
@@ -31,6 +32,8 @@ class SectionMore extends Component {
         return <StoreGrid callback={this.setCurrentSection} />
       case 'StoreFooter':
         return <StoreFooter callback={this.setCurrentSection} />
+      case 'HelpfulLink':
+        return <HelpfulLink callback={this.setCurrentSection} />
       default:
         return (
           <div className='store-header add-more-section'>
