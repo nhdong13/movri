@@ -23,7 +23,7 @@ class HomepageController < ApplicationController
 
     @slideshow = @current_online_store.slideshow
     @highlight_banner = @current_online_store.highlight_banner
-    @extra_sections = @current_online_store.extra_sections
+    # @extra_sections = @current_online_store.extra_sections
 
     if FeatureFlagHelper.feature_enabled?(:searchpage_v1)
       @view_type = "grid"

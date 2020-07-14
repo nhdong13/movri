@@ -309,6 +309,8 @@ class ApplicationController < ActionController::Base
 
   def fetch_online_store
     @current_online_store = @current_community && @current_community.online_store
+    @store_sections_presenter = OnlineStore::SectionsPresenter.new(@current_online_store)
+    
   end
 
   # Performs redirect to correct URL, if needed.

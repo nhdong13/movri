@@ -61,11 +61,7 @@
   = render 'slideshow'
   = render partial: "how_it_works"
   .wrapper
-    - @extra_sections.each do |section|
-      - case section.sectionable_type
-      - when 'StoreFeaturedProduct'
-        = render "feature_products", featured_product: section.sectionable
-
-    -# = render partial: "new_products"
-    -# = render partial: "feature_products"
-    -# = render partial: "the_movri_different"
+    - @store_sections_presenter.featured_products.each do |section|
+      = render "feature_products", featured_product: section.sectionable
+    - @store_sections_presenter.store_grids.each do |section|
+      = render 'the_movri_different', grid: section.sectionable

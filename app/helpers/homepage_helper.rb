@@ -35,4 +35,24 @@ module HomepageHelper
   def header_on_pages?(header)
     header.sticky_enabled? && header.announcement_enabled?
   end
+
+  def grid_styles grid
+    case grid.text_alignment
+    when 'bottom_center'
+      {
+        position: 'bottom',
+        text_align: 'center'
+      }
+    when 'top_center'
+      {
+        position: 'top',
+        text_align: 'center'
+      }
+    else
+      {
+        position: 'bottom',
+        text_align: 'center'
+      }
+    end
+  end
 end
