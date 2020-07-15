@@ -48,7 +48,7 @@ class StoreFeaturedList extends Component {
   }
 
   fectchingFeaturedProducts() {
-    axios.get(`/admin/communities/${this.props.onlineStore.community_id}/listings`).then(res => {
+    axios.get(`/admin/communities/${this.props.onlineStore.community_id}/listings.json`).then(res => {
       if (res.status === 200) {
         const productOptions = renameKeys(res.data)
         this.setState({

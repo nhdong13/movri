@@ -15,16 +15,6 @@ $(function() {
     $('.homepage-carousel').css({display: 'block', opacity: 1});
   });
 
-  $('.homepage-carousel').slick({
-    adaptiveHeigh: true,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: true,
-    dots: true,
-    prevArrow:"<button type='button' class='slick-prev pull-left'><i class='icon-chevron-left' aria-hidden='true'></i></button>",
-    nextArrow:"<button type='button' class='slick-next pull-right'><i class='icon-chevron-right' aria-hidden='true'></i></button>"
-  });
-
   // Selectors
   var showFiltersButtonSelector = "#home-toolbar-show-filters";
   var filtersContainerSelector = "#home-toolbar-filters";
@@ -293,3 +283,24 @@ $(function() {
     }
   });
 });
+
+window.ST = window.ST || {};
+
+(function(module) {
+  var initCarousel = function(options) {
+    $(options.elms).slick({
+      adaptiveHeigh: true,
+      autoplay: options.autoplay,
+      autoplaySpeed: options.autoplaySpeed,
+      arrows: true,
+      dots: true,
+      prevArrow:"<button type='button' class='slick-prev pull-left'><i class='icon-chevron-left' aria-hidden='true'></i></button>",
+      nextArrow:"<button type='button' class='slick-next pull-right'><i class='icon-chevron-right' aria-hidden='true'></i></button>"
+    })
+  }
+
+  module.Homepage = {
+    initCarousel: initCarousel
+  }
+})(window.ST)
+

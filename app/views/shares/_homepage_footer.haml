@@ -1,9 +1,10 @@
 .desktop-display
-  = render partial: "shares/contact"
-  = render partial: "homepage/movri_infomation"
-  = render partial: "shares/helpful_links"
+  - @store_sections_presenter.store_footers.each do |section|
+    = render "shares/contact", section: section.sectionable
+  - @store_sections_presenter.footer_helpful_links.each do |section|
+    = render "shares/helpful_links", helpful_section: section.sectionable
   = render partial: "shares/benefit"
   = render partial: "shares/security_social_media"
   = render partial: "shares/copyright"
 .mobile-display
-  = render partial: "shares/mobile_footer"
+  = render "shares/mobile_footer", footer_helpful_links:  @store_sections_presenter.footer_helpful_links

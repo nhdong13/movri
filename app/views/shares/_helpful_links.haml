@@ -1,7 +1,8 @@
-.row.helpful-link-section.br-bottom.br-top
-  .wrapper
-    .col-12
-      = render partial: "homepage/more_helpful_links"
-      .helpful-link-btn
-        %span.fa-fw= I18n.t("footer.helpful_link_btn")
-        %i.icon-plus
+- if helpful_section.enabled?
+  .row.helpful-link-section.br-bottom.br-top.footer
+    .wrapper
+      .col-12
+        = render "homepage/more_helpful_links", helpful_section: helpful_section
+        .helpful-link-btn
+          %span.fa-fw= I18n.t("footer.helpful_link_btn")
+          %i.icon-plus
