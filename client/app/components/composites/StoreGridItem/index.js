@@ -2,7 +2,8 @@ import React, { Component } from  'react'
 import ImageUploader from 'react-images-upload';
 import axios from 'axios'
 import { previewUploadImageSrc } from '../../../utils/common'
-import { SketchPicker } from 'react-color';
+import { SketchPicker } from 'react-color'
+import SimpleCkeditor from '../../elements/SimpleCkeditor'
 
 class StoreGridItem extends Component {
   constructor(props) {
@@ -136,6 +137,9 @@ class StoreGridItem extends Component {
         left: '0px',
       }
     }
+
+    const { widths } = JSConstant.SECTION_GRID_OPTIONS
+
     return(
       <div className='collapsible store-category-item slideshow-item'>
         <div className='row section-column-header-toggle' onClick={this.handleToggleItem}>
@@ -166,7 +170,12 @@ class StoreGridItem extends Component {
               </div>
               <div className='form-control'>
                 <label>Text</label>
-                <input name='text' value={this.state.item.text || ''} type='text' onChange={this.handleOnChange}/>
+                <SimpleCkeditor 
+                  name='text'
+                  value={this.state.item.text || ''}
+                  id={this.state.item.id}
+                  handleOnChange={this.handleOnChange}
+                />
               </div>
               <div className='form-control'>
                 <button
@@ -203,7 +212,11 @@ class StoreGridItem extends Component {
               <div className='form-control'>
                 <label>Width</label>
                 <select name='width' defaultValue={this.state.item.width}>
-                  <option value='half_width' onChange={this.handleOnChange}>Half width</option>
+                  { 
+                    Object.entries(widths).map(i => {
+                      return <option key={i[0]} value={i[0]}>{i[1]}</option>
+                    })
+                  }
                 </select>
               </div>
               <div className='row'>
