@@ -2,7 +2,8 @@ import React, { Component } from  'react'
 import ImageUploader from 'react-images-upload';
 import axios from 'axios'
 import { previewUploadImageSrc } from '../../../utils/common'
-import { SketchPicker } from 'react-color';
+import { SketchPicker } from 'react-color'
+import SimpleCkeditor from '../../elements/SimpleCkeditor'
 
 class StoreGridItem extends Component {
   constructor(props) {
@@ -166,7 +167,12 @@ class StoreGridItem extends Component {
               </div>
               <div className='form-control'>
                 <label>Text</label>
-                <input name='text' value={this.state.item.text || ''} type='text' onChange={this.handleOnChange}/>
+                <SimpleCkeditor 
+                  name='text'
+                  value={this.state.item.text || ''}
+                  id={this.state.item.id}
+                  handleOnChange={this.handleOnChange}
+                />
               </div>
               <div className='form-control'>
                 <button
