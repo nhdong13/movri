@@ -137,6 +137,9 @@ class StoreGridItem extends Component {
         left: '0px',
       }
     }
+
+    const { widths } = JSConstant.SECTION_GRID_OPTIONS
+
     return(
       <div className='collapsible store-category-item slideshow-item'>
         <div className='row section-column-header-toggle' onClick={this.handleToggleItem}>
@@ -209,7 +212,11 @@ class StoreGridItem extends Component {
               <div className='form-control'>
                 <label>Width</label>
                 <select name='width' defaultValue={this.state.item.width}>
-                  <option value='half_width' onChange={this.handleOnChange}>Half width</option>
+                  { 
+                    Object.entries(widths).map(i => {
+                      return <option key={i[0]} value={i[0]}>{i[1]}</option>
+                    })
+                  }
                 </select>
               </div>
               <div className='row'>

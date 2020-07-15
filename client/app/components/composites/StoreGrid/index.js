@@ -142,6 +142,8 @@ class StoreGrid extends Component {
   }
 
   render() {
+    const { heights, text_alignments } = JSConstant.SECTION_GRID_OPTIONS
+
     return (
       <div className='store-header store-slideshow'>
         <div className='breabcrum' onClick={() => this.props.callback(undefined)}>
@@ -158,13 +160,21 @@ class StoreGrid extends Component {
             <div className='form-control'>
               <label>Section height</label>
               <select name='height' value={this.state.object.height} onChange={this.handleOnChange}>
-                <option value='small'>Small</option>
+                { 
+                  Object.entries(heights).map(i => {
+                    return <option key={i[0]} value={i[0]}>{i[1]}</option>
+                  })
+                }
               </select>
             </div>
             <div className='form-control'>
               <label>Text alignment</label>
               <select name='text_alignment' value={this.state.object.text_alignment} onChange={this.handleOnChange}>
-                <option value='bottom_center'>Bottom Center</option>
+                { 
+                  Object.entries(text_alignments).map(i => {
+                    return <option key={i[0]} value={i[0]}>{i[1]}</option>
+                  })
+                }
               </select>
             </div>
             <div className='checkbox-control'>
