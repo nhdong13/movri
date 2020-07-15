@@ -45,6 +45,7 @@
 //= require jquery.iframe-transport.js
 
 //= require fastclick
+//= require constant
 
 // Responsive helpers
 // https://github.com/edenspiekermann/minwidth-relocate

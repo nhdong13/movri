@@ -3,6 +3,7 @@ import axios from 'axios'
 import MultiSelect from "react-multi-select-component";
 import countryList from 'react-select-country-list'
 import currency_iso from '../../../assets/json/currency_iso.json'
+import SimpleCkeditor from '../../elements/SimpleCkeditor'
 
 const renameKeys = (arr) => {
   const newArray = arr.map(elm => {
@@ -172,7 +173,12 @@ class StoreFooterItem extends Component {
         </div>
         <div className='form-control'>
           <label>Text</label>
-          <textarea name='text' value={item.text} type='text' onChange={this.handleOnChange}/>
+          <SimpleCkeditor 
+            name='text'
+            value={item.text || ''}
+            id={item.id}
+            handleOnChange={this.handleOnChange}
+          />
         </div>
         <div className='form-control'>
           <label>Link</label>

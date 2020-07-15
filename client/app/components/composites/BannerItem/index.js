@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import ImageUploader from 'react-images-upload'
 import { previewUploadImageSrc } from '../../../utils/common'
+import SimpleCkeditor from '../../elements/SimpleCkeditor'
 
 
 class BannerItem extends Component {
@@ -26,6 +27,7 @@ class BannerItem extends Component {
     this.axiosDefaultParams = {
       authenticity_token: $('input[name ="authenticity_token"]').val()
     }
+
   }
 
   componentWillReceiveProps(nextProps ) {
@@ -164,7 +166,12 @@ class BannerItem extends Component {
               </div>
               <div className='form-control'>
                 <label>Text</label>
-                <textarea name='text' onChange={this.handleOnChange} value={this.state.item.text || ''}></textarea>
+                <SimpleCkeditor 
+                  name='text'
+                  value={this.state.item.text || ''}
+                  id={this.state.item.id}
+                  handleOnChange={this.handleOnChange}
+                />
               </div>
               <div className='form-control'>
                 <label>Link</label>

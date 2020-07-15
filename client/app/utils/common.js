@@ -26,3 +26,13 @@ export const PickColorstyles = {
     left: '0px',
   }
 }
+
+export const editorCustomConfig = {
+  toolbarGroups: [
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+    { name: 'links' },
+    { name: 'styles' },
+    { name: 'colors' },
+    { name: 'insert' },
+  ]
+}
