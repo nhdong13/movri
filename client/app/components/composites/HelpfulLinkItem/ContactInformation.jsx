@@ -1,39 +1,38 @@
 import React, { Component } from 'react'
-import { EditorState, convertToRaw, ContentState } from 'draft-js'
-import draftToHtml from 'draftjs-to-html'
-import htmlToDraft from 'html-to-draftjs'
+// import { EditorState, convertToRaw, ContentState } from 'draft-js'
+// import draftToHtml from 'draftjs-to-html'
+// import htmlToDraft from 'html-to-draftjs'
 
-import { Editor } from 'react-draft-wysiwyg';
+// import { Editor } from 'react-draft-wysiwyg';
 
 // let Editor = null
 
 class ContactInformation extends Component {
   constructor(props) {
     super(props)
-    // this.state = {
-    //   ready: false,
-    //   item: props.item,
-    //   editorState: EditorState.createEmpty(),
-    // }
-    this.onEditorStateChange = this.onEditorStateChange.bind(this)
-
-    const html = props.item.text ? props.item.text : ''
-    const contentBlock = htmlToDraft(html)
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const editorState = EditorState.createWithContent(contentState);
-      this.state = {
-        ready: false,
-        item: props.item, 
-        editorState,
-      }
-    } else {
-      this.state = {
-        ready: false,
-        item: props.item, 
-        editorState: EditorState.createEmpty()
-      };
+    this.state = {
+      ready: false,
+      item: props.item,
     }
+    // this.onEditorStateChange = this.onEditorStateChange.bind(this)
+
+    // const html = props.item.text ? props.item.text : ''
+    // const contentBlock = htmlToDraft(html)
+    // if (contentBlock) {
+    //   const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+    //   const editorState = EditorState.createWithContent(contentState);
+    //   this.state = {
+    //     ready: false,
+    //     item: props.item, 
+    //     editorState,
+    //   }
+    // } else {
+    //   this.state = {
+    //     ready: false,
+    //     item: props.item, 
+    //     editorState: EditorState.createEmpty()
+    //   };
+    // }
   }
 
   onEditorStateChange(editorState) {
@@ -58,13 +57,14 @@ class ContactInformation extends Component {
         </div>
         <div className='form-control'>
           <label>Text</label>
-          <Editor
+          <textarea name='text' onChange={this.props.handleOnChange}></textarea>
+          {/* <Editor
             editorState={this.state.editorState}
             toolbarClassName="toolbarClassName"
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"
             onEditorStateChange={this.onEditorStateChange}
-          />
+          /> */}
         </div>
       </div>
     )

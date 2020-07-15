@@ -21,4 +21,6 @@
       .helpful-link-mobile-btn
         %span= t("footer.helpful_link_mobile_btn")
         %i.icon-chevron-down
-  = render partial: "homepage/more_helpful_links"
+  - footer_helpful_links.each do |section|
+    - helpful_section = section.sectionable
+    = render "homepage/more_helpful_links", helpful_section: helpful_section

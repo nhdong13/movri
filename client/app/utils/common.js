@@ -7,7 +7,11 @@ export const previewUploadImageSrc = (file, callback, id=null) => {
   let src = undefined
   let reader = new FileReader()
   reader.onload = (e) => {
-    callback(id, e.target.result)
+    if (id) {
+      callback(id, e.target.result)
+    } else {
+      callback(e.target.result)
+    }
   }
   reader.readAsDataURL(file[0])
   return src

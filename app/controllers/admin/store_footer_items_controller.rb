@@ -12,7 +12,6 @@ class Admin::StoreFooterItemsController < Admin::AdminBaseController
   end
 
   def update
-    binding.pry
     if @store_footer_item.update_attributes(store_footer_item_params)
       render_success
     else

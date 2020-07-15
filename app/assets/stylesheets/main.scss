@@ -2254,6 +2254,12 @@ figure.fluidratio {
   display: flex
 }
 
+.flex-item {
+  flex: 1;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .display-inline-flex {
   display: inline-flex;
 }
@@ -2312,6 +2318,12 @@ figure.fluidratio {
 
   .col-4 {
     width: 33% !important;
+  }
+
+  .more-helpful-links {
+    .display-flex {
+      display: block;
+    }
   }
 }
 

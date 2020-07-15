@@ -13,8 +13,15 @@
 
 class Section < ApplicationRecord
   
-  AVAILABLE_NAME = %w(Header Slideshow).freeze
+  DEFAULT_SECTIONS = %w(header slideshow highlight_banner).freeze
   belongs_to :sectionable, polymorphic: true
+  scope :featured_products, -> { where(sectionable_type: 'StoreFeaturedProduct') }
+  scope :categories_list, -> { where(sectionable_type: 'StoreCategory') }
+  scope :store_grids, -> { where(sectionable_type: 'StoreGrid') }
+  scope :store_footers, -> { where(sectionable_type: 'StoreFooter') }
+  scope :helpful_links, -> { where(sectionable_type: 'HelpfulLink') }
+  
+
 
   def as_json
     return {
