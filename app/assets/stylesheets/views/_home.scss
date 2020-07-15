@@ -837,6 +837,16 @@ $home-list-avatar-padding: lines(0.25);
 
 .footer {
   background-color: #f3f3f3;
+  .select-language, .select-currency {
+    background-color: #ffffff;
+    border: none;
+    width: 170px;
+    font-size: 14px;
+  }
+
+  .footer-contact-information {
+    a { color: inherit;}
+  }
   .information {
     margin-bottom: 0px;
     padding: 30px;

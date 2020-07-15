@@ -58,8 +58,10 @@
     = t(".this_is_private_community")
 
 - else
+  = render 'slideshow'
   = render partial: "how_it_works"
   .wrapper
-    = render partial: "new_products"
-    = render partial: "feature_products"
-    = render partial: "the_movri_different"
+    - @store_sections_presenter.featured_products.each do |section|
+      = render "feature_products", featured_product: section.sectionable
+    - @store_sections_presenter.store_grids.each do |section|
+      = render 'the_movri_different', grid: section.sectionable

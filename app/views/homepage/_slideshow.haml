@@ -1,0 +1,25 @@
+- if @slideshow.enabled?
+  .loading-carousel.text-center
+    = image_tag("ajax-loader.gif")
+  .homepage-carousel
+    - @slideshow.slide_items.each do |item|
+      - style = "color:  #{item.text_color};"
+      .content{style: style}
+        =image_tag(item.image.url)
+        .description
+          %p{style: style}= item.heading
+          %p{style: style}= item.sub_heading
+          = link_to item.button_link do
+            %button{style: style}= item.button_label
+    
+  = content_for :extra_javascript do
+    :javascript
+      var autoplay = "#{@slideshow.auto_play}" == "true";
+      var slideOptions = {
+        elms: '.homepage-carousel',
+        autoplay: autoplay,
+        autoplaySpeed: parseInt("#{@slideshow.slide_duration*1000}")
+      };
+      $(function() {
+        ST.Homepage.initCarousel(slideOptions);
+      })
