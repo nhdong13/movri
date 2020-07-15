@@ -21,6 +21,10 @@ class HomepageController < ApplicationController
     relevant_filters = select_relevant_filters(m_selected_category.own_and_subcategory_ids.or_nil)
     @seo_service.category = selected_category
 
+    @slideshow = @current_online_store.slideshow
+    @highlight_banner = @current_online_store.highlight_banner
+    # @extra_sections = @current_online_store.extra_sections
+
     if FeatureFlagHelper.feature_enabled?(:searchpage_v1)
       @view_type = "grid"
     else

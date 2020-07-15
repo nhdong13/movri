@@ -1,9 +1,10 @@
 .feature-products
   .row
     .col-12
-      %p= I18n.t("homepage.featured_products.title")
+      %p.text-center= featured_product.heading
     .products.text-center
-      - @listings[0..3].each do |listing|
+      - style = "color: #{featured_product.button_text_color}"
+      - featured_product.listings.each do |listing|
         .col-3
           .product
             .product-image
@@ -14,4 +15,4 @@
             .product-rent-price
               %span= "#{humanized_money_with_symbol listing.price} "
               %span= "/ #{ListingViewUtils.get_time_rent(session)}"
-            %a.rent-btn{href: listing_path(listing.id)}= "Rent now"
+            %a.rent-btn{href: listing_path(listing.id),  style: style}= "Rent now"
