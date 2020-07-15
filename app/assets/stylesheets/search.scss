@@ -1,0 +1,18 @@
+#searchbox{
+  input{
+    font-size: 18px;
+    padding: 15px;
+    width: 100%
+  }
+}
+
+#hits{
+  margin-top: 5px;
+  width: 50%;
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  .snize-thumbnail img{
+    width: 70%
+  }
+}
