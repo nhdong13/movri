@@ -1,7 +1,5 @@
-.col-12
-  = form_tag '/', {method: "get", class: "header-search-box"} do
-    = text_field_tag "q", params[:q], class: 'header-search-input', autocomplete: 'off', placeholder: 'Search'
-    %button.action-button.header-search-btn#search-button{type: 'submit'}
-      %span{class: 'hidden-desktop'}
-        %i.icon-search
-
+.ais-InstantSearch
+  .right-panel
+    #searchbox
+    #hits.common-box
+    #pagination

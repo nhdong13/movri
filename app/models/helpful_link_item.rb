@@ -6,7 +6,7 @@
 #  helpful_link_id :bigint
 #  heading         :string(255)
 #  enabled         :boolean          default(FALSE)
-#  text            :string(255)
+#  text            :text(65535)
 #  heading_color   :string(255)      default("#334455")
 #  text_color      :string(255)      default("#999")
 #  content_type    :integer          default("normal")

@@ -906,8 +906,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 @media #{$mobile} {
-  .main-header #search-history:after,
-  .main-header #search-history:before,
   .main-header #search-result:after,
   .main-header #search-result:before {
     content: none !important;
@@ -956,16 +954,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     }
   }
 
-  #search-history {
-    @include search-dropdown;
-    min-width: 30%;
-
-    .suggestionsBrandsCategories {
-      width: 100% !important;
-    }
-  }
-
-  #search-history,
   #search-results {
     &:before {
       content: '';
@@ -1123,7 +1111,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 
   @media #{$mobile} {
-    #search-results, #search-history {
+    #search-results {
       height: auto;
       width: calc(100vw - 22px);
       margin-left: 11px;

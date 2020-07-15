@@ -88,6 +88,15 @@
 #
 
 class Listing < ApplicationRecord
+  include AlgoliaSearch
+  algoliasearch do
+    attributes :title
+    attributes :main_image do
+      main_image
+    end
+
+  end
+
   WIEGHT_TYPE = ['kg', 'pound']
   enum weight_type: { kg: 0, pound: 1 }
 
