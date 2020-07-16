@@ -49,6 +49,9 @@ class StoreGrid extends Component {
           object: section.object
         })
         this.handleUpdateChildItem(section)
+        $("#homepage-preview-iframe").attr("src", function(index, attr){ 
+          return attr;
+        });
       }
     })
   }

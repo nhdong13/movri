@@ -58,6 +58,9 @@ class StoreCategoryList extends Component {
       this.setState({
         saving: false,
       })
+      $("#homepage-preview-iframe").attr("src", function(index, attr){ 
+        return attr;
+      });
     })
   }
 
