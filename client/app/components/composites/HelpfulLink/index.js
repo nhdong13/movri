@@ -70,6 +70,9 @@ class HelpfulLink extends Component {
         })
         this.handleUpdateChildItem(section)
       }
+      $("#homepage-preview-iframe").attr("src", function(index, attr){ 
+        return attr;
+      });
     })
   }
 
