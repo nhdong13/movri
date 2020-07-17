@@ -201,3 +201,4 @@ gem "font-awesome-rails"
 gem 'jquery-inputmask-rails'
 gem 'active_model_serializers'
 gem 'algoliasearch-rails', '~> 1.24'
+gem 'sendgrid-ruby', '~> 5.0'
