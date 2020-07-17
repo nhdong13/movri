@@ -36,3 +36,59 @@ EMPTY_SHIPPING_ADDRESS = {
 
 DEFAULT_ADMIN_EMAIL = 'admin-movri@yopmail.com'
 TRACKING_PACKAGE_WEB = 'https://www.fedex.com/en-ca/home.html'
+
+BRAND = [
+  'Canon',
+  'FUJIFILM',
+  'Lensbaby',
+  'Nikon',
+  'Olympus',
+  'Panasonic',
+  'Rokinon',
+  'Sigma',
+  'Sony',
+  'Tamron',
+  'Venus',
+  'Voigtlander',
+  'ARRI',
+  'Vazen'
+]
+
+MOUNT = [
+  'Canon EF',
+  'Canon RF',
+  'Fuji',
+  'Nikon F',
+  'Sony E',
+  'Micro 4/3rds',
+  'PL Mount'
+]
+
+COMPATIBILITY = [
+  'Crop',
+  'Full Frame',
+  'Crop, Full Frame'
+]
+
+LENS_TYPE = [
+  'Wide Angle',
+  'Cine',
+  'Supertelephoto',
+  'Telephoto',
+  'Wide Angle and Normal Range',
+  'Normal Range',
+  'Specialty',
+  'Wide Angle, Normal Range, and Telephoto',
+  'Wide Angle and Tilt-Shift',
+  'Wide Angle and Telephoto',
+  'Wide Angle and Macro',
+  'Normal Range and Tilt-Shift',
+  'Normal Range and Wide Angle',
+  'Normal Range and Telephoto',
+  'Supertelephoto and Telephoto',
+  'Macro and Telephoto',
+  'Specialty and Wide Angle',
+  'Cine and Wide Angle',
+  'Cine and Normal Range'
+]
+

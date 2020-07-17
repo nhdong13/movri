@@ -786,7 +786,7 @@ $home-list-avatar-padding: lines(0.25);
     }
   }
 
-  
+
 }
 
 .contact-us {
@@ -1202,6 +1202,11 @@ $home-list-avatar-padding: lines(0.25);
 
 .flex-items{
   display: flex;
+  align-items: center;
+}
+
+.inline-flex-items{
+  display: inline-flex;
   align-items: center;
 }
 

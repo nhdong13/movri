@@ -15,7 +15,6 @@ $(document).ready(function() {
     widgetParams.container.innerHTML = `
       <div class="snize-ac-results">
         <div class="snize-ac-results-column">
-          <p>Products</p>
           <div class="row">
             ${hits
               .map(
@@ -26,7 +25,7 @@ $(document).ready(function() {
                         <img src=${item.main_image} class="design-image-too-wide" alt="">
                       </div>
                       <div class='listing-price'>
-                        <span> $100</span>
+                        <span>${item.price_cents}</span>
                         <span> /1 day</span>
                       </div>
                       <div class='listing-information'>
@@ -45,6 +44,57 @@ $(document).ready(function() {
 
   // Create the custom widget
   const customHits = instantsearch.connectors.connectHits(renderHits);
+  if($('body').find('#refinement-list').length && $('body').find('#numeric-menu').length ){
+    search.addWidgets([
+      customHits({
+        container: document.querySelector('#categories-page'),
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#refinement-list',
+        attribute: 'brand',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#lens-mount',
+        attribute: 'mount',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#lens-type',
+        attribute: 'lens_type',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#lens-compatibility',
+        attribute: 'compatibility',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.numericMenu({
+        container: '#numeric-menu',
+        attribute: 'price_cents',
+        items: [
+          { label: 'All' },
+          { label: 'Less than 500 cents', end: 500 },
+          { label: 'Between 500 cents - 1000 cents', start: 500, end: 1000 },
+          { label: 'More than 1000 cents', start: 1000 },
+        ],
+      }),
+      instantsearch.widgets.sortBy({
+        container: '#sort-by',
+        items: [
+          { label: 'Most Popular', value: 'most_popular_listing' },
+          { label: 'Newest', value: 'sort_by_newest' },
+          { label: 'Price: Low to High', value: 'price_cents_asc' },
+          { label: 'Price: High to Low', value: 'price_cents_desc' },
+        ],
+      })
+    ]);
+  }
 
   search.addWidgets([
     instantsearch.widgets.searchBox({
@@ -62,7 +112,7 @@ $(document).ready(function() {
       hitsPerPage: 15,
       distinct: true,
       clickAnalytics: true,
-    })
+    }),
   ]);
 
   search.start();

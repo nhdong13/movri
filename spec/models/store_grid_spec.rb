@@ -6,7 +6,7 @@
 #  online_store_id       :bigint
 #  heading               :string(255)
 #  height                :integer          default("small")
-#  text_alignment        :integer          default("bottom_center")
+#  text_alignment        :integer          default("top_left")
 #  maintain_aspect_ratio :boolean          default(FALSE)
 #  compress_block        :boolean          default(FALSE)
 #  created_at            :datetime         not null

@@ -70,6 +70,12 @@
 #  tags                            :string(255)
 #  manually_blocked_dates          :text(65535)
 #  replacement_cents_fee           :integer          default(0)
+#  brand                           :string(255)
+#  number_of_rent                  :integer          default(0)
+#  listing_type                    :integer          default(0)
+#  mount                           :string(255)
+#  lens_type                       :string(255)
+#  compatibility                   :string(255)
 #
 # Indexes
 #
@@ -90,11 +96,13 @@
 class Listing < ApplicationRecord
   include AlgoliaSearch
   algoliasearch do
-    attributes :title
+    attribute :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
     attributes :main_image do
       main_image
     end
-
+    attributes :created_at do
+      created_at.to_i
+    end
   end
 
   WIEGHT_TYPE = ['kg', 'pound']
