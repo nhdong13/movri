@@ -244,7 +244,6 @@ class ListingsController < ApplicationController
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       return redirect_to edit_listing_path
     end
-
     listing_params = result.data.merge(@listing.closed? ? {open: true} : {})
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
     listing_params.merge!(service.update_by_author_params(@listing))
@@ -701,7 +700,7 @@ class ListingsController < ApplicationController
     # If listing is not found (in this community) the find method
     # will throw ActiveRecord::NotFound exception, which is handled
     # correctly in production environment (404 page)
-    @listing = @current_community.listings.find(params[:id])
+    @listing = Listing.find_by_id(params[:id])
 
     raise ListingDeleted if @listing.deleted?
 

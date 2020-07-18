@@ -7,8 +7,7 @@
         .col-3
           .product
             .product-image
-              - listing.listing_images.each do |listing_image|
-                = image_tag(listing_image[:medium])
+              = image_tag(listing.main_image)
             .product-name
               %a{href: listing_path(listing.id)}= listing.title
             .product-rent-price

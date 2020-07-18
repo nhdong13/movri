@@ -68,14 +68,29 @@
               .form-collections
                 = form.label 'COLLECTIONS', class: 'input'
                 = form.select :category_ids, options_for_select(Category.all.collect {|cat| [cat.display_name(I18n.locale), cat.id]}, @listing.categories.ids), {}, {class: 'listing_collection', multiple: true, value: @listing.category_listings.pluck(:category_id)}
-              .form-tags
-                = form.label 'TAGS', class: 'input'
-                = form.hidden_field :tags
-                %ul#list_tags_selected
-                  -if @listing.tags
-                    - @listing.tags.split(',').each do |tag|
-                      %li
-                        = tag
+              -# .form-tags.margin-bt-20
+              -#   = form.label 'TAGS', class: 'input'
+              -#   = form.hidden_field :tags
+              -#   %ul#list_tags_selected
+              -#     -if @listing.tags
+              -#       - @listing.tags.split(',').each do |tag|
+              -#         %li
+              -#           = tag
+              .form-brands.margin-bt-20
+                = form.label 'BRAND', class: 'input'
+                = form.select :brand, options_for_select(BRAND, @listing.brand), {prompt: "Select"}, {class: 'listing_brand width-100'}
+
+              .form-brands.margin-bt-20
+                = form.label 'MOUNT', class: 'input'
+                = form.select :mount, options_for_select(MOUNT, @listing.mount), {prompt: "Select"}, {class: 'listing_brand width-100'}
+
+              .form-brands.margin-bt-20
+                = form.label 'LENS TYPE', class: 'input'
+                = form.select :lens_type, options_for_select(LENS_TYPE, @listing.lens_type), {prompt: "Select"}, {class: 'listing_brand width-100'}
+
+              .form-brands.margin-bt-20
+                = form.label 'COMPATIBILITY', class: 'input'
+                = form.select :compatibility, options_for_select(COMPATIBILITY, @listing.compatibility), {prompt: "Select"}, {class: 'listing_brand width-100'}
 
             .col-12.form-listing-wrap.form-recommended-accessories
               = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }

@@ -200,3 +200,4 @@ gem 'whenever', '~> 1.0.0', require: false
 gem "font-awesome-rails"
 gem 'jquery-inputmask-rails'
 gem 'active_model_serializers'
+gem 'algoliasearch-rails', '~> 1.24'

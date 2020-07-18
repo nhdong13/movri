@@ -1,4 +1,122 @@
 $(document).ready(function() {
+  const search = instantsearch({
+    indexName: 'Listing',
+    searchClient: algoliasearch(
+      'I9M2XD27BV',
+      '30b73223325eca9f17cfbe9fea6a9775'
+    ),
+  });
+
+  const renderHits = (renderOptions, isFirstRender) => {
+    if (isFirstRender) {
+      $('#hits').hide()
+    }
+    const { hits, widgetParams } = renderOptions;
+    widgetParams.container.innerHTML = `
+      <div class="snize-ac-results">
+        <div class="snize-ac-results-column">
+          <div class="row">
+            ${hits
+              .map(
+                item =>
+                  `<div class="col-3">
+                    <div class="listing-box">
+                      <div class='main-image'>
+                        <img src=${item.main_image} class="design-image-too-wide" alt="">
+                      </div>
+                      <div class='listing-price'>
+                        <span>${item.price_cents}</span>
+                        <span> /1 day</span>
+                      </div>
+                      <div class='listing-information'>
+                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                      </div>
+                      <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
+                    </div>
+                  </div>`
+                )
+            .join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  // Create the custom widget
+  const customHits = instantsearch.connectors.connectHits(renderHits);
+  if($('body').find('#refinement-list').length && $('body').find('#numeric-menu').length ){
+    search.addWidgets([
+      customHits({
+        container: document.querySelector('#categories-page'),
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#refinement-list',
+        attribute: 'brand',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#lens-mount',
+        attribute: 'mount',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#lens-type',
+        attribute: 'lens_type',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#lens-compatibility',
+        attribute: 'compatibility',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.numericMenu({
+        container: '#numeric-menu',
+        attribute: 'price_cents',
+        items: [
+          { label: 'All' },
+          { label: 'Less than 500 cents', end: 500 },
+          { label: 'Between 500 cents - 1000 cents', start: 500, end: 1000 },
+          { label: 'More than 1000 cents', start: 1000 },
+        ],
+      }),
+      instantsearch.widgets.sortBy({
+        container: '#sort-by',
+        items: [
+          { label: 'Most Popular', value: 'most_popular_listing' },
+          { label: 'Newest', value: 'sort_by_newest' },
+          { label: 'Price: Low to High', value: 'price_cents_asc' },
+          { label: 'Price: High to Low', value: 'price_cents_desc' },
+        ],
+      })
+    ]);
+  }
+
+  search.addWidgets([
+    instantsearch.widgets.searchBox({
+      container: '#searchbox',
+      placeholder: 'Search for products',
+      showSubmit: false,
+      showReset: false,
+    }),
+
+    customHits({
+      container: document.querySelector('#hits'),
+    }),
+
+    instantsearch.widgets.configure({
+      hitsPerPage: 15,
+      distinct: true,
+      clickAnalytics: true,
+    }),
+  ]);
+
+  search.start();
+
   $('.header-search-input').focus(function() {
     if (localStorage.search_history == '') {
       return;
@@ -38,66 +156,16 @@ $(document).ready(function() {
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
       if ($('.header-search-input').is(':focus')) {
-        saveSearchHistory();
       };
     }
   });
 
-  $(document).on('click', '#search-button', function() {
-    saveSearchHistory();
-  });
-
-  $(document).on('click', '.clear-history-keywords', function(){
-    localStorage.search_history = '';
-    location.reload(true);
-  });
-
-  $(document).on('keyup', '.header-search-input', function() {
-    if ($(this).val() != '') {
-      $('#search-history').css('display', 'none');
-      $('#search-results').css('display', 'block');
-      if(isMobile()){
-        $('.suggestionsBrandsCategories').css('display', 'none');
-      }
-      search($(this).val());
+  $(document).click (function (e) {
+    var search_result = $('#hits');
+    if (e.target == $('#searchbox input')[0] || $(e.target).parents('#hits')[0] == $('#hits')[0]) {
+      $(search_result).show();
     } else {
-      $('#search-history').css('display', 'block');
-      $('#search-results').css('display', 'none');
-      if(isMobile()){
-        $('.suggestionsBrandsCategories').css('display', 'block');
-      }
+      $(search_result).hide();
     }
   });
-
-  $(document).on('mouseover', '.history-keyword-item', function() {
-    search($(this).data('text-search'));
-  });
-
-  function search(keyword) {
-    var view = $('.home-toolbar-button-group').find('.selected').attr('title');
-    $.ajax({
-      url: "/search_listing",
-      type: "POST",
-      data: {
-        q: keyword,
-        view: view
-      },
-      dataType: 'script',
-      success: function() {
-        return;
-      }
-    });
-  }
-
-  function saveSearchHistory() {
-    var searchValue = $('.header-search-input').val();
-    if (searchValue != '') {
-      var search_history = localStorage.search_history;
-      if (search_history == undefined) {
-        localStorage.search_history = searchValue;
-      } else {
-        localStorage.search_history = search_history + ',' + searchValue;
-      }
-    }
-  };
 });

@@ -4,17 +4,8 @@
     - text_styles = grid_styles(grid)
     - grid.store_grid_items.each do |item|
       - style = "color: #{item.text_color};"
-      - style += "text-align: #{text_styles[:text_align]};"
-      .col-6
-        - if text_styles[:position] == 'top'
-          %p{style: style}= item.text
-          .assurred-quality
-            = image_tag item.image.url, class: "assured_quality"
-        - elsif text_styles[:position] == 'bottom'
-          .assurred-quality
-            = image_tag item.image.url, class: "assured_quality"
-          %p{style: style}= item.text
-        - else
-          .assurred-quality
-            = image_tag item.image.url, class: "assured_quality"
-          %p{style: style}= item.text
+      .col-6.p-relative
+        .assurred-quality
+          = image_tag item.image.url, class: "assured_quality"
+        %p.p-absolute.grid-desc{class: grid.text_alignment, style: style}= item.text
+          

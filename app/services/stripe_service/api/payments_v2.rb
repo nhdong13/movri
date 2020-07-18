@@ -48,7 +48,8 @@ module StripeService::API
         listing = item.listing
         listing_quantity = listing.available_quantity
         new_quantity = listing_quantity - item.quantity
-        item.listing.update!(available_quantity: new_quantity)
+        number_of_rent = listing.number_of_rent + item.quantity
+        item.listing.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
       end
     end
 
