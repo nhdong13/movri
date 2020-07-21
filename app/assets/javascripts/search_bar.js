@@ -7,44 +7,150 @@ $(document).ready(function() {
     ),
   });
 
+  const currentSearchValue = function (){
+    current_location = window.location.href;
+    params = current_location.split("?")[1];
+    if(params){
+      return search_query = current_location.split("?")[1].split("=")[1]
+    }
+  }
+
+  const SuggestionItemsTemplate = ({ hits }) => `
+    ${hits
+      .map(
+        item =>`
+          <li>${instantsearch.highlight({ attribute: 'query', hit: item })}</li>
+        `)
+      .join('')}
+    `;
+
+  const ProductItemsTemplate = ( { hits } ) => `
+    ${hits
+      .map(
+        item =>`
+          <li>
+            <a href= ${'/listings/'+ item.objectID}>
+              <div class='flex-items'>
+                <div class='width-20 center-items'>
+                  <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
+                </div>
+                <div class='width-80'>
+                  ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                </div>
+              </div>
+            </a>
+          </li>
+        `)
+      .join('')}
+    `;
+
+  const renderCategoryPage = ({hits}) =>`
+    <div class="snize-ac-results">
+      <div class="snize-ac-results-column">
+        <div class="row">
+          ${hits
+            .map(
+              item =>
+                `<div class="col-3">
+                  <div class="listing-box">
+                    <div class='main-image'>
+                      <img src=${item.main_image} class="design-image-too-wide" alt="">
+                    </div>
+                    <div class='listing-price'>
+                      <span>${item.price_cents}</span>
+                      <span> /1 day</span>
+                    </div>
+                    <div class='listing-information'>
+                      ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                    </div>
+                    <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
+                  </div>
+                </div>`
+              )
+          .join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+//============================================================================
+
+  const renderSuggestionItems = (renderOptions, isFirstRender) => {
+    const { indices, currentRefinement, refine } = renderOptions;
+    const container = document.querySelector('#search-result');
+    const input = $('#searchbox input')[0];
+    if (isFirstRender) {
+      if(currentSearchValue()){
+        input.value = currentSearchValue();
+        refine(event.currentTarget.value);
+      }
+      input.addEventListener('input', event => {
+        refine(event.currentTarget.value);
+      });
+    }
+
+    input.value = currentRefinement;
+    container.querySelector('#suggestion-items').innerHTML = indices
+      .map(SuggestionItemsTemplate)
+      .join('');
+  };
+
+  const customAutocomplete = instantsearch.connectors.connectAutocomplete(
+    renderSuggestionItems
+  );
+//============================================================================
+
   const renderHits = (renderOptions, isFirstRender) => {
     if (isFirstRender) {
       $('#hits').hide()
     }
     const { hits, widgetParams } = renderOptions;
-    widgetParams.container.innerHTML = `
-      <div class="snize-ac-results">
-        <div class="snize-ac-results-column">
-          <div class="row">
-            ${hits
-              .map(
-                item =>
-                  `<div class="col-3">
-                    <div class="listing-box">
-                      <div class='main-image'>
-                        <img src=${item.main_image} class="design-image-too-wide" alt="">
-                      </div>
-                      <div class='listing-price'>
-                        <span>${item.price_cents}</span>
-                        <span> /1 day</span>
-                      </div>
-                      <div class='listing-information'>
-                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
-                      </div>
-                      <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
-                    </div>
-                  </div>`
-                )
-            .join('')}
-          </div>
-        </div>
-      </div>
-    `;
+    widgetParams.container.innerHTML = renderCategoryPage({hits})
   };
 
-  // Create the custom widget
   const customHits = instantsearch.connectors.connectHits(renderHits);
-  if($('body').find('#refinement-list').length && $('body').find('#numeric-menu').length ){
+//============================================================================
+
+  const renderProductItems = (renderOptions, isFirstRender) => {
+    if (isFirstRender) {
+      $('#search-result').hide()
+    }
+    const container = document.querySelector('#search-result');
+    const { indices } = renderOptions;
+    container.querySelector('#product-items').innerHTML = indices
+      .map(ProductItemsTemplate)
+      .join('');
+  };
+
+  const searchProductsResult = instantsearch.connectors.connectAutocomplete(
+    renderProductItems
+  );
+//============================================================================
+  const renderSearchBox = (renderOptions, isFirstRender) => {
+    const { query, refine } = renderOptions;
+
+    const container = document.querySelector('#searchbox');
+
+    if (isFirstRender) {
+      const input = document.createElement('input');
+
+      input.addEventListener('input', event => {
+        refine(event.currentTarget.value);
+      });
+
+      container.appendChild(input);
+    }
+
+    container.querySelector('input').value = query;
+  };
+
+  const customSearchBox = instantsearch.connectors.connectSearchBox(
+    renderSearchBox
+  );
+//============================================================================
+
+  // Create the custom widget
+  if($('body').find('#refinement-list').length){
     search.addWidgets([
       customHits({
         container: document.querySelector('#categories-page'),
@@ -74,16 +180,6 @@ $(document).ready(function() {
         operator: 'or',
       }),
 
-      instantsearch.widgets.numericMenu({
-        container: '#numeric-menu',
-        attribute: 'price_cents',
-        items: [
-          { label: 'All' },
-          { label: 'Less than 500 cents', end: 500 },
-          { label: 'Between 500 cents - 1000 cents', start: 500, end: 1000 },
-          { label: 'More than 1000 cents', start: 1000 },
-        ],
-      }),
       instantsearch.widgets.sortBy({
         container: '#sort-by',
         items: [
@@ -97,60 +193,35 @@ $(document).ready(function() {
   }
 
   search.addWidgets([
-    instantsearch.widgets.searchBox({
-      container: '#searchbox',
+    customSearchBox({
       placeholder: 'Search for products',
       showSubmit: false,
       showReset: false,
     }),
 
-    customHits({
-      container: document.querySelector('#hits'),
+    searchProductsResult({
+      container: document.querySelector('#search-result'),
     }),
 
     instantsearch.widgets.configure({
-      hitsPerPage: 15,
+      hitsPerPage: 3,
       distinct: true,
       clickAnalytics: true,
     }),
+
+    instantsearch.widgets
+      .index({ indexName: 'Listing_query_suggestions_v4' })
+      .addWidgets([
+        customAutocomplete({
+          container: $('#suggestion-items'),
+          onSelectChange({ query }) {
+            search.helper.setQuery(query).search();
+          },
+        }),
+      ]),
   ]);
 
   search.start();
-
-  $('.header-search-input').focus(function() {
-    if (localStorage.search_history == '') {
-      return;
-    }
-    $('.history-keywords').empty();
-    var historyKeywords = localStorage.search_history.split(',').reverse();
-    var numberOfKeyword = 0;
-
-    $.each(historyKeywords, function(idx, keyword){
-      if ((historyKeywords[idx+1] == keyword) || keyword == '') {
-        return true;
-      }
-      if ((numberOfKeyword > 5)) {
-        return false;
-      }
-      var htmlSearchHistoryItem = '';
-      htmlSearchHistoryItem += '<li class="history-keyword-item" data-text-search="'+ keyword +'">';
-      htmlSearchHistoryItem += '<a href="/?q='+ keyword +'">';
-      htmlSearchHistoryItem += '<img src="/assets/mf_icons/icon-movri-undo.svg" class="history-keyword-icon">';
-      htmlSearchHistoryItem += '<span class="link-text ta-ellipsis">' + keyword + '</span>';
-      htmlSearchHistoryItem += '<img src="/assets/mf_icons/icon-movri-visit.svg" class="visit-search-icon">'
-      htmlSearchHistoryItem += '</a>';
-      htmlSearchHistoryItem += '</li>';
-      $('.history-keywords').append(htmlSearchHistoryItem);
-      numberOfKeyword += 1
-    });
-    htmlClearSearchHistory = '<li class="clear-history-keywords">';
-    htmlClearSearchHistory += '<a href="javascript:void(0)">';
-    htmlClearSearchHistory += '<img src="/assets/mf_icons/icon-movri-undo.svg" class="reset-history-keyword-icon">';
-    htmlClearSearchHistory += '<span class="link-text ta-ellipsis">Clear search history</span>';
-    htmlClearSearchHistory += '</a>';
-    htmlClearSearchHistory += '</li>';
-    $('.history-keywords').append(htmlClearSearchHistory);
-  })
 
   $(document).keypress(function(event){
     var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -161,8 +232,8 @@ $(document).ready(function() {
   });
 
   $(document).click (function (e) {
-    var search_result = $('#hits');
-    if (e.target == $('#searchbox input')[0] || $(e.target).parents('#hits')[0] == $('#hits')[0]) {
+    var search_result = $('#search-result');
+    if (e.target == $('#searchbox input')[0] || $(e.target).parents('#search-result')[0] == $('#search-result')[0]) {
       $(search_result).show();
     } else {
       $(search_result).hide();

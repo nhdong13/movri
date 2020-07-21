@@ -441,7 +441,8 @@ class Listing < ApplicationRecord
     if listing_images.any?
       listing_images.first&.image&.url
     else
-      "missing_image.png"
+      # Rails.root.join('app', 'assets', 'images', 'missing_image.png')
+      "/asset/images/missing_image.png"
     end
   end
 
