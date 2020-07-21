@@ -1,0 +1,42 @@
+.assurance-options-index {
+  .assurance-options-lists {
+    margin-top: 15px !important;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.2),0 1px 3px 0 rgba(0,0,0,0.19) !important;
+    .head-section {
+      .tabs {
+        border-bottom: 1px solid lightgray;
+        height: 50px;
+        .tab-item {
+          width: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &.tab-active {
+            border-bottom: 3px solid dodgerblue;
+          }
+        }
+      }
+    }
+    .body-section {
+      table {
+        margin-bottom: 15px;
+        tbody {
+          tr {
+            background-color: white !important;
+            border-top: 1px solid lightgray;
+            td {
+              &.assurance-image{
+                text-align: center;
+                .assurance-option-image {
+                  height: 50px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

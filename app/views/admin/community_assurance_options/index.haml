@@ -1,0 +1,36 @@
+- content_for :title_header do
+  %h1
+    = t("layouts.admin.admin")
+    = "-"
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section.p-3.assurance-options-index
+  %h2 Assurance Option
+
+  .row.p-0.m-0.display-flex.align-items-center
+    .col-9.row.p-0.m-0
+    .col-3.p-0.m-0.display-flex.justify-content-end
+      .btn-link
+        = link_to "#" do
+          %span Add Option
+  .assurance-options-lists
+    .head-section.p-2
+      .tabs.display-flex
+        .tab-item.tab-active All
+      .filters.m-2.mt-4.mb-4
+        %input{type: :text, class: "form-control", placeholder: "Search blog posts"}
+    .body-section.p-1
+      %table
+        %thead
+          %tr.row.p-0.m-0
+            %th.col-1.p-3.pt-1
+            %th.col-7.p-3.pt-1
+              = render partial: "layouts/sort_link", locals: { column: "title",
+                direction: sort_link_direction("title"),
+                title: "Title" }
+            %th.col-4.p-3.pt-1
+              Date
+        %tbody
+          - @service.assurance_options.each do |option|
+            = render 'option', option: option
+         
