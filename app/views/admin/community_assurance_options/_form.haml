@@ -1,0 +1,25 @@
+= form_for assurance_option, :url => admin_community_assurance_options_path(community_id: @current_community.id), :method => :post do |f|
+  .row.create-assurance-option-form
+    .col-8.row.p-0.m-0
+      .col-12.section-wrapper
+        = f.label :title, "Title", class: 'font-weight-regular'
+        .pb-2
+          = f.text_field :title, :class => "text_field", value: assurance_option.title, :placeholder => "e.g. Blog about your latest products or deals"
+        = f.label :content, "Content", class: 'font-weight-regular'
+        = f.cktext_area :content
+    .col-4.row
+      .col-12.section-wrapper
+        %label Visibility
+        .display-flex.p-0.m-0
+          = f.radio_button :visible, true, id: 'visible_assurance_option', checked: assurance_option.visible, class: 'mr-2 mt-1'
+          = f.label :visible, 'Visible', value: true, class: 'font-weight-regular m-0 font-size-14'
+        .display-flex.p-0.m-0
+          = f.radio_button :visible, false, id: 'hidden_assurance_option', checked: !assurance_option.visible, class: 'mr-2 mt-1'
+          = f.label :visible, 'Hidden', value: false, class: 'font-weight-regular m-0 font-size-14'
+      .col-12.section-wrapper
+        = f.label :image, "Featured Image"
+        = f.file_field :image, :class => "file_field"
+
+    .col-12.mt-4.display-flex.justify-content-end
+      = link_to  "Cancel", admin_community_assurance_options_path(@current_community), class: 'btn btn-white'
+      = f.submit "Save", class: 'btn btn-primary ml-2'
