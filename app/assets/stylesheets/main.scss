@@ -2230,6 +2230,7 @@ figure.fluidratio {
 
 .ui-tooltip {
   background-color: #ffffff;
+  font-size: 14px !important;
 }
 .is-disabled {
   cursor: not-allowed;
@@ -2595,4 +2596,8 @@ figure.fluidratio {
 // text align
 .text-right {
   text-align: right !important;
+}
+
+.line-height-16 {
+  line-height: 16px !important;
 }
