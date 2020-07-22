@@ -1,26 +1,145 @@
 $(document).ready(function() {
+
+  function getCategorySlug(name) {
+    return name
+      .split(' ')
+      .map(encodeURIComponent)
+      .join('+');
+  }
+
+  function getCategoryName(slug) {
+    return slug
+      .split('+')
+      .map(decodeURIComponent)
+      .join(' ');
+  }
+
   const search = instantsearch({
     indexName: 'Listing',
     searchClient: algoliasearch(
       'I9M2XD27BV',
       '30b73223325eca9f17cfbe9fea6a9775'
     ),
+
+    routing: {
+      router: instantsearch.routers.history({
+        windowTitle({ category, query }) {
+          const queryTitle = query ? `Results for "${query}"` : 'Search';
+
+          if (category) {
+            return `${category} – ${queryTitle}`;
+          }
+
+          return queryTitle;
+        },
+
+        createURL({ qsModule, routeState, location }) {
+          const urlParts = location.href.match(/^(.*?)\/categories/);
+          const baseUrl = `${urlParts ? urlParts[1] : ''}/`;
+
+          const categoryPath = routeState.category
+            ? `${getCategorySlug(routeState.category)}/`
+            : '';
+          const queryParameters = {};
+
+          if (routeState.query) {
+            queryParameters.query = encodeURIComponent(routeState.query);
+          }
+          if (routeState.page !== 1) {
+            queryParameters.page = routeState.page;
+          }
+          if (routeState.brands) {
+            queryParameters.brands = routeState.brands.map(encodeURIComponent);
+          }
+
+          const queryString = qsModule.stringify(queryParameters, {
+            addQueryPrefix: true,
+            arrayFormat: 'repeat'
+          });
+
+          return `${baseUrl}categories${categoryPath}${queryString}`;
+        },
+
+        parseURL({ qsModule, location }) {
+          const pathnameMatches = location.pathname.match(/categories\/(.*?)\/?$/);
+          const category = getCategoryName(
+            (pathnameMatches && pathnameMatches[1]) || ''
+          );
+          const { query = '', page, brands, mounts, lens_types = [] } = qsModule.parse(
+            location.search.slice(1)
+          );
+          // `qs` does not return an array when there's a single value.
+          const allBrands = Array.isArray(brands)
+            ? brands
+            : [brands].filter(Boolean);
+
+          const allMounts = Array.isArray(mounts)
+            ? mounts
+            : [mounts].filter(Boolean);
+
+          const allLensTypes = Array.isArray(lens_types)
+            ? lens_types
+            : [lens_types].filter(Boolean);
+
+          return {
+            query: decodeURIComponent(query),
+            page,
+            brands: allBrands.map(decodeURIComponent),
+            mounts: allMounts.map(decodeURIComponent),
+            lens_types: allLensTypes.map(decodeURIComponent),
+          };
+        }
+      }),
+
+      stateMapping: {
+        stateToRoute(uiState) {
+          const indexUiState = uiState['Listing'] || {};
+
+          return {
+            query: indexUiState.query,
+            page: indexUiState.page,
+            brands: indexUiState.refinementList && indexUiState.refinementList.brand,
+            mounts: indexUiState.refinementList && indexUiState.refinementList.mount,
+            lens_type: indexUiState.refinementList && indexUiState.refinementList.lens_type,
+          };
+        },
+
+        routeToState(routeState) {
+          return {
+            Listing_query_suggestions_v4: {query: routeState.query},
+            Listing: {
+              page: routeState.page,
+              refinementList: {
+                brand: routeState.brands,
+                mount: routeState.mounts,
+                lens_type: routeState.lens_types,
+              }
+            }
+          };
+        }
+      }
+    }
   });
 
-  const currentSearchValue = function (){
-    current_location = window.location.href;
-    params = current_location.split("?")[1];
-    if(params){
-      return search_query = current_location.split("?")[1].split("=")[1]
-    }
+  getValueOfFacets = function(exact_match){
+    return exact_match ? getCategorySlug(exact_match.value) : ""
   }
 
-  const SuggestionItemsTemplate = ({ hits }) => `
+  const SuggestionItemsTemplate = ({ hits }) =>`
     ${hits
       .map(
-        item =>`
-          <li>${instantsearch.highlight({ attribute: 'query', hit: item })}</li>
-        `)
+        item => {
+          [brand] = item.Listing.facets.exact_matches.brand;
+          [lens_type] = item.Listing.facets.exact_matches.lens_type;
+          [mount] = item.Listing.facets.exact_matches.mount;
+          return `
+            <a href= ${'/categories?'+"brands="+getValueOfFacets(brand)+"&lens_types="+getValueOfFacets(lens_type)+"&mounts="+getValueOfFacets(mount)}>
+              <li>
+                ${instantsearch.highlight({ attribute: 'query', hit: item })}
+              </li>
+            </a>`
+          }
+        )
       .join('')}
     `;
 
@@ -78,19 +197,16 @@ $(document).ready(function() {
   const renderSuggestionItems = (renderOptions, isFirstRender) => {
     const { indices, currentRefinement, refine } = renderOptions;
     const container = document.querySelector('#search-result');
-    const input = $('#searchbox input')[0];
+    const input = $('.searchbox-algolia input')[0];
     if (isFirstRender) {
-      if(currentSearchValue()){
-        input.value = currentSearchValue();
-        refine(event.currentTarget.value);
-      }
       input.addEventListener('input', event => {
         refine(event.currentTarget.value);
       });
     }
-
-    input.value = currentRefinement;
-    container.querySelector('#suggestion-items').innerHTML = indices
+    if(currentRefinement.length){
+      input.value = currentRefinement;
+    }
+    container.querySelector('.suggestion-items').innerHTML = indices
       .map(SuggestionItemsTemplate)
       .join('');
   };
@@ -102,7 +218,6 @@ $(document).ready(function() {
 
   const renderHits = (renderOptions, isFirstRender) => {
     if (isFirstRender) {
-      $('#hits').hide()
     }
     const { hits, widgetParams } = renderOptions;
     widgetParams.container.innerHTML = renderCategoryPage({hits})
@@ -113,11 +228,11 @@ $(document).ready(function() {
 
   const renderProductItems = (renderOptions, isFirstRender) => {
     if (isFirstRender) {
-      $('#search-result').hide()
+     $('#search-result').hide()
     }
     const container = document.querySelector('#search-result');
     const { indices } = renderOptions;
-    container.querySelector('#product-items').innerHTML = indices
+    container.querySelector('.product-items').innerHTML = indices
       .map(ProductItemsTemplate)
       .join('');
   };
@@ -129,8 +244,7 @@ $(document).ready(function() {
   const renderSearchBox = (renderOptions, isFirstRender) => {
     const { query, refine } = renderOptions;
 
-    const container = document.querySelector('#searchbox');
-
+    const container = document.querySelector('.searchbox-algolia');
     if (isFirstRender) {
       const input = document.createElement('input');
 
@@ -139,8 +253,8 @@ $(document).ready(function() {
       });
 
       container.appendChild(input);
-    }
 
+    }
     container.querySelector('input').value = query;
   };
 
@@ -213,27 +327,16 @@ $(document).ready(function() {
       .index({ indexName: 'Listing_query_suggestions_v4' })
       .addWidgets([
         customAutocomplete({
-          container: $('#suggestion-items'),
-          onSelectChange({ query }) {
-            search.helper.setQuery(query).search();
-          },
+          container: $('.suggestion-items'),
         }),
       ]),
   ]);
 
   search.start();
 
-  $(document).keypress(function(event){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-      if ($('.header-search-input').is(':focus')) {
-      };
-    }
-  });
-
   $(document).click (function (e) {
     var search_result = $('#search-result');
-    if (e.target == $('#searchbox input')[0] || $(e.target).parents('#search-result')[0] == $('#search-result')[0]) {
+    if (e.target == $('.searchbox-algolia input')[0] || $(e.target).parents('#search-result')[0] == $('#search-result')[0]) {
       $(search_result).show();
     } else {
       $(search_result).hide();

@@ -442,7 +442,7 @@ class Listing < ApplicationRecord
       listing_images.first&.image&.url
     else
       # Rails.root.join('app', 'assets', 'images', 'missing_image.png')
-      "/asset/images/missing_image.png"
+      "missing_image.png"
     end
   end
 

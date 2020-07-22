@@ -21,7 +21,7 @@ window.Commons =
 
   handleArrowUpDownListing: ->
     liSelected = undefined
-    input = $('#searchbox input')
+    input = $('.searchbox-algolia input')
     $(window).keydown (e) ->
       li = $('#search-result li')
       if e.which == 40
@@ -50,7 +50,7 @@ window.Commons =
         e.preventDefault();
       if e.which == 13
         if liSelected
-          href = liSelected.find('a').attr("href")
+          href = liSelected.parent('a').attr("href")
           if href
             window.location.href = href
 

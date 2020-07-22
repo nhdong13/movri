@@ -8,7 +8,8 @@
   }
 
 .display-inline-flex.icons
-  %a{href:  'javascript:void(0)', class: 'search-mobile'}
+  -# .searchbox-algolia
+  %a{href:  'javascript:void(0)', class: 'search-mobile searchbox'}
     = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
   .toggle{data: {toggle: '#header-contact', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
     = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')

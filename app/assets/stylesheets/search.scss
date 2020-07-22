@@ -1,4 +1,4 @@
-#searchbox{
+.searchbox-algolia{
   input{
     font-size: 18px;
     padding: 15px;
@@ -8,7 +8,6 @@
 
 #search-result{
   margin-top: 5px;
-  width: 50%;
   position: absolute;
   z-index: 1000;
   background: white;
@@ -59,12 +58,12 @@ mark{
       background: #f0f0f0;
     }
   }
-  #product-items{
+  .product-items{
     li{
       border-bottom: 1px solid #eeeeee;
     }
   }
-  #suggestion-items{
+  .suggestion-items{
     padding: 0 0 0 10px;
   }
 }
