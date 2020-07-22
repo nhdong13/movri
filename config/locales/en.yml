@@ -732,6 +732,8 @@ en:
         search_by_customer_name: "Search by customer name"
       manager_online_store:
         online_store: Online Store
+      manager_assurance_option:
+        assurance_options: Assurance Option
     landing_page_versions:
       sections:
         hero:
