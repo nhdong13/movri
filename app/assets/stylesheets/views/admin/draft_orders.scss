@@ -110,7 +110,8 @@ $border-color: #E1E3E5;
 
 #create-draft-order {
   .order-details,
-  .find-customer {
+  .find-customer,
+  .customer-information {
     border: 1px solid $border-color;
     border-radius: 8px;
     padding: 0.75em;
@@ -132,14 +133,13 @@ $border-color: #E1E3E5;
     }
 
     a {
+      width: 15%;
       border-top-left-radius: 0px;
       border-bottom-left-radius: 0px;
     }
   }
 
   .payment-info {
-    margin-top: 1.75em;
-
     .add-note,
     .total-info {
       padding: 0;
@@ -147,6 +147,30 @@ $border-color: #E1E3E5;
   
     .total-info {
       padding-left: 0.75em;
+
+      table {
+        margin-top: 1.5em;
+      }
+    }
+
+    .add-discount {
+      &.toggle.toggled {
+        background-color: transparent;
+        color: #4a90e2;
+        border: none;
+      }
+    }
+
+    .product-list {
+      tbody tr:nth-child(odd) {
+        background-color: transparent;
+      }
+
+      img {
+        height: 50px;
+        width: 50px;
+        border-radius: 5px;
+      }
     }
   }
 
@@ -187,7 +211,12 @@ $border-color: #E1E3E5;
 }
 
 #browse-product-modal,
-#custom-item-modal {
+#custom-item-modal,
+#create-new-customer-modal,
+#edit-customer-email-modal,
+#edit-customer-address-modal,
+#edit-customer-shipping-address-modal,
+#edit-customer-billing-address-modal {
   max-width: 100%;
   width: 40%;
 
@@ -243,5 +272,51 @@ $border-color: #E1E3E5;
     p {
       padding: 1.25em 0;
     }
+  }
+}
+
+#header-toggle-menu-discount,
+#header-toggle-menu-tax {
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+  background: white;
+
+  .row {
+    padding: 0.75em;
+  }
+}
+
+ul.ui-autocomplete.ui-menu {
+  width: 325px;
+  border-radius: 8px;
+  border: 1px solid #9e9e9e;
+  background-color: white;
+  list-style: none;
+}
+
+#customer-information {
+  .header-section {
+    margin-bottom: 0.75em;
+  }
+
+  img {
+    height: 60px;
+    width: 60px;
+  }
+
+  .shipping-address,
+  .billing-address {
+    p {
+      line-height: 10px;
+      color: #617480;
+    }
+  }
+
+  h3 {
+    font-weight: 600;
+  }
+
+  i {
+    padding: 0.25em;
   }
 }

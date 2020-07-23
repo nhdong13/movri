@@ -1,0 +1,11 @@
+.modal#edit-customer-email-modal
+  = form_with url: admin_community_emails_path(email.community_id, email), html: {method: :patch, local: true} do |form|
+    .row.title
+      = "Edit email"
+    .row
+      %p.margin-bt-15= "Notification emails will be send to this address"
+      %span= "Email"
+      = form.text_field :address, placeholder: 'Update customer email'
+    .row.footer
+      = form.submit "Save", class: "button right margin-l-5"
+      %a.button.right{rel: "modal:close"}= "Cancel"

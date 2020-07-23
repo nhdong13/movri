@@ -1,0 +1,17 @@
+.col-12.item
+  .col-6
+    - if listing
+      = image_tag listing.listing_image.image(:tiny), class: "left"
+    - else
+      = image_tag("homepage_icons/cancellations.png")
+    = listing.name
+  .col-2
+    %p= "Price per item"
+    = input_field_tag :price, params[:price], value: listing.price
+  .col-2
+    %p= "Quantity"
+    = number_field_tag :quantity, params[:quantity], value: listing.quantity
+  .col-1
+    = "123"
+  .col-1
+    = "x"

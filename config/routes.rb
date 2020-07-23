@@ -361,6 +361,7 @@ Rails.application.routes.draw do
             get :reject
           end
           collection do
+            get 'get_listings'
             get 'export'
             get 'export_status'
           end
@@ -371,7 +372,11 @@ Rails.application.routes.draw do
             get 'export_status'
           end
         end
-        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit]
+        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit] do
+          collection do
+            get 'add_to_order'
+          end
+        end
         resources :conversations, controller: :community_conversations, only: [:index, :show]
         resources :testimonials, controller: :community_testimonials, only: [:index, :edit, :update, :new, :create] do
           collection do
@@ -420,6 +425,8 @@ Rails.application.routes.draw do
       resources :person_custom_fields, path: 'user_fields' do
         collection do
           post :order
+          get :person_profile
+          get :person_information
         end
       end
       resources :categories do

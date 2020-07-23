@@ -1,0 +1,58 @@
+.modal#create-new-customer-modal
+  .row.title.padding-bt-15.br-bottom
+    .col-12
+      %p= "Create a new customer"
+  .row.customer-info.padding-bt-15.br-bottom
+    .row
+      .col-6
+        %span= "First name"
+        = text_field_tag :first_name, params[:first_name]
+      .col-6
+        %span= "Last name"
+        = text_field_tag :last_name, params[:last_name]
+    .row
+      .col-12
+        %span= "Email"
+        = text_field_tag :email, params[:email]
+    .row
+      .col-12
+        =check_box_tag :marketing_email
+        %span= "Customer accepts email marketing"
+    .row
+      .col-12
+        =check_box_tag :tax_exempt
+        %span= "Customer is tax exempt"
+  .row.shipping-address.padding-bt-15.br-bottom
+    .col-12.margin-bt-15
+      %p= "Shipping Address"
+    .row
+      .col-6
+        %span= "Company"
+        = text_field_tag :company, params[:company]
+      .col-6
+        %span= "Phone number"
+        = text_field_tag :phone_number, params[:phone_number]
+    .row
+      .col-6
+        %span= "Address"
+        = text_field_tag :address, params[:address]
+      .col-6
+        %span= "Apartment, suite, etc.(optional)"
+        = text_field_tag :addition_address, params[:addition_address]
+    .row
+      .col-6
+        %span= "City"
+        = text_field_tag :city, params[:city]
+      .col-6
+        %span= "Country/Region"
+        = text_field_tag :last_name, params[:last_name]
+    .row
+      .col-6
+        %span= "Province"
+        = text_field_tag :last_name, params[:last_name]
+      .col-6
+        %span= "Zip/Postal code"
+        = text_field_tag :zip, params[:zip]
+  .footer
+    %button.button.right.margin-r-12= "Save customer"
+    %button.button.right.margin-r-12= "Cancel"

@@ -26,10 +26,11 @@
           .col-12
             .paid-type
               %button.button.right= "Pay with credit card"
+              %button.button.right= "Mark as pending"
               %button.button.right= "Mark as paid"
               %p.right= "ACCEPT PAYMENT"
               %i.icon-money.right
-        .col-3
+        .col-3.find-create-customer
           .find-customer
             .row
               %h3= "Find or create a customer"
@@ -40,3 +41,4 @@
 
 = render 'browse_product_modal', listings: @current_community.listings
 = render 'add_custom_item_modal'
+= render 'create_new_customer_modal'
