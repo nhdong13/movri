@@ -23,7 +23,7 @@ window.Commons =
     liSelected = undefined
     input = $('.searchbox-algolia input')
     $(window).keydown (e) ->
-      li = $('#search-result li')
+      li = $('.search-result-algolia li')
       if e.which == 40
         if liSelected
           liSelected.removeClass 'selected'

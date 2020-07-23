@@ -87,14 +87,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       height: 45px !important;
       border: none;
     }
-    .back-to-menu {
-      display: block;
-      padding: 0 10px;
-      img {
-        width: 25px;
-        margin-top: 7px;
-      }
-    }
     button.header-search-btn {
       font-size: 14px;
       color: white;
@@ -266,13 +258,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   .bh-gift-card,
   .mega-dealzone {
     padding: 7px;
-  }
-
-  .bh-gift-card {
-    img {
-      padding-right: 10px;
-      border-right: 1px solid #000000;
-    }
   }
 }
 
@@ -1311,7 +1296,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 @media #{$tablet} {
   .header-right.controls {
     a,
-    a.search-mobile,
+    .search-mobile-icon,
     .header-mobile-phone-icon {
       display: none;
     }

@@ -1,15 +1,6 @@
-:css
-  .number-on-cart-style-mobile {
-    font-size: 13px !important;
-    margin-left: -9px !important;
-    display: none;
-    color: #13588d;
-    font-weight: bold;
-  }
-
 .display-inline-flex.icons
-  -# .searchbox-algolia
-  %a{href:  'javascript:void(0)', class: 'search-mobile searchbox'}
+  = render :partial => 'layouts/searchs/search_box'
+  .search-mobile-icon
     = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
   .toggle{data: {toggle: '#header-contact', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
     = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
@@ -28,7 +19,6 @@
                   %strong
                     = t("header.my_account")
                     %i{class: 'icon-chevron-down'}
-  -# .mobile-display
   = link_to image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop'), show_cart_path
   %span.number-on-cart-style-mobile
     - session[:cart] ||= {}

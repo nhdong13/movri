@@ -18,21 +18,18 @@ window.ST = window.ST or {}
       $page.val(page)
       form.submit()
 
-  onSortListing = ->
-    $("#sort_listing").change ->
-      data = $(this).val()
-      $.ajax
-        method: "GET"
-        url: '/categories'
-        dataType : 'json',
-        data:
-          sort_condition: data
-        success: (response) ->
-          window.location = response.redirect_url;
+  onOpenCategoriesFilter = ->
+    $('.sort-filter-bar #filter').click ->
+      $('.mobile-listing-filter').show()
+
+  onQuickCategoriesFilter = ->
+    $('.quick-filter-btn').click ->
+      $('.mobile-listing-filter').hide()
 
   module.HandleMobilePagination = ->
     onClickPreviousBtn()
     onChangeSelectPage()
-    onSortListing()
+    onQuickCategoriesFilter()
+    onOpenCategoriesFilter()
 
 ) window.ST

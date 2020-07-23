@@ -192,23 +192,53 @@ $(document).ready(function() {
     </div>
   `;
 
+  const renderMobileCategoryPage = ({hits}) =>`
+    <div class="snize-ac-results">
+      <div class="snize-ac-results-column">
+        <div class="row">
+          ${hits
+            .map(
+              item =>
+                `<div class="col-12">
+                  <div class="listing-box-mobile">
+                    <div class='main-image'>
+                      <img src=${item.main_image} class="design-image-too-wide" alt="">
+                    </div>
+                    <div class='listing-information'>
+                      <div class='listing-title cut-text'>
+                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                      </div>
+                      <div class='listing-price'>
+                        <span>${item.price_cents}</span>
+                        <span> /1 day</span>
+                      </div>
+                      <div class='listing-rent-now'>
+                        <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>`
+              )
+          .join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
 //============================================================================
 
   const renderSuggestionItems = (renderOptions, isFirstRender) => {
     const { indices, currentRefinement, refine } = renderOptions;
-    const container = document.querySelector('#search-result');
-    const input = $('.searchbox-algolia input')[0];
+    const container = document.querySelector('.search-result-algolia');
+    const inputs = $('.searchbox-algolia input');
     if (isFirstRender) {
-      input.addEventListener('input', event => {
-        refine(event.currentTarget.value);
-      });
+      _.map(inputs, function(input){
+        input.addEventListener('input', event => {
+          refine(event.currentTarget.value);
+        });
+      })
     }
-    if(currentRefinement.length){
-      input.value = currentRefinement;
-    }
-    container.querySelector('.suggestion-items').innerHTML = indices
-      .map(SuggestionItemsTemplate)
-      .join('');
+    $('.suggestion-items').html(indices.map(SuggestionItemsTemplate).join(''));
   };
 
   const customAutocomplete = instantsearch.connectors.connectAutocomplete(
@@ -221,20 +251,28 @@ $(document).ready(function() {
     }
     const { hits, widgetParams } = renderOptions;
     widgetParams.container.innerHTML = renderCategoryPage({hits})
+    widgetParams.container.innerHTML = renderCategoryPage({hits})
   };
 
   const customHits = instantsearch.connectors.connectHits(renderHits);
 //============================================================================
 
-  const renderProductItems = (renderOptions, isFirstRender) => {
+  const renderMobileHits = (renderOptions, isFirstRender) => {
     if (isFirstRender) {
-     $('#search-result').hide()
     }
-    const container = document.querySelector('#search-result');
+    const { hits, widgetParams } = renderOptions;
+    widgetParams.container.innerHTML = renderMobileCategoryPage({hits})
+  };
+
+  const customMobileHits = instantsearch.connectors.connectHits(renderMobileHits);
+//============================================================================
+
+  const renderProductItems = (renderOptions, isFirstRender) => {
+    if (isFirstRender) {}
+    const container = document.querySelector('.search-result-algolia');
     const { indices } = renderOptions;
-    container.querySelector('.product-items').innerHTML = indices
-      .map(ProductItemsTemplate)
-      .join('');
+
+    $('.product-items').html(indices.map(ProductItemsTemplate).join(''));
   };
 
   const searchProductsResult = instantsearch.connectors.connectAutocomplete(
@@ -243,19 +281,18 @@ $(document).ready(function() {
 //============================================================================
   const renderSearchBox = (renderOptions, isFirstRender) => {
     const { query, refine } = renderOptions;
-
-    const container = document.querySelector('.searchbox-algolia');
+    const container = $(".searchbox-algolia")
     if (isFirstRender) {
-      const input = document.createElement('input');
+      _.map(container, function(item){
+        const input = document.createElement('input');
 
-      input.addEventListener('input', event => {
-        refine(event.currentTarget.value);
-      });
+        input.addEventListener('input', event => {
+          refine(event.currentTarget.value);
+        });
 
-      container.appendChild(input);
-
+        item.appendChild(input);
+      })
     }
-    container.querySelector('input').value = query;
   };
 
   const customSearchBox = instantsearch.connectors.connectSearchBox(
@@ -270,8 +307,18 @@ $(document).ready(function() {
         container: document.querySelector('#categories-page'),
       }),
 
+      customMobileHits({
+        container: document.querySelector('#mobile-categories-page'),
+      }),
+
       instantsearch.widgets.refinementList({
         container: '#refinement-list',
+        attribute: 'brand',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#mobile-refinement-list',
         attribute: 'brand',
         operator: 'or',
       }),
@@ -283,13 +330,31 @@ $(document).ready(function() {
       }),
 
       instantsearch.widgets.refinementList({
+        container: '#mobile-lens-mount',
+        attribute: 'mount',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
         container: '#lens-type',
         attribute: 'lens_type',
         operator: 'or',
       }),
 
       instantsearch.widgets.refinementList({
+        container: '#mobile-lens-type',
+        attribute: 'lens_type',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
         container: '#lens-compatibility',
+        attribute: 'compatibility',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#mobile-lens-compatibility',
         attribute: 'compatibility',
         operator: 'or',
       }),
@@ -302,19 +367,27 @@ $(document).ready(function() {
           { label: 'Price: Low to High', value: 'price_cents_asc' },
           { label: 'Price: High to Low', value: 'price_cents_desc' },
         ],
+      }),
+
+      instantsearch.widgets.clearRefinements({
+        container: '#clear-refinements',
+        templates: {
+          resetLabel: 'Reset',
+        },
       })
     ]);
   }
 
   search.addWidgets([
     customSearchBox({
+      container: document.querySelector('.searchbox-algolia'),
       placeholder: 'Search for products',
       showSubmit: false,
       showReset: false,
     }),
 
     searchProductsResult({
-      container: document.querySelector('#search-result'),
+      container: document.querySelector('.search-result-algolia'),
     }),
 
     instantsearch.widgets.configure({
@@ -335,8 +408,10 @@ $(document).ready(function() {
   search.start();
 
   $(document).click (function (e) {
-    var search_result = $('#search-result');
-    if (e.target == $('.searchbox-algolia input')[0] || $(e.target).parents('#search-result')[0] == $('#search-result')[0]) {
+    var search_result = $('.search-result-algolia');
+    if (e.target == $('.searchbox-algolia input')[0] ||
+      e.target == $('.searchbox-algolia input')[1] ||
+      $(e.target).parents('.search-result-algolia')[0] == $('.search-result-algolia')[0]) {
       $(search_result).show();
     } else {
       $(search_result).hide();

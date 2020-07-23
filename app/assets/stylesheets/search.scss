@@ -6,7 +6,16 @@
   }
 }
 
-#search-result{
+.mobile-display{
+  .searchbox-algolia input{display: none}
+  .search-result-algolia{
+    width: 100%;
+  }
+}
+
+
+.search-result-algolia{
+  display: none;
   margin-top: 5px;
   position: absolute;
   z-index: 1000;
@@ -45,7 +54,7 @@ mark{
   font-weight: normal;
 }
 
-#search-result{
+.search-result-algolia{
   padding: 10px 5px;
   li{
     cursor: pointer;
