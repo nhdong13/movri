@@ -200,6 +200,7 @@
 }
 
 .quick-filter-btn{
+  cursor: pointer;
   background: #13588d;
   border: 1px solid #13588d;
   color: white;
@@ -211,6 +212,7 @@
 }
 
 .ais-ClearRefinements-button, .quick-filter-btn{
+  cursor: pointer;
   font-weight: bold;
   line-height: 1.5em;
   background: #13588d;
@@ -218,4 +220,14 @@
   padding: 5px 10px;
   border-radius: 5px;
   border: 1px solid #bdbdbd;
+}
+
+#mobile-sort-by{
+  .ais-SortBy-select{
+    cursor: pointer;
+    text-align: center;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    height: 46px;
+  }
 }

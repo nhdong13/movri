@@ -15,10 +15,10 @@ $(document).ready(function() {
   }
 
   const search = instantsearch({
-    indexName: 'Listing',
+    indexName: 'movri_products',
     searchClient: algoliasearch(
-      'I9M2XD27BV',
-      '30b73223325eca9f17cfbe9fea6a9775'
+      'IIXUYFGM4K',
+      '304da7c0dd54da7a5ca0c191243a3ced'
     ),
 
     routing: {
@@ -93,7 +93,7 @@ $(document).ready(function() {
 
       stateMapping: {
         stateToRoute(uiState) {
-          const indexUiState = uiState['Listing'] || {};
+          const indexUiState = uiState['movri_products'] || {};
 
           return {
             query: indexUiState.query,
@@ -106,8 +106,7 @@ $(document).ready(function() {
 
         routeToState(routeState) {
           return {
-            Listing_query_suggestions_v4: {query: routeState.query},
-            Listing: {
+            movri_products: {
               page: routeState.page,
               refinementList: {
                 brand: routeState.brands,
@@ -129,9 +128,9 @@ $(document).ready(function() {
     ${hits
       .map(
         item => {
-          [brand] = item.Listing.facets.exact_matches.brand;
-          [lens_type] = item.Listing.facets.exact_matches.lens_type;
-          [mount] = item.Listing.facets.exact_matches.mount;
+          [brand] = item.movri_products.facets.exact_matches.brand;
+          [lens_type] = item.movri_products.facets.exact_matches.lens_type;
+          [mount] = item.movri_products.facets.exact_matches.mount;
           return `
             <a href= ${'/categories?'+"brands="+getValueOfFacets(brand)+"&lens_types="+getValueOfFacets(lens_type)+"&mounts="+getValueOfFacets(mount)}>
               <li>
@@ -362,10 +361,22 @@ $(document).ready(function() {
       instantsearch.widgets.sortBy({
         container: '#sort-by',
         items: [
-          { label: 'Most Popular', value: 'most_popular_listing' },
-          { label: 'Newest', value: 'sort_by_newest' },
-          { label: 'Price: Low to High', value: 'price_cents_asc' },
-          { label: 'Price: High to Low', value: 'price_cents_desc' },
+          { label: 'Sort', value: 'movri_products' },
+          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Newest', value: 'sort_by_newest_products' },
+          { label: 'Price: Low to High', value: 'products_price_cents_asc' },
+          { label: 'Price: High to Low', value: 'products_price_cents_desc' },
+        ],
+      }),
+
+      instantsearch.widgets.sortBy({
+        container: '#mobile-sort-by',
+        items: [
+          { label: 'Sort By', value: 'movri_products' },
+          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Newest', value: 'sort_by_newest_products' },
+          { label: 'Price: Low to High', value: 'products_price_cents_asc' },
+          { label: 'Price: High to Low', value: 'products_price_cents_desc' },
         ],
       }),
 
@@ -374,6 +385,18 @@ $(document).ready(function() {
         templates: {
           resetLabel: 'Reset',
         },
+      }),
+
+      instantsearch.widgets.pagination({
+        container: '.categoties-pagination',
+        totalPages: 2,
+        scrollTo: false,
+      }),
+
+      instantsearch.widgets.pagination({
+        container: '#mobile-categoties-pagination',
+        totalPages: 2,
+        scrollTo: false,
       })
     ]);
   }
@@ -396,13 +419,13 @@ $(document).ready(function() {
       clickAnalytics: true,
     }),
 
-    instantsearch.widgets
-      .index({ indexName: 'Listing_query_suggestions_v4' })
-      .addWidgets([
-        customAutocomplete({
-          container: $('.suggestion-items'),
-        }),
-      ]),
+    // instantsearch.widgets
+    //   .index({ indexName: 'products_query_suggestions' })
+    //   .addWidgets([
+    //     customAutocomplete({
+    //       container: $('.suggestion-items'),
+    //     }),
+    //   ]),
   ]);
 
   search.start();
@@ -411,10 +434,24 @@ $(document).ready(function() {
     var search_result = $('.search-result-algolia');
     if (e.target == $('.searchbox-algolia input')[0] ||
       e.target == $('.searchbox-algolia input')[1] ||
-      $(e.target).parents('.search-result-algolia')[0] == $('.search-result-algolia')[0]) {
+      $(e.target).parents('.search-result-algolia')[0] == $('.search-result-algolia')[0]||
+      $(e.target).parents('.search-mobile-icon')[0] == $('.search-mobile-icon')[0]) {
       $(search_result).show();
     } else {
+      $('.mobile-display .searchbox-algolia input').hide()
       $(search_result).hide();
+    }
+  });
+
+  $(document).click (function (e) {
+    if($('.mobile-listing-filter').is(":visible")){
+      if($(e.target).parents('.mobile-listing-filter')[0] == $('.mobile-listing-filter')[0] ||
+        e.target == $('.sort-filter-bar #filter')[0]){
+        $('.mobile-listing-filter').show();
+      } else {
+        $('.mobile-listing-filter').hide();
+        e.preventDefault();
+      }
     }
   });
 });

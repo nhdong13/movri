@@ -83,3 +83,46 @@ mark{
   border-bottom: 1px solid #eeeeee;
   background: #f7f7f7;
 }
+
+.ais-Pagination-item--selected{
+  border: 1px solid #0096db !important;
+  background: #0096db !important;
+  color: white;
+  & a{
+    color: white;
+  }
+}
+.ais-Pagination{
+  .ais-Pagination-list{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    li{
+      border: 1px solid #f0f0f0;
+      margin: 0 10px;
+      span, a{
+        display: block;
+        padding: 10px 20px;
+      }
+      border-radius: 4px;
+    }
+  }
+}
+
+#mobile-categoties-pagination{
+  margin-bottom: 20px;
+  .ais-Pagination{
+    .ais-Pagination-list{
+      li{
+        background: white;
+        border: 1px solid black;
+        margin: 0 5px;
+        span, a{
+          display: block;
+          padding: 5px 10px;
+        }
+        border-radius: 4px;
+      }
+    }
+  }
+}
