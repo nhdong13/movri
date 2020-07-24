@@ -149,10 +149,10 @@ $(document).ready(function() {
           <li>
             <a href= ${'/listings/'+ item.objectID}>
               <div class='flex-items'>
-                <div class='width-20 center-items'>
+                <div class='width-10 center-items'>
                   <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
                 </div>
-                <div class='width-80'>
+                <div class='width-90'>
                   ${instantsearch.highlight({ attribute: 'title', hit: item })}
                 </div>
               </div>
