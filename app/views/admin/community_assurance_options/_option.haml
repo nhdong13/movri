@@ -1,0 +1,7 @@
+%tr.row.p-0.m-0
+  %td.assurance-image.col-1.p-3.pt-1
+    = image_tag option.image.url, alt: "assurance-option-#{option.id}", class: 'assurance-option-image'
+  %td.col-7.p-3.pt-1
+    = option.title
+  %td.col-4.p-3.pt-1
+    = option.created_at.strftime('%d/%m/%Y')

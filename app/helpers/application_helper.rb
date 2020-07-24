@@ -393,6 +393,13 @@ module ApplicationHelper
       },
       {
         :topic => :manage,
+        :text => t("admin.communities.manager_assurance_option.assurance_options"),
+        :icon_class => icon_class("star"),
+        :path => admin_community_assurance_options_path(@current_community),
+        :name => "assurance_option"
+      },
+      {
+        :topic => :manage,
         :text => t("admin.communities.manage_members.manage_members"),
         :icon_class => icon_class("community"),
         :path => admin_community_community_memberships_path(@current_community, sort: "join_date", direction: "desc"),

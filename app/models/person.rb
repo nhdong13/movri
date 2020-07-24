@@ -317,7 +317,7 @@ class Person < ApplicationRecord
   end
 
   def fullname
-    "#{family_name.capitalize} #{given_name.capitalize}"
+    "#{given_name.capitalize} #{family_name.capitalize}"
   end
 
   def street_address

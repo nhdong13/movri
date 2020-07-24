@@ -397,6 +397,8 @@ Rails.application.routes.draw do
             post :posting_allowed
           end
         end
+
+        resources :assurance_options, controller: :community_assurance_options, only: [:index, :new, :create]
         resource :paypal_preferences, only: :index do
 
           # DEPRECATED (2015-11-16)
