@@ -1,0 +1,30 @@
+- content_for :title_header do
+  %h1
+    = t("layouts.admin.admin")
+    = "-"
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section.p-3.assurance-options-index
+  %h2 Customers
+
+  .row.p-0.m-0.display-flex.align-items-center
+    .col-9.row.p-0.m-0
+    .col-3.p-0.m-0.display-flex.justify-content-end
+      .btn-link
+        = link_to new_admin_community_customer_path(@current_community) do
+          %span Add customers
+  .assurance-options-lists
+    .head-section.p-2
+      .tabs.display-flex
+        .tab-item.tab-active All
+        .tab-item New
+        .tab-item Returning
+        .tab-item Email subscribers
+      .filters.m-2.mt-4.mb-4
+        %input{type: :text, class: "form-control", placeholder: "Filter customers"}
+    .body-section.p-1
+      %table
+        %thead
+        %tbody
+          - @service.customers.each do |customer|
+            = render 'customer', customer: customer

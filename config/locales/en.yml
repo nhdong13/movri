@@ -734,6 +734,8 @@ en:
         online_store: Online Store
       manager_assurance_option:
         assurance_options: Assurance Option
+      manager_customer:
+        customers: Customers
     landing_page_versions:
       sections:
         hero:
@@ -2139,6 +2141,7 @@ en:
       visit_admin: "Would you like to %{link}?"
       visit_admin_link: "visit your admin panel"
       create_assurance_option_failed: 'Assurance option has been created failed.'
+      add_new_customer_failed: 'New customer has been created failed.'
     settings:
       account: Account
       notifications: Notifications
