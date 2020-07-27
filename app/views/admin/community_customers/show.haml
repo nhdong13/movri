@@ -1,0 +1,54 @@
+- content_for :title_header do
+  %h1
+    = t("layouts.admin.admin")
+    = "-"
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section.p-3.assurance-options-index
+  %h2
+    = @customer.fullname
+  .row.customer-page.customer-details-page
+    .col-8.row.p-0.m-0.pr-3
+      .col-12.section-wrapper
+        .display-flex.align-items-center
+          = image_tag @customer.image.url, class: 'customer-image'
+          %div
+            .font-weight-bold
+              = @customer.fullname
+            .font-size-14
+              = "#{@customer.shipping_address&.company}, #{@customer.shipping_address&.city}, #{@customer.shipping_address&.country}" 
+        %label.mt-4.font-weight-regular
+          = "Customer Note"
+        .font-size-14
+          = @customer.note
+      .col-12.section-wrapper
+        %label.m-0.mb-2 Orders placed
+        .font-size-14
+          The customer hasn't placed any order yet.
+    .col-4.row.p-0.m-0
+      .col-12.section-wrapper
+        %label.m-0 Cusomter overview
+        .mt-1
+          = @customer.email
+        .mb-1
+          = @customer.username.present? ? @customer.username : "No account"
+        .border-top
+          %label.mb-2 Default Address
+          .font-size-14
+            = "#{@customer.shipping_address&.first_name} #{@customer.shipping_address&.last_name}"
+          .font-size-14
+            = @customer.shipping_address&.street1
+          .font-size-14
+            = @customer.shipping_address&.apartment
+          .font-size-14
+            = @customer.shipping_address&.city
+          .font-size-14
+            = @customer.shipping_address&.country
+          .font-size-14
+            = @customer.shipping_address&.phone
+        .border-top
+          %label.mb-2 Tax Settings
+          .font-size-14
+            No exemptions
+
+        

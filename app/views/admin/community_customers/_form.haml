@@ -1,0 +1,90 @@
+= form_for customer, :url => admin_community_customers_path(community_id: @current_community.id), :method => :post do |f|
+  .customer-page.add-customer-form
+    .section.p-0
+      .row.p-0.m-0
+        .col-4
+          %label Customer overview
+        .col-8
+          .section-wrapper.row.m-0.pt-0
+            .col-6.p-0.m-0.pr-2
+              = f.label :family_name, "First name", class: 'font-weight-regular'
+              = f.text_field :family_name, class: 'form-control'
+            .col-6.p-0.m-0.pl-2
+              = f.label :given_name, "Last name", class: 'font-weight-regular'
+              = f.text_field :given_name, class: 'text_field'
+            .col-12.p-0.m-0
+              = f.label :email, "Email", class: 'font-weight-regular'
+              = f.text_field :email, class: 'text_field'
+            .col-12.p-0.m-0
+              = f.label :phone_number, "Phone number", class: 'font-weight-regular'
+              = f.text_field :phone_number, class: 'text_field'
+            .col-12.p-0.m-0.display-flex.p-0.m-0
+              .checkbox-container
+                = f.check_box :agree_to_subscription, id: "agree_to_subscription"
+                = f.label :agree_to_subscription, "Customer agreed to receive marketing emails.", :class => 'checkbox'
+            .font-size-14
+              You should ask your customers for permission before you subscribe them to your marketing emails
+    .section.p-0
+      .row.p-0
+        .col-4
+          %label Address
+          .font-weight-regular.font-size-14
+            The primary address of this customer
+        .col-8
+          = fields_for :transaction_address do |address_form|
+            .section-wrapper.row.m-0.pt-0
+              .col-6.p-0.m-0.pr-2
+                = address_form.label :first_name, "First name", class: 'font-weight-regular'
+                = address_form.text_field :first_name, class: 'text_field'
+              .col-6.p-0.m-0.pl-2
+                = address_form.label :last_name, "Last name", class: 'font-weight-regular'
+                = address_form.text_field :last_name, class: 'text_field'
+              .col-12.p-0.m-0
+                = address_form.label :company, "Company", class: 'font-weight-regular'
+                = address_form.text_field :company, class: 'text_field'
+              .col-12.p-0.m-0
+                = address_form.label :street1, "Address", class: 'font-weight-regular'
+                = address_form.text_field :street1, class: 'text_field'
+              .col-12.p-0.m-0
+                = address_form.label :apartment, "Apartment, suite, etc.", class: 'font-weight-regular'
+                = address_form.text_field :apartment, class: 'text_field'
+              .col-12.p-0.m-0
+                = address_form.label :city, "City", class: 'font-weight-regular'
+                = address_form.text_field :city, class: 'text_field'
+              .col-6.p-0.m-0.pr-2.select-country
+                = address_form.label :country, "Country/Region", class: 'font-weight-regular'
+                = address_form.country_select("country", [], {:prompt => "Country/Region"})
+              .col-6.p-0.m-0.pl-2
+                = address_form.label :postal_code, "Postal code", class: 'font-weight-regular'
+                = address_form.text_field :postal_code, class: 'text_field'
+              .col-12.p-0.m-0
+                = address_form.label :phone, "Phone", class: 'font-weight-regular'
+                = address_form.text_field :phone, class: 'text_field'
+    .section.p-0
+      .row.p-0
+        .col-4
+          %label Tax exemptions
+          .font-weight-regular.font-size-14
+            Tax exemptions are currently limited to Canada.
+        .col-8
+          .section-wrapper.row.m-0.pt-0
+            .col-12.p-0.m-0.pr-2
+              .display-flex
+                %input{type: :checkbox, class: "form-control mr-2 pt-1", placeholder: "Browse or search exemptions"}
+                %label.font-weight-regular Collect tax
+              %input{type: :text, class: "form-control", placeholder: "Browse or search exemptions"}
+    .section.p-0
+      .row.p-0
+        .col-4
+          %label Notes
+          .font-weight-regular.font-size-14
+            Add note about your customer
+        .col-8
+          .section-wrapper.row.m-0.pt-0
+            .col-12.p-0.m-0.pr-2
+              = f.label :note, "Note", class: 'font-weight-regular'
+              = f.text_field :note, class: 'form-control'
+
+    .mt-4.display-flex.justify-content-end
+      = link_to  "Cancel", admin_community_customers_path(@current_community), class: 'btn btn-white'
+      = f.submit "Save", class: 'btn btn-primary ml-2'

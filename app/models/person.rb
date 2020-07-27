@@ -46,6 +46,8 @@
 #  linkedin_id                        :string(255)
 #  default_shipping_address           :integer
 #  default_billing_address            :integer
+#  agree_to_subscription              :boolean          default(FALSE)
+#  note                               :string(255)
 #
 # Indexes
 #
@@ -222,7 +224,8 @@ class Person < ApplicationRecord
                       :medium => "288x288#",
                       :small => "108x108#",
                       :thumb => "48x48#",
-                      :original => "600x800>"}
+                      :original => "600x800>"},
+                      default_url: "/images/missing_image.png"
 
   process_in_background :image
 
@@ -640,6 +643,10 @@ class Person < ApplicationRecord
 
   def cancelled_orders
     starter_transactions.where(current_state: ['cancelled']).order(updated_at: :desc)
+  end
+
+  def total_spent
+    completed_orders.pluck(:total_price_cents).sum
   end
 
   private
