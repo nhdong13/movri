@@ -463,8 +463,11 @@ class ApplicationController < ActionController::Base
       data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
       session[:booking][:total_days] = data[:total_days]
     else
+      session[:booking] = {}
       session[:booking][:start_date] = get_today
       session[:booking][:end_date] = get_next_day(session[:booking][:start_date])
+      data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
+      session[:booking][:total_days] = data[:total_days]
     end
   end
 

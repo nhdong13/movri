@@ -1,0 +1,7 @@
+%tr.row.p-0.m-0
+  %td.assurance-image.col-8.p-3.pt-1.text-left
+    = link_to customer.fullname, admin_community_customer_path(community_id: @current_community.id, uuid: customer.id)
+  %td.col-1.p-3.pt-1
+    = "#{customer.completed_orders.count} #{customer.completed_orders.count == 1 ? "order" : "orders"}"
+  %td.col-3.p-3.pt-1.text-right
+    = "#{number_to_currency(customer.total_spent)} spent"
