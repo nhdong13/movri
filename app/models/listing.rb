@@ -95,7 +95,7 @@
 
 class Listing < ApplicationRecord
   include AlgoliaSearch
-  algoliasearch do
+  algoliasearch index_name: "movri_products" do
     attribute :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
     attributes :main_image do
       main_image
@@ -441,6 +441,7 @@ class Listing < ApplicationRecord
     if listing_images.any?
       listing_images.first&.image&.url
     else
+      # Rails.root.join('app', 'assets', 'images', 'missing_image.png')
       "missing_image.png"
     end
   end

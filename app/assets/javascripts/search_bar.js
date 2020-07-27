@@ -1,57 +1,323 @@
 $(document).ready(function() {
+
+  function getCategorySlug(name) {
+    return name
+      .split(' ')
+      .map(encodeURIComponent)
+      .join('+');
+  }
+
+  function getCategoryName(slug) {
+    return slug
+      .split('+')
+      .map(decodeURIComponent)
+      .join(' ');
+  }
+
   const search = instantsearch({
-    indexName: 'Listing',
+    indexName: 'movri_products',
     searchClient: algoliasearch(
-      'I9M2XD27BV',
-      '30b73223325eca9f17cfbe9fea6a9775'
+      'IIXUYFGM4K',
+      '304da7c0dd54da7a5ca0c191243a3ced'
     ),
+
+    routing: {
+      router: instantsearch.routers.history({
+        windowTitle({ category, query }) {
+          const queryTitle = query ? `Results for "${query}"` : 'Search';
+
+          if (category) {
+            return `${category} – ${queryTitle}`;
+          }
+
+          return queryTitle;
+        },
+
+        createURL({ qsModule, routeState, location }) {
+          const urlParts = location.href.match(/^(.*?)\/categories/);
+          const baseUrl = `${urlParts ? urlParts[1] : ''}/`;
+
+          const categoryPath = routeState.category
+            ? `${getCategorySlug(routeState.category)}/`
+            : '';
+          const queryParameters = {};
+
+          if (routeState.query) {
+            queryParameters.query = encodeURIComponent(routeState.query);
+          }
+          if (routeState.page !== 1) {
+            queryParameters.page = routeState.page;
+          }
+          if (routeState.brands) {
+            queryParameters.brands = routeState.brands.map(encodeURIComponent);
+          }
+
+          const queryString = qsModule.stringify(queryParameters, {
+            addQueryPrefix: true,
+            arrayFormat: 'repeat'
+          });
+
+          return `${baseUrl}categories${categoryPath}${queryString}`;
+        },
+
+        parseURL({ qsModule, location }) {
+          const pathnameMatches = location.pathname.match(/categories\/(.*?)\/?$/);
+          const category = getCategoryName(
+            (pathnameMatches && pathnameMatches[1]) || ''
+          );
+          const { query = '', page, brands, mounts, lens_types = [] } = qsModule.parse(
+            location.search.slice(1)
+          );
+          // `qs` does not return an array when there's a single value.
+          const allBrands = Array.isArray(brands)
+            ? brands
+            : [brands].filter(Boolean);
+
+          const allMounts = Array.isArray(mounts)
+            ? mounts
+            : [mounts].filter(Boolean);
+
+          const allLensTypes = Array.isArray(lens_types)
+            ? lens_types
+            : [lens_types].filter(Boolean);
+
+          return {
+            query: decodeURIComponent(query),
+            page,
+            brands: allBrands.map(decodeURIComponent),
+            mounts: allMounts.map(decodeURIComponent),
+            lens_types: allLensTypes.map(decodeURIComponent),
+          };
+        }
+      }),
+
+      stateMapping: {
+        stateToRoute(uiState) {
+          const indexUiState = uiState['movri_products'] || {};
+
+          return {
+            query: indexUiState.query,
+            page: indexUiState.page,
+            brands: indexUiState.refinementList && indexUiState.refinementList.brand,
+            mounts: indexUiState.refinementList && indexUiState.refinementList.mount,
+            lens_type: indexUiState.refinementList && indexUiState.refinementList.lens_type,
+          };
+        },
+
+        routeToState(routeState) {
+          return {
+            movri_products: {
+              page: routeState.page,
+              refinementList: {
+                brand: routeState.brands,
+                mount: routeState.mounts,
+                lens_type: routeState.lens_types,
+              }
+            }
+          };
+        }
+      }
+    }
   });
 
-  const renderHits = (renderOptions, isFirstRender) => {
-    if (isFirstRender) {
-      $('#hits').hide()
-    }
-    const { hits, widgetParams } = renderOptions;
-    widgetParams.container.innerHTML = `
-      <div class="snize-ac-results">
-        <div class="snize-ac-results-column">
-          <div class="row">
-            ${hits
-              .map(
-                item =>
-                  `<div class="col-3">
-                    <div class="listing-box">
-                      <div class='main-image'>
-                        <img src=${item.main_image} class="design-image-too-wide" alt="">
+  getValueOfFacets = function(exact_match){
+    return exact_match ? getCategorySlug(exact_match.value) : ""
+  }
+
+  const SuggestionItemsTemplate = ({ hits }) =>`
+    ${hits
+      .map(
+        item => {
+          [brand] = item.movri_products.facets.exact_matches.brand;
+          [lens_type] = item.movri_products.facets.exact_matches.lens_type;
+          [mount] = item.movri_products.facets.exact_matches.mount;
+          return `
+            <a href= ${'/categories?'+"brands="+getValueOfFacets(brand)+"&lens_types="+getValueOfFacets(lens_type)+"&mounts="+getValueOfFacets(mount)}>
+              <li>
+                ${instantsearch.highlight({ attribute: 'query', hit: item })}
+              </li>
+            </a>`
+          }
+        )
+      .join('')}
+    `;
+
+  const ProductItemsTemplate = ( { hits } ) => `
+    ${hits
+      .map(
+        item =>`
+          <li>
+            <a href= ${'/listings/'+ item.objectID}>
+              <div class='flex-items'>
+                <div class='width-10 center-items'>
+                  <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
+                </div>
+                <div class='width-90'>
+                  ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                </div>
+              </div>
+            </a>
+          </li>
+        `)
+      .join('')}
+    `;
+
+  const renderCategoryPage = ({hits}) =>`
+    <div class="snize-ac-results">
+      <div class="snize-ac-results-column">
+        <div class="row">
+          ${hits
+            .map(
+              item =>
+                `<div class="col-3">
+                  <div class="listing-box">
+                    <div class='main-image'>
+                      <img src=${item.main_image} class="design-image-too-wide" alt="">
+                    </div>
+                    <div class='listing-price'>
+                      <span>${item.price_cents}</span>
+                      <span> /1 day</span>
+                    </div>
+                    <div class='listing-information'>
+                      ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                    </div>
+                    <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
+                  </div>
+                </div>`
+              )
+          .join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  const renderMobileCategoryPage = ({hits}) =>`
+    <div class="snize-ac-results">
+      <div class="snize-ac-results-column">
+        <div class="row">
+          ${hits
+            .map(
+              item =>
+                `<div class="col-12">
+                  <div class="listing-box-mobile">
+                    <div class='main-image'>
+                      <img src=${item.main_image} class="design-image-too-wide" alt="">
+                    </div>
+                    <div class='listing-information'>
+                      <div class='listing-title cut-text'>
+                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
                       </div>
                       <div class='listing-price'>
                         <span>${item.price_cents}</span>
                         <span> /1 day</span>
                       </div>
-                      <div class='listing-information'>
-                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                      <div class='listing-rent-now'>
+                        <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
                       </div>
-                      <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
                     </div>
-                  </div>`
-                )
-            .join('')}
-          </div>
+                  </div>
+                </div>`
+              )
+          .join('')}
         </div>
       </div>
-    `;
+    </div>
+  `;
+
+//============================================================================
+
+  const renderSuggestionItems = (renderOptions, isFirstRender) => {
+    const { indices, currentRefinement, refine } = renderOptions;
+    const container = document.querySelector('.search-result-algolia');
+    const inputs = $('.searchbox-algolia input');
+    if (isFirstRender) {
+      _.map(inputs, function(input){
+        input.addEventListener('input', event => {
+          refine(event.currentTarget.value);
+        });
+      })
+    }
+    $('.suggestion-items').html(indices.map(SuggestionItemsTemplate).join(''));
   };
 
-  // Create the custom widget
+  const customAutocomplete = instantsearch.connectors.connectAutocomplete(
+    renderSuggestionItems
+  );
+//============================================================================
+
+  const renderHits = (renderOptions, isFirstRender) => {
+    if (isFirstRender) {
+    }
+    const { hits, widgetParams } = renderOptions;
+    widgetParams.container.innerHTML = renderCategoryPage({hits})
+    widgetParams.container.innerHTML = renderCategoryPage({hits})
+  };
+
   const customHits = instantsearch.connectors.connectHits(renderHits);
-  if($('body').find('#refinement-list').length && $('body').find('#numeric-menu').length ){
+//============================================================================
+
+  const renderMobileHits = (renderOptions, isFirstRender) => {
+    if (isFirstRender) {
+    }
+    const { hits, widgetParams } = renderOptions;
+    widgetParams.container.innerHTML = renderMobileCategoryPage({hits})
+  };
+
+  const customMobileHits = instantsearch.connectors.connectHits(renderMobileHits);
+//============================================================================
+
+  const renderProductItems = (renderOptions, isFirstRender) => {
+    if (isFirstRender) {}
+    const container = document.querySelector('.search-result-algolia');
+    const { indices } = renderOptions;
+
+    $('.product-items').html(indices.map(ProductItemsTemplate).join(''));
+  };
+
+  const searchProductsResult = instantsearch.connectors.connectAutocomplete(
+    renderProductItems
+  );
+//============================================================================
+  const renderSearchBox = (renderOptions, isFirstRender) => {
+    const { query, refine } = renderOptions;
+    const container = $(".searchbox-algolia")
+    if (isFirstRender) {
+      _.map(container, function(item){
+        const input = document.createElement('input');
+
+        input.addEventListener('input', event => {
+          refine(event.currentTarget.value);
+        });
+
+        item.appendChild(input);
+      })
+    }
+  };
+
+  const customSearchBox = instantsearch.connectors.connectSearchBox(
+    renderSearchBox
+  );
+//============================================================================
+
+  // Create the custom widget
+  if($('body').find('#refinement-list').length){
     search.addWidgets([
       customHits({
         container: document.querySelector('#categories-page'),
       }),
 
+      customMobileHits({
+        container: document.querySelector('#mobile-categories-page'),
+      }),
+
       instantsearch.widgets.refinementList({
         container: '#refinement-list',
+        attribute: 'brand',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#mobile-refinement-list',
         attribute: 'brand',
         operator: 'or',
       }),
@@ -63,7 +329,19 @@ $(document).ready(function() {
       }),
 
       instantsearch.widgets.refinementList({
+        container: '#mobile-lens-mount',
+        attribute: 'mount',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
         container: '#lens-type',
+        attribute: 'lens_type',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#mobile-lens-type',
         attribute: 'lens_type',
         operator: 'or',
       }),
@@ -74,98 +352,106 @@ $(document).ready(function() {
         operator: 'or',
       }),
 
-      instantsearch.widgets.numericMenu({
-        container: '#numeric-menu',
-        attribute: 'price_cents',
-        items: [
-          { label: 'All' },
-          { label: 'Less than 500 cents', end: 500 },
-          { label: 'Between 500 cents - 1000 cents', start: 500, end: 1000 },
-          { label: 'More than 1000 cents', start: 1000 },
-        ],
+      instantsearch.widgets.refinementList({
+        container: '#mobile-lens-compatibility',
+        attribute: 'compatibility',
+        operator: 'or',
       }),
+
       instantsearch.widgets.sortBy({
         container: '#sort-by',
         items: [
-          { label: 'Most Popular', value: 'most_popular_listing' },
-          { label: 'Newest', value: 'sort_by_newest' },
-          { label: 'Price: Low to High', value: 'price_cents_asc' },
-          { label: 'Price: High to Low', value: 'price_cents_desc' },
+          { label: 'Sort', value: 'movri_products' },
+          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Newest', value: 'sort_by_newest_products' },
+          { label: 'Price: Low to High', value: 'products_price_cents_asc' },
+          { label: 'Price: High to Low', value: 'products_price_cents_desc' },
         ],
+      }),
+
+      instantsearch.widgets.sortBy({
+        container: '#mobile-sort-by',
+        items: [
+          { label: 'Sort By', value: 'movri_products' },
+          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Newest', value: 'sort_by_newest_products' },
+          { label: 'Price: Low to High', value: 'products_price_cents_asc' },
+          { label: 'Price: High to Low', value: 'products_price_cents_desc' },
+        ],
+      }),
+
+      instantsearch.widgets.clearRefinements({
+        container: '#clear-refinements',
+        templates: {
+          resetLabel: 'Reset',
+        },
+      }),
+
+      instantsearch.widgets.pagination({
+        container: '.categoties-pagination',
+        totalPages: 2,
+        scrollTo: false,
+      }),
+
+      instantsearch.widgets.pagination({
+        container: '#mobile-categoties-pagination',
+        totalPages: 2,
+        scrollTo: false,
       })
     ]);
   }
 
   search.addWidgets([
-    instantsearch.widgets.searchBox({
-      container: '#searchbox',
+    customSearchBox({
+      container: document.querySelector('.searchbox-algolia'),
       placeholder: 'Search for products',
       showSubmit: false,
       showReset: false,
     }),
 
-    customHits({
-      container: document.querySelector('#hits'),
+    searchProductsResult({
+      container: document.querySelector('.search-result-algolia'),
     }),
 
     instantsearch.widgets.configure({
-      hitsPerPage: 15,
+      hitsPerPage: 3,
       distinct: true,
       clickAnalytics: true,
     }),
+
+    // instantsearch.widgets
+    //   .index({ indexName: 'products_query_suggestions' })
+    //   .addWidgets([
+    //     customAutocomplete({
+    //       container: $('.suggestion-items'),
+    //     }),
+    //   ]),
   ]);
 
   search.start();
 
-  $('.header-search-input').focus(function() {
-    if (localStorage.search_history == '') {
-      return;
-    }
-    $('.history-keywords').empty();
-    var historyKeywords = localStorage.search_history.split(',').reverse();
-    var numberOfKeyword = 0;
-
-    $.each(historyKeywords, function(idx, keyword){
-      if ((historyKeywords[idx+1] == keyword) || keyword == '') {
-        return true;
-      }
-      if ((numberOfKeyword > 5)) {
-        return false;
-      }
-      var htmlSearchHistoryItem = '';
-      htmlSearchHistoryItem += '<li class="history-keyword-item" data-text-search="'+ keyword +'">';
-      htmlSearchHistoryItem += '<a href="/?q='+ keyword +'">';
-      htmlSearchHistoryItem += '<img src="/assets/mf_icons/icon-movri-undo.svg" class="history-keyword-icon">';
-      htmlSearchHistoryItem += '<span class="link-text ta-ellipsis">' + keyword + '</span>';
-      htmlSearchHistoryItem += '<img src="/assets/mf_icons/icon-movri-visit.svg" class="visit-search-icon">'
-      htmlSearchHistoryItem += '</a>';
-      htmlSearchHistoryItem += '</li>';
-      $('.history-keywords').append(htmlSearchHistoryItem);
-      numberOfKeyword += 1
-    });
-    htmlClearSearchHistory = '<li class="clear-history-keywords">';
-    htmlClearSearchHistory += '<a href="javascript:void(0)">';
-    htmlClearSearchHistory += '<img src="/assets/mf_icons/icon-movri-undo.svg" class="reset-history-keyword-icon">';
-    htmlClearSearchHistory += '<span class="link-text ta-ellipsis">Clear search history</span>';
-    htmlClearSearchHistory += '</a>';
-    htmlClearSearchHistory += '</li>';
-    $('.history-keywords').append(htmlClearSearchHistory);
-  })
-
-  $(document).keypress(function(event){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-      if ($('.header-search-input').is(':focus')) {
-      };
+  $(document).click (function (e) {
+    var search_result = $('.search-result-algolia');
+    if (e.target == $('.searchbox-algolia input')[0] ||
+      e.target == $('.searchbox-algolia input')[1] ||
+      $(e.target).parents('.search-result-algolia')[0] == $('.search-result-algolia')[0]||
+      $(e.target).parents('.search-mobile-icon')[0] == $('.search-mobile-icon')[0]) {
+      $(search_result).show();
+    } else {
+      $('.mobile-display .searchbox-algolia input').hide()
+      $(search_result).hide();
     }
   });
 
   $(document).click (function (e) {
-    var search_result = $('#hits');
-    if (e.target == $('#searchbox input')[0] || $(e.target).parents('#hits')[0] == $('#hits')[0]) {
-      $(search_result).show();
-    } else {
-      $(search_result).hide();
+    if($('.mobile-listing-filter').is(":visible")){
+      if($(e.target).parents('.mobile-listing-filter')[0] == $('.mobile-listing-filter')[0] ||
+        e.target == $('.sort-filter-bar #filter')[0]){
+        $('.mobile-listing-filter').show();
+      } else {
+        $('.mobile-listing-filter').hide();
+        e.preventDefault();
+      }
     }
   });
 });

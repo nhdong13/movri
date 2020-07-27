@@ -11,7 +11,6 @@
             = will_paginate(@listings)
 .mobile-display
   .brown-background
-    = render :partial => 'layouts/searchs/search_box'
     = render :partial => 'categories/mobile/sort_filter_bar'
     = render :partial => 'categories/mobile/listings', locals: {listings: @listings}
     = render :partial => 'categories/mobile/pagination', locals: {listings: @listings}

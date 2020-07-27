@@ -136,6 +136,8 @@ $border-color: #E1E3E5;
 .width-35{width: 35%; padding: 0 12px}
 .width-10{width: 10%; padding: 0 12px}
 .width-15{width: 15%; padding: 0 12px}
+.width-85{width: 85%; padding: 0 12px}
+.width-85{width: 90%; padding: 0 12px}
 .width-100{width: 100%}
 .w-5{width: 5%}
 .w-45{width: 45%}
@@ -296,4 +298,9 @@ $border-color: #E1E3E5;
 
 .common-input-date-with-icon{
   display: flex;
+}
+
+li{
+  padding-left: 0 !important;
+  list-style: none;
 }
