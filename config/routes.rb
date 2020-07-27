@@ -229,6 +229,8 @@ Rails.application.routes.draw do
           get :enable
         end
       end
+
+      resource :checkout_setting, only: [:show, :update]
       # PayPal Connect
       get  "/paypal_preferences" => redirect("/%{locale}/admin/payment_preferences")
       get  "/paypal_preferences/account_create"       => "paypal_preferences#account_create"

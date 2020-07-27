@@ -52,6 +52,18 @@
         .left-navi-link-icon{:class => link[:icon_class]}
         .left-navi-link-text= link[:text]
 
+  .admin-left-navi-link-group.admin-setting-dropdown
+    .flex-items
+      %i.fa.fa-cog.fa-fw
+      %span Settings
+    .group-setting-actions
+      %span.block General
+      %span.block Payments
+      %span.block= link_to 'Checkout', admin_checkout_setting_path
+      %span.block Shipping and Delivery
+      %span.block Taxes
+      %span.block Permissions
+      %span.block Files
 
 - links.each do |link|
   - if link[:name].eql?(sel_link)

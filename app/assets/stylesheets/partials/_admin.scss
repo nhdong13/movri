@@ -35,7 +35,7 @@
         font-size: em(16);
       }
     }
-  } 
+  }
 }
 
 // Prevent the original select widget from blinking before the styled one is rendered
@@ -181,5 +181,42 @@ select#locale-selection {
   }
   .clear-fix {
     clear: both;
+  }
+}
+
+.admin-setting-dropdown{
+  padding: 15px;
+  .group-setting-actions{
+    padding-left:25px;
+  }
+}
+
+.admin-header{
+  font-size: 25px;
+  padding: 20px 0 20px 0;
+  font-weight: 600;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.admin-section-box{
+  input[type='radio'], input[type='checkbox']{
+    transform: scale(1.25);
+    margin-right:5px
+  }
+  label{
+    margin: 5px 0;
+    font-weight: 100;
+  }
+  .note{
+    margin-left: 15px;
+    color: #627281;
+  }
+  padding: 20px 90px 0 90px;
+  .setting-box{
+    background: white;
+    padding: 15px;
+    border: 1px solid #e1e3e5;
+    width: 60%;
+    border-radius: 5px;
   }
 }
