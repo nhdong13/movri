@@ -734,6 +734,8 @@ en:
         online_store: Online Store
       manager_assurance_option:
         assurance_options: Assurance Option
+      manager_url_redirect:
+        url_redirects: URL Redirects
     landing_page_versions:
       sections:
         hero:
