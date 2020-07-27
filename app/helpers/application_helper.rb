@@ -400,6 +400,13 @@ module ApplicationHelper
       },
       {
         :topic => :manage,
+        :text => t("admin.communities.manager_url_redirect.url_redirects"),
+        :icon_class => icon_class("external_link"),
+        :path => admin_community_redirect_urls_path(@current_community),
+        :name => "redirect_urls"
+      },
+      {
+        :topic => :manage,
         :text => t("admin.communities.manage_members.manage_members"),
         :icon_class => icon_class("community"),
         :path => admin_community_community_memberships_path(@current_community, sort: "join_date", direction: "desc"),

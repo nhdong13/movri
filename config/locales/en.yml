@@ -2139,6 +2139,7 @@ en:
       visit_admin: "Would you like to %{link}?"
       visit_admin_link: "visit your admin panel"
       create_assurance_option_failed: 'Assurance option has been created failed.'
+      create_url_redirect_failed: 'URL Redirect has been created failed.'
     settings:
       account: Account
       notifications: Notifications
