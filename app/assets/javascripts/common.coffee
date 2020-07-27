@@ -19,8 +19,44 @@ window.Commons =
     $('#card_name').keyup ->
       $(this).val($(this).val().toUpperCase())
 
+  handleArrowUpDownListing: ->
+    liSelected = undefined
+    input = $('.searchbox-algolia input')
+    $(window).keydown (e) ->
+      li = $('.search-result-algolia li')
+      if e.which == 40
+        if liSelected
+          liSelected.removeClass 'selected'
+          next = li.eq(li.index($(liSelected) ) + 1)
+          if next.length > 0
+            liSelected = next.addClass('selected')
+          else
+            liSelected = li.eq(0).addClass('selected')
+        else
+          liSelected = li.eq(0).addClass('selected')
+        input.val(liSelected.text().trim())
+        e.preventDefault();
+      else if e.which == 38
+        if liSelected
+          liSelected.removeClass 'selected'
+          next = li.eq(li.index($(liSelected) ) - 1)
+          if next.length > 0
+            liSelected = next.addClass('selected')
+          else
+            liSelected = li.last().addClass('selected')
+        else
+          liSelected = li.last().addClass('selected')
+        input.val(liSelected.text().trim())
+        e.preventDefault();
+      if e.which == 13
+        if liSelected
+          href = liSelected.parent('a').attr("href")
+          if href
+            window.location.href = href
+
 $(document).ready ->
   Commons.formatPhone()
   Commons.CanadianZipCodeRule()
   Commons.formatEmail()
   Commons.formatCardName()
+  Commons.handleArrowUpDownListing()

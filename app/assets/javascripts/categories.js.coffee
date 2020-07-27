@@ -1,38 +1,15 @@
 window.ST = window.ST or {}
 ((module) ->
-  onClickPreviousBtn = ->
-    $('.previous-btn, .next-btn').click (e) ->
-      e.preventDefault()
-      form = $(this).parents("form")
-      $page = form.find('#page')
-      page = parseInt($(this).data('page'))
-      if page
-        $page.val(page)
-        form.submit()
+  onOpenCategoriesFilter = ->
+    $('.sort-filter-bar #filter').click ->
+      $('.mobile-listing-filter').show()
 
-  onChangeSelectPage = ->
-    $(".page-select-box select").change ->
-      form = $(this).parents("form")
-      $page = form.find('#page')
-      page = parseInt($(this).val())
-      $page.val(page)
-      form.submit()
-
-  onSortListing = ->
-    $("#sort_listing").change ->
-      data = $(this).val()
-      $.ajax
-        method: "GET"
-        url: '/categories'
-        dataType : 'json',
-        data:
-          sort_condition: data
-        success: (response) ->
-          window.location = response.redirect_url;
+  onQuickCategoriesFilter = ->
+    $('.quick-filter-btn').click ->
+      $('.mobile-listing-filter').hide()
 
   module.HandleMobilePagination = ->
-    onClickPreviousBtn()
-    onChangeSelectPage()
-    onSortListing()
+    onQuickCategoriesFilter()
+    onOpenCategoriesFilter()
 
 ) window.ST

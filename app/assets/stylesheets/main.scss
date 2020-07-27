@@ -2434,6 +2434,18 @@ figure.fluidratio {
   padding-bottom: 10px !important;
 }
 
+.pl-2 {
+  padding-left: 10px !important;
+}
+
+.pr-2 {
+  padding-right: 10px !important;
+}
+
+.pr-3 {
+  padding-right: 15px !important;
+}
+
 .m-3 {
   margin-left: 15px !important;
 }
@@ -2464,6 +2476,18 @@ figure.fluidratio {
 
 .mt-1 {
   margin-top: 5px !important;
+}
+
+.mb-1 {
+  margin-bottom: 5px !important;
+}
+
+.mb-2 {
+  margin-bottom: 10px !important;
+}
+
+.mt-2 {
+  margin-top: 10px !important;
 }
 
 .mt-4 {
@@ -2596,6 +2620,10 @@ figure.fluidratio {
 // text align
 .text-right {
   text-align: right !important;
+}
+
+.text-left {
+  text-align: left !important;
 }
 
 .line-height-16 {
