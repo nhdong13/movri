@@ -389,7 +389,7 @@ module ApplicationHelper
         :text => t("admin.communities.manager_customer.customers"),
         :icon_class => icon_class("user"),
         :path => admin_community_customers_path(@current_community),
-        :name => "customer"
+        :name => "customers"
       },
       {
         :topic => :manage,
@@ -403,7 +403,7 @@ module ApplicationHelper
         :text => t("admin.communities.manager_assurance_option.assurance_options"),
         :icon_class => icon_class("star"),
         :path => admin_community_assurance_options_path(@current_community),
-        :name => "assurance_option"
+        :name => "assurance_options"
       },
       {
         :topic => :manage,
