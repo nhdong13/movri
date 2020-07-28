@@ -14,8 +14,8 @@ class CreateCheckoutSettings < ActiveRecord::Migration[5.2]
       t.boolean :address_autocompletion, default: false
       t.boolean :auto_achive_the_order, default: true
       t.boolean :show_sign_up_at_checkout, default: true
-      t.boolean :preselec_sign_up, default: true
-      t.boolean :auto_send_abandoned_mails, default: true
+      t.boolean :preselect_sign_up, default: true
+      t.boolean :auto_send_abandoned_mails, default: false
       t.integer :abandoned_emails_will_send_to_option, default: 0
       t.integer :time_abandoned_emails_will_send_option, default: 0
 

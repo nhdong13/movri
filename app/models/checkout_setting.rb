@@ -3,25 +3,31 @@
 # Table name: checkout_settings
 #
 #  id                                      :bigint           not null, primary key
-#  account_permission                      :integer          default(1)
+#  account_permission                      :integer          default("guest_or_accounts")
 #  order_notes                             :boolean          default(TRUE)
-#  contact                                 :integer          default(1)
+#  contact                                 :integer          default("checkout_with_email")
 #  add_info_after_complete_order           :boolean          default(TRUE)
 #  can_download_app                        :boolean          default(TRUE)
-#  full_name_option                        :integer          default(1)
-#  company_name_option                     :integer          default(1)
-#  address_2_option                        :integer          default(1)
-#  shipping_address_phone_option           :integer          default(2)
+#  full_name_option                        :integer          default("require_fullname")
+#  company_name_option                     :integer          default("optional_company_name")
+#  address_2_option                        :integer          default("optional_address_2")
+#  shipping_address_phone_option           :integer          default("required_shipping_address_phone")
 #  use_shipping_address_as_billing_address :boolean          default(FALSE)
 #  address_autocompletion                  :boolean          default(FALSE)
 #  auto_achive_the_order                   :boolean          default(TRUE)
 #  show_sign_up_at_checkout                :boolean          default(TRUE)
-#  preselec_sign_up                        :boolean          default(TRUE)
-#  auto_send_abandoned_mails               :boolean          default(TRUE)
-#  abandoned_emails_will_send_to_option    :integer          default(0)
-#  time_abandoned_emails_will_send_option  :integer          default(0)
+#  preselect_sign_up                       :boolean          default(TRUE)
+#  auto_send_abandoned_mails               :boolean          default(FALSE)
+#  abandoned_emails_will_send_to_option    :integer          default("abandoned_people")
+#  time_abandoned_emails_will_send_option  :integer          default("one_hour")
 #  created_at                              :datetime         not null
 #  updated_at                              :datetime         not null
+#  logo_file_name                          :string(255)
+#  logo_content_type                       :string(255)
+#  logo_file_size                          :integer
+#  logo_updated_at                         :datetime
+#  logo_position                           :integer          default(0)
+#  logo_size                               :integer          default(1)
 #
 
 # check this for more details
@@ -35,4 +41,23 @@ class CheckoutSetting < ApplicationRecord
   enum shipping_address_phone_option: [:hidden_shipping_address_phone, :optional_shipping_address_phone, :required_shipping_address_phone]
   enum abandoned_emails_will_send_to_option: [:abandoned_people, :abandoned_emails]
   enum time_abandoned_emails_will_send_option: [:one_hour, :six_hours, :ten_hours, :twenty_four_hours]
+  enum logo_position: [:left, :center, :right]
+  enum logo_size: [:small, :medium, :large]
+
+  # see paperclip (for image_processing column)
+  has_attached_file :logo,
+    :styles => {
+      :small => "240x160#",
+      :medium => "360x270#",
+      :thumb => "120x120#",
+      :original => "#{APP_CONFIG.original_image_width}x#{APP_CONFIG.original_image_height}>",
+      :email => "150x100#",
+      :square => "408x408#",
+      :large => "816x816#"
+    }
+
+  validates_attachment_content_type :logo,
+                                    :content_type => ["image/jpeg", "image/png", "image/gif", "image/pjpeg", "image/x-png"], # the two last types are sent by IE.
+                                    :unless => Proc.new {|model| model.logo.nil? }
+
 end
