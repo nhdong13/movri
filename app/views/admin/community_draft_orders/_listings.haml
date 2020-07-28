@@ -25,6 +25,6 @@
       %td
         = text_field_tag 'quantity', 1, class: "quantity"
       %td.total-price
-        = humanized_money_with_symbol(listing.price * listing.quantity.to_i)
+        = humanized_money_with_symbol(listing.price)
       %td
         %i.icon-times
