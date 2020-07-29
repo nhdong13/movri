@@ -397,6 +397,7 @@ Rails.application.routes.draw do
         resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create]
         resources :customers, controller: :community_customers, only: [:index, :new, :create]
         resources :customers, controller: :community_customers, param: :uuid, :only => :show
+        resource :preferences, controller: :community_preferences, only: [:edit, :update]
         resource :paypal_preferences, only: :index do
 
           # DEPRECATED (2015-11-16)
