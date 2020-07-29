@@ -24,7 +24,8 @@
         %thead
           %tr.row.p-0.m-0
             %th.col-6
-            %th.col-6
+            %th.col-5
+            %th.col-1
         %tbody
           - @service.redirect_urls.each do |redirect_url|
             = render 'item', redirect_url: redirect_url
