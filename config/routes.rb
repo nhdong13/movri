@@ -394,7 +394,7 @@ Rails.application.routes.draw do
         end
 
         resources :assurance_options, controller: :community_assurance_options, only: [:index, :new, :create]
-        resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create]
+        resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create, :edit, :update]
         resources :customers, controller: :community_customers, only: [:index, :new, :create]
         resources :customers, controller: :community_customers, param: :uuid, :only => :show
         resource :paypal_preferences, only: :index do
