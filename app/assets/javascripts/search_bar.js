@@ -36,7 +36,6 @@ $(document).ready(function() {
         createURL({ qsModule, routeState, location }) {
           const urlParts = location.href.match(/^(.*?)\/categories/);
           const baseUrl = `${urlParts ? urlParts[1] : ''}/`;
-
           const categoryPath = routeState.category
             ? `${getCategorySlug(routeState.category)}/`
             : '';
@@ -65,7 +64,7 @@ $(document).ready(function() {
           const category = getCategoryName(
             (pathnameMatches && pathnameMatches[1]) || ''
           );
-          const { query = '', page, brands, mounts, lens_types = [] } = qsModule.parse(
+          const { query = '', page, brands, mounts, lens_types, categories = [] } = qsModule.parse(
             location.search.slice(1)
           );
           // `qs` does not return an array when there's a single value.
@@ -81,12 +80,17 @@ $(document).ready(function() {
             ? lens_types
             : [lens_types].filter(Boolean);
 
+          const allCategories = Array.isArray(categories)
+            ? categories
+            : [categories].filter(Boolean);
+
           return {
             query: decodeURIComponent(query),
             page,
             brands: allBrands.map(decodeURIComponent),
             mounts: allMounts.map(decodeURIComponent),
             lens_types: allLensTypes.map(decodeURIComponent),
+            categories: allCategories.map(decodeURIComponent),
           };
         }
       }),
@@ -100,7 +104,8 @@ $(document).ready(function() {
             page: indexUiState.page,
             brands: indexUiState.refinementList && indexUiState.refinementList.brand,
             mounts: indexUiState.refinementList && indexUiState.refinementList.mount,
-            lens_type: indexUiState.refinementList && indexUiState.refinementList.lens_type,
+            lens_types: indexUiState.refinementList && indexUiState.refinementList.lens_type,
+            categories: indexUiState.refinementList && indexUiState.refinementList.category,
           };
         },
 
@@ -112,6 +117,7 @@ $(document).ready(function() {
                 brand: routeState.brands,
                 mount: routeState.mounts,
                 lens_type: routeState.lens_types,
+                category: routeState.categories,
               }
             }
           };
@@ -349,6 +355,18 @@ $(document).ready(function() {
       instantsearch.widgets.refinementList({
         container: '#lens-compatibility',
         attribute: 'compatibility',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#lens-compatibility',
+        attribute: 'compatibility',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#hidden-categories',
+        attribute: 'category',
         operator: 'or',
       }),
 

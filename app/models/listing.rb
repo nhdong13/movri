@@ -103,6 +103,9 @@ class Listing < ApplicationRecord
     attributes :created_at do
       created_at.to_i
     end
+    attributes :category do
+      category.url
+    end
   end
 
   WIEGHT_TYPE = ['kg', 'pound']
