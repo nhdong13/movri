@@ -5,7 +5,7 @@ class ListingPresenter < MemoisticPresenter
   attr_reader :shape, :current_user
 
   def initialize(listing, current_community, params, current_user)
-    @listing = listing
+    @listing = listing || Listing.new
     @current_community = current_community
     @current_user = current_user
     @params = params

@@ -128,6 +128,8 @@
 .width-35{width: 35%; padding: 0 12px}
 .width-10{width: 10%; padding: 0 12px}
 .width-15{width: 15%; padding: 0 12px}
+.width-85{width: 85%; padding: 0 12px}
+.width-85{width: 90%; padding: 0 12px}
 .width-100{width: 100%}
 .align-right{text-align: right;}
 .align-center{text-align: center;}
@@ -200,6 +202,23 @@
   color: white;
   font-size: 20px;
   background-color: #4eb857;
+}
+
+.btn-primary {
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  min-width: 80px;
+  background-color: #13588d;
+}
+
+.btn-white {
+  padding: 10px;
+  font-size: 14px;
+  min-width: 80px;
+  color: black !important;
+  border: 1px solid black !important;
+  background-color: white;
 }
 
 .btn-process{

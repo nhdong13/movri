@@ -1,0 +1,21 @@
+.create-redirect-url-form {
+  .section {
+    margin-bottom: 40px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid lightgray;
+    .section-wrapper {
+      padding-bottom: 15px !important;
+      background-color: white;
+      border-radius: 2px;
+      box-shadow: 0 2px 3px 0 rgba(0,0,0,0.2),0 1px 3px 0 rgba(0,0,0,0.19) !important;
+      margin-bottom: 0.75em;
+    }
+    .description {
+      width: 80%!important;
+    }
+    code {
+      background-color: lightgray;
+    }
+  }
+}
+  

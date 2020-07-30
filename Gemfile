@@ -106,6 +106,7 @@ gem 'mail', '~> 2.6.6.rc1'
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 
 gem 'ckeditor'
+gem 'country-select'
 
 group :staging, :production do
   gem 'newrelic_rpm', '~> 4.2.0.334'
@@ -201,3 +202,4 @@ gem "font-awesome-rails"
 gem 'jquery-inputmask-rails'
 gem 'active_model_serializers'
 gem 'algoliasearch-rails', '~> 1.24'
+gem 'sendgrid-ruby', '~> 5.0'

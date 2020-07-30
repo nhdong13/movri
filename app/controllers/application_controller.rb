@@ -310,7 +310,7 @@ class ApplicationController < ActionController::Base
   def fetch_online_store
     @current_online_store = @current_community && @current_community.online_store
     @store_sections_presenter = OnlineStore::SectionsPresenter.new(@current_online_store)
-    
+
   end
 
   # Performs redirect to correct URL, if needed.
@@ -464,6 +464,10 @@ class ApplicationController < ActionController::Base
       session[:booking][:total_days] = data[:total_days]
     else
       session[:booking] = {}
+      session[:booking][:start_date] = get_today
+      session[:booking][:end_date] = get_next_day(session[:booking][:start_date])
+      data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
+      session[:booking][:total_days] = data[:total_days]
     end
   end
 

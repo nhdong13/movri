@@ -1,0 +1,56 @@
+.assurance-options-index {
+  .assurance-options-lists {
+    margin-top: 15px !important;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.2),0 1px 3px 0 rgba(0,0,0,0.19) !important;
+    .head-section {
+      .tabs {
+        border-bottom: 1px solid lightgray;
+        height: 50px;
+        .tab-item {
+          min-width: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 15px;
+          &.tab-active {
+            border-bottom: 3px solid dodgerblue;
+          }
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .body-section {
+      table {
+        margin-bottom: 15px;
+        tbody {
+          tr {
+            background-color: white !important;
+            border-top: 1px solid lightgray;
+            td {
+              &.assurance-image{
+                text-align: center;
+                .assurance-option-image {
+                  height: 50px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.create-assurance-option-form {
+  .section-wrapper {
+    padding-bottom: 15px !important;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.2),0 1px 3px 0 rgba(0,0,0,0.19) !important;
+    margin-bottom: 0.75em;
+  }
+}

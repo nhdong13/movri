@@ -162,10 +162,11 @@ class ListingsController < ApplicationController
     shape = get_shape(Maybe(params)[:listing][:listing_shape_id].to_i.or_else(nil))
     listing_uuid = UUIDUtils.create
 
-    unless create_booking(shape, listing_uuid)
-      flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
-      return redirect_to new_listing_path
-    end
+    # TODO: comment this until find the way to re-connect Harmany
+    # unless create_booking(shape, listing_uuid)
+    #   flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
+    #   return redirect_to new_listing_path
+    # end
 
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
 
