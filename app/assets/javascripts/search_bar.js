@@ -419,13 +419,13 @@ $(document).ready(function() {
       clickAnalytics: true,
     }),
 
-    // instantsearch.widgets
-    //   .index({ indexName: 'products_query_suggestions' })
-    //   .addWidgets([
-    //     customAutocomplete({
-    //       container: $('.suggestion-items'),
-    //     }),
-    //   ]),
+    instantsearch.widgets
+      .index({ indexName: 'movri_products_query_suggestions' })
+      .addWidgets([
+        customAutocomplete({
+          container: $('.suggestion-items'),
+        }),
+      ]),
   ]);
 
   search.start();
