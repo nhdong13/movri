@@ -96,7 +96,7 @@
 class Listing < ApplicationRecord
   include AlgoliaSearch
   algoliasearch index_name: "movri_products" do
-    attribute :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
+    attribute :id, :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
     attributes :main_image do
       main_image
     end

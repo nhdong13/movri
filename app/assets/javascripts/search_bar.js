@@ -153,7 +153,7 @@ $(document).ready(function() {
       .map(
         item =>`
           <li>
-            <a href= ${'/listings/'+ item.objectID}>
+            <a href= ${'/listings/'+ item.id}>
               <div class='flex-items'>
                 <div class='width-10 center-items'>
                   <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
@@ -187,7 +187,7 @@ $(document).ready(function() {
                     <div class='listing-information'>
                       ${instantsearch.highlight({ attribute: 'title', hit: item })}
                     </div>
-                    <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
+                    <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
                   </div>
                 </div>`
               )
@@ -218,7 +218,7 @@ $(document).ready(function() {
                         <span> /1 day</span>
                       </div>
                       <div class='listing-rent-now'>
-                        <a href= ${'/listings/'+ item.objectID} class='rent-now-btn'>Rent now</a>
+                        <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
                       </div>
                     </div>
                   </div>
