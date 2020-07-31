@@ -162,11 +162,15 @@ class ListingPresenter < MemoisticPresenter
   end
 
   def categories
-    @current_community.top_level_categories
+    Category.category
   end
 
   def subcategories
-    @current_community.subcategories
+    Category.subcategory
+  end
+
+  def children_categories
+    Category.children_category
   end
 
   def commission
@@ -307,6 +311,8 @@ class ListingPresenter < MemoisticPresenter
     {
       "category" => I18n.t("listings.new.select_category"),
       "subcategory" => I18n.t("listings.new.select_subcategory"),
+      "subcategory" => I18n.t("listings.new.select_subcategory"),
+      'children_category' => "Select Children category",
       "listing_shape" => I18n.t("listings.new.select_transaction_type")
     }
   end

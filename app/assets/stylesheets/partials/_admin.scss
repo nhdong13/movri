@@ -35,7 +35,7 @@
         font-size: em(16);
       }
     }
-  } 
+  }
 }
 
 // Prevent the original select widget from blinking before the styled one is rendered
@@ -182,4 +182,35 @@ select#locale-selection {
   .clear-fix {
     clear: both;
   }
+}
+
+.sub-categories, .children-categories{
+  margin-left: 15px;
+  border-top: 1px solid #ebeef0;
+}
+
+.children-categories{
+  .header-children-categories{
+    padding: 5px;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    border-left: 2px solid #004085;
+  }
+}
+
+.sub-categories{
+  .header-categories{
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    border-left: 2px solid #155724;
+  }
+}
+
+.header-categories{
+  border-left: 2px solid #374385;
+  padding: 5px;
+  background:#e0e4ef;
+  color: #374385
 }

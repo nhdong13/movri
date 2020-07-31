@@ -169,7 +169,6 @@ class ListingsController < ApplicationController
     # end
 
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
-
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       redirect_to new_listing_path

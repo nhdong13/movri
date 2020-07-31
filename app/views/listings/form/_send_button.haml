@@ -1,7 +1,9 @@
-= form.hidden_field(:category_id, :value => @listing.category_id)
+= hidden_field_tag 'listing[category_ids][]', nil, id:'category_id'
+= hidden_field_tag 'listing[category_ids][]', nil, id:'subcategory_id'
+= hidden_field_tag 'listing[category_ids][]', nil, id:'children_category_id'
 = form.hidden_field(:listing_shape_id, :value => @listing.listing_shape_id)
 - key = @listing_presenter.show_submit_for_review? ? t(".submit_for_review") : t(".save_listing")
-= form.button key, :class => "send_button"
+= form.button key, :class => "send_button submit-new-listing"
 
 - if @listing_presenter.approval_in_use?
   - if @listing_presenter.show_submit_for_review?
