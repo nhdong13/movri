@@ -79,7 +79,7 @@
       .header-right.controls
         = render :partial => "layouts/header_anchors"
         = render :partial => "layouts/header_contact"
-        = render :partial => "layouts/header_user_menu"
+        -# # = render :partial => "layouts/header_user_menu"
 
     - if logged_in
       = render :partial => "layouts/header_right_visible_tablet", locals: {unread_count: unread_count, inbox_path: inbox_path, icons: icons}
@@ -112,8 +112,6 @@
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
     = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
 
-    = render partial: 'layouts/searchs/history'
-    = render partial: 'layouts/searchs/results'
 .header.category-nav.hidden-mobile
   .header-wrapper
     = render :partial => 'layouts/category_bar'
