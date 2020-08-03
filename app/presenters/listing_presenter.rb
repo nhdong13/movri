@@ -285,11 +285,15 @@ class ListingPresenter < MemoisticPresenter
   end
 
   def category_id
-    @listing.category.parent_id || @listing.category.id
+    @listing.category&.id
   end
 
   def subcategory_id
-    @listing.category.parent_id ?  @listing.category.id : nil
+    @listing.subcategory&.id
+  end
+
+  def children_category_id
+    @listing.children_category&.id
   end
 
   def payments_enabled?

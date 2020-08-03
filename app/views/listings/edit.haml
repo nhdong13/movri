@@ -4,7 +4,7 @@
 - content_for :extra_javascript do
   :javascript
     $(document).ready(function() {
-      window.ST.initialize_edit_listing_form_selectors("#{I18n.locale}", #{@listing_presenter.category_tree.to_json.html_safe}, #{@listing_presenter.listing_form_menu_titles().to_json.html_safe}, #{@listing_presenter.category_id.to_json.html_safe}, #{@listing_presenter.subcategory_id.to_json.html_safe}, #{@listing.listing_shape_id.to_json.html_safe}, #{@listing.id});
+      window.ST.initialize_edit_listing_form_selectors("#{I18n.locale}", #{@listing_presenter.category_tree.to_json.html_safe}, #{@listing_presenter.listing_form_menu_titles().to_json.html_safe}, #{@listing_presenter.category_id.to_json.html_safe}, #{@listing_presenter.subcategory_id.to_json.html_safe}, #{@listing_presenter.children_category_id.to_json.html_safe}, #{@listing.listing_shape_id.to_json.html_safe}, #{@listing.id});
     });
 
 - content_for :extra_javascript do
@@ -13,54 +13,68 @@
   - needs_maps = !FeatureFlagHelper.feature_enabled?(:topbar_v1) || search_mode == :keyword
   = javascript_include_tag "//maps.googleapis.com/maps/api/js#{key_param}" if needs_maps
 
-.listing-form-wrap
-  #new_listing_form.new-listing-form
+.brown-background
+  .wrapper
+    .listing-form-wrap
+      #new_listing_form.new-listing-form
 
-    #selected-groups
+        #selected-groups
 
-      - if @listing_presenter.categories.size > 1
-        .selected-group{:name => "category"}
-          - @listing_presenter.categories.each do |value|
-            %a.select.selected.hidden{:data => {:id => value.id}}
-              .link-text= t("listings.new.selected_category", :category => value.display_name(I18n.locale))
+          - if @listing_presenter.categories.size > 1
+            .selected-group{:name => "category"}
+              - @listing_presenter.categories.each do |value|
+                %a.select.selected.hidden{:data => {:id => value.id}}
+                  .link-text= t("listings.new.selected_category", :category => value.display_name(I18n.locale))
 
-      - if @listing_presenter.subcategories.size > 1
-        .selected-group{:name => "subcategory"}
-          - @listing_presenter.subcategories.each do |value|
-            %a.select.selected.hidden{:data => {:id => value.id}}
-              .link-text= t("listings.new.selected_subcategory", :subcategory => value.display_name(I18n.locale))
+          - if @listing_presenter.subcategories.size > 1
+            .selected-group{:name => "subcategory"}
+              - @listing_presenter.subcategories.each do |value|
+                %a.select.selected.hidden{:data => {:id => value.id}}
+                  .link-text= t("listings.new.selected_subcategory", :subcategory => value.display_name(I18n.locale))
 
-      - if @listing_presenter.shapes.size > 1
-        .selected-group{:name => "listing_shape"}
-          - @listing_presenter.shapes.each do |value|
-            %a.select.selected.hidden{:data => {:id => value[:id]}}
-              .link-text= t("listings.new.selected_transaction_type", :transaction_type => t(value[:name_tr_key]))
+          - if @listing_presenter.children_categories.size >= 1
+            .selected-group{:name => "children_category"}
+              - @listing_presenter.children_categories.each do |value|
+                %a.select.selected.hidden{:data => {:id => value.id}}
+                  .link-text= t("listings.new.selected_children_category", :children_category => value.display_name(I18n.locale))
 
-    %h2.listing-form-title{:id => "foo"}
+          - if @listing_presenter.shapes.size > 1
+            .selected-group{:name => "listing_shape"}
+              - @listing_presenter.shapes.each do |value|
+                %a.select.selected.hidden{:data => {:id => value[:id]}}
+                  .link-text= t("listings.new.selected_transaction_type", :transaction_type => t(value[:name_tr_key]))
 
-    #option-groups
+        %h2.listing-form-title{:id => "foo"}
 
-      - if @listing_presenter.categories.size > 1
-        .option-group{:name => "category"}
-          - @listing_presenter.categories.each do |value|
-            %a.select.option.hidden{:data => {:id => value.id}}
-              .link-text= value.display_name(I18n.locale)
+        #option-groups
 
-      - if @listing_presenter.subcategories.size > 1
-        .option-group{:name => "subcategory"}
-          - @listing_presenter.subcategories.each do |value|
-            %a.select.option.hidden{:data => {:id => value.id}}
-              .link-text= value.display_name(I18n.locale)
+          - if @listing_presenter.categories.size > 1
+            .option-group{:name => "category"}
+              - @listing_presenter.categories.each do |value|
+                %a.select.option.hidden{:data => {:id => value.id}}
+                  .link-text= value.display_name(I18n.locale)
 
-      - if @listing_presenter.shapes.size > 1
-        .option-group{:name => "listing_shape"}
-          - @listing_presenter.shapes.each do |value|
-            %a.select.option.hidden{:data => {:id => value[:id]}}
-              .link-text= t(value[:name_tr_key])
+          - if @listing_presenter.subcategories.size > 1
+            .option-group{:name => "subcategory"}
+              - @listing_presenter.subcategories.each do |value|
+                %a.select.option.hidden{:data => {:id => value.id}}
+                  .link-text= value.display_name(I18n.locale)
 
-    .js-form-fields.hidden
-      - if form_content
-        = render partial: "listings/form/form_content", locals: form_content.merge(run_js_immediately: false)
+          - if @listing_presenter.children_categories.size >= 1
+            .option-group{:name => "children_category"}
+              - @listing_presenter.children_categories.each do |value|
+                %a.select.option.hidden{:data => {:id => value.id}}
+                  .link-text= value.display_name(I18n.locale)
+
+          - if @listing_presenter.shapes.size > 1
+            .option-group{:name => "listing_shape"}
+              - @listing_presenter.shapes.each do |value|
+                %a.select.option.hidden{:data => {:id => value[:id]}}
+                  .link-text= t(value[:name_tr_key])
+
+        .js-form-fields.hidden
+          - if form_content
+            = render partial: "listings/form/form_content", locals: form_content.merge(run_js_immediately: false)
 
 - content_for :extra_javascript do
   :javascript

@@ -118,6 +118,13 @@ window.ST = window.ST || {};
     return subcategory["listing_shapes"];
   }
 
+  // Returns listing shape of given children category
+  function get_listing_shapes_for_children_category(subcategory_id, children_category_id, category_array) {
+    var subcategory = find_by_id(Number(subcategory_id), category_array);
+    var children_category = find_by_id(Number(children_category_id), subcategory["children_categories"]);
+    return children_category["listing_shapes"];
+  }
+
   // Return true if given menu should be displayed
   function should_show_menu_for(attribute, selected_attributes, attribute_array) {
     if (attribute_selected(attribute, selected_attributes)) {
@@ -168,9 +175,13 @@ window.ST = window.ST || {};
         return false;
       } else if (should_show_menu_for("subcategory", selected_attributes, attribute_array)) {
         return false;
+      } else if (should_show_menu_for("children_category", selected_attributes, attribute_array)) {
+        return false;
       } else {
         var listing_shapes;
-        if (attribute_selected("subcategory", selected_attributes)) {
+        if (attribute_selected("children_category", selected_attributes)) {
+          listing_shapes = get_listing_shapes_for_children_category(selected_attributes["subcategory"], selected_attributes["children_category"], attribute_array);
+        } else if (attribute_selected("subcategory", selected_attributes)) {
           listing_shapes = get_listing_shapes_for_subcategory(selected_attributes["category"], selected_attributes["subcategory"], attribute_array);
         } else {
           listing_shapes = get_listing_shapes_for_category(selected_attributes["category"], attribute_array);
@@ -276,7 +287,6 @@ window.ST = window.ST || {};
       e.preventDefault();
       var selected_attributes = selectedAttributesFromQueryParams(window.location.search);
       var attrs = hashCompact(selected_attributes);
-      debugger
       $("#category_id").val(attrs.category)
       $("#subcategory_id").val(attrs.subcategory)
       $("#children_category_id").val(attrs.children_category)
@@ -358,6 +368,7 @@ window.ST = window.ST || {};
     $.get(edit_listing_path, request_params, function(data) {
       $('.js-form-fields').html(data);
       $('.js-form-fields').removeClass('hidden');
+      loadSelectize();
     });
   }
 
@@ -515,15 +526,15 @@ window.ST = window.ST || {};
     );
   };
 
-  module.initialize_edit_listing_form_selectors = function(locale, attribute_array, listing_form_menu_titles, category, subcategory, listing_shape, id) {
-    var ordered_attributes = ["category", "subcategory", "listing_shape"];
+  module.initialize_edit_listing_form_selectors = function(locale, attribute_array, listing_form_menu_titles, category, subcategory, children_category, listing_shape, id) {
+    var ordered_attributes = ["category", "subcategory", 'children_category', "listing_shape"];
 
     // Selected values (string or null required)
     category = category ? "" + category : null;
     subcategory = subcategory ? "" + subcategory : null;
+    children_category = children_category ? "" + children_category : null;
     listing_shape = listing_shape ? "" + listing_shape : null;
-
-    var selected_attributes = {"category": category, "subcategory": subcategory, "listing_shape": listing_shape};
+    var selected_attributes = {"category": category, "subcategory": subcategory, 'children_category': children_category, "listing_shape": listing_shape};
     var originalSelection = _.clone(selected_attributes);
     var current_attributes = _.clone(selected_attributes);
 

@@ -106,6 +106,14 @@ class Listing < ApplicationRecord
     attributes :category do
       category.url
     end
+
+    attributes :subcategory do
+      subcategory&.url
+    end
+
+    attributes :children_category do
+      children_category&.url
+    end
   end
 
   WIEGHT_TYPE = ['kg', 'pound']
@@ -253,6 +261,18 @@ class Listing < ApplicationRecord
 
   def self.find_by_category_and_subcategory(category)
     Listing.where(:category_id => category.own_and_subcategory_ids)
+  end
+
+  def main_category
+    categories.category.last
+  end
+
+  def subcategory
+    categories.subcategory.last
+  end
+
+  def children_category
+    categories.children_category.last
   end
 
   # Returns true if listing exists and valid_until is set

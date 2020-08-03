@@ -252,7 +252,7 @@ class ListingsController < ApplicationController
 
     if update_successful
       create_or_update_accessories(result.data[:recommended_accessory_ids])
-      create_or_update_category_listings(result.data[:category_ids])
+      create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -667,7 +667,6 @@ class ListingsController < ApplicationController
     if @listing.new_record?
       @listing.init_origin_location(@listing_presenter.new_listing_author.location)
     end
-
     @listing.category = @current_community.categories.find(params[:subcategory].presence || params[:category])
     @custom_field_questions = @listing.category.custom_fields
     @numeric_field_ids = numeric_field_ids(@custom_field_questions)
