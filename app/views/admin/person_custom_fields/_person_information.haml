@@ -10,6 +10,7 @@
       %i.icon-laptop.right
     .col-10
       %a.left= person_information[:person].given_name
+      = hidden_field_tag :person_id, person_information[:person].id
       %br
       %a.left= person_information[:person].email
     .col-2

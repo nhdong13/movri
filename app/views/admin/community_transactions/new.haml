@@ -22,10 +22,10 @@
               %i.icon-file-text-alt.left
               %span.left= "EMAIL INVOICE"
             .col-6
-              %a.button.right= "Email Invoice"
+              %a.button.right#send-invoice-email{href: "#send-invoice-email-modal", rel: "modal:open"}= "Email Invoice"
           .col-12
             .paid-type
-              %button.button.right= "Pay with credit card"
+              %a.button.right{href: "#payment-with-credit-card-modal", rel: "modal:open"}= "Pay with credit card"
               %button.button.right= "Mark as pending"
               %button.button.right= "Mark as paid"
               %p.right= "ACCEPT PAYMENT"
@@ -35,6 +35,7 @@
             .row
               %h3= "Find or create a customer"
             = text_field_tag :customer_name, params[:customer_name], placeholder: 'Search products'
+          .customer-info.margin-t-15
     .row
       .col-12
         %a.button.right= "Save Draft Order"
@@ -42,3 +43,6 @@
 = render 'browse_product_modal', listings: @current_community.listings
 = render 'add_custom_item_modal'
 = render 'create_new_customer_modal'
+= render 'send_invoice_email_modal'
+= render 'review_email'
+= render 'payment_with_credit_card'

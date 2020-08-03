@@ -1,5 +1,5 @@
 .modal#browse-product-modal
-  .col-12.title
+  .row.title
     = "Select Product"
   .row.search-box
     = text_field_tag :product_name, params[:product_name], placeholder: 'Search products'
@@ -13,5 +13,5 @@
   .row.footer
     .col-12
       %p.left= "No variant selected"
-      = link_to "Add to order", add_to_order_admin_community_draft_orders_path(@current_community), remote: true, class: "button right margin-l-5 add-to-order-button"
+      %a.button.right.add-to-order-button.margin-l-5{rel: "modal:close"}="Add to order"
       %a.button.right{rel: "modal:close"}= "Cancel"

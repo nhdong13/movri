@@ -1,0 +1,8 @@
+.modal#review-email-modal
+  .row.title
+    = 'Send invoice'
+  .row.invoice-email-content
+  .row.footer
+    %a.button.left#send-invoice-email{href: "#send-invoice-email-modal", rel: "modal:open"}= "Back"
+    %a.button.right.margin-l-5#send-notification{rel:"modal:close"}= 'Send notification'
+    %a.button.right{rel: "modal:close"}= "Cancel"

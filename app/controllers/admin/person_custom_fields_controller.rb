@@ -54,6 +54,9 @@ class Admin::PersonCustomFieldsController < Admin::AdminBaseController
     respond_to do |format|
       format.html
       format.js { render layout: false }
+      format.json {
+        @person_information
+      }
     end
   end
 

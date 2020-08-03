@@ -377,6 +377,7 @@ Rails.application.routes.draw do
             get 'add_to_order'
           end
         end
+        resources :people
         resources :conversations, controller: :community_conversations, only: [:index, :show]
         resources :testimonials, controller: :community_testimonials, only: [:index, :edit, :update, :new, :create] do
           collection do
@@ -385,7 +386,12 @@ Rails.application.routes.draw do
           end
         end
         resources :invitations, controller: :community_invitations, only: [:index]
-        resources :emails
+        resources :emails do
+          collection do
+            get :review_email
+            get :sent_invoice_email
+          end
+        end
         resources :community_memberships do
           member do
             put :ban

@@ -1,3 +1,4 @@
+// Custom person and listing autocomplete
 $.ui.autocomplete.prototype._renderItem = function (ul, item) {
   if (ul.context.className.includes('product-name-list')) {
     return $("<li></li>")
@@ -12,6 +13,7 @@ $.ui.autocomplete.prototype._renderItem = function (ul, item) {
   }
 };
 
+// Person autocomplete
 $.getJSON("/admin/user_fields/person_profile", function(data) {
   source = []
   data.forEach(function(item){ source.push({ value: item.given_name, id: item.id, given_name: item.given_name, email: item.email })})
@@ -41,6 +43,11 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
           method: "GET",
           data: {
             id: ui.item.id
+          },
+          complete: function(){
+            $('#customer-information .icon-times').on('click', function(e){
+              $(e.target).parents('#customer-information').remove()
+            })
           }
         })
       }
@@ -48,6 +55,7 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
   }).autocomplete('widget').addClass('person-name-list')
 })
 
+// Listing autocomplete
 $.getJSON("/admin/communities/1/listings", function(data) {
   source = []
   data.forEach(function(item){ 
@@ -70,7 +78,7 @@ $.getJSON("/admin/communities/1/listings", function(data) {
       ids.push(ui.item.id)
 
       $.ajax({
-        url: "/admin/communities/:community_id/listings/get_listings.js",
+        url: "/admin/communities/1/listings/get_listings.js",
         method: "GET",
         data: {
           ids: ids
@@ -92,4 +100,53 @@ $.getJSON("/admin/communities/1/listings", function(data) {
       })
     }
   }).autocomplete('widget').addClass('product-name-list')
+})
+
+$('#review-email').on('click', function(){
+  var data = {
+    receiver: $('#receiver').val(),
+    sender: $('#sender').val(),
+    subject: $('#subject').val(),
+    custom_message: $('#custom_message').val()
+  }
+
+  $.ajax({
+    url: '/admin/communities/1/emails/review_email.js',
+    data: data
+  })
+})
+
+$('#send-notification').on('click', function(){
+  var data = {
+    to: $('#receiver').val(),
+    person_id: $('#person_id').val()
+  }
+
+  $.ajax({
+    url: "/admin/communities/1/emails/sent_invoice_email",
+    data: data
+  })
+})
+
+$('.add-to-order-button').on('click', function(){
+  var ids = []
+
+  $('.products input:checked').map(function(i, el){
+    ids.push($(el).val())
+  });
+
+  $('.product-list .ids').map(function(i, el){
+    ids.push($(el).val())
+  })
+
+  $.ajax({
+    url: "/admin/communities/1/listings/get_listings.js",
+    method: "GET",
+    data: { ids: ids },
+    complete: function(){
+      $('#customer-information .icon-times').on('click', function(e){
+        $(e.target).parents('#customer-information').remove()
+      })
+    }
+  })
 })

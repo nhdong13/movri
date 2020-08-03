@@ -95,7 +95,7 @@ $border-color: #E1E3E5;
     }
   }
 }
-
+.br{border: 1px solid $border-color;}
 .br-bottom{border-bottom: 1px solid $border-color;}
 .br-top{border-top: 1px solid $border-color;}
 .br-l{border-left: 1px solid $border-color;}
@@ -139,6 +139,7 @@ $border-color: #E1E3E5;
 .width-85{width: 85%; padding: 0 12px}
 .width-85{width: 90%; padding: 0 12px}
 .width-100{width: 100%}
+.max-width-100{max-width: 100%;}
 .w-5{width: 5%}
 .w-45{width: 45%}
 .align-right{text-align: right;}
@@ -146,6 +147,7 @@ $border-color: #E1E3E5;
 .fake-link{color: #13588d; cursor: pointer;}
 .bold{font-weight: bold;}
 .dp-none{display: none;}
+.dp-inline{display: inline !important}
 .block{display: block}
 
 .alert-error{
