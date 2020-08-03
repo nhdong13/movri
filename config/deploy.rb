@@ -68,4 +68,4 @@ namespace :delayed_job do
 end
 
 after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
-after "deploy:published", "delayed_job:restart"
+after "deploy:published", "delayed_job:start"
