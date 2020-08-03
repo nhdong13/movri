@@ -49,23 +49,16 @@ namespace :deploy do
   end
 end
 
-namespace :delayed_job do
-  task :start do
-    on roles :all do
-      execute "RAILS_ENV=production ./bin/delayed_job start"
-    end
-  end
-  task :stop do
-    on roles :all do
-      execute "RAILS_ENV=production bin/delayed_job stop"
-    end
-  end
-  task :restart do
-    on roles :all do
-      execute "RAILS_ENV=production bin/delayed_job restart"
-    end
-  end
+after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
+
+set :delayed_job_queues, ['mailer','tracking']
+set :delayed_job_roles, [:app, :background]
+
+task :default do
+  invoke 'delayed_job:restart' if fetch(:delayed_job_default_hooks, true)
 end
 
-after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
-# after "deploy:published", "delayed_job:start"
+if Rake::Task.task_defined?('deploy:published')
+  after 'deploy:published', 'delayed_job:default'
+end
+
