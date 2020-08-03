@@ -26,6 +26,7 @@ class ListingsController < ApplicationController
   before_action :ensure_is_admin, :only => [:move_to_top, :show_in_updates_email]
 
   before_action :is_authorized_to_post, :only => [:new, :create]
+  before_action :set_sessions
 
   def index
     @selected_tribe_navi_tab = "home"
@@ -161,10 +162,11 @@ class ListingsController < ApplicationController
     shape = get_shape(Maybe(params)[:listing][:listing_shape_id].to_i.or_else(nil))
     listing_uuid = UUIDUtils.create
 
-    unless create_booking(shape, listing_uuid)
-      flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
-      return redirect_to new_listing_path
-    end
+    # TODO: comment this until find the way to re-connect Harmany
+    # unless create_booking(shape, listing_uuid)
+    #   flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
+    #   return redirect_to new_listing_path
+    # end
 
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
 
@@ -233,17 +235,16 @@ class ListingsController < ApplicationController
 
     shape = get_shape(params[:listing][:listing_shape_id])
 
-    unless create_booking(shape, @listing.uuid_object)
-      flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
-      return redirect_to edit_listing_path(@listing)
-    end
+    # unless create_booking(shape, @listing.uuid_object)
+    #   flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
+    #   return redirect_to edit_listing_path(@listing)
+    # end
 
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       return redirect_to edit_listing_path
     end
-
     listing_params = result.data.merge(@listing.closed? ? {open: true} : {})
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
     listing_params.merge!(service.update_by_author_params(@listing))
@@ -342,6 +343,7 @@ class ListingsController < ApplicationController
     session[:cart] ||= {}
     listing_id = params[:id]
     session[:cart][listing_id] = session[:cart][listing_id] ? (session[:cart][listing_id] + 1) : 1
+    transaction_items_service.add_new_transaction_items(listing_id) if transaction_items_service
 
     # Get total items in cart
     cart_total_items = session[:cart].values.sum
@@ -375,6 +377,8 @@ class ListingsController < ApplicationController
 
     cart_total_items = session[:cart].values.sum
 
+    transaction_items_service.remove_listing_item_out_of_transaction(listing_id) if transaction_items_service
+
     render json: {
       success: true,
       message: "Remove item sucessfully",
@@ -404,6 +408,8 @@ class ListingsController < ApplicationController
     price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)) * session[:cart][listing_id]
     number_price = Money.new(price_cents, 'USD')
     value_in_cart = MoneyViewUtils.to_humanized(number_price)
+
+    transaction_items_service.increase_quantity_of_transaction_items(listing_id) if transaction_items_service
 
     render json: {
       success: true,
@@ -449,6 +455,8 @@ class ListingsController < ApplicationController
       value_in_cart = MoneyViewUtils.to_humanized(number_price)
     end
 
+    transaction_items_service.reduce_quantity_of_transaction_items(listing_id) if transaction_items_service
+
     render json: {
       success: true,
       message: "Minus item sucessfully",
@@ -465,11 +473,19 @@ class ListingsController < ApplicationController
   def change_number_of_item
     id = params[:id]
     @item_count = params[:total].to_i
-    if session[:cart].key?(id) && @item_count > 0
-      session[:cart][id] = @item_count
-    end
     @promo_code = PromoCode.find_by(code: params[:promo_code])
     @listing = Listing.find_by_id(id)
+    if @item_count > @listing.available_quantity
+      @success = false
+      @message = "There is only #{@listing.available_quantity} product(s) available in stock!"
+    else
+      if session[:cart].key?(id) && @item_count > 0
+        session[:cart][id] = @item_count
+      end
+      transaction_items_service.increase_quantity_of_transaction_items(@listing.id, @item_count) if transaction_items_service
+      @success = true
+    end
+
     # Get total items in cart
     @cart_total_items = session[:cart].values.sum
     respond_to do |format|
@@ -517,7 +533,7 @@ class ListingsController < ApplicationController
       }
     end
 
-    data = BookingDaysCalculation.call(params)
+    data = BookingDaysCalculation.call(params[:start_date], params[:end_date])
 
     # Set to session
     session[:booking] ||= {}
@@ -685,7 +701,7 @@ class ListingsController < ApplicationController
     # If listing is not found (in this community) the find method
     # will throw ActiveRecord::NotFound exception, which is handled
     # correctly in production environment (404 page)
-    @listing = @current_community.listings.find(params[:id])
+    @listing = Listing.find_by_id(params[:id])
 
     raise ListingDeleted if @listing.deleted?
 
@@ -836,5 +852,21 @@ class ListingsController < ApplicationController
       else
         @current_user
       end
+  end
+
+  def set_sessions
+    session[:shipping] ||= {}
+    session[:shipping][:fedex] = []
+  end
+
+  def transaction_items_service
+    if @current_user && @current_user.starter_transactions.last
+      TransactionItemsService.new(@current_user.starter_transactions.last, session, @current_user)
+    else
+      if session[:transaction] && session[:transaction][:transaction_id]
+        transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
+        TransactionItemsService.new(transaction, session, nil)
+      end
+    end
   end
 end

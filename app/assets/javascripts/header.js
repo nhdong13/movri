@@ -1,10 +1,7 @@
 window.SearchMobile = {
   run: function(){
-    $('.search-mobile').click(function(){
-      $('.header-search-box').css('display', 'flex');
-      $('.back-to-menu').click(function(){
-        $('.header-search-box').css('display', 'none');
-      })
+    $('.search-mobile-icon').click(function(){
+      $('.mobile-display .searchbox-algolia input').css('display', 'inline-block');
     })
   }
 }

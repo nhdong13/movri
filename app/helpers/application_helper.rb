@@ -368,6 +368,51 @@ module ApplicationHelper
 
     links += [
       {
+        :topic => :orders,
+        :text => t("admin.communities.manage_orders.manage_orders"),
+        :icon_class => icon_class("orders"),
+        :path => admin_community_transactions_path(@current_community, sort: "last_activity", direction: "desc"),
+        :name => "transactions"
+      },
+      {
+        :topic => :orders,
+        :text => t("admin.communities.manage_draft_orders.draft_orders"),
+        :icon_class => icon_class("orders"),
+        :path => admin_community_draft_orders_path(@current_community, sort: "last_activity", direction: "desc"),
+        :name => "draft_orders"
+      }
+    ]
+
+    links += [
+      {
+        :topic => :manage,
+        :text => t("admin.communities.manager_customer.customers"),
+        :icon_class => icon_class("user"),
+        :path => admin_community_customers_path(@current_community),
+        :name => "customers"
+      },
+      {
+        :topic => :manage,
+        :text => t("admin.communities.manager_online_store.online_store"),
+        :icon_class => icon_class("store"),
+        :path => admin_community_online_store_path(@current_community, @current_community.online_store),
+        :name => "online_store"
+      },
+      {
+        :topic => :manage,
+        :text => t("admin.communities.manager_assurance_option.assurance_options"),
+        :icon_class => icon_class("star"),
+        :path => admin_community_assurance_options_path(@current_community),
+        :name => "assurance_options"
+      },
+      {
+        :topic => :manage,
+        :text => t("admin.communities.manager_url_redirect.url_redirects"),
+        :icon_class => icon_class("external_link"),
+        :path => admin_community_redirect_urls_path(@current_community),
+        :name => "redirect_urls"
+      },
+      {
         :topic => :manage,
         :text => t("admin.communities.manage_members.manage_members"),
         :icon_class => icon_class("community"),
@@ -380,13 +425,6 @@ module ApplicationHelper
         :icon_class => icon_class("thumbnails"),
         :path => admin_community_listings_path(@current_community, sort: "updated"),
         :name => "listings"
-      },
-      {
-        :topic => :manage,
-        :text => t("admin.communities.transactions.transactions"),
-        :icon_class => icon_class("coins"),
-        :path => admin_community_transactions_path(@current_community, sort: "last_activity", direction: "desc"),
-        :name => "transactions"
       },
       {
         :topic => :manage,

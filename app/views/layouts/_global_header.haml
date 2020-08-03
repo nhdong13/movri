@@ -1,23 +1,13 @@
-:css
-  .number-on-cart-style-desktop {
-    font-size: 13px;
-    background: #e8e9ea;;
-    border: solid 2px #13588d;
-    color: #13588d;
-    padding: 0 5px;
-    vertical-align: top;
-    margin-left: -9px;
-    border-radius: 50%;
-  }
-
-  .custom-cart-icon {
-    margin-bottom: -5px;
-  }
-
-  .my-cart-text {
-    margin-bottom: -5px;
-  }
 -# Hide header in map view if mobile
+.desktop-display
+  %header.header.sticky-header
+    - if store_header && (header_on_homepage?(store_header) || header_on_pages?(store_header))
+      - style = "color:  #{store_header.text_color};"
+      - style += "background: #{store_header.background_color};"
+      - style += "text-align: center;"
+      - style += "height: 50px;"
+      .header-wrapper.clearfix{style: style}
+        %h2{style: "color: #{store_header.text_color};line-height: 50px;"}= store_header.title.html_safe?
 %header.header.info-header
   .header-wrapper.clearfix
     .header-left
@@ -41,19 +31,55 @@
     .header-left.header-info
       .info-header-text.history-since-text
         = raw t('header.history_since')
+
 %header.header.main-header
   .header-wrapper.header-nav.clearfix
-    - if logged_in
-      .header-right.visible-tablet
-        #header-menu-desktop-anchor.header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
-    .header-right.visible-tablet
-      #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+    .desktop-display
+      .flex-items
+        .width-10
+          .header-left.header-logo-container
+            = link_to landing_page_path, :class => "header-logo", :id => "header-logo" do
+              - if @current_community.logo.present?
+                %i.header-square-logo.hidden-tablet
+                  -# Logo is here, it's a CSS background
+              - if @current_community.wide_logo.present?
+                .header-wide-logo
+                  = image_tag(store_header.logo.url)
+              - else
+                %span.header-wide-logo-text.visible-tablet
+                  = @current_community.name(I18n.locale)
+        .search-partial.width-40
+          = render :partial => 'layouts/searchs/search_box'
+        .width-10.br-r
+          .bh-gift-card
+            = image_tag("homepage_icons/b_h_gift_cards.jpeg")
+        .width-15
+          .mega-dealzone
+            = image_tag("homepage_icons/mega_dealzone.jpeg")
+        .width-20
+          #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+            .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+              #header-user-mobile-anchor
+                .left
+                  .header-menu-container.header-user-contain.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+                    .header-menu-toggle-container.toggle-header-container
+                      .display-inline-flex
+                        = image_tag PersonViewUtils.person_avatar(@current_user), height: 62, width: 62, class: 'header-menu-icon icon-movri-user'
+                        .visible-tablet-inline.myaccount-header
+                          %small
+                            - username = @current_user.present? ? @current_user.username : t("header.login")
+                            = t("header.hello", name: username )
+                          %strong
+                            = t("header.my_account")
+                            %i{class: 'icon-chevron-down'}
+        .width-20
+          #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
 
-    .header-right.controls
-      = render :partial => "layouts/header_anchors"
-      = render :partial => "layouts/header_user_menu"
-      = render :partial => "layouts/header_contact"
-
+    .mobile-display
+      .header-right.controls
+        = render :partial => "layouts/header_anchors"
+        = render :partial => "layouts/header_contact"
+        -# # = render :partial => "layouts/header_user_menu"
 
     - if logged_in
       = render :partial => "layouts/header_right_visible_tablet", locals: {unread_count: unread_count, inbox_path: inbox_path, icons: icons}
@@ -79,32 +105,13 @@
             %span.number-on-cart.number-on-cart-style-desktop
               - session[:cart] ||= {}
               = session[:cart].values.sum
+            %strong
+              = "View Cart"
+            %i.icon-chevron-down
 
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
     = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
 
-    -#
-      If necessary, the buttons will overlap with the logo. Buttons should be on top, that's
-      keep the logo here after buttons
-    .header-left.header-logo-container
-      = link_to landing_page_path, :class => "header-logo", :id => "header-logo" do
-        - if @current_community.logo.present?
-          %i.header-square-logo.hidden-tablet
-            -# Logo is here, it's a CSS background
-        - if @current_community.wide_logo.present?
-          .header-wide-logo
-            = image_tag('homepage_icons/movri_logo.png')
-        - else
-          %span.header-wide-logo-text.visible-tablet
-            = @current_community.name(I18n.locale)
-    .header-left.header-search-contain{class: "#{logged_in? ? 'header-search-logged-in' : ''}"}
-      = render partial: 'layouts/searchs/search_box'
-    .bh-gift-card.float-left
-      = image_tag("homepage_icons/b_h_gift_cards.jpeg")
-    .mega-dealzone.float-left
-      = image_tag("homepage_icons/mega_dealzone.jpeg")
-    = render partial: 'layouts/searchs/history'
-    = render partial: 'layouts/searchs/results'
 .header.category-nav.hidden-mobile
   .header-wrapper
     = render :partial => 'layouts/category_bar'

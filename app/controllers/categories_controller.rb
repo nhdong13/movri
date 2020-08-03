@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
   def index
     @listings = listing_service.index(params)
-    @listings = @listings.paginate(page: params[:page], per_page: 4)
+    @listings = @listings.paginate(page: params[:page], per_page: 25)
     @total_pages = @listings.total_pages
     redirect_url = categories_path(sort_condition: params[:sort_condition])
     respond_to do |format|

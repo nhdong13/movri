@@ -708,6 +708,36 @@ en:
             locations: "Edit locations section"
             video: "Edit video section"
             locations: "Edit locations section"
+      manage_orders:
+        manage_orders: "Orders"
+        order: "Order"
+        date: "Date"
+        customer: "Customer"
+        payment: "Payment"
+        fulfillment: "Fulfillment"
+        total: "Total"
+        items: "Items"
+        delivery_method: "Delivery method"
+        search_by_keyword: "Search for a name, email or keyword"
+        search_by_customer_name: "Search for transactions customer name"
+        search: Search
+        create_order: "Create Order"
+      manage_draft_orders:
+        draft_orders: "Draft Orders"
+        date: "Date"
+        draft: "Draft"
+        customer: "Customer"
+        status: "Status"
+        total: "Total"
+        search_by_customer_name: "Search by customer name"
+      manager_online_store:
+        online_store: Online Store
+      manager_assurance_option:
+        assurance_options: Assurance Option
+      manager_url_redirect:
+        url_redirects: URL Redirects
+      manager_customer:
+        customers: Customers
     landing_page_versions:
       sections:
         hero:
@@ -918,6 +948,7 @@ en:
       subscription: Subscription
       preview: "Preview site"
       whats_new: "What's new?"
+      orders: "Orders"
     listing_shapes:
       availability_title: Availability
       read_more: "Read more about automatic availability management."
@@ -2111,6 +2142,10 @@ en:
       stripe_you_account_balance_is_not_0: "You account balance is not 0 so it cannot be deleted. This might mean that you have transactions waiting to be completed or that there is money waiting to be paid out to your bank account. Please contact the %{service_name} team to learn more."
       visit_admin: "Would you like to %{link}?"
       visit_admin_link: "visit your admin panel"
+      create_assurance_option_failed: 'Assurance option has been created failed.'
+      create_url_redirect_failed: 'URL Redirect has been created failed.'
+      update_url_redirect_failed: 'URL Redirect has been updated failed.'
+      add_new_customer_failed: 'New customer has been created failed.'
     settings:
       account: Account
       notifications: Notifications
@@ -3214,3 +3249,88 @@ en:
     thank_for_contacting:
       thank_you_contacting: Thank You for Contacting Us
       res_message: We'll email your ticket number within the next 15 minutes. If you do not receive an email within that time, please email %{support_email} or call Customer Service at %{support_phones}
+  transactions:
+    label:
+      price: Price
+      my_cart: My Cart
+      checkout: Checkout
+      shipment: Shipment
+      shipping: Shipping
+      contact: Contact
+      change: Change
+      ship_to: Ship to
+      coverage: Coverage
+      quantity: Quantity
+      total_days_rental: "%{total_days} days rental"
+      subtotal: Subtotal
+      tax: Tax
+      tbd: TBD
+      total_with_tax: Total (including tax)
+      total_without_tax: Total (including tax)
+      order_date: Order Date
+      arrival_date: Arrival Date
+      return_date: Return Date
+      rental_duration: Rental Duration
+      shipping_method: Shipping method
+      pick_up: Pick Up
+      free: Free
+      shipping_address: Shipping Address
+      billing_address: Billing Address
+      promo_code: Promo Code
+      special_instructions: Special instructions for seller
+      move_to_wish_list: Move to wish list
+      remove: Remove
+    shipping_service:
+      delivery: Delivery
+      fedex_office:  Fedex Office
+      pick_up: Pick Up
+    order_summary:
+      header: Order Summary
+    contact_form:
+      noti: Keep me up to date on news and exclusive offers
+      title: Contact Information
+      email: Email
+      first_name: First name
+      last_name: Last name
+      company: Company(optional)
+      address: Address
+      apartment: Apartment, suite, etc. (Optional)
+      city: City
+      country: Country/Region
+      zip_code: Zip Code
+      phone: Phone
+    btn_label:
+      continue_to_shipping: Continue to Shipping
+      continue_shipping: Continue Shipping
+      continue_shopping: Continue Shopping
+      return_to_cart: Return to cart
+      return_to_shipping: Return to Shipping
+      continue_to_payment: Continue to Payment
+      pay_now: Pay now
+      send: Send
+      close: Close
+    thank_you:
+      comfirmed_order:  Your order is confirmed
+      will_recieve_mail: You'll recieve a confirmation email with your order number shortly.
+    contact:
+      title: Contact Us
+      question_helping: Hi - what may we help you with?
+      name: Name
+      subject: Subject(*)
+      email: Email(*)
+      order: 'Order #'
+      message: Message(*)
+    order_details:
+      arrival_date: "Arrival Date: <strong>%{date}</strong>"
+      return_date: "Return Date: <strong>%{date}</strong>"
+      rental_duration: "Rental Duration: <strong>%{number} days</strong>"
+      order_number: "Order #%{number}"
+      total_quantity: "Total Items: <strong>%{quantity}</strong>"
+      coverage: 'MOVRI COVERAGE: %{coverage}'
+  common:
+   copy_right: All rights reserved MOVRI
+   account_question: Already have an account?
+   log_in: Log in
+  placeholder:
+    special_instructions: Special instructions
+

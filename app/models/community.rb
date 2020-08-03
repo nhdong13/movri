@@ -160,6 +160,9 @@ class Community < ApplicationRecord
   has_one :configuration, class_name: 'MarketplaceConfigurations', :dependent => :destroy
   has_one :social_logo, :dependent => :destroy
   has_many :social_links, -> { sorted }, :dependent => :destroy, :inverse_of => :community
+  has_one :online_store, dependent: :destroy
+  has_many :assurance_options, dependent: :destroy
+  has_many :redirect_urls, dependent: :destroy
 
   has_many_attached :landing_page_assets
 

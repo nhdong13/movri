@@ -1,13 +1,16 @@
-- listings.each do |listing|
-  .col-12
-    .listing-box-mobile
-      .main-image
-        = image_tag 'len-10_288x288.jpg', :class => "design-image-too-wide"
-      .listing-information
-        .listing-title
-          = listing.title
-        .listing-price
-          %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
-          %span /1 day
-        .listing-rent-now
-          = link_to "Rent now", listing_path(listing), class: "rent-now-btn"
+#mobile-categories-page
+#mobile-categoties-pagination
+
+-# - listings.each do |listing|
+-#   .col-12
+-#     .listing-box-mobile
+-#       .main-image
+-#         = image_tag listing.main_image, :class => "design-image-too-wide"
+-#       .listing-information
+-#         .listing-title
+-#           = listing.title
+-#         .listing-price
+-#           %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
+-#           %span /1 day
+-#         .listing-rent-now
+-#           = link_to "Rent now", listing_path(listing), class: "rent-now-btn"

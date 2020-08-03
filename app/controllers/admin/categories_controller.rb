@@ -3,6 +3,10 @@ class Admin::CategoriesController < Admin::AdminBaseController
   def index
     @selected_left_navi_link = "listing_categories"
     @categories = @current_community.top_level_categories.includes(:translations, children: :translations)
+    respond_to do |format|
+      format.html
+      format.json { render json: {success: true, categories: @categories.as_json(include: :translations)}}
+    end
   end
 
   def new

@@ -1,6 +1,9 @@
 = render :partial => 'layouts/head'
 = javascript_include_tag Ckeditor.cdn_url
 %script{:src => "https://unpkg.com/sweetalert/dist/sweetalert.min.js"}
+%script{src: "https://cdn.jsdelivr.net/npm/algoliasearch@4.0.0/dist/algoliasearch-lite.umd.js", integrity: "sha256-MfeKq2Aw9VAkaE9Caes2NOxQf6vUa8Av0JqcUXUGkd0=", crossorigin: "anonymous"}
+%script{src: "https://cdn.jsdelivr.net/npm/instantsearch.js@4.0.0/dist/instantsearch.production.min.js",integrity: "sha256-6S7q0JJs/Kx4kb/fv0oMjS855QTz5Rc2hh9AkIUjUsk=", crossorigin: "anonymous"}
+
 
 %body
 
@@ -64,8 +67,7 @@
       %article.page-content{class: is_homepage && !@big_cover_photo ? 'no-cover-photo' : ''}
         = render :partial => "layouts/notifications"
         = yield
-        - if display_branding_info?
-          = render partial: "layouts/non_whitelabel_branding", locals: {link_to_sharetribe: "https://www.sharetribe.com/?utm_source=#{@current_community.ident}.sharetribe.com&utm_medium=referral&utm_campaign=nowl-footer"}
+
     -#
       This is not pretty, but works.
       On homepage, we want to wrap the whole page content (search bar and the "real" content) to a form, so that
@@ -84,8 +86,7 @@
     - else
       = content_for(:page_content)
 
-    - if @custom_footer.try(:display?)
-      = render 'layouts/footer'
+    = render partial: "shares/homepage_footer"
 
     -# Most of the JavaScript should be for performance reasons at the end of the body
 

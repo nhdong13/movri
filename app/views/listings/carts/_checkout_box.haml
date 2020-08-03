@@ -2,23 +2,25 @@
   .checkout-box
     .price-list
       - price_cents = price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code)
-      %span Subtotal
+      %span= t('transactions.label.subtotal')
       %span.price#subtotal-price= MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
     .price-list
-      %span Coverage
+      %span= t('transactions.label.coverage')
       - total_coverage = total_coverage_for_all_items_cart
       %span.price#coverage-price= MoneyViewUtils.to_humanized(Money.new(total_coverage, 'USD'))
     .price-list
-      %span Shipping
-      %span.price#shipping-fee $129.00
+      %span= t('transactions.label.shipping')
+      %span.price#shipping-fee
+        - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
+        = MoneyViewUtils.to_humanized(Money.new(shipping_fee, 'USD'))
     .total-price
-      %span Total (excluding tax)
-      %span.price#total-price= MoneyViewUtils.to_humanized(Money.new(price_cents + total_coverage, 'USD'))
+      %span= t('transactions.label.total_without_tax')
+      %span.price#total-price= MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
     = button_tag class: "common-btn btn-checkout" do
       %i.icon-lock.fa-fw
-      %span.uppercase Checkout
+      %span.uppercase= t('transactions.label.checkout')
     .coutinue-shipping
       .center-title
-        = link_to "Continue Shipping","",  class: "fz-16"
+        = link_to t('transactions.btn_label.continue_shipping'), "", class: "fz-16"
       %i.icon-chevron-right
 

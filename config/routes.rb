@@ -111,7 +111,6 @@ Rails.application.routes.draw do
   get '/not_available' => 'application#not_available', as: :community_not_available
 
   get '/load_cart', to: 'listings#load_cart'
-  get '/show_cart', to: 'listings#show_cart'
 
   resources :communities, only: [:new, :create]
 
@@ -120,6 +119,7 @@ Rails.application.routes.draw do
 
   # Adds locale to every url right after the root path
   scope "(/:locale)", :constraints => { :locale => locale_matcher } do
+    get '/show_cart', to: 'listings#show_cart'
 
     put '/mercury_update' => "mercury_update#update", :as => :mercury_update
 
@@ -130,6 +130,14 @@ Rails.application.routes.draw do
 
     # All new transactions (in the future)
     get "/transactions/new" => "transactions#new", as: :new_transaction
+    get "/transactions/:uuid/checkout" => "transactions#checkout", as: :checkout_transaction
+    get "/transactions/:uuid/shipment" => "transactions#shipment", as: :shipment_transaction
+    get "/transactions/:uuid/change_shipping_selection" => "transactions#change_shipping_selection", as: :change_shipping_selection_transaction
+    get "/transactions/:uuid/update_promo_code" => "transactions#update_promo_code", as: :update_promo_code_transaction
+    get "/transactions/:uuid/change_state_shipping_form" => "transactions#change_state_shipping_form", as: :change_state_shipping_form
+    get "/transactions/:uuid/payment" => "transactions#payment", as: :payment_transaction
+    get "/transactions/:uuid/thank_you" => "transactions#thank_you", as: :thank_you_transaction
+    post "/transactions/:transaction_id/pay_order" => "transaction_addresses#pay_order", as: :pay_order_transaction
 
     # preauthorize flow
 
@@ -184,6 +192,29 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :transactions, only: [:show, :new, :create] do
+      resources :transaction_addresses, only: [:create, :update]
+      resources :shippers, only: [:create, :update]
+      resources :helping_requests, only: [:create]
+      member do
+        get 'order_details'
+      end
+    end
+
+    resources :transaction_addresses, only: [:new, :edit, :destroy] do
+      member do
+        put 'set_default_address'
+      end
+    end
+
+    resources :transaction_addresses, only: [:create, :update]
+
+    resources :carts, only: [] do
+      collection do
+        get 'get_shipping_rates_for_listing_items'
+      end
+    end
+
     namespace :admin do
       get '' => "getting_started_guide#index"
 
@@ -235,6 +266,44 @@ Rails.application.routes.draw do
       # Landing page menu
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
+      resources :online_stores, only: [] do
+        resources :store_sections, only: [:create]
+      end
+
+      resources :store_headers, only: [:update] do
+        post :upload_logo, on: :member
+      end
+
+      resources :slideshows, only: [:update] do
+        resources :slide_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
+      resources :highlight_banners, ony: [:update] do
+        resources :banner_items, only: [:new, :create, :update, :destroy] do
+          post :image_upload, on: :member
+        end
+      end
+
+      resources :store_categories, only: [:create, :update, :destroy] do
+        resources :store_category_items, only: [:new, :create, :update, :destroy]
+      end
+
+      resources :store_featured_products, only: [:create, :update, :destroy]
+
+      resources :store_grids, only: [:create, :update, :destroy] do
+        resources :store_grid_items, only: [:create, :update, :destroy]
+      end
+
+      resources :store_footers, only: [:create, :update, :destroy] do
+        resources :store_footer_items, only: [:create, :update, :destroy]
+      end
+
+      resources :helpful_links, only: [:create, :update, :destroy] do
+        resources :helpful_link_items, only: [:create, :update, :destroy]
+      end
+
       resources :communities do
         member do
           get :edit_welcome_email
@@ -285,6 +354,7 @@ Rails.application.routes.draw do
           get "getting_started_guide/invitation",             to: redirect("/admin/getting_started_guide/invitation")
 
         end
+        resources :online_store, only: [:show, :index]
         resources :listings, controller: :community_listings, only: [:index, :edit, :update] do
           member do
             get :approve
@@ -301,6 +371,7 @@ Rails.application.routes.draw do
             get 'export_status'
           end
         end
+        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit]
         resources :conversations, controller: :community_conversations, only: [:index, :show]
         resources :testimonials, controller: :community_testimonials, only: [:index, :edit, :update, :new, :create] do
           collection do
@@ -321,6 +392,11 @@ Rails.application.routes.draw do
             post :posting_allowed
           end
         end
+
+        resources :assurance_options, controller: :community_assurance_options, only: [:index, :new, :create]
+        resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create, :edit, :update]
+        resources :customers, controller: :community_customers, only: [:index, :new, :create]
+        resources :customers, controller: :community_customers, param: :uuid, :only => :show
         resource :paypal_preferences, only: :index do
 
           # DEPRECATED (2015-11-16)
@@ -393,6 +469,8 @@ Rails.application.routes.draw do
     end
 
     post 'change_booking_days', to: 'listings#change_booking_days'
+    put 'change_cart_detail_booking_days', to: 'carts#change_cart_detail_booking_days'
+    get 'change_cart_select_shipping', to: 'carts#change_cart_select_shipping'
 
     resources :listings do
       member do
@@ -538,7 +616,6 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :transactions, only: [:show, :new, :create]
         resource :settings do
           member do
             get :account

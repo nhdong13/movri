@@ -1,0 +1,276 @@
+$mobile: "(max-width: 767px)";
+$tablet: "(min-width: 768px) and (max-width: 1024px)";
+
+.checkout-section{
+  .common-box{
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .header-title{
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .booking-date-bar{
+    background-color: white;
+    display: flex;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 5px;
+    .items{
+      padding: 14px;
+      width: 25%;
+      border-left: 1px solid black;
+    }
+    .items:first-child{border-left: unset;}
+  }
+  .back-to-cart{
+      color: #13588d;
+    .fa-angle-left{
+      margin-right: 5px;
+    }
+  }
+  .copy-right{
+    color: #757575;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  .shipping-noti{
+    margin-bottom: 50px;
+    margin-top: 10px;
+  }
+}
+
+.order-summary-products{
+  .row{margin-bottom: 0;}
+  .row:last-child{margin-bottom: 20px;}
+  .row:first-child{
+    .listing-row{border-top: 1px solid #bdbdbd;}
+  }
+  .listing-row {
+    border-bottom: 1px solid #bdbdbd;
+    display: flex;
+    align-items: center;
+    .main-image{
+      img {
+        max-width: 80px;
+        margin-right: 20px;
+        margin-top: 7px;
+      }
+    }
+  }
+  .listing-information{
+    line-height: 2;
+    .listing-title{
+      color: #4eb857;
+      font-size: 20px;
+    }
+    .coverage, .sku-quantity{
+      color: #757575;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+    .price {
+      font-size: 20px;
+      text-transform: uppercase;
+      font-weight: bold;
+      .number-price {color: #13588b;}
+      .day-rent {color: #4eb857;}
+    }
+  }
+}
+
+.order-summary-prices{
+  padding: 0 20px;
+  line-height: 2;
+  .items{
+    color: #757575;
+    font-size: 18px;
+    span:last-child{float: right}
+  }
+  .price-with-all-fee{
+    color: black;
+  }
+}
+#transaction_address_state_or_province{
+  width: 100%
+}
+
+.header-checkout{
+  font-size: 26px;
+  padding: 20px 0;
+}
+
+.checkout-section{
+  .mobile-display {
+    padding: 15px;
+    .order-summary-products{
+      .listing-row {
+        .main-image img{
+          max-width: 80px;
+        }
+        .listing-information{
+          .listing-title{font-size: 16px}
+          .price{font-size: 15px}
+          .coverage, .sku-quantity{font-size: 14px; color: #616161}
+        }
+      }
+    }
+    .booking-date-bar{
+      border: 1px solid #e0e0e0;
+      .items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .items{
+        border-left: 1px solid #e0e0e0;
+      }
+    }
+    .order-summary-prices{
+      padding: 0 10px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+  .mobile-contact-info{
+    .shipping-noti{
+      font-size: 13px;
+    }
+  }
+}
+
+.shipment-bar{
+  background: white;
+  .contact-info, .shipping-address, .shipping-method{
+    .item-1{
+      color: #757575;
+      width:10%}
+    .item-2{
+      width:80%;
+    }
+    .item-3{
+      text-align: right;
+      width:10%
+    }
+     padding: 10px 20px;
+  }
+  .contact-info{border-bottom: 1px solid #9e9e9e;}
+  .shipping-method{border-top: 1px solid #9e9e9e;}
+  border: 1px solid #9e9e9e;
+  border-radius: 5px;
+}
+
+.mobile-display{
+  .shipment-bar{
+    .contact-info, .shipping-address, .shipping-method{
+      .item-1{width:20%}
+      .item-2{width:60%;}
+      .item-3{width:10%}
+       padding: 10px 20px;
+    }
+  }
+}
+.shipment-promo-code-partial{
+  .common-box{padding: 0 15px;}
+  .shipping-promo-code{
+    .group{
+      .input-promo-code{
+        padding-right: 10px;
+        width: 70%
+      }
+      .btn-promo-code{width: 30%}
+    }
+    padding: 5px;
+    min-height: 91px;
+    button{padding: 8px}
+  }
+}
+
+.shipping-select-box{
+  border: 1px solid #9e9e9e;
+  border-radius: 5px;
+  .enabled-shipping-select:hover{
+    border-radius: 5px;
+    border: 1px solid #9e9e9e;
+    background: #f0f0f0;
+    transform: scale(1.025);
+    cursor: pointer;
+  }
+  .disabled-shipping-select{
+    opacity: 0.5
+  }
+  .items{
+    border-bottom: 1px solid #9e9e9e;
+    padding: 15px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    .shipping-service{width: 70%}
+    .days-shippment{
+      font-size: 13px;
+      color: #616161;
+    }
+    input[type="radio"]{
+      transform: scale(1.5);
+      margin-right: 10px
+    }
+    .price{
+      width: 30%;
+      text-align: right;
+    }
+  }
+  .items:last-child{
+    border-bottom: unset;
+  }
+}
+
+.mobile-display{
+  .shipment-methods-partial{
+    .common-box{padding: 10px !important}
+    .header-title, h2{margin: 0 !important}
+    .shipping-select-box{
+      .items{
+        input[type="radio"]{
+          transform: scale(1);
+          margin-right: 5px
+        }
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.payment-section{
+  padding: 0 15px;
+}
+
+.mobile-order-summary-box{
+  .common-box{
+    padding: 10px !important;
+    margin-bottom: 0px;
+    span{ font-size: 15px; }
+    .order-summary-prices{
+      padding: 0 10px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+}
+
+@media #{$mobile}, #{$tablet} {
+  .common-box{
+    padding: 10px !important;
+  }
+}
+
+.address-info-summary{
+  span{display: block;}
+  .label-title{
+    font-weight: bold;
+    color: #757575;
+  }
+
+}

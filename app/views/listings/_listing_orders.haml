@@ -8,12 +8,12 @@
     %span
       SKU :
     %span.sku
-      RO8514FFC
+      = @listing.sku
 .desktop-display
   = render partial: 'listings/desktop_designs/listing_order_item'
 .mobile-display
   = render partial: 'listings/mobile_designs/listing_order_item'
-    
+
 -# .row.listing-style
 -#   .col-9.clearfix.style
 -#     %p Style
@@ -57,26 +57,13 @@
 -#       With Cinema Kit
 .row.listing-payment-method
   .col-9.clearfix.payment-method
-    .payment-method-item.col-2
-      = image_tag("mf_icons/pay-on-delivery-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        Pay on delivery
-    .payment-method-item.col-2
-      = image_tag("mf_icons/10-days-replacement-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        10 Days Replacement
-    .payment-method-item.col-2
-      = image_tag("mf_icons/movri-deliver-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        Movri Delivered
-    .payment-method-item.col-2
-      = image_tag("mf_icons/movri-deliver-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        Movri Delivered
-    .payment-method-item.col-2
-      = image_tag("mf_icons/movri-deliver-icon.png", class: 'header-menu-icon icon-movri-calendar')
-      %span
-        Movri Delivered
+    - @current_community.assurance_options.each do |assurance_option|
+      - if assurance_option.visible
+        %div{class: "payment-method-item col-2", id: "assurance_option_#{assurance_option.id}", title: assurance_option.content}
+          = image_tag(assurance_option.image.url, class: 'header-menu-icon icon-movri-calendar')
+          %span.line-height-16
+            = assurance_option.title
+
 
 .row.listing-save-availabe
   .col-6.clearfix.save-available
@@ -89,3 +76,8 @@
 .mobile-display
   = render partial: 'listings/mobile_designs/trade'
 
+- content_for :extra_javascript do
+  :javascript
+    $(".payment-method-item").mouseover(function(e) {
+      $(document).tooltip();
+    });

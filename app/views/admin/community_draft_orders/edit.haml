@@ -1,0 +1,45 @@
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+.left-navi-section#edit-orders-info
+  .row
+    .col-12
+      %a{href: admin_community_draft_orders_path(@current_community)}
+        %i.icon-chevron-left
+        %span= "Orders"
+  .row
+    .col-12.overall-status
+      %span.id= "##{@order.id}"
+      %span.created-date= @order.created_at.to_formatted_s(:long)
+      %span= "from Draft Orders"
+      %span.payment-process{class: (@order.paid? ? "pending-span" : "grey-span")}
+        %i.icon-circle= @order.payment_process.capitalize
+      %span.current-state{class: (@order.fulfilled? ? "grey-span" : "unfulfilled-span")}
+        %i.icon-circle= @order.status.capitalize
+  .row
+    .col-12.action
+      %i.icon-print
+        %span= "Print"
+      %i.icon-chevron-left
+        %span= "Return"
+      %i.icon-remove
+        %span= "Cancel"
+  .row
+    .col-9
+      .col-12.order-info
+        = render "order_info", transaction_items: @order.transaction_items
+      .col-12.payment-info
+        = render "payment_info", order: @order
+    .col-3
+      .col-12.edit-note
+        .row
+          .col-10
+            %h3= "Notes"
+          .col-2
+            = "Edit"
+        .row
+          .col-12
+            = "#{@order.booking.start_on.to_formatted_s(:short)} to #{@order.booking.end_on.to_formatted_s(:short)}"
+      .col-12.edit-customer-info
+        = render "customer_info", order: @order
+  .row
+    .col-12
+      %btn.button.save-button= "Save"

@@ -1,0 +1,59 @@
+.row
+  .col-12
+    .account-info-form.white-background
+      %span.account-header Account Details
+      %p.fz-14 Update your password, addresses, payment methods, language and currency settings.
+      %p.fz-14 Account information:
+      .row
+        .display-flex.items-group#edit-name-account
+          .item-1
+            %span Name:
+          .item-2
+            %span.label-user-name.label-will-hide= @current_user.fullname
+            .input-will-show.d-none
+              = text_field_tag :first_name, nil, class: 'margin-bt-10', placeholder: "First name"
+              = text_field_tag :last_name, nil, class: 'margin-bt-10', placeholder: "Last name"
+            %span.alert-error.d-none.width-100
+          .item-3
+            %span.update-name.dp-none.update-item Update
+            %span.edit-item Edit
+      .row
+        .display-flex.items-group#edit-email-account
+          .item-1
+            %span Email Address:
+          .item-2
+            %span.label-user-email.label-will-hide.cut-text
+              = @current_user.get_email
+            .input-will-show.d-none
+              = text_field_tag :address, nil, placeholder: "Email"
+            = hidden_field_tag 'address_id', @current_user.emails.last.id
+            %span.alert-error.d-none.width-100
+          .item-3
+            %span.update-email.dp-none.update-item Update
+            %span.edit-email.edit-item Edit
+      .row
+        .display-flex.items-group.edit-password-account
+          .item-1
+            %span Password:
+          .item-2
+            %span.label-will-hide ******
+            = password_field_tag :current_password, nil, class: 'd-none input-will-show', placeholder: "Current Password"
+            %span.alert-error.d-none.width-100
+          .item-3
+            %span.update-password.dp-none Update
+            %span.edit-password  Edit
+      .new-passwod
+        .row
+          .display-flex.edit-password-account
+            .item-1
+            .item-2
+              = password_field_tag :new_password, nil, placeholder: "New Password"
+              %span.alert-error.d-none.width-100
+        .row
+          .display-flex.edit-password-account
+            .item-1
+            .item-2
+              = password_field_tag :password_confirmation, nil, placeholder: "Password Confirmation"
+              %span.alert-error.d-none.width-100
+- content_for :javascript do
+  Accounts.run()

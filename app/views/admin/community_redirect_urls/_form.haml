@@ -1,0 +1,23 @@
+= form_for redirect_url, :url => url, :method => method.to_sym do |f|
+  .row.create-redirect-url-form
+    .section.col-12.p-0.m-0
+      .col-4.p-0
+        %label Redirect from
+        .font-size-14.description
+          The original URL that you'd like to forward visitors from. Usually, this is an old page the visitors can no longer access because the content was moved to a different URL or deleted.
+      .col-8.pl-3.section-wrapper
+        = f.label :from, "Redirect from", class: 'font-weight-regular'
+        = f.text_field :from, value: redirect_url.from, class: 'text_field', placeholder: 'e.g. /shop/shoes'
+    .section.col-12.p-0.m-0
+      .col-4.p-0
+        %label Redirect to
+        .font-size-14.description
+          The new URL that visitors should be forwarded to. If you want to redirect your store's homepage, enter 
+          %code /
+          %span (a forward slash) 
+      .col-8.pl-3.section-wrapper
+        = f.label :to, "Redirect to", class: 'font-weight-regular'
+        = f.text_field :to, value: redirect_url.to, class: 'text_field', placeholder: 'Type or paste a link'
+    .col-12.mt-4.display-flex.justify-content-end
+      = link_to  "Cancel", admin_community_redirect_urls_path(@current_community), class: 'btn btn-white'
+      = f.submit "Save", class: 'btn btn-primary ml-2'

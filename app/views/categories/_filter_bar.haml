@@ -5,98 +5,17 @@
   .group-filter
     %ul
       %li.head Brand
-      %li.item
-        = radio_button_tag :brand, 'panasonic'
-        %span Panasonic
-      %li.item
-        = radio_button_tag :brand, 'nikon'
-        %span Nikon
-      %li.item
-        = radio_button_tag :brand, 'cannon'
-        %span Canon
-      %li.item
-        = radio_button_tag :brand, 'sony'
-        %span Sony
-      %li.item
-        = radio_button_tag :brand, 'insta360'
-        %span Insta360
-      %li.item
-        = radio_button_tag :brand, 'blackmagic'
-        %span Blackmagic
-      %li.item
-        = radio_button_tag :brand, 'gopro'
-        %span Gopro
-  .group-filter
-    %ul
-      %li.head Item Type
-      %li.item
-        = radio_button_tag :item_type, 'panasonic'
-        %span Camera
+      #refinement-list
   .group-filter
     %ul
       %li.head Mount
-      %li.item
-        = radio_button_tag :mount, ''
-        %span Canon EF - Camera
-      %li.item
-        = radio_button_tag :mount, ''
-        %span Canon RF - Camera
-      %li.item
-        = radio_button_tag :mount, ''
-        %span Fuji - Camera
-      %li.item
-        = radio_button_tag :mount, ''
-        %span Micro 4/3rds - Camera
+      #lens-mount
   .group-filter
     %ul
-      %li.head Camera Type
-      %li.item
-        = radio_button_tag :camera_type, ''
-        %span DSLS
-      %li.item
-        = radio_button_tag :camera_type, ''
-        %span Mirrorless
+      %li.head Lens Type
+      #lens-type
   .group-filter
     %ul
-      %li.head Sensor Type
-      %li.item
-        = radio_button_tag :sensor_type, ''
-        %span DSLS
-      %li.item
-        = radio_button_tag :sensor_type, ''
-        %span Mirrorless
-  .group-filter
-    %ul
-      %li.head Camcorder Type
-      %li.item
-        = radio_button_tag :camcorder_type, ''
-        %span Action Cam
-      %li.item
-        = radio_button_tag :camcorder_type, ''
-        %span VR / 360
-  .group-filter
-    %ul
-      %li.head Action Cam Compatibility
-      %li.item
-        = radio_button_tag :action_cam_compatibility, ''
-        %span Gopro Hero 8
-  .group-filter
-    %ul
-      %li.head Package Type
-      %li.item
-        = radio_button_tag :package_type, ''
-        %span Blackmagic Video
-  .group-filter
-    %ul
-      %li.head Collection
-      %li.item
-        = radio_button_tag :collection, ''
-        %span Cinema Camera
-      %li.item
-        = radio_button_tag :collection, ''
-        %span Photo Camera
-
-
-
-
-
+      %li.head Compatibility
+      #lens-compatibility
+#hidden-categories.hidden

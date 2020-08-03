@@ -9,7 +9,6 @@ const initialState = {
 };
 
 const changeQuantityReducer = (state = initialState, action) => {
-  debugger
   const { type, payload } = action;
   switch (type) {
     case 'CHANGEQUANTITY':

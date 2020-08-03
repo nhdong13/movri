@@ -93,7 +93,6 @@ class CartPage extends React.Component {
 }
 
 const mapStateToProps = function mapStateToProps(state) {
-  debugger
   return {
     listing: state.listingcart,
   };

@@ -1,7 +1,23 @@
-.col-12
-  = form_tag '/', {method: "get", class: "header-search-box"} do
-    = text_field_tag "q", params[:q], class: 'header-search-input', autocomplete: 'off', placeholder: 'Search'
-    %button.action-button.header-search-btn#search-button{type: 'submit'}
-      %span{class: 'hidden-desktop'}
-        %i.icon-search
-
+.ais-InstantSearch
+  .right-panel
+    .searchbox-algolia
+    .search-result-algolia.common-box.padding-0
+      %span.snize-label.block.align-right POPULAR SUGGESTIONS
+      .suggestion-items
+      %span.snize-label.block.align-right PRODUCTS
+      .product-items.snize-ac-results
+        .snize-ac-results-column
+      %span.snize-label.block.align-right CATEGORIES
+      .padding-5
+        .bold.fz-22= link_to 'Lens', categories_path()
+      %span.snize-label.block.align-right PAGES
+      .page-items
+        .item
+          %i.fa.fa-info-circle.padding-5
+            %span Contact Us
+        .item
+          %i.fa.fa-info-circle.padding-5
+            %span Privacy Policy
+        .item
+          %i.fa.fa-info-circle.padding-5
+            %span Shipping

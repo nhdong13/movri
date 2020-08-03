@@ -15,6 +15,17 @@ window.ST = window.ST || {};
   module.initCart = function() {
   };
 
+  $('body').on('change', ".show-cart-page .zip-code-input", function(){
+    handleChangeZipCode()
+    var zipcode = $(this).val()
+    $.ajax({
+      url: '/carts/get_shipping_rates_for_listing_items.js',
+      type: "GET",
+      data: { zipcode: zipcode }
+    }).done(function(response) {
+    }).fail(function(error) {});
+  });
+
   function getListingSku () {
     skus = []
     _.map($('.unique-listing-sku'), function(i) {
@@ -29,7 +40,11 @@ window.ST = window.ST || {};
     $('.promo-code-error').hide();
   }
 
-  $('.promo-code-field #promo_code')
+  function handleChangeZipCode() {
+    $(".show-cart-page .desktop-custom-select-shipping").hide()
+    $('.shipping-box .spinner').fadeIn("slow");
+  }
+
   $(".promo-code-field button").click(function(){
     handleChangeInput()
     skus = getListingSku()
@@ -64,67 +79,6 @@ window.ST = window.ST || {};
     });
   });
 
-
-  $("#cart_deatail_arrival_date, #cart_deatail_return_date").on("change", throttle(function () {
-    var changeBookingDayUrl = "/en/change_booking_days";
-    var startDate = $("#cart_deatail_arrival_date").val();
-    var endDate = $("#cart_deatail_return_date").val();
-
-    if (!startDate || !endDate) {
-      return;
-    }
-
-    $.ajax({
-      url: changeBookingDayUrl,
-      type: "POST",
-      data: {
-        start_date: startDate,
-        end_date: endDate
-      }
-    }).done(function(response) {
-      console.log('response', response);
-      if (response.success === true) {
-        // Change days booking successful
-        location.reload();
-      } else {
-        // Days not change
-      }
-    }).fail(function(error) {
-      console.log("Error:", error);
-    });
-
-  }, 500));
-
-  $("#mobile_cart_deatail_arrival_date, #mobile_cart_deatail_return_date").on("change", throttle(function () {
-    var changeBookingDayUrl = "/en/change_booking_days";
-    var startDate = $("#mobile_cart_deatail_arrival_date").val();
-    var endDate = $("#mobile_cart_deatail_return_date").val();
-
-    if (!startDate || !endDate) {
-      return;
-    }
-
-    $.ajax({
-      url: changeBookingDayUrl,
-      type: "POST",
-      data: {
-        start_date: startDate,
-        end_date: endDate
-      }
-    }).done(function(response) {
-      console.log('response', response);
-      if (response.success === true) {
-        // Change days booking successful
-        location.reload();
-      } else {
-        // Days not change
-      }
-    }).fail(function(error) {
-      console.log("Error:", error);
-    });
-
-  }, 500));
-
   function getPromoCode() {
     var promoCode = []
     _.map($('.promo-code-val'), function(i) {
@@ -155,6 +109,37 @@ window.ST = window.ST || {};
     if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
       event.preventDefault();
     }
+  });
+
+  $('body').on('change', '.shipping-box #select_shipping', function(){
+    changeCartSelectShippingURL = "/en/change_cart_select_shipping.js";
+    promoCode = getPromoCode();
+    shipping_type = $(this).val();
+    $.ajax({
+      url: changeCartSelectShippingURL,
+      type: "GET",
+      data: {
+        shipping_type: shipping_type,
+        code: promoCode
+      }
+    })
+  });
+
+  $('body').on('click', '.btn-checkout', function(){
+    createTransactionURL = "/en/transactions";
+    instructions = $('#instructions').val();
+    promoCode = getPromoCode();
+    $.ajax({
+      url: createTransactionURL,
+      type: "POST",
+      dataType: "json",
+      data: {
+        instructions: instructions,
+        code: promoCode
+      }
+    }).done(function(response) {
+       window.location.href = response.redirect_url
+    }).fail(function(error) {})
   });
 
 })(window.ST);

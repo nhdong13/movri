@@ -38,8 +38,8 @@ Rails.application.configure do
 
   # If you have no front-end server that supports something like X-Sendfile,
   # just comment this out and Rails will serve the files
-
-  config.log_level = :info
+  config.log_level = :debug
+  # config.log_level = :info
   # Basic log config, for calls to Rails.logger.<level> { <message> }
   config.logger = ::Logger.new(STDOUT)
   # Formats log entries into: LEVEL MESSAGE
@@ -96,7 +96,7 @@ Rails.application.configure do
     end
 
   # Compress JavaScript and CSS
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true)
 
   # Don't fallback to assets pipeline
   config.assets.compile = true

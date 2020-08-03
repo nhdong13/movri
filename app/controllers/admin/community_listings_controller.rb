@@ -5,6 +5,14 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
   layout false, only: [:edit, :update]
   respond_to :html, :js
 
+  def index
+    listings = @service.public_list
+    respond_to do |format|
+      format.html
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
   def update
     @service.update
   end

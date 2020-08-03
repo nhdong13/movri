@@ -1,0 +1,22 @@
+.row.customer
+  .col-12
+    %h3= "Customer"
+    %p= order.buyer.full_name.capitalize
+    = "1 order"
+.row.contact-infomation
+  .col-10
+    %h3= "CONTACT INFOMATION"
+  .col-2
+    = "Edit"
+  .col-12
+    %p= order.buyer.get_email.present? ? order.buyer.get_email : "No email address"
+.row.shipping-address
+  .col-10
+    %h3= "SHIPPING ADDRESS"
+  .col-2
+    = "Edit"
+  .col-12
+    %p= order.shipping_address.full_address.present? ? order.shipping_address.full_address : "No shipping address"
+.row.billing-address
+  .col-12
+    %h3= "BILLING ADDRESS"

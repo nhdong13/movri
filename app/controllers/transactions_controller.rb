@@ -17,7 +17,29 @@ class TransactionsController < ApplicationController
     end
   end
 
-  before_action do |controller|
+  before_action :find_transaction_by_uuid, only: [
+    :update_promo_code,
+    :change_shipping_selection,
+    :shipment,
+    :checkout,
+    :change_state_shipping_form,
+    :payment,
+    :thank_you
+  ]
+
+  before_action :find_transaction_by_id, only: [:order_details]
+
+  before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :thank_you, :order_details]
+
+  before_action except: [
+    :checkout,
+    :create,
+    :shipment,
+    :change_shipping_selection,
+    :update_promo_code,
+    :change_state_shipping_form,
+    :payment,
+    :thank_you] do |controller|
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
@@ -28,6 +50,8 @@ class TransactionsController < ApplicationController
     [:start_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) }],
     [:end_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) }]
   )
+
+  before_action :ensure_can_countinue_transactions, only: [:checkout, :shipment, :payment]
 
   def new
     Result.all(
@@ -59,65 +83,121 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    Result.all(
-      -> {
-        TransactionForm.validate(params.to_unsafe_hash)
-      },
-      ->(form) {
-        fetch_data(form[:listing_id])
-      },
-      ->(form, (_, _, _, process)) {
-        validate_form(form, process)
-      },
-      ->(_, (listing_id, listing_model), _) {
-        ensure_can_start_transactions(listing_model: listing_model, current_user: @current_user, current_community: @current_community)
-      },
-      ->(form, (listing_id, listing_model, author_model, process, gateway), _, _) {
-        booking_fields = Maybe(form).slice(:start_on, :end_on).select { |booking| booking.values.all? }.or_else({})
+    if @current_user
+      if @current_user.has_a_pending_transaction?
+        update_transaction_with_current_user(@current_user.pending_transaction, params)
+      elsif session[:transaction] && session[:transaction][:transaction_id]
+        # check if transaction is pending
+        @transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
+        if @transaction.completed?
+          @transaction = create_transaction_with_current_user(params)
+        else
+          @transaction = update_transaction_with_current_user(@transaction, params)
+        end
+      else
+        @transaction = create_transaction_with_current_user(params)
+      end
+    else
+      if session[:transaction] && session[:transaction][:transaction_id]
+        @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
+        if @transaction && !@transaction.completed?
+          @transaction = update_transaction_without_current_user(@transaction, params)
+        else
+          @transaction = create_transaction_without_current_user(params)
+        end
+        return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
+      else
+        @transaction = create_transaction_without_current_user(params)
+      end
+    end
 
-        is_booking = date_selector?(listing_model)
-        quantity = calculate_quantity(tx_params: {
-                                        quantity: form[:quantity],
-                                        start_on: booking_fields.dig(:start_on),
-                                        end_on: booking_fields.dig(:end_on)
-                                      },
-                                      is_booking: is_booking,
-                                      unit: listing_model.unit_type&.to_sym)
+    respond_to do |format|
+      format.html
+      format.json { render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)} }
+    end
+    # Result.all(
+    #   -> {
+    #     TransactionForm.validate(params.to_unsafe_hash)
+    #   },
+    #   ->(form) {
+    #     fetch_data(form[:listing_id])
+    #   },
+    #   ->(form, (_, _, _, process)) {
+    #     validate_form(form, process)
+    #   },
+    #   ->(_, (listing_id, listing_model), _) {
+    #     ensure_can_start_transactions(listing_model: listing_model, current_user: @current_user, current_community: @current_community)
+    #   },
+    #   ->(form, (listing_id, listing_model, author_model, process, gateway), _, _) {
+    #     booking_fields = Maybe(form).slice(:start_on, :end_on).select { |booking| booking.values.all? }.or_else({})
+
+    #     is_booking = date_selector?(listing_model)
+    #     quantity = calculate_quantity(tx_params: {
+    #                                     quantity: form[:quantity],
+    #                                     start_on: booking_fields.dig(:start_on),
+    #                                     end_on: booking_fields.dig(:end_on)
+    #                                   },
+    #                                   is_booking: is_booking,
+    #                                   unit: listing_model.unit_type&.to_sym)
 
 
-        transaction_service.create(
-          {
-            transaction: {
-              community_id: @current_community.id,
-              community_uuid: @current_community.uuid_object,
-              listing_id: listing_id,
-              listing_uuid: listing_model.uuid_object,
-              listing_title: listing_model.title,
-              starter_id: @current_user.id,
-              starter_uuid: @current_user.uuid_object,
-              listing_author_id: author_model.id,
-              listing_author_uuid: author_model.uuid_object,
-              unit_type: listing_model.unit_type,
-              unit_price: listing_model.price || Money.new(0, @current_community.currency),
-              unit_tr_key: listing_model.unit_tr_key,
-              availability: listing_model.availability,
-              listing_quantity: quantity,
-              content: form[:message],
-              starting_page: ::Conversation::PAYMENT,
-              booking_fields: booking_fields,
-              payment_gateway: process.process == :none ? :none : gateway, # TODO This is a bit awkward
-              payment_process: process.process
-            }
-          })
-      }
-    ).on_success { |(_, (_, _, _, process), _, _, tx)|
-      after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
-      flash[:notice] = after_create_flash(process: process) # add more params here when needed
-      redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
-    }.on_error { |error_msg, data|
-      flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
-      redirect_to(session[:return_to_content] || root)
-    }
+    #     transaction_service.create(
+    #       {
+    #         transaction: {
+    #           community_id: @current_community.id,
+    #           community_uuid: @current_community.uuid_object,
+    #           listing_id: listing_id,
+    #           listing_uuid: listing_model.uuid_object,
+    #           listing_title: listing_model.title,
+    #           starter_id: @current_user.id,
+    #           starter_uuid: @current_user.uuid_object,
+    #           listing_author_id: author_model.id,
+    #           listing_author_uuid: author_model.uuid_object,
+    #           unit_type: listing_model.unit_type,
+    #           unit_price: listing_model.price || Money.new(0, @current_community.currency),
+    #           unit_tr_key: listing_model.unit_tr_key,
+    #           availability: listing_model.availability,
+    #           listing_quantity: quantity,
+    #           content: form[:message],
+    #           starting_page: ::Conversation::PAYMENT,
+    #           booking_fields: booking_fields,
+    #           payment_gateway: process.process == :none ? :none : gateway, # TODO This is a bit awkward
+    #           payment_process: process.process
+    #         }
+    #       })
+    #   }
+    # ).on_success { |(_, (_, _, _, process), _, _, tx)|
+    #   after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
+    #   flash[:notice] = after_create_flash(process: process) # add more params here when needed
+    #   redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
+    # }.on_error { |error_msg, data|
+    #   flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
+    #   redirect_to(session[:return_to_content] || root)
+    # }
+  end
+
+  def create_transaction_with_current_user params
+    @transaction = transaction_service.create(session, params)
+    @transaction.update(starter_id: @current_user.id)
+    @transaction
+  end
+
+  def create_transaction_without_current_user params
+    @transaction = transaction_service.create(session, params)
+    session[:transaction] = {transaction_id: @transaction.id}
+    @transaction
+  end
+
+  def update_transaction_with_current_user transaction, params
+    @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
+    @transaction.update(starter_id: @current_user.id)
+    @transaction
+  end
+
+  def update_transaction_without_current_user transaction, params
+    @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
+    session[:transaction] = {transaction_id: @transaction.id}
+    @transaction
   end
 
   def show
@@ -232,7 +312,209 @@ class TransactionsController < ApplicationController
     }
   end
 
+  def check_booking_date_session_was_change transaction
+    if transaction.booking
+      if transaction.booking.start_on != datetime_service.convert_date(session[:booking][:start_date]) ||
+        transaction.booking.end_on != datetime_service.convert_date(session[:booking][:end_date])
+          transaction.booking.update(
+          start_on: datetime_service.convert_date(session[:booking][:start_date]),
+          end_on: datetime_service.convert_date(session[:booking][:end_date])
+        )
+      end
+    else
+      transaction.create_booking(
+        start_on: datetime_service.convert_date(session[:booking][:start_date]),
+        end_on: datetime_service.convert_date(session[:booking][:end_date])
+      )
+    end
+  end
+
+  def checkout
+    check_booking_date_session_was_change(@transaction)
+    @default_shipping_fee = 0
+    if @current_user
+      if @current_user.shipping_address
+        @shipping_address = update_shipping_address_with_current_user_params(@transaction, @current_user.shipping_address)
+      else
+        @shipping_address = create_shipping_address_with_current_user_params(@transaction)
+      end
+    else
+      if @transaction.shipping_address
+        @shipping_address = @transaction.shipping_address
+      else
+        @shipping_address = create_shipping_address_without_current_user @transaction
+      end
+    end
+  end
+
+  def create_shipping_address_without_current_user transaction
+    if session[:booking][:start_date] == get_today
+      shipping_address = TransactionAddress.create(OFFICE_ADDRESS)
+    else
+      shipping_address = TransactionAddress.new
+    end
+    transaction.update(shipping_address_id: shipping_address.id)
+    shipping_address
+  end
+
+  def create_shipping_address_with_current_user_params transaction
+    if session[:booking][:start_date] == get_today
+      shipping_address = @current_user.transaction_addresses.create(OFFICE_ADDRESS)
+    else
+      shipping_address = TransactionAddress.new
+    end
+    transaction.update(shipping_address_id: shipping_address.id)
+    shipping_address
+  end
+
+  def update_shipping_address_with_current_user_params transaction, shipping_address
+    if session[:booking][:start_date] == get_today
+      shipping_address.update_columns(OFFICE_ADDRESS)
+    else
+      shipping_address.update(EMPTY_SHIPPING_ADDRESS)
+    end
+    transaction.update(shipping_address_id: @current_user.shipping_address.id)
+    shipping_address
+  end
+
+  def shipment
+    return unless @transaction.transaction_items.any?
+    listing_ids = @transaction.transaction_items.pluck(:listing_id)
+    listings = Listing.where(id: listing_ids)
+
+    zipcode = @transaction.shipping_address.postal_code
+    return unless zipcode
+
+    listings.each do |listing|
+      if listing.packing_dimensions.blank?
+        # TODO: create packing_dimension only for test, remove this line when app release
+        PackingDimension.create(height: 10, length:10, width: 10, weight: 10, listing_id: listing.id)
+        # @message = "The listing has not dimensions to calculate"
+      end
+    end
+
+    total_quantity = @transaction.total_quantity
+    @shipping_address = @transaction.shipping_address
+    @state = @shipping_address.state_or_province
+    @promo_code = @transaction.promo_code ? @transaction.promo_code.code : nil
+    result = ShippingRatesService.get_shipping_rates_for_cart_page(listing_ids, zipcode, total_quantity)
+    if result[:success]
+      @shipping_selection = result[:shipping_selection]
+      session[:shipping][:fedex] = @shipping_selection
+      @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
+      if @transaction.will_pickup?
+        shipper_params = {service_delivery: 'free', amount: 0}
+      else
+        shipper_params = {
+          service_delivery: 'fedex',
+          service_type: @shipping_selection.first['service_type'],
+          service_name: @shipping_selection.first['service_name'],
+          amount: @shipping_selection.first['total_charge']['amount'],
+          currency: @shipping_selection.first['total_charge']['currency'],
+        }
+      end
+      @transaction.create_shipper(shipper_params) unless @transaction.shipper
+    else
+      flash[:notice] = result[:message]
+      return redirect_to request.referer
+    end
+  end
+
+  def change_state_shipping_form
+    @state = params[:state]
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false}
+    end
+  end
+
+  def change_shipping_selection
+    @state = @transaction.shipping_address.state_or_province
+    @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
+    shipper_params = {
+      service_type: @shipping_selection.first['service_type'],
+      service_name: @shipping_selection.first['service_name'],
+      amount: @shipping_selection.first['total_charge']['amount'],
+      currency: @shipping_selection.first['total_charge']['currency'],
+    }
+    @transaction.shipper.update(shipper_params)
+    @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
+    calculate_money_service(@transaction)
+    respond_to do |format|
+      format.html
+      format.js {render layout: false}
+    end
+  end
+
+  def update_promo_code
+    @promo_code = PromoCode.find_by(code: params[:promo_code])
+    if @promo_code
+      session[:promo_code] = {code: @promo_code.code}
+      @transaction.update(promo_code_id: @promo_code.id)
+    end
+    @state = @transaction.shipping_address.state_or_province
+    @default_shipping_fee = @transaction.shipper.amount
+    calculate_money_service(@transaction)
+    respond_to do |format|
+      format.html
+      format.js {render layout: false}
+    end
+  end
+
+  def payment
+    @shipping_address = @transaction.shipping_address
+    if @current_user
+      if @current_user.billing_address
+        @billing_address = @current_user.billing_address
+      else
+        @billing_address = @current_user.transaction_addresses.build
+      end
+    else
+      if session[:billing_address]
+        @billing_address = TransactionAddress.new(session[:billing_address])
+      else
+        @billing_address = TransactionAddress.new
+      end
+    end
+    @default_shipping_fee = @transaction.shipper.amount
+  end
+
+  def thank_you
+    @shipping_address = @transaction.shipping_address
+    @billing_address = @transaction.billing_address
+    @state = @transaction.shipping_address.state_or_province
+    @default_shipping_fee = 0
+    @helping_request = @transaction.helping_requests.build
+  end
+
+  def order_details
+
+  end
+
   private
+
+  def ensure_can_countinue_transactions
+    if @transaction.completed?
+      flash[:error] = "The transaction is already completed."
+      return redirect_to show_cart_path
+    end
+    if @transaction.is_overweight?
+      flash[:error] = "Please contact us for this. This package is overweight. We'd love to help you with completing the transaction."
+      return redirect_to show_cart_path
+    end
+    if @transaction.missing_listings?
+      flash[:error] = "Something went wrong with the number of your products. Please check it again."
+      return redirect_to show_cart_path
+    end
+  end
+
+  def find_transaction_by_uuid
+    @transaction = Transaction.find_by(uuid: uuid_to_raw(params[:uuid]))
+  end
+
+  def find_transaction_by_id
+    @transaction = Transaction.find_by(id: params[:id])
+  end
 
   def handle_finalize_proc_result(response)
     response_data = response[:data] || {}
@@ -477,8 +759,17 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def calculate_money_service(transaction=nil)
+    transaction = transaction || @transaction
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session)
+  end
+
   def transaction_service
     TransactionService::Transaction
+  end
+
+  def datetime_service
+    DatetimeService
   end
 
   def transaction_process_tokens

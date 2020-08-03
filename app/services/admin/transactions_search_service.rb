@@ -38,7 +38,7 @@ module Admin
     def transactions_search_scope
       scope = Transaction
       if @params[:q].present?
-        pattern = "%#{@params[:q]}%"
+        pattern = "%#{@params[:q].strip}%"
         scope = scope.search_by_party_or_listing_title(pattern)
       end
       if @params[:status].present?
@@ -51,8 +51,20 @@ module Admin
       case sort_column
       when "listing"
         "listings.title"
-      when "started"
+      when "date"
         "created_at"
+      when "total"
+        "transactions.unit_price_cents"
+      when "order"
+        "id"
+      when "payment"
+        "payment_process"
+      when "fulfillment"
+        "current_state"
+      when "items"
+        "listing_quantity"
+      when "delivery_method"
+        "delivery_method"
       end
     end
 

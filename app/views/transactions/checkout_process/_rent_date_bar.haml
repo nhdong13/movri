@@ -1,0 +1,17 @@
+.booking-date-bar
+  .order-date.items
+    .item
+      %h3= t('transactions.label.order_date')
+      %span= get_today
+  .arrival-date.items
+    .item
+      %h3= t('transactions.label.arrival_date')
+      %span= session[:booking][:start_date]
+  .return-date.items
+    .item
+      %h3= t('transactions.label.return_date')
+      %span= session[:booking][:end_date]
+  .rental-duration.items
+    .item
+      %h3= t('transactions.label.rental_duration')
+      %span= "#{session[:booking][:total_days]} days"

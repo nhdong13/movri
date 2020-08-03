@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   before_action :check_http_auth,
     :check_auth_token,
     :fetch_community,
+    :fetch_online_store,
     :fetch_community_plan_expiration_status,
     :perform_redirect,
     :fetch_logged_in_user,
@@ -42,7 +43,8 @@ class ApplicationController < ActionController::Base
     :set_display_expiration_notice,
     :setup_intercom_user,
     :setup_custom_footer,
-    :disarm_custom_head_script
+    :disarm_custom_head_script,
+    :update_booking_session
 
   # This updates translation files from WTI on every page load. Only useful in translation test servers.
   before_action :fetch_translations if APP_CONFIG.update_translations_on_every_page_load == "true"
@@ -305,6 +307,12 @@ class ApplicationController < ActionController::Base
     setup_logger!(marketplace_id: m_community.id.or_else(nil), marketplace_ident: m_community.ident.or_else(nil))
   end
 
+  def fetch_online_store
+    @current_online_store = @current_community && @current_community.online_store
+    @store_sections_presenter = OnlineStore::SectionsPresenter.new(@current_online_store)
+
+  end
+
   # Performs redirect to correct URL, if needed.
   # Note: This filter is safe to run even if :fetch_community
   # filter is skipped
@@ -443,6 +451,35 @@ class ApplicationController < ActionController::Base
     @display_expiration_notice = ext_service_active && is_expired
   end
 
+  def uuid_to_raw string_uuid
+    uuid_object = UUIDTools::UUID.parse(string_uuid)
+    uuid_raw = UUIDUtils.raw(uuid_object)
+  end
+
+  def update_booking_session
+    if session[:booking] && session[:booking][:start_date]
+      session[:booking][:start_date] = get_today if session[:booking][:start_date] < get_today
+      session[:booking][:end_date] = get_next_day(session[:booking][:start_date])if session[:booking][:end_date] <= session[:booking][:start_date]
+      data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
+      session[:booking][:total_days] = data[:total_days]
+    else
+      session[:booking] = {}
+      session[:booking][:start_date] = get_today
+      session[:booking][:end_date] = get_next_day(session[:booking][:start_date])
+      data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
+      session[:booking][:total_days] = data[:total_days]
+    end
+  end
+
+  def get_today
+    Date.today.strftime("%m/%d/%Y")
+  end
+
+  def get_next_day current_day
+    next_day = Date.strptime(current_day, "%m/%d/%Y") + 1.day
+    next_day.strftime("%m/%d/%Y")
+  end
+
   private
 
   # Override basic instrumentation and provide additional info for
@@ -571,9 +608,10 @@ class ApplicationController < ActionController::Base
         profile_path: person_path(u),
         manage_listings_path: person_path(u, show_closed: true),
         settings_path: person_settings_path(u),
-        logout_path: logout_path
+        logout_path: logout_path,
+        store_header: @current_online_store&.header
       }
-    }.or_else({})
+    }.or_else({store_header: @current_online_store&.header})
 
     locale_change_links = available_locales.map { |(title, locale_code)|
       {

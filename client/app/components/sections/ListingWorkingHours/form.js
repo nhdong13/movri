@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Form, StyledSelect, FormField, Checkbox } from 'react-form';
 import merge from 'lodash.merge';
 import { t } from '../../../utils/i18n';

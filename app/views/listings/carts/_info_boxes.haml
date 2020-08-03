@@ -5,6 +5,6 @@
 .instructions-box
   = render partial: "listings/carts/instructions_box"
 .shipping-box
-  = render partial: "listings/carts/shipping_box"
+  = render partial: "listings/carts/shipping_box", locals: {zipcode: nil}
 .checkout-box
-  = render partial: "listings/carts/checkout_box", locals: {promo_code: promo_code}
+  = render partial: "listings/carts/checkout_box", locals: {promo_code: promo_code, shipping_type: nil}

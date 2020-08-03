@@ -44,6 +44,10 @@
 #  cloned_from                        :string(22)
 #  google_oauth2_id                   :string(255)
 #  linkedin_id                        :string(255)
+#  default_shipping_address           :integer
+#  default_billing_address            :integer
+#  agree_to_subscription              :boolean          default(FALSE)
+#  note                               :string(255)
 #
 # Indexes
 #
@@ -127,6 +131,7 @@ class Person < ApplicationRecord
   has_many :starter_transactions, :class_name => "Transaction", :foreign_key => "starter_id", :dependent => :destroy, :inverse_of => :starter
   has_many :payer_stripe_payments, :class_name => "StripePayment", :foreign_key => "payer_id", :dependent => :destroy, :inverse_of => :payer
   has_many :receiver_stripe_payments, :class_name => "StripePayment", :foreign_key => "receiver_id", :dependent => :destroy, :inverse_of => :receiver
+  has_many :transaction_addresses, :dependent => :destroy
 
   deprecate communities: "Use accepted_community instead.",
             community_memberships: "Use community_membership instead.",
@@ -219,7 +224,8 @@ class Person < ApplicationRecord
                       :medium => "288x288#",
                       :small => "108x108#",
                       :thumb => "48x48#",
-                      :original => "600x800>"}
+                      :original => "600x800>"},
+                      default_url: "/images/missing_image.png"
 
   process_in_background :image
 
@@ -248,6 +254,22 @@ class Person < ApplicationRecord
     end
   end
 
+  def shipping_address
+    transaction_addresses.find_by(id: default_shipping_address)
+  end
+
+  def shipping_addresses
+    transaction_addresses.shipping_address
+  end
+
+  def billing_address
+    transaction_addresses.find_by(id: default_billing_address)
+  end
+
+  def billing_addresses
+    transaction_addresses.billing_address
+  end
+
   # Creates a new email
   def email_attributes=(attributes)
     ActiveSupport::Deprecation.warn(
@@ -258,12 +280,24 @@ class Person < ApplicationRecord
     emails.build(attributes)
   end
 
+  def has_a_pending_transaction?
+    starter_transactions.any? && starter_transactions.where.not(current_state: 'paid').any?
+  end
+
+  def pending_transaction
+    starter_transactions.where.not(current_state: 'paid').first
+  end
+
   def set_emails_that_receive_notifications(email_ids)
     if email_ids
       emails.each do |email|
         email.update_attribute(:send_notifications, email_ids.include?(email.id.to_s))
       end
     end
+  end
+
+  def get_email
+    emails.last.address
   end
 
   def last_community_updates_at
@@ -283,6 +317,10 @@ class Person < ApplicationRecord
 
   def set_given_name(name)
     update({:given_name => name })
+  end
+
+  def fullname
+    "#{given_name.capitalize} #{family_name.capitalize}"
   end
 
   def street_address
@@ -597,6 +635,18 @@ class Person < ApplicationRecord
 
   def custom_field_value_for(custom_field)
     custom_field_values.by_question(custom_field).first
+  end
+
+  def completed_orders
+    starter_transactions.where(current_state: ['paid']).order(updated_at: :desc)
+  end
+
+  def cancelled_orders
+    starter_transactions.where(current_state: ['cancelled']).order(updated_at: :desc)
+  end
+
+  def total_spent
+    completed_orders.pluck(:total_price_cents).sum
   end
 
   private

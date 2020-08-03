@@ -60,10 +60,10 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .header-search-contain {
-  width: 48%;
+  width: 54%;
 
   &.header-search-logged-in {
-    width: 45%;
+    width: 39%;
     margin-right: 15px;
   }
 }
@@ -87,14 +87,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       height: 45px !important;
       border: none;
     }
-    .back-to-menu {
-      display: block;
-      padding: 0 10px;
-      img {
-        width: 25px;
-        margin-top: 7px;
-      }
-    }
     button.header-search-btn {
       font-size: 14px;
       color: white;
@@ -107,17 +99,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       opacity: 1;
       border-radius: 0;
     }
-  }
-
-  .header-search-input {
-    height: 60px;
-    width: 100%;
-    border-width: 1px;
-    border-radius: 0px;
-    outline: none;
-    font-size: 24px;
-    font-weight: normal;
-    opacity: 0.5;
   }
 
   .header-search-btn {
@@ -277,13 +258,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   .bh-gift-card,
   .mega-dealzone {
     padding: 7px;
-  }
-
-  .bh-gift-card {
-    img {
-      padding-right: 10px;
-      border-right: 1px solid #000000;
-    }
   }
 }
 
@@ -789,7 +763,11 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 .active {
   background-color: #4CAF50;
-  color: white;
+  color: white !important;
+  a, a:hover{
+    opacity: 1;
+    color: white !important;
+  }
 }
 
 .topnav .icon {
@@ -902,8 +880,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 @media #{$mobile} {
-  .main-header #search-history:after,
-  .main-header #search-history:before,
   .main-header #search-result:after,
   .main-header #search-result:before {
     content: none !important;
@@ -952,16 +928,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     }
   }
 
-  #search-history {
-    @include search-dropdown;
-    min-width: 30%;
-
-    .suggestionsBrandsCategories {
-      width: 100% !important;
-    }
-  }
-
-  #search-history,
   #search-results {
     &:before {
       content: '';
@@ -1119,7 +1085,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 
   @media #{$mobile} {
-    #search-results, #search-history {
+    #search-results {
       height: auto;
       width: calc(100vw - 22px);
       margin-left: 11px;
@@ -1318,10 +1284,19 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
+#header-menu-desktop-cart {
+  float: right;
+
+  span.number-on-cart {
+    padding-right: 3px;
+    margin-right: 5px;
+  }
+}
+
 @media #{$tablet} {
   .header-right.controls {
     a,
-    a.search-mobile,
+    .search-mobile-icon,
     .header-mobile-phone-icon {
       display: none;
     }

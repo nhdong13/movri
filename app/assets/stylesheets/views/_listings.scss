@@ -906,6 +906,7 @@ $listing-author-avatar-height: 108;
   .listing-payment-method {
     .payment-method-item {
       display: inline;
+      cursor: pointer;
 
       img{
         width: 35px;

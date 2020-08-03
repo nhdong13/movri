@@ -1,17 +1,16 @@
 .row
   .col-2
-    %span.title My Cart
+    %span.title= t('transactions.label.my_cart')
   .col-6.price
-    %span.subtotal Subtotal
+    %span.subtotal= t('transactions.label.subtotal')
     .price
       %span.number-price
-        - price_cents = price_with_all_fee(promo_code)
-        = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
+        - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
+        = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
       %span.day-rent
         \/
-        = session[:booking][:total_days]
-        days rental
+        = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
   .col-4
     = button_tag class: "custom-btn" do
       -# %i.icon-lock.fa-fw
-      %span.uppercase Checkout
+      %span.uppercase= t('transactions.label.checkout')

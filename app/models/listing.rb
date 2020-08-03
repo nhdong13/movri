@@ -54,7 +54,7 @@
 #  in_the_box                      :text(65535)
 #  not_in_the_box                  :text(65535)
 #  key_feature                     :text(65535)
-#  available_quantity              :integer
+#  available_quantity              :integer          default(0)
 #  sku                             :string(255)
 #  barcode                         :string(255)
 #  track_quantity                  :boolean
@@ -70,6 +70,12 @@
 #  tags                            :string(255)
 #  manually_blocked_dates          :text(65535)
 #  replacement_cents_fee           :integer          default(0)
+#  brand                           :string(255)
+#  number_of_rent                  :integer          default(0)
+#  listing_type                    :integer          default(0)
+#  mount                           :string(255)
+#  lens_type                       :string(255)
+#  compatibility                   :string(255)
 #
 # Indexes
 #
@@ -88,6 +94,20 @@
 #
 
 class Listing < ApplicationRecord
+  include AlgoliaSearch
+  algoliasearch index_name: "movri_products" do
+    attribute :id, :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
+    attributes :main_image do
+      main_image
+    end
+    attributes :created_at do
+      created_at.to_i
+    end
+    attributes :category do
+      category.url
+    end
+  end
+
   WIEGHT_TYPE = ['kg', 'pound']
   enum weight_type: { kg: 0, pound: 1 }
 
@@ -130,6 +150,7 @@ class Listing < ApplicationRecord
   has_many :bookings_per_hour, ->{ per_hour_blocked }, through: :tx, source: :booking
   has_many :pricing_charts, dependent: :destroy
   accepts_nested_attributes_for :pricing_charts, allow_destroy: true
+  has_one :redirect_url, as: :redirectable
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency
@@ -139,6 +160,8 @@ class Listing < ApplicationRecord
 
   validates_presence_of :author_id
   validates_length_of :title, :in => 2..65, :allow_nil => false
+
+  validates :available_quantity, numericality: { greater_than_or_equal_to: 0 }
 
   scope :exist, -> { where(deleted: false) }
 
@@ -419,7 +442,12 @@ class Listing < ApplicationRecord
   end
 
   def main_image
-    listing_images.first&.image&.url
+    if listing_images.any?
+      listing_images.first&.image&.url
+    else
+      # Rails.root.join('app', 'assets', 'images', 'missing_image.png')
+      "missing_image.png"
+    end
   end
 
   def as_json

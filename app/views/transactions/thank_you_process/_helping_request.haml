@@ -1,0 +1,49 @@
+
+.row
+  .col-9.padding-0
+    .row
+      .col-12.padding-0
+        = form_for [@transaction, @helping_request], remote: true do |f|
+          .flex-items
+            .width-70.padding-0
+              %p.fz-22= t('transactions.contact.title')
+            .width-30.align-right
+              %p.fz-14.close-contact-us-partial= t('transactions.btn_label.close')
+          .row.br-bottom
+            %p= t('transactions.contact.question_helping')
+          .form-group
+            .row.display-flex
+              .width-30
+                %span= t('transactions.contact.subject')
+              .width-70
+                = f.text_field :subject
+          .form-group
+            .row.display-flex
+              .width-30
+                %span= t('transactions.contact.name')
+              .width-70
+                = text_field_tag 'helping_request[name]', 'Adminm'
+          .form-group
+            .row.display-flex
+              .width-30
+                %span= t('transactions.contact.email')
+              .width-70
+                = text_field_tag 'helping_request[email]', DEFAULT_ADMIN_EMAIL, disabled: true
+          .form-group
+            .row.display-flex
+              .width-30
+                %span= t('transactions.contact.order')
+              .width-35
+                = text_field_tag :order_id
+              .width-35
+                = select_tag :transaction_id, options_for_select(['Your Previous Orders Numbers']), class: "width-100"
+          .form-group
+            .row.display-flex
+              .width-30
+                %span= t('transactions.contact.message')
+              .width-70
+                = f.text_area :message
+          .form-group
+            .row
+              .col-12.align-right
+                = f.submit t('transactions.btn_label.send'), class:"btn btn-submit width-30"

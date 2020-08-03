@@ -1,16 +1,12 @@
 .movri-different.text-center
-  %h1.title= I18n.t("homepage.movri_different.title")
+  %h1.title= grid.heading
   .row
-    .col-6
-      .assurred-quality
-        = image_tag("homepage_icons/assured_quality.png", class: "assured_quality")
-      %p= I18n.t("homepage.movri_different.assured_quality")
-    .col-6
-      = image_tag("homepage_icons/cancellations.png", class: "cancellation")
-      %p= I18n.t("homepage.movri_different.easy_cancellation")
-    .col-6
-      = image_tag("homepage_icons/shipping_agent.png")
-      %p= I18n.t("homepage.movri_different.shipping_services")
-    .col-6
-      = image_tag("homepage_icons/camera.svg")
-      %p= I18n.t("homepage.movri_different.title")
+    - text_styles = grid_styles(grid)
+    - grid.store_grid_items.each do |item|
+      - style = "color: #{item.text_color};"
+      .col-6.p-relative
+        .assurred-quality
+          = image_tag item.image.url, class: "assured_quality"
+        .p-absolute.font-size-14.grid-desc{class: grid.text_alignment, style: style}
+          = item.text.html_safe
+          

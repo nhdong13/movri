@@ -6,7 +6,7 @@ input[type=password],
 input[type=number],
 textarea {
   @include border-radius(em(5));
-  border: 2px solid $border;
+  border: 1px solid #9e9e9e;
   min-height: 42px;
   width: 100%;
   padding: em(4) em(8);
@@ -19,9 +19,10 @@ textarea {
 
 select {
   @include border-radius(em(5));
-  border: 2px solid $border;
+  border: 1px solid #9e9e9e;
   min-height: 42px;
   padding: em(4) em(8);
+  background: white;
 
   @include media(tablet) {
     margin: 0;

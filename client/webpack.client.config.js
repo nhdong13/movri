@@ -24,6 +24,14 @@ config.module.rules.push(
     exclude: [/node_modules/, /routes\/routes.js/],
   },
   {
+    test: /\.jsx?$/,
+    loader: 'babel-loader',
+    exclude: /node_modules/,
+    query: {
+      presets: ["@babel/preset-env"]
+    }
+  },
+  {
     test: /\.css$/,
     loader: [
       {
@@ -45,7 +53,19 @@ config.module.rules.push(
   },
   {
     test: /\.scss$/,
-    loaders: ['style-loader', 'css-loader', 'sass-loader'],
+    loaders: [
+      'style-loader', 
+      {
+        loader: 'css-loader',
+        options: {
+          modules: {
+            mode: 'local',
+            localIdentName: '[name]__[local]__[hash:base64:5]',
+          },
+        },
+      }, 
+      'sass-loader'
+    ],
   },
   {
     test: require.resolve('react'),

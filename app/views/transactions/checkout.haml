@@ -1,0 +1,34 @@
+.brown-background
+  .checkout-section
+    .wrapper
+      .desktop-display
+        .row
+          .col-12
+            .header-checkout= t('transactions.label.checkout')
+        .row
+          .col-8.margin-bt-50
+            = render partial: "transactions/checkout_process/rent_date_bar"
+        .row
+          .col-8
+            = render partial: "transactions/checkout_process/contact_info"
+          .col-4.order-summary-box
+            = render partial: "transactions/checkout_process/order_summary", locals: {transaction: @transaction, state: DEFAULT_STATE, default_shipping_fee: @default_shipping_fee}
+      .mobile-display
+        .row
+          .col-12
+            .header-checkout.padding-0= t('transactions.label.checkout')
+        .row
+          .col-12
+            = render partial: "transactions/checkout_process/rent_date_bar"
+        .row
+          .col-12.mobile-order-summary-box
+            = render partial: "transactions/checkout_process/mobile_design/order_summary", locals: {transaction: @transaction, state: DEFAULT_STATE, default_shipping_fee: @default_shipping_fee}
+          - unless @current_user
+            .col-12.padding-0.fz-14.text-r
+              %span= t('common.account_question')
+              = link_to t('common.log_in'), login_path
+          .col-12.mobile-contact-info
+            = render partial: "transactions/checkout_process/mobile_design/contact_info"
+
+- content_for :javascript do
+  ValidateForm.run();

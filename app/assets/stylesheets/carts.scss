@@ -169,20 +169,12 @@
 
   .coverage {
     font-size: 14px;
-    margin-left: 33%;
-
     .coverage-selection {
-      width: 30px !important;
-
+      max-width:85px;
+      select{max-width:85px}
       .custom-select {
         border: 1px solid #0b0a0a;
         background: white;
-      }
-    }
-
-    .price-coverage {
-      .price {
-        margin-right: 10px;
       }
     }
   }
@@ -318,13 +310,6 @@
   }
 }
 
-.show-cart-page {
-  .col-4 {
-    width: 33% !important;
-    float: left
-  }
-}
-
 .rent-date-box {
   font-weight: bold;
 
@@ -384,4 +369,30 @@ input[type=number]::-webkit-outer-spin-button {
 
 .mobile-display{
   .show-cart-page{padding: 15px;}
+}
+
+.number-on-cart-style-mobile {
+  font-size: 13px !important;
+  margin-left: -9px !important;
+  color: #13588d;
+  font-weight: bold;
+}
+
+.number-on-cart-style-desktop {
+  font-size: 13px;
+  background: #e8e9ea;;
+  border: solid 2px #13588d;
+  color: #13588d;
+  padding: 0 5px;
+  vertical-align: top;
+  margin-left: -9px;
+  border-radius: 50%;
+}
+
+.custom-cart-icon {
+  margin-bottom: -5px;
+}
+
+.my-cart-text {
+  margin-bottom: -5px;
 }

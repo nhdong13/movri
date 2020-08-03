@@ -1,5 +1,5 @@
 .common-box.desktop-instructions
   .title
-    %p Special instructions for seller
+    %p= t('transactions.label.special_instructions')
   .special-instructions-box
-    = text_area_tag :instructions, nil, placeholder: "Special instructions"
+    = text_area_tag :instructions, nil, placeholder: t('placeholder.special_instructions')

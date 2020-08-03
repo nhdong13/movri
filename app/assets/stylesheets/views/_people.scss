@@ -3,6 +3,9 @@
 
 $profile-pic-size-mobile: lines(3);
 $profile-pic-gutter-mobile: lines(0.5);
+$mobile: "(max-width: 767px)";
+$tablet: "(min-width: 768px) and (max-width: 1024px)";
+
 
 .people-image {
   display: none;
@@ -99,4 +102,103 @@ $profile-pic-gutter-mobile: lines(0.5);
   ol {
     padding-left: 1.5em
   }
+}
+
+.account-list-orders{
+  .row .col-12 .order-summary{background-color: #f6f8fa;}
+  .width-30{
+  }
+  .data-header{
+    background-color: #f3f3f3;
+  }
+  .account-listing-item:last-child {
+    border-bottom: unset;
+  }
+  .title{ color: #13588d }
+  .sku{ color: #9e9e9e }
+  .status{ color: #4eb857 }
+}
+
+.new-passwod{
+  display: none;
+}
+
+.account-info-form{
+  padding: 20px;
+  font-size: 14px;
+  #edit-name-account, .edit-password-account, #edit-email-account{
+    .item-1{width: 10%}
+    .item-2{width: 20%; margin-right: 10px}
+    .item-3{width: 20%}
+    .edit-item, .edit-password{ color: #13588d; cursor: pointer;}
+    .update-item, .update-password{color: #4CAF50; cursor: pointer;}
+    .will-close{margin-left: 10px; border-left: 1px solid black; padding-left: 12px; color: red;}
+  }
+  .address-row{
+    .item-1{width: 70%}
+    .item-2{width: 30%}
+  }
+  .btn-create-new-address{
+    width: 90px;
+  }
+}
+
+@media #{$mobile}, #{$tablet} {
+  .account-info-form{
+    padding: 10px !important;
+    #edit-name-account, .edit-password-account, #edit-email-account{
+      .item-1{width: 20%; margin-right: 10px}
+      .item-2{width: 50%; margin-right: 10px}
+      .item-3{width: 20%}
+      .edit-item, .edit-password{ color: #13588d}
+      .update-item, .update-password{color: #4CAF50}
+      .will-close{margin-left: unset; border-left: unset; padding-left: unset;}
+      .item-3{text-align: right;}
+    }
+    .address-row{
+      display: block;
+      .item-1{width: 100% !important}
+      .item-2{
+        width: 100% !important;
+        .flex-items{ display: block !important;}
+      }
+      .transaction-full-label{
+        display: inline-block !important;
+        .items{display: inline-block;}
+      }
+    }
+  }
+}
+
+.account-header{
+  font-size: 24px;
+  color: #4eb857
+}
+
+#billing-addresses, #shipping-addresses{
+  color: black;
+  .address-row{
+    padding-bottom: 15px;
+    padding-top: 15px;
+    .items:first-child{padding-left: 0 !important;}
+    .items:last-child{border-right: none;}
+    .items{
+      padding: 0 10px;
+      border-right: 1px solid black;
+    }
+  }
+  .set-as-default-address, .is-defaut-address{
+    cursor: pointer;
+    color: #757575;
+    font-style: italic;
+  }
+  .is-defaut-address{span{border-radius: 5px; padding: 5px;}}
+}
+
+#order-details{
+  .item-1, .item-2, .item-3, .item-4{width: 30%}
+}
+@media #{$mobile}, #{$tablet} {
+ .item-1, .item-2{width: 50% !important}
+ .item-3, .item-4{width: 100% !important}
 }

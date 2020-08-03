@@ -1,16 +1,22 @@
-.contact-us.text-center
-  .wrapper
-    .row
-      .col-4.sale_expert_advice
-        %p.title= I18n.t("homepage.contact.sale_and_expert_advice.title")
-        %p.phone_number= I18n.t("homepage.contact.sale_and_expert_advice.phone_number")
-        %span= "or"
-        %span.second_phone_number= I18n.t("homepage.contact.sale_and_expert_advice.second_phone_number")
-      .col-4.contact-mail
-        %i.icon-envelope-alt
-        %span= I18n.t("homepage.contact.contact_us")
-      .col-4.customer_service
-        %p.title= I18n.t("homepage.contact.customer_service.title")
-        %p.phone_number= I18n.t("homepage.contact.customer_service.phone_number")
-        %span= "or"
-        %span.second_phone_number= I18n.t("homepage.contact.customer_service.second_phone_number")
+- if section.enabled?
+  - styles = { background: section.background_color, text_color: section.text_color}
+
+  .contact-us.text-center{style: "background-color: #{styles[:background]};"}
+    .wrapper
+      .row.center-items.display-flex
+        - section.store_footer_items.each do |item|
+          .flex-item.sale_expert_advice
+            - if item.heading
+              %p.title{style: "font-size: 24px; font-weight: bolder;"}= item.heading
+            - if item.language?
+              %select.select-language
+                - item.languages.each do |i|
+                  %option{value: "#{i[:value]}"}= i[:label]
+            - elsif item.currency?
+              %select.select-currency
+                - item.currency.each do |i|
+                  %option{value: "#{i[:value]}"}= i[:label]
+            - else
+              %p.phone_number{style: "color: #{styles[:text_color]};"}= item.sub_heading
+              %span.second_phone_number= item.text.html_safe
+          
