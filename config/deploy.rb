@@ -48,4 +48,4 @@ namespace :deploy do
     remove :linked_dirs, "public/assets"
   end
 end
-after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs
+after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
