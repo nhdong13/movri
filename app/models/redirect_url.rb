@@ -13,8 +13,8 @@
 #
 # Indexes
 #
-#  index_redirect_urls_on_community_id                         (community_id)
-#  index_redirect_urls_on_redirectable_id_and_redirectable_id  (redirectable_id)
+#  index_redirect_urls_on_community_id                           (community_id)
+#  index_redirect_urls_on_redirectable_id_and_redirectable_type  (redirectable_id,redirectable_type)
 #
 
 class RedirectUrl < ApplicationRecord
