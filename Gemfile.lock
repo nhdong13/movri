@@ -146,6 +146,9 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano3-delayed-job (1.7.6)
+      capistrano (~> 3.0, >= 3.0.0)
+      daemons (~> 1.3)
     capistrano3-puma (3.1.1)
       capistrano (~> 3.7)
       capistrano-bundler
@@ -232,9 +235,12 @@ GEM
       railties (>= 4, < 6)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
+    daemons (1.3.1)
     dalli (2.7.10)
     database_cleaner (1.6.1)
     debug_inspector (0.0.3)
+    delayed-web (0.4.7)
+      rails (>= 3.2.13)
     delayed_job (4.1.5)
       activesupport (>= 3.0, < 5.3)
     delayed_job_active_record (4.1.3)
@@ -717,6 +723,7 @@ DEPENDENCIES
   capistrano-nvm
   capistrano-rails
   capistrano-rvm
+  capistrano3-delayed-job (~> 1.0)
   capistrano3-puma
   capybara (~> 3.16.2)
   ckeditor
@@ -728,8 +735,10 @@ DEPENDENCIES
   country-select
   css_parser (~> 1.5.0)
   cucumber-rails (~> 1.6.0)
+  daemons (~> 1.3, >= 1.3.1)
   dalli (~> 2.7.10)
   database_cleaner (~> 1.6.1)
+  delayed-web
   delayed_job (~> 4.1.3)
   delayed_job_active_record (~> 4.1.3)
   delayed_paperclip (~> 3.0.1)
