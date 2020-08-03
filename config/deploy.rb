@@ -51,13 +51,19 @@ end
 
 namespace :delayed_job do
   task :start do
-    execute "RAILS_ENV=production bin/delayed_job start"
+    on roles :all do
+      execute "RAILS_ENV=production bin/delayed_job start"
+    end
   end
   task :stop do
-    execute "RAILS_ENV=production bin/delayed_job stop"
+    on roles :all do
+      execute "RAILS_ENV=production bin/delayed_job stop"
+    end
   end
   task :restart do
-    execute "RAILS_ENV=production bin/delayed_job restart"
+    on roles :all do
+      execute "RAILS_ENV=production bin/delayed_job restart"
+    end
   end
 end
 
