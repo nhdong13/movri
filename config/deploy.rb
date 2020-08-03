@@ -51,6 +51,6 @@ end
 after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
 
 set :delayed_job_command, "bin/delayed_job"
-after "deploy:start", "delayed_job:start"
+after "deploy:started", "delayed_job:start"
 after "deploy:stop", "delayed_job:stop"
 after "deploy:restart", "delayed_job:stop","delayed_job:start"
