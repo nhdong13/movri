@@ -48,4 +48,18 @@ namespace :deploy do
     remove :linked_dirs, "public/assets"
   end
 end
+
+namespace :delayed_job do
+  task :start do
+    command "RAILS_ENV=#{Rails.env} bin/delayed_job start"
+  end
+  task :stop do
+    command "RAILS_ENV=#{Rails.env} bin/delayed_job stop"
+  end
+  task :restart do
+    command "RAILS_ENV=#{Rails.env} bin/delayed_job restart"
+  end
+end
+
 after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
+after "deploy:published", "delayed_job"
