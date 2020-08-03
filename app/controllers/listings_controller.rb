@@ -174,17 +174,15 @@ class ListingsController < ApplicationController
       redirect_to new_listing_path
       return
     end
-
     @listing = Listing.new(result.data)
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
 
     ActiveRecord::Base.transaction do
       @listing.author = new_listing_author
       service.create_state(@listing)
-
       if @listing.save
         create_or_update_accessories(result.data[:recommended_accessory_ids])
-        create_or_update_category_listings(result.data[:category_ids])
+        create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
