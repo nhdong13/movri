@@ -52,7 +52,7 @@ end
 namespace :delayed_job do
   task :start do
     on roles :all do
-      execute "RAILS_ENV=production script/delayed_job start"
+      execute "RAILS_ENV=production ./bin/delayed_job start"
     end
   end
   task :stop do
@@ -68,4 +68,4 @@ namespace :delayed_job do
 end
 
 after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
-after "deploy:published", "delayed_job:start"
+# after "deploy:published", "delayed_job:start"
