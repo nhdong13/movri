@@ -45,8 +45,8 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
             id: ui.item.id
           },
           complete: function(){
-            $('#customer-information .icon-times').on('click', function(e){
-              $(e.target).parents('#customer-information').remove()
+            $('.product-list .icon-times').on('click', function(e){
+              $(e.target).parents('.product-list').remove()
             })
           }
         })
@@ -144,8 +144,8 @@ $('.add-to-order-button').on('click', function(){
     method: "GET",
     data: { ids: ids },
     complete: function(){
-      $('#customer-information .icon-times').on('click', function(e){
-        $(e.target).parents('#customer-information').remove()
+      $('.product-list .icon-times').on('click', function(e){
+        $(e.target).parents('.product-list').remove()
       })
     }
   })
