@@ -48,4 +48,16 @@ namespace :deploy do
     remove :linked_dirs, "public/assets"
   end
 end
+
 after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
+
+set :delayed_job_roles, [:app, :background]
+
+task :default do
+  invoke 'delayed_job:restart' if fetch(:delayed_job_default_hooks, true)
+end
+
+if Rake::Task.task_defined?('deploy:published')
+  after 'deploy:published', 'delayed_job:default'
+end
+

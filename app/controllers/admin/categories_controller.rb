@@ -12,6 +12,7 @@ class Admin::CategoriesController < Admin::AdminBaseController
   def new
     @selected_left_navi_link = "listing_categories"
     @category = Category.new
+    @category_type = params[:category_type] ? params[:category_type] : 'category'
     shapes = @current_community.shapes
     selected_shape_ids = shapes.map { |s| s[:id] } # all selected by defaults
     render locals: { shapes: shapes, selected_shape_ids: selected_shape_ids }

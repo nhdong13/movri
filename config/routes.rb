@@ -1,6 +1,7 @@
 # coding: utf-8
 Rails.application.routes.draw do
 
+  mount Delayed::Web::Engine, at: '/jobs'
   namespace :mercury do
     resources :images
   end

@@ -12,8 +12,21 @@
 .left-navi-section
   .row
     .col-12
+      %h2 Manage Category
+  .row
+    .col-12
+      .flex-items
+        .common-link-btn.main-categories-label.margin-r-15
+          = link_to 'New Category', new_admin_category_path(category_type: 'category')
+        .common-link-btn.subcategory-label.margin-r-15
+          = link_to 'New Subcategory', new_admin_category_path(category_type: 'subcategory')
+        .common-link-btn.children-categories-label
+          = link_to 'New Child Category', new_admin_category_path(category_type: 'children_category')
+
+  .row
+    .col-12
       #categories-list
-        = render :partial => "listed_top_level_category", :collection => @categories, :as => :category, locals: {category_count: @categories.size}
+        = render :partial => "listed_top_level_category", locals: {categories: @categories, category_count: @categories.size}
 
   #category-ajax-status
     .ajax-notification.ajax-notice.category-ajax-status-message#category-ajax-saving
@@ -27,6 +40,3 @@
     .ajax-notification.ajax-error.category-ajax-status-message#category-ajax-error
       = t(".save_order_error")
 
-  .row
-    .col-12
-      = link_to t(".create_a_new_category"), new_admin_category_path

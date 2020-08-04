@@ -1,8 +1,41 @@
 @import "mixins/all";
 @import "compass/css3/border-radius";
 
-.subcategory-label {
-  margin-left: lines(1);
+.subcategory-label, .main-categories-label, .children-categories-label {
+  padding: 5px 15px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.main-categories-label{
+  border: 1px solid #e7e9eb !important;
+  background: #e0e4ef;
+  color: #374385 !important;
+  & a{
+    font-weight: 600;
+    color: #374385 !important;
+  }
+
+}
+
+.subcategory-label{
+  border: 1px solid #d4edda !important;
+  background-color: #c3e6cb;
+  background-color: #c3e6cb;
+  & a{
+    font-weight: 600;
+    color: #155724 !important;
+  }
+}
+
+.children-categories-label{
+  border: 1px solid #b8daff !important;
+  color: #004085 !important;
+  background-color: #cce5ff;
+  & a{
+    font-weight: 600;
+    color: #004085 !important;
+  }
 }
 
 .top-level-category-divider-wrapper {
@@ -10,7 +43,7 @@
   padding-bottom: lines(0.25);
 }
 .top-level-category-divider {
-  background-color: $highlight;
+  background-color: black;
   height: 1px;
 }
 

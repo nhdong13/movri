@@ -133,7 +133,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .category-nav {
-  height: 50px;
+  padding: 10px 0;
   background-color: #13578d;
 
   .header-wrapper {
@@ -756,7 +756,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 13px 16px;
   text-decoration: none;
   font-size: 14px;
 }
@@ -779,8 +778,22 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   overflow: hidden;
 
   &:hover {
-    background: #e8e9ea;
+    .main-cat a {
+      color: #f2f2f2;
+    }
   }
+}
+
+.category-bar-label{
+  margin: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dropdown-content .dropbtn{
+  background: white !important;
+  padding: 0;
+  min-width: 120px;
 }
 
 .dropdown .dropbtn {
@@ -788,41 +801,32 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   border: none;
   outline: none;
   color: white;
-  padding: 14.5px 15px;
   background-color: inherit;
   font-family: inherit;
   margin: 0;
   border-radius: 0;
-  margin: 0px 5px !important;
 }
 
 .dropdown-content {
+  min-width: 120px;
   display: none;
   position: absolute;
-  background-color: #e8e9ea;
-  min-width: 200px;
+  background-color: white;
   z-index: 1;
-  left: 0.75em;
-  right: 0.75em;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
   text-decoration: none;
   display: block;
-  text-align: left;
-
   &:hover {
     opacity: 0.5;
   }
 }
 
 .dropdown:hover .dropbtn {
-  background-color: #e8e9ea;
   color: black;
-  border-top: 4px solid #13578d;
-  padding: 12.5px 15px;
   a.main-cat {
     color: black;
   }
@@ -835,14 +839,26 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
+.dropdown-content ul{
+  padding: 0
+}
+
 .dropdown-content a:hover {
-  background-color: #e8e9ea;
   color: black;
   border-top: 0;
 }
 
-.dropdown:hover .dropdown-content {
+.subcategory-list{
+  display: none;
+}
+
+.dropdown:hover>.dropdown-content {
   display: block;
+}
+
+.children-category{
+  margin-top: -34%;
+  left: 100%
 }
 
 @media screen and (max-width: 600px) {
