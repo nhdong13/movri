@@ -457,8 +457,6 @@ class ApplicationController < ActionController::Base
   end
 
   def update_booking_session
-    session[:cart] = {"15" => 1}
-
     if session[:booking] && session[:booking][:start_date]
       session[:booking][:start_date] = get_today if session[:booking][:start_date] < get_today
       session[:booking][:end_date] = get_next_day(session[:booking][:start_date])if session[:booking][:end_date] <= session[:booking][:start_date]
