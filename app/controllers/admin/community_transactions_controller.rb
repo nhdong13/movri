@@ -2,6 +2,10 @@ require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
+  def new; end
+
+  def create; end
+
   def index
     @selected_left_navi_link = "transactions"
     @transactions_presenter = AdminTransactionsPresenter.new(@current_community, params, request.format)

@@ -362,17 +362,23 @@ Rails.application.routes.draw do
             get :reject
           end
           collection do
+            get 'get_listings'
             get 'export'
             get 'export_status'
           end
         end
-        resources :transactions, controller: :community_transactions, only: :index do
+        resources :transactions, controller: :community_transactions, only: [:index, :create, :new] do
           collection do
             get 'export'
             get 'export_status'
           end
         end
-        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit]
+        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit] do
+          collection do
+            get 'add_to_order'
+          end
+        end
+        resources :people
         resources :conversations, controller: :community_conversations, only: [:index, :show]
         resources :testimonials, controller: :community_testimonials, only: [:index, :edit, :update, :new, :create] do
           collection do
@@ -381,7 +387,12 @@ Rails.application.routes.draw do
           end
         end
         resources :invitations, controller: :community_invitations, only: [:index]
-        resources :emails
+        resources :emails do
+          collection do
+            get :review_email
+            get :sent_invoice_email
+          end
+        end
         resources :community_memberships do
           member do
             put :ban
@@ -426,6 +437,8 @@ Rails.application.routes.draw do
       resources :person_custom_fields, path: 'user_fields' do
         collection do
           post :order
+          get :person_profile
+          get :person_information
         end
       end
       resources :categories do

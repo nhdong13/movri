@@ -1,0 +1,50 @@
+.product-list
+.col-6.add-note
+  = "Notes"
+  = text_field_tag :note, params[:note], placeholder: 'Add a note...'
+.col-6.total-info
+  %table
+    %tr
+      %th
+        %a.add-discount.toggle{data: {toggle: '#header-toggle-menu-discount', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}= "Add discount"
+      %td
+        = "----"
+    %tr
+      %th
+        = "Subtotal"
+      %td
+        = "$0.00"
+    %tr
+      %th
+        %a= "Add shipping"
+      %td
+        = "----"
+    %tr
+      %th
+        %a.add_taxes.toggle{data: {toggle: '#header-toggle-menu-tax', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}= "Taxes"
+      %td
+        = "$0.00"
+    %tr
+      %th
+        = "Total"
+      %td
+        = "$0.00"
+
+.toggle-menu.header-toggle-menu-menu.hidden#header-toggle-menu-discount
+  .col-12.br-bottom.padding-bt-15.margin-t-15
+    %p= "Discount this order by"
+    = text_field_tag :discount_percent, params[:discount_percent], placeholder: "$", class: "margin-bt-15"
+    %p= "Reason"
+    = text_field_tag :reason, params[:reason], placeholder: "Damage item, loyalty discount"
+  .col-12
+    %a.button.left= "Close"
+    %a.button.right.add-discount= "Apply"
+
+.toggle-menu.header-toggle-menu-menu.hidden#header-toggle-menu-tax
+  .col-12.br-bottom.padding-bt-15.margin-t-15
+    %p= "Taxes are automatically calculated."
+    = check_box_tag "tax"
+    %span= "Charge taxes"
+  .col-12
+    %a.button.left= "Close"
+    %a.button.right.add-tax= "Apply"

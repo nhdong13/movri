@@ -35,6 +35,31 @@ class Admin::PersonCustomFieldsController < Admin::AdminBaseController
     render body: nil, status: :ok
   end
 
+  def person_profile
+    respond_to do |format|
+      format.html
+      format.json { render json: Person.all, each_serializer: PersonSerializer }
+    end
+  end
+
+  def person_information
+    person = Person.find(params[:id])
+
+    @person_information = {
+      person: person,
+      shipping_address: person.shipping_address,
+      billing_address: person.billing_address
+    }
+
+    respond_to do |format|
+      format.html
+      format.js { render layout: false }
+      format.json {
+        @person_information
+      }
+    end
+  end
+
   private
 
   def set_selected_left_navi_link

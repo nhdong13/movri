@@ -35,6 +35,7 @@
 //= require jquery.fileupload-process
 //= require jquery.fileupload-validate
 //= require jquery.fileupload-image
+//= require jquery.modal
 //= require autosize
 //= require regenerator-runtime/runtime
 
@@ -82,6 +83,7 @@
 //= require admin/landing_page_editor.js
 //= require admin/landing_page_section_editor.js
 //= require admin/orders.js
+//= require admin/draft_orders.js
 //= require payment_math
 //= require dropdown
 //= require jquery.nouislider

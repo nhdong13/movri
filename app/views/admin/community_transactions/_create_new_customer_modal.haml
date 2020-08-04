@@ -1,0 +1,53 @@
+.modal#create-new-customer-modal
+  = form_with url: admin_community_people_path(@current_community), html: {method: :post} do |form|
+    = form.hidden_field 'person[community_id]', value: @current_community.id 
+    .row.title.br-bottom
+      .col-12
+        %p= "Create a new customer"
+    .row.customer-info.padding-bt-15.br-bottom
+      .col-6
+        %span= "First name"
+        = form.text_field 'person[given_name]'
+      .col-6
+        %span= "Last name"
+        = form.text_field 'person[family_name]'
+      .col-12
+        %span= "Email"
+        = form.text_field 'person[email]'
+      .col-12
+        =check_box_tag 'person[marketing_email]'
+        %span= "Customer accepts email marketing"
+      .col-12
+        =check_box_tag 'person[tax_exemption]'
+        %span= "Customer is tax exempt"
+    .row.shipping-address.padding-bt-15.br-bottom
+      .margin-bt-15
+        .col-12
+          %p= "Shipping Address"
+        .col-6
+          %span= "Company"
+          = form.text_field 'person[transaction_addresses_attributes][][company]'
+        .col-6
+          %span= "Phone number"
+          = form.text_field 'person[transaction_addresses_attributes][][phone]'
+        .col-6
+          %span= "Address"
+          = form.text_field 'person[transaction_addresses_attributes][][street1]'
+        .col-6
+          %span= "Apartment, suite, etc.(optional)"
+          = form.text_field 'person[transaction_addresses_attributes][][street2]'
+        .col-6
+          %span= "City"
+          = form.text_field 'person[transaction_addresses_attributes][][city]'
+        .col-6
+          %span= "Country/Region"
+          = form.select 'person[transaction_addresses_attributes][][country]',raw("<option>Canada</option>"), {}, class: 'margin-bt-15 width-100'
+        .col-6
+          %span= "Province"
+          = form.select 'person[transaction_addresses_attributes][][state_or_province]', options_for_select(CANADA_PROVINCES), {}, class: "shipping-address-state width-100"
+        .col-6
+          %span= "Zip/Postal code"
+          = form.text_field 'person[transaction_addresses_attributes][][postal_code]'
+    .footer
+      = submit_tag "Save customer", class: "button right margin-r-12"
+      %button.button.right.margin-r-12= "Cancel"

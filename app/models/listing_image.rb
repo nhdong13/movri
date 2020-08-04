@@ -30,6 +30,7 @@ class ListingImage < ApplicationRecord
   # see paperclip (for image_processing column)
   has_attached_file :image,
     :styles => {
+      :tiny => "60x60#",
       :small_3x2 => "240x160#",
       :medium => "360x270#",
       :thumb => "120x120#",
@@ -44,7 +45,7 @@ class ListingImage < ApplicationRecord
   before_post_process :set_dimensions
 
   before_create :set_position
-
+    
   process_in_background :image, :processing_image_url => "/assets/listing_image/processing.png", :priority => 1
   validates_attachment_size :image, :less_than => APP_CONFIG.max_image_filesize.to_i, :unless => Proc.new {|model| model.image.nil? }
   validates_attachment_content_type :image,
