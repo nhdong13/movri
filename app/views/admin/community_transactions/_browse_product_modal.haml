@@ -7,7 +7,7 @@
     - listings.each do |listing|
       .col-12.product
         = check_box_tag 'product_ids', listing.id, checked= false, class: "left"
-        = image_tag listing.listing_image.image(:tiny), class: "left"
+        = image_tag listing.main_image, class: "left"
         %span.left= listing.title
         %span.right= "#{listing.available_quantity} in stock"
   .row.footer
