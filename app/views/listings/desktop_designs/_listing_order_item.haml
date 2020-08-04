@@ -16,12 +16,12 @@
     %span
       SKU :
     %span.sku
-      RO8514FFC
+      = @listing.sku
   .col-6.clearfix.listing-replacement-value
     %span
       Replacement Value :
     %span.amount
-      $1299
+      = money_to_humanized(@listing.replacement_cents_fee)
 .row.listing-available
   .col-12.clearfix.availabel
     %span

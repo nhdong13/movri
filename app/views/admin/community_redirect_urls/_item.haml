@@ -1,0 +1,11 @@
+%tr.row.p-0.m-0.display-flex.align-items-center
+  %td.col-6.p-3.pt-1
+    .text-gray
+      Redirect from
+    = redirect_url.from
+  %td.col-5.p-3.pt-1
+    .text-gray
+      Redirect to
+    = redirect_url.to
+  %td.col-1.p-3.pt-1.text-right
+    = link_to "Edit", edit_admin_community_redirect_url_path(community_id: @current_community.id, id: redirect_url.id)

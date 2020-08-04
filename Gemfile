@@ -106,6 +106,7 @@ gem 'mail', '~> 2.6.6.rc1'
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 
 gem 'ckeditor'
+gem 'country-select'
 
 group :staging, :production do
   gem 'newrelic_rpm', '~> 4.2.0.334'
@@ -129,6 +130,7 @@ group :development do
   gem 'capistrano-npm', require: false
   gem 'capistrano-nvm', require: false
   gem 'capistrano3-puma', require: false
+  gem 'capistrano3-delayed-job', '~> 1.0'
   gem 'rb-fsevent', '~> 0.9.8', require: false
   gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'listen', '~> 3.1.5'
@@ -201,3 +203,6 @@ gem "font-awesome-rails"
 gem 'jquery-inputmask-rails'
 gem 'active_model_serializers'
 gem 'algoliasearch-rails', '~> 1.24'
+gem 'sendgrid-ruby', '~> 5.0'
+gem 'daemons', '~> 1.3', '>= 1.3.1'
+gem 'delayed-web'

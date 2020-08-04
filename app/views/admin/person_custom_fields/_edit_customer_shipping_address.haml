@@ -1,0 +1,31 @@
+.modal#edit-customer-shipping-address-modal
+  = form_for shipping_address do |form|
+    .row.title
+      = "Edit shipping address"
+    .row.address
+      .col-12
+      .col-6
+        = "First name"
+        = form.text_field :first_name, placeholder: 'First name', class: 'margin-bt-15'
+        = "Company"
+        = form.text_field :company, placeholder: 'Company', class: 'margin-bt-15'
+        = "Address"
+        = form.text_field :street1, placeholder: 'Address', class: 'margin-bt-15'
+        = "City"
+        = form.text_field :city, placeholder: 'City', class: 'margin-bt-15'
+        = "Province"
+        = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, class: "shipping-address-state"
+      .col-6
+        = "Last name"
+        = form.text_field :last_name, placeholder: 'Last name', class: 'margin-bt-15'
+        = "Phone number"
+        = form.text_field :phone, placeholder: 'Phone number', class: 'margin-bt-15'
+        = "Apartment, suite, etc. (optional)"
+        = form.text_field :apartment, placeholder: 'Apartment, suite', class: 'margin-bt-15'
+        = "Country/Region"
+        = form.select :country,raw("<option>Canada</option>"), {}, class: 'margin-bt-15 width-100'
+        = "ZIP/Postal code"
+        = form.text_field :postal_code, placeholder: 'Zip', class: 'margin-bt-15'
+    .row.footer
+      = form.submit "Save", class: "button right margin-l-5"
+      %a.button.right{rel: "modal:close"}= "Cancel"

@@ -5,7 +5,7 @@
     .col-6
       %h2= t("admin.communities.manage_draft_orders.draft_orders")
     .col-6
-      %btn.button.create-order-button=t("admin.communities.manage_orders.create_order")
+      = link_to 'Create Order', new_admin_community_transaction_path(@current_community), class: "button create-order-button"
   .row
     .col-12
       = text_field_tag :q, params[:q], placeholder: t('admin.communities.manage_draft_orders.search_by_customer_name')

@@ -39,7 +39,7 @@ class Person
     "#{given_name} #{initial}"
   end
 
-  def name(community_or_display_type)
+  def name(community_or_display_type=nil)
     return name_or_username(community_or_display_type)
   end
 
