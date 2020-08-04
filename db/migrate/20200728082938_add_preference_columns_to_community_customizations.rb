@@ -10,6 +10,7 @@ class AddPreferenceColumnsToCommunityCustomizations < ActiveRecord::Migration[5.
       t.text :button_font_settings
       t.text :main_menu_font_settings
       t.text :section_heading_font_settings
+      t.text :body_text_font_settings
       t.attachment :social_media_image
       t.text :social_media_accounts
       t.attachment :favicon_icon

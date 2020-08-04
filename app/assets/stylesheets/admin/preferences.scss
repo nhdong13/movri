@@ -1,0 +1,65 @@
+@import 'react-input-range/index';
+
+.community-preferences {
+  .section {
+    padding-top: 10px !important;
+    padding-bottom: 20px !important;
+    border-top: 1px solid lightgray;
+    .section-wrapper {
+      padding: 15px;
+      padding-top: 20px;
+      background-color: white;
+      border-radius: 2px;
+      box-shadow: 0 2px 3px 0 rgba(0,0,0,0.2),0 1px 3px 0 rgba(0,0,0,0.19) !important;
+      margin-bottom: 0.75em;
+      .sub-section {
+        border: 1px solid lightgray;
+      }
+      .preview-image {
+        width: 50% !important;
+      }
+    }
+    .sketch-picker {
+      position: absolute;
+      z-index: 9999;
+    }
+    input[type='file'] {
+      display: none;
+    }
+    #font-picker {
+      button {
+        width: inherit;
+        border-radius: 0px;
+        margin-top: 5px;
+        margin-bottom: 0px !important;
+      }
+      position: unset;
+      width: 200px;
+      display: unset;
+      box-shadow: none;
+      .font-list {
+        width: inherit;
+      }
+    }
+  }
+  .color-box {
+    border: 1px solid #e8e8e8;
+    float: left;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 0px;
+  }
+  .input-range {
+    margin-top: 20px !important;
+    margin-bottom: 25px !important;
+    margin-left: 15px !important;
+    margin-right: 5px;
+    width: 75% !important;
+    .input-range__label--min, .input-range__label--max {
+      display: none;
+    }
+    .input-range__label-container {
+      left: -25%;
+    }
+  }
+}

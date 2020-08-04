@@ -43,6 +43,7 @@
 #  button_font_settings                       :text(65535)
 #  main_menu_font_settings                    :text(65535)
 #  section_heading_font_settings              :text(65535)
+#  body_text_font_settings                    :text(65535)
 #  social_media_image_file_name               :string(255)
 #  social_media_image_content_type            :string(255)
 #  social_media_image_file_size               :integer
@@ -88,6 +89,7 @@ class CommunityCustomization < ApplicationRecord
   serialize :section_heading_font_settings, Hash
   serialize :social_media_accounts, Hash
   serialize :currency_settings, Hash
+  serialize :body_text_font_settings, Hash
 
   CONTENT_FIELDS = %i(
     blank_slate
@@ -103,5 +105,14 @@ class CommunityCustomization < ApplicationRecord
     transaction_agreement_label
     transaction_agreement_content
   )
+
+  has_attached_file :social_media_image, default_url: "/images/missing_image.png"
+  validates_attachment_content_type :social_media_image, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  has_attached_file :favicon_icon, default_url: "/images/missing_image.png"
+  validates_attachment_content_type :favicon_icon, :content_type => ["image/jpg", "image/jpeg", "image/png"]
+
+  def as_json
+    super.merge({social_media_image_url: social_media_image.url, favicon_icon_url: favicon_icon.url})
+  end
 
 end
