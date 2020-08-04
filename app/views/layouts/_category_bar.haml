@@ -19,7 +19,9 @@
                   .dropdown-content.children-category
                     - if subcategory.all_children_categories.any?
                       - subcategory.all_children_categories.each do |child|
-                        = link_to @category_display_names[child.id], categories_path(categories: child), class: "category-bar-label width-100"
+                        %ul
+                          %li
+                            = link_to @category_display_names[child.id], categories_path(categories: child), class: "category-bar-label width-100"
   %a.icon.icon-reorder.category-menu-mobile{:href => "javascript:void(0);"}
 
 - content_for :extra_javascript do
