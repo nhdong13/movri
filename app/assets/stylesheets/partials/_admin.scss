@@ -184,11 +184,15 @@ select#locale-selection {
   }
 }
 
-.admin-setting-dropdown{
-  padding: 15px;
-  .group-setting-actions{
-    padding-left:25px;
+.group-setting-actions{
+  padding-left: 30px;
+  a{
+    min-height: unset;
   }
+}
+
+#setting-actions{
+  cursor: pointer;
 }
 
 .admin-header{

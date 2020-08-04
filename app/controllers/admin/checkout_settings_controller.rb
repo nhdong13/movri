@@ -7,7 +7,7 @@ class Admin::CheckoutSettingsController < Admin::AdminBaseController
   def update
     @checkout_setting = @checkout_setting.update checkout_setting_params
     if @checkout_setting
-      flash[:info] = 'Update checkout setting successfully!'
+      flash[:notice] = 'Update checkout setting successfully!'
     else
       flash[:error] = 'Update checkout setting failed. Please try again!'
     end
