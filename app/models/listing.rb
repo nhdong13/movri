@@ -96,12 +96,15 @@
 class Listing < ApplicationRecord
   include AlgoliaSearch
   algoliasearch index_name: "movri_products" do
-    attribute :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
+    attribute :id, :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
     attributes :main_image do
       main_image
     end
     attributes :created_at do
       created_at.to_i
+    end
+    attributes :category do
+      category.url
     end
   end
 
@@ -147,6 +150,7 @@ class Listing < ApplicationRecord
   has_many :bookings_per_hour, ->{ per_hour_blocked }, through: :tx, source: :booking
   has_many :pricing_charts, dependent: :destroy
   accepts_nested_attributes_for :pricing_charts, allow_destroy: true
+  has_one :redirect_url, as: :redirectable
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency

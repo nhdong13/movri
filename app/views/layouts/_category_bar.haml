@@ -2,11 +2,11 @@
   - @main_categories.each do |main_category|
     .dropdown
       %button.dropbtn
-        = link_to @category_display_names[main_category.id], search_path(category: main_category), class: 'main-cat'
+        = link_to @category_display_names[main_category.id], categories_path(categories: main_category), class: 'main-cat'
       .dropdown-content
         - if main_category.children
           - main_category.children.each do |child|
-            %a{:href => search_path(category: child)}
+            %a{:href => categories_path(categories: child)}
               = @category_display_names[child.id]
   = link_to "Camera", categories_path()
   %a.icon.icon-reorder.category-menu-mobile{:href => "javascript:void(0);"}

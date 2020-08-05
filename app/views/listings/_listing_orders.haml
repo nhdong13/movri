@@ -8,12 +8,12 @@
     %span
       SKU :
     %span.sku
-      RO8514FFC
+      = @listing.sku
 .desktop-display
   = render partial: 'listings/desktop_designs/listing_order_item'
 .mobile-display
   = render partial: 'listings/mobile_designs/listing_order_item'
-    
+
 -# .row.listing-style
 -#   .col-9.clearfix.style
 -#     %p Style
@@ -63,7 +63,7 @@
           = image_tag(assurance_option.image.url, class: 'header-menu-icon icon-movri-calendar')
           %span.line-height-16
             = assurance_option.title
-    
+
 
 .row.listing-save-availabe
   .col-6.clearfix.save-available

@@ -1,4 +1,3 @@
-
 #header-user-toggle-menu.toggle-menu.header-toggle-menu-user.hidden
   .my-account-contain.header-login-logged-in
     .header-login{class: "#{logged_in? ? 'header-login-logged-in' : ''}"}
@@ -41,26 +40,3 @@
           = image_tag("mf_icons/icon-movri-wish-list.svg", class: 'header-menu-icon icon-movri-wish-list')
           %p
             = t('account_action.wish_list')
-
-  -# = link_to inbox_path do
-  -#   = icon_map_tag(icons, "mail", ["icon-with-text"])
-  -#   = t("layouts.conversations.messages")
-  -#   - if unread_count > 0
-  -#     .mobile-badge{:class => get_badge_class(unread_count)}
-  -#       = unread_count
-
-  -# = link_to profile_path do
-  -#   = icon_map_tag(icons, "user", ["icon-with-text"])
-  -#   = t("header.profile")
-
-  -# = link_to manage_listings_path do
-  -#   = icon_map_tag(icons, "list", ["icon-with-text"])
-  -#   = t("header.manage_listings")
-
-  -# = link_to settings_path do
-  -#   = icon_map_tag(icons, "settings", ["icon-with-text"])
-  -#   = t("layouts.logged_in.settings")
-
-  -# = link_to logout_path do
-  -#   = icon_map_tag(icons, "logout", ["icon-with-text"])
-  -#   = t("layouts.logged_in.logout")
