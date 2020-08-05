@@ -1,0 +1,71 @@
+- general_colors = preferences.general_colors
+- button_colors = preferences.button_colors
+- header_colors = preferences.header_colors
+- footer_colors = preferences.footer_colors
+
+:css
+  header {
+    color: #{ header_colors["text"] } !important;
+    background-color: #{ header_colors["background"] } !important;
+  }
+
+  header .header-wrapper, .header-nav {
+    color: #{ header_colors["text"] } !important;
+    background-color: #{ header_colors["background"] } !important;
+  }
+
+  header .header-menu-toggle-container {
+    color: #{ header_colors["text"] };
+    background-color: #{ header_colors["background"] } !important;
+  }
+
+  header .header-hover:hover {
+    background-color: #{ header_colors["background"] } !important;
+  }
+
+  .page-content {
+    color: #{ general_colors["text"] } !important;
+    background-color: #{ general_colors["background"] } !important ;
+  }
+
+  .page-content h1, h2, h3, h4, h5 {
+    color: #{ general_colors["headings"] } !important;
+  }
+
+  .page-content a {
+    color: #{ general_colors["links"] };
+  }
+
+  .page-content button, .btn {
+    color: #{ button_colors["text"] };
+    background-color: #{ button_colors["background"] } ;
+  }
+
+  .page-content .btn-link a {
+    color: #{ button_colors["text"] };
+    background-color: #{ button_colors["background"] } ;
+  }
+
+  .desktop-display .other-information {
+    color: #{ footer_colors["text"] } !important;
+    background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0.1) };
+  }
+
+  .desktop-display .other-information .row {
+    color: #{ footer_colors["text"] } !important;
+    background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0) };
+  }
+
+  .desktop-display .security-social-media {
+    color: #{ footer_colors["text"] } !important;
+    background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0.525) };
+  }
+  .desktop-display .security-social-media .row {
+    color: #{ footer_colors["text"] } !important;
+    background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0) };
+  }
+
+  .desktop-display .copyright {
+    background-color: #{ to_rgb(hex: footer_colors["background"], avg: 1) } !important;
+    color: #{ footer_colors["text"] } !important;
+  }
