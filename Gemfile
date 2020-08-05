@@ -186,8 +186,6 @@ gem 'transit-ruby', '~> 0.8.602'
 # Markdown parser
 gem 'redcarpet', '~> 3.4.0'
 
-gem 'intercom'
-
 gem 'twitter_cldr'
 gem 'memoist'
 gem 'biz'
@@ -206,3 +204,4 @@ gem 'algoliasearch-rails', '~> 1.24'
 gem 'sendgrid-ruby', '~> 5.0'
 gem 'daemons', '~> 1.3', '>= 1.3.1'
 gem 'delayed-web'
+gem "intercom-rails"
