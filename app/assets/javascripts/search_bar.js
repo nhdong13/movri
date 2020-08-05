@@ -198,7 +198,7 @@ $(document).ready(function() {
                       <img src=${item.main_image} class="design-image-too-wide" alt="">
                     </div>
                     <div class='listing-price'>
-                      <span>${item.price_cents}</span>
+                      <span>$${item.price_cents/100}</span>
                       <span> /1 day</span>
                     </div>
                     <div class='listing-information'>

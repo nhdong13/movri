@@ -204,4 +204,3 @@ gem 'algoliasearch-rails', '~> 1.24'
 gem 'sendgrid-ruby', '~> 5.0'
 gem 'daemons', '~> 1.3', '>= 1.3.1'
 gem 'delayed-web'
-gem "intercom-rails"
