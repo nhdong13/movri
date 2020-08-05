@@ -35,7 +35,13 @@ module CategoryViewUtils
         label: pick_category_translation(c.translations, locale, all_locales),
         listing_shapes: embed_shape(c.listing_shape_ids, shapes),
         subcategories: category_tree(
-          categories: c.children,
+          categories: c.all_subcategories,
+          shapes: shapes,
+          locale: locale,
+          all_locales: all_locales
+        ),
+        children_categories: category_tree(
+          categories: c.all_children_categories,
           shapes: shapes,
           locale: locale,
           all_locales: all_locales

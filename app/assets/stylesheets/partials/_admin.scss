@@ -35,7 +35,7 @@
         font-size: em(16);
       }
     }
-  } 
+  }
 }
 
 // Prevent the original select widget from blinking before the styled one is rendered
@@ -182,4 +182,122 @@ select#locale-selection {
   .clear-fix {
     clear: both;
   }
+}
+
+.group-setting-actions{
+  padding-left: 30px;
+  a{
+    min-height: unset;
+  }
+}
+
+#setting-actions{
+  cursor: pointer;
+}
+
+.admin-header{
+  font-size: 25px;
+  padding: 20px 0 20px 0;
+  font-weight: 600;
+  border-bottom: 1px solid #bdbdbd;
+}
+.checkout-settings{
+  #custome-image{
+    #box{
+      background: #f4f6f8;
+      input{
+        display: none;
+      }
+      .upload-image-btn{
+        font-size: 15px;
+        background: #5c69c4;
+        color: white;
+        border-radius: 5px;
+        padding: 5px 15px;
+        cursor: pointer;
+        &:hover{
+          opacity: 0.9;
+        }
+      }
+      border: 1px solid #d7dde2;
+      width: 150px;
+      height: 150px;
+      padding: 2px;
+      #image{
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+    #preview{}
+  }
+}
+.admin-section-box{
+  input[type='radio'], input[type='checkbox']{
+    transform: scale(1.25);
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  label{
+    padding-left: 10px;
+    cursor: pointer;
+    margin: 5px 0;
+    font-weight: 100;
+    &:hover{
+      transition: all 0.5s;
+      border-radius: 5px;
+      background: #e1e3e5;
+    }
+  }
+  .note{
+    margin-left: 22px;
+    color: #627281;
+  }
+  padding: 20px 90px 0 90px;
+  .setting-box{
+    background: white;
+    padding: 15px;
+    border: 1px solid #e1e3e5;
+    width: 60%;
+    border-radius: 5px;
+  }
+}
+
+.clearfix-with-border{
+  margin-bottom: 20px;
+  width: 100%;
+  height: 30px;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.sub-categories, .children-categories{
+  margin-left: 15px;
+  border-top: 1px solid #ebeef0;
+}
+
+.children-categories{
+  .header-children-categories{
+    padding: 5px;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    border-left: 2px solid #004085;
+  }
+}
+
+.sub-categories{
+  .header-categories{
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    border-left: 2px solid #155724;
+  }
+}
+
+.header-categories{
+  border-left: 2px solid #374385;
+  padding: 5px;
+  background:#e0e4ef;
+  color: #374385
 }

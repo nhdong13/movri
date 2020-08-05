@@ -31,6 +31,7 @@ require File.expand_path('../../lib/sharetribe_middleware', __FILE__)
 
 module Kassi
   class Application < Rails::Application
+    config.assets.precompile << 'delayed/web/application.css'
     # Initialize configuration defaults for originally generated Rails version.
     # and thus class const
     config.load_defaults 5.1

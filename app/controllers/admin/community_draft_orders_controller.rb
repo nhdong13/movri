@@ -9,6 +9,13 @@ class Admin::CommunityDraftOrdersController < Admin::AdminBaseController
     @rate_type = PriceCalculationService.get_rate_type_of_canada_provinces(@order.shipping_address.state_or_province)
   end
 
+  def add_to_order
+    @listings = Listing.where(id: [1,2,3])
+    respond_to do | format |
+      format.js { render :layout => false }
+    end
+  end
+
   private
 
   def set_selected_left_navi_link

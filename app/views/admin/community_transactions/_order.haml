@@ -16,6 +16,6 @@
   %td
     = number_to_currency(order.item_total)
   %td
-    = "#{order.listing_quantity} #{order.listing_quantity > 1 ? 'items' : 'item'}"
+    = "#{order.total_quantity} #{order.total_quantity > 1 ? 'items' : 'item'}"
   %td
     = order.delivery_method.capitalize

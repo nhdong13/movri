@@ -64,7 +64,7 @@ $(document).ready(function() {
           const category = getCategoryName(
             (pathnameMatches && pathnameMatches[1]) || ''
           );
-          const { query = '', page, brands, mounts, lens_types, categories = [] } = qsModule.parse(
+          const { query = '', page, brands, mounts, lens_types, categories, subcategories, children_categories = [] } = qsModule.parse(
             location.search.slice(1)
           );
           // `qs` does not return an array when there's a single value.
@@ -84,6 +84,14 @@ $(document).ready(function() {
             ? categories
             : [categories].filter(Boolean);
 
+          const allSubcategories = Array.isArray(subcategories)
+            ? subcategories
+            : [subcategories].filter(Boolean);
+
+          const allChildrenCategories = Array.isArray(children_categories)
+            ? children_categories
+            : [children_categories].filter(Boolean);
+
           return {
             query: decodeURIComponent(query),
             page,
@@ -91,6 +99,8 @@ $(document).ready(function() {
             mounts: allMounts.map(decodeURIComponent),
             lens_types: allLensTypes.map(decodeURIComponent),
             categories: allCategories.map(decodeURIComponent),
+            subcategories: allSubcategories.map(decodeURIComponent),
+            children_categories: allChildrenCategories.map(decodeURIComponent),
           };
         }
       }),
@@ -106,6 +116,8 @@ $(document).ready(function() {
             mounts: indexUiState.refinementList && indexUiState.refinementList.mount,
             lens_types: indexUiState.refinementList && indexUiState.refinementList.lens_type,
             categories: indexUiState.refinementList && indexUiState.refinementList.category,
+            subcategories: indexUiState.refinementList && indexUiState.refinementList.subcategory,
+            children_categories: indexUiState.refinementList && indexUiState.refinementList.children_category,
           };
         },
 
@@ -118,6 +130,8 @@ $(document).ready(function() {
                 mount: routeState.mounts,
                 lens_type: routeState.lens_types,
                 category: routeState.categories,
+                subcategory: routeState.subcategories,
+                children_category: routeState.children_categories,
               }
             }
           };
@@ -148,7 +162,9 @@ $(document).ready(function() {
       .join('')}
     `;
 
-  const ProductItemsTemplate = ( { hits } ) => `
+  const ProductItemsTemplate = ( { hits } ) => {
+    hits = hits.slice(0, 3)
+    return `
     ${hits
       .map(
         item =>`
@@ -167,6 +183,7 @@ $(document).ready(function() {
         `)
       .join('')}
     `;
+  }
 
   const renderCategoryPage = ({hits}) =>`
     <div class="snize-ac-results">
@@ -181,7 +198,7 @@ $(document).ready(function() {
                       <img src=${item.main_image} class="design-image-too-wide" alt="">
                     </div>
                     <div class='listing-price'>
-                      <span>${item.price_cents}</span>
+                      <span>$${item.price_cents/100}</span>
                       <span> /1 day</span>
                     </div>
                     <div class='listing-information'>
@@ -371,6 +388,18 @@ $(document).ready(function() {
       }),
 
       instantsearch.widgets.refinementList({
+        container: '#hidden-subcategories',
+        attribute: 'subcategory',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
+        container: '#hidden-children-categories',
+        attribute: 'children_category',
+        operator: 'or',
+      }),
+
+      instantsearch.widgets.refinementList({
         container: '#mobile-lens-compatibility',
         attribute: 'compatibility',
         operator: 'or',
@@ -432,7 +461,7 @@ $(document).ready(function() {
     }),
 
     instantsearch.widgets.configure({
-      hitsPerPage: 3,
+      hitsPerPage: 16,
       distinct: true,
       clickAnalytics: true,
     }),
@@ -442,6 +471,11 @@ $(document).ready(function() {
       .addWidgets([
         customAutocomplete({
           container: $('.suggestion-items'),
+        }),
+        instantsearch.widgets.configure({
+          hitsPerPage: 3,
+          distinct: true,
+          clickAnalytics: true,
         }),
       ]),
   ]);

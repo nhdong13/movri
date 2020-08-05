@@ -11,8 +11,15 @@
   %td= l(listing.created_at, format: :short)
   %td= l(listing.updated_at, format: :short)
   %td
-    - category = listing.category
-    = link_to category.display_name(I18n.locale), search_path(category: category.url)
+    - categories = listing.categories
+    - if categories
+      - categories.each do |category|
+        - if category.category?
+          %span.main-categories-label= category.display_name(I18n.locale)
+        - elsif category.subcategory?
+          %span.subcategory-label= category.display_name(I18n.locale)
+        - else
+          %span.children-categories-label= category.display_name(I18n.locale)
   %td
     - status = t("admin.communities.listings.#{presenter.listing_status(listing)}")
     - if presenter.show_approval_link?(listing)

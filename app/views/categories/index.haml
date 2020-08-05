@@ -7,8 +7,6 @@
         .col-10
           .listtinggrid--item
             = render :partial => 'listings', locals: {listings: @listings}
-          .listting-pagination
-            = will_paginate(@listings)
 .mobile-display
   .brown-background
     = render :partial => 'categories/mobile/sort_filter_bar'

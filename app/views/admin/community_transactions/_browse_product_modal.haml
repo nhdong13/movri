@@ -1,0 +1,17 @@
+.modal#browse-product-modal
+  .row.title
+    = "Select Product"
+  .row.search-box
+    = text_field_tag :product_name, params[:product_name], placeholder: 'Search products'
+  .row.products
+    - listings.each do |listing|
+      .col-12.product
+        = check_box_tag 'product_ids', listing.id, checked= false, class: "left"
+        = image_tag listing.main_image, class: "left"
+        %span.left= listing.title
+        %span.right= "#{listing.available_quantity} in stock"
+  .row.footer
+    .col-12
+      %p.left= "No variant selected"
+      %a.button.right.add-to-order-button.margin-l-5{rel: "modal:close"}="Add to order"
+      %a.button.right{rel: "modal:close"}= "Cancel"

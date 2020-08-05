@@ -1,0 +1,22 @@
+.modal#send-invoice-email-modal
+  .row.title
+    = 'Send invoice'
+  .row
+    .col-6
+      %span= "To"
+      = text_field_tag 'receiver'
+    .col-6  
+      %span= "From"
+      = select_tag 'sender', options_for_select([DEFAULT_ADMIN_EMAIL]), class: "width-100"
+
+    .col-12
+      %span= "Subject"
+      = text_field_tag 'subject'
+
+    .col-12
+      %span= "Custom message for this customer"
+      = text_area_tag 'custom_message', '', class: "max-width-100"
+
+  .row.footer
+    %a.button.right.margin-l-5#review-email{href: '#review-email-modal', rel:"modal:open"}= 'Review email'
+    %a.button.right{rel: "modal:close"}= "Cancel"

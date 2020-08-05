@@ -47,11 +47,22 @@
     = t("admin.left_hand_navigation.configure")
 
   .admin-left-navi-link-group.admin-left-navi-link-group-last
+    - grouped_links[:configure] = grouped_links[:configure].reject! { |l| l[:name] == "admin_settings"}
     - grouped_links[:configure].each do |link|
       %a{:id => link[:id], :href => link[:path], :title => link[:text], :class => (link[:name].eql?(sel_link) ? "selected left-navi-link" : "left-navi-link")}
         .left-navi-link-icon{:class => link[:icon_class]}
         .left-navi-link-text= link[:text]
-
+    .flex-items.margin-l-5
+      %i.fa.fa-cog.fa-fw
+      %span#setting-actions Settings
+    .group-setting-actions.hidden
+      %span.block General
+      %span.block Payments
+      %span.block= link_to 'Checkout', admin_checkout_setting_path, class: "padding-0"
+      %span.block Shipping and Delivery
+      %span.block Taxes
+      %span.block Permissions
+      %span.block Files
 
 - links.each do |link|
   - if link[:name].eql?(sel_link)
@@ -65,3 +76,13 @@
     %a{:href => link[:path], :title => link[:text], :id => "#{link[:name]}_left_navi_link"}
       .icon-with-text{:class => link[:icon_class]}
       .text-with-icon= link[:text]
+
+- content_for :extra_javascript do
+  :javascript
+    $('#setting-actions').click(function(){
+      if($('.group-setting-actions').is(":visible")){
+        $('.group-setting-actions').slideUp('slow')
+      } else {
+        $('.group-setting-actions').slideDown('slow')
+      }
+    })
