@@ -1,6 +1,14 @@
-.row.category-row.sub-category-row{:id => "subcategory-#{subcategory.display_name(I18n.locale).squish.downcase.tr(" ","_")}", :data => {:id => subcategory.id } }
-  .col-10.listed-category-col
-    .subcategory-label
-      = subcategory.display_name(I18n.locale)
-  .col-2.listed-category-col
-    = render :partial => "category_action_buttons", :locals => {category: subcategory, category_count: category_count}
+- children.each do |item|
+  .sub-categories
+    %span.bold.header-categories.block Sub Categories
+    .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}", :data => {:id => item.id } }
+      .col-10.listed-category-col
+        .subcategory-label
+          %span= item.display_name(I18n.locale)
+      .col-2.listed-category-col
+        = render partial: "category_action_buttons", locals: {category: item, category_count: category_count}
+    - if item.all_children_categories.any?
+      .children-categories
+        .header-children-categories
+          %span.bold.block Child Categories
+        = render partial: "children_categories", locals: {children: item.all_children_categories, category_count: category_count}

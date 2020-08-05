@@ -10,6 +10,7 @@
 #  community_id  :integer
 #  sort_priority :integer
 #  url           :string(255)
+#  category_type :integer          default(0)
 #
 # Indexes
 #
@@ -38,8 +39,10 @@ class Category < ApplicationRecord
   belongs_to :community
 
   before_save :uniq_url
+  after_save :update_category_type
   before_destroy :can_be_destroyed?
 
+  enum category_type: [:category, :subcategory, :children_category]
 
   def translation_attributes=(attributes)
     build_attrs = attributes.map { |locale, values| { locale: locale, values: values } }
@@ -143,6 +146,16 @@ class Category < ApplicationRecord
     return child_array.flatten
   end
 
+  def all_subcategories
+    return [] unless self.category?
+    subcategories.where(category_type: 1)
+  end
+
+  def all_children_categories
+    return [] unless self.subcategory?
+    children.where(category_type: 2)
+  end
+
   def icon_name
     return icon if ApplicationHelper.icon_specified?(icon)
     return parent.icon_name if parent
@@ -152,5 +165,17 @@ class Category < ApplicationRecord
 
   def self.find_by_url_or_id(url_or_id)
     self.find_by_url(url_or_id) || self.find_by_id(url_or_id)
+  end
+
+  def update_category_type
+    if parent
+      if parent.category?
+        update_column(:category_type, 1)
+      else parent.subcategory?
+        update_column(:category_type, 2)
+      end
+    else
+      update_column(:category_type, 0)
+    end
   end
 end

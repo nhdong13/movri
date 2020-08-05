@@ -43,6 +43,8 @@ class TransactionsController < ApplicationController
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
+  before_action :checkout_setting, only: [:checkout]
+
   TransactionForm = EntityUtils.define_builder(
     [:listing_id, :fixnum, :to_integer, :mandatory],
     [:message, :string],
@@ -506,6 +508,15 @@ class TransactionsController < ApplicationController
       flash[:error] = "Something went wrong with the number of your products. Please check it again."
       return redirect_to show_cart_path
     end
+
+    if checkout_setting.only_guest? && @current_user
+      flash[:error] = "Only guest can continue with transaction."
+      return redirect_to show_cart_path
+    end
+    if checkout_setting.only_accounts? && !@current_user
+      flash[:error] = t("layouts.notifications.you_must_log_in_to_do_a_transaction")
+      return redirect_to login_path
+    end
   end
 
   def find_transaction_by_uuid
@@ -762,6 +773,10 @@ class TransactionsController < ApplicationController
   def calculate_money_service(transaction=nil)
     transaction = transaction || @transaction
     @calculate_money = TransactionMoneyCalculation.new(transaction, session)
+  end
+
+  def checkout_setting
+    @checkout_setting = CheckoutSetting.last
   end
 
   def transaction_service

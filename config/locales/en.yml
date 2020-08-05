@@ -2358,6 +2358,7 @@ en:
       listing: listing
       selected_category: "Category: %{category}"
       selected_subcategory: "Subcategory: %{subcategory}"
+      selected_children_category: "Children category: %{children_category}"
       selected_transaction_type: "Listing type: %{transaction_type}"
       select_category: "Select category"
       select_subcategory: "Select subcategory"

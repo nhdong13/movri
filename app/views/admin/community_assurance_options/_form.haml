@@ -18,7 +18,7 @@
           = f.label :visible, 'Hidden', value: false, class: 'font-weight-regular m-0 font-size-14'
       .col-12.section-wrapper
         = f.label :image, "Featured Image"
-        = f.file_field :image, :class => "file_field"
+        = f.file_field :image, :class => "file-field-button"
 
     .col-12.mt-4.display-flex.justify-content-end
       = link_to  "Cancel", admin_community_assurance_options_path(@current_community), class: 'btn btn-white'
