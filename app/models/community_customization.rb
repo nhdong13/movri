@@ -49,10 +49,6 @@
 #  social_media_image_file_size               :integer
 #  social_media_image_updated_at              :datetime
 #  social_media_accounts                      :text(65535)
-#  favicon_icon_file_name                     :string(255)
-#  favicon_icon_content_type                  :string(255)
-#  favicon_icon_file_size                     :integer
-#  favicon_icon_updated_at                    :datetime
 #  currency_settings                          :text(65535)
 #
 # Indexes
@@ -108,11 +104,9 @@ class CommunityCustomization < ApplicationRecord
 
   has_attached_file :social_media_image, default_url: "/images/missing_image.png"
   validates_attachment_content_type :social_media_image, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
-  has_attached_file :favicon_icon, default_url: "/images/missing_image.png"
-  validates_attachment_content_type :favicon_icon, :content_type => ["image/jpg", "image/jpeg", "image/png"]
 
   def as_json
-    super.merge({social_media_image_url: social_media_image.url, favicon_icon_url: favicon_icon.url})
+    super.merge({social_media_image_url: social_media_image.url})
   end
 
 end

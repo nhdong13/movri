@@ -1,9 +1,27 @@
 import React, { Component } from 'react';
+import MultiSelect from "react-multi-select-component";
+import currency_iso from '../../../assets/json/currency_iso.json'
+
+const currencyOptions = () => {
+  const values = Object.keys(currency_iso)
+  let options = []
+  values.map(v => {
+    options.push({value: v, label: `${currency_iso[v].name}(${v.toUpperCase()})`})
+  })
+  return options
+}
 
 class Currency extends Component {
   constructor(props) {
     super(props)
+    this.currencyOptions = currencyOptions()
+    this.state = {
+      currencyOptions: this.currencyOptions
+    }
+
     this.handleOnChange = this.handleOnChange.bind(this)
+    this.handleOnChangeCurrencies = this.handleOnChangeCurrencies.bind(this)
+    this.handleOnChangeDefaultCurrency = this.handleOnChangeDefaultCurrency.bind(this)
   }
 
   handleOnChange(e) {
@@ -16,8 +34,20 @@ class Currency extends Component {
     this.props.handleChangePreferences({...this.props.preferences, currency_settings: currency_settings})
   }
 
-  render() {
+  handleOnChangeCurrencies(items) {
     let currency_settings = this.props.preferences.currency_settings || {}
+    currency_settings['supported_currencies'] = items
+    this.props.handleChangePreferences({...this.props.preferences, currency_settings: currency_settings})
+  }
+
+  handleOnChangeDefaultCurrency(e) {
+    this.props.handleChangePreferences({...this.props.preferences, default_currency: e.target.value})
+  }
+
+  render() {
+    let default_currency = this.props.preferences.default_currency || ''
+    let currency_settings = this.props.preferences.currency_settings || {}
+    let supported_currencies = currency_settings['supported_currencies'] || []
     return (
       <div className="section row">
         <label className="m-1">Currency</label>
@@ -45,11 +75,35 @@ class Currency extends Component {
           <div className="col-5">
             <div className='form-control'>
               <label className='font-weight-regular mt-1'>Supported currencies</label>
-              <input type='text' name='supported_currencies' value={currency_settings['supported_currencies'] || ""} onChange={this.handleOnChange}/>
+              <div>
+                <MultiSelect
+                  options={this.state.currencyOptions}
+                  value={supported_currencies || []}
+                  className='supported-currencies'
+                  onChange={this.handleOnChangeCurrencies}
+                  labelledBy={"Select currency"}
+                />
+                <ul>
+                  {  
+                    supported_currencies.map(l => {
+                      return <li className='font-size-14' key={l.value}>
+                        <i className="icon-check"></i>
+                        {l.label}
+                      </li>
+                    })
+                  }
+              </ul>
+              </div>
             </div>
             <div className='form-control'>
               <label className='font-weight-regular'>Default currency</label>
-              <input type='text' name='default_currency' value={currency_settings['default_currency'] || ""} onChange={this.handleOnChange}/>
+              <select name='default_currency' value={default_currency || ""} onChange={this.handleOnChangeDefaultCurrency}>
+                  { 
+                    this.state.currencyOptions.map(option => {
+                      return <option value={option.value}>{option.label}</option>
+                    })
+                  }
+              </select>
             </div>
           </div>
         </div>

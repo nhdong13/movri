@@ -1,7 +1,7 @@
 .feature-products
   .row
     .col-12
-      %p.text-center= featured_product.heading
+      %p.section-heading.text-center= featured_product.heading
     .products.text-center
       - style = "color: #{featured_product.button_text_color}"
       - featured_product.listings.each do |listing|

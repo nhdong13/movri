@@ -62,4 +62,9 @@
       left: -25%;
     }
   }
+
+  .dropdown-content {
+    display: unset !important;
+    z-index: 9999 !important;
+  }
 }

@@ -3,7 +3,7 @@
   - style = { background_color: "background-color: #{@highlight_banner.background_color}",
     color: "color: #{@highlight_banner.text_color}" }
   .how-it-works.text-center{style: style[:background_color]}
-    %h1= 'HOW IT WORKS'
+    %h1.section-heading= 'HOW IT WORKS'
     .row
       - items.each_with_index do |item, index|
         %div{class: "#{index != 1 ? 'col-3' : 'col-4'}"}

@@ -42,6 +42,7 @@ class CommunityPreferences extends Component {
       id: preferences.id,
       community_id: preferences.community_id,
       facebook_pixel_id: preferences.facebook_pixel_id,
+      default_currency: preferences.default_currency,
       base_font_size: preferences.base_font_size,
       general_colors: JSON.stringify(preferences.general_colors),
       button_colors: JSON.stringify(preferences.button_colors),
@@ -75,7 +76,7 @@ class CommunityPreferences extends Component {
     }
 
     axios(axiosOptions).then(res => {
-      console.log('success')
+      window.location.reload()
     })
   }
 
@@ -104,9 +105,6 @@ class CommunityPreferences extends Component {
           preferences={preferences}
           handleChangePreferences={this.handleChangePreferences} />
         <SocialMedia
-          preferences={preferences}
-          handleChangePreferences={this.handleChangePreferences} />
-        <Favicon 
           preferences={preferences}
           handleChangePreferences={this.handleChangePreferences} />
         <Currency

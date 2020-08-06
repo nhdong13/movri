@@ -8,4 +8,4 @@
 .left-navi-section.p-3
   %h2 Preferences
   %input{name: "authenticity_token", value: "#{ form_authenticity_token}", type: "hidden"}
-  = react_component("CommunityPreferences", props: {preferences: @preferences.as_json.merge({facebook_pixel_id: @current_community.facebook_pixel_id}), authenticityToken: form_authenticity_token})
+  = react_component("CommunityPreferences", props: {preferences: @preferences.as_json.merge({facebook_pixel_id: @current_community.facebook_pixel_id, default_currency: @current_community.currency}), authenticityToken: form_authenticity_token})

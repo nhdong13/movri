@@ -12,15 +12,15 @@ class Admin::CommunityPreferencesController < Admin::AdminBaseController
   private
 
   def set_selected_left_navi_link
-    @selected_left_navi_link = "customers"
+    @selected_left_navi_link = "preferences"
   end
 
   def preferences_params
     params.required(:preferences).permit(
       :id,
       :facebook_pixel_id,
+      :default_currency,
       :social_media_image,
-      :favicon_icon,
       :general_colors,
       :button_colors,
       :footer_colors,

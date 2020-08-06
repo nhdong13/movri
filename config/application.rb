@@ -244,5 +244,9 @@ module Kassi
     end
 
     config.autoload_paths += %w(#{config.root}/app/models/ckeditor)
+
+    config.middleware.use(Rack::Tracker) do
+      handler :facebook, { id: APP_CONFIG.facebook_pixel_id }
+    end
   end
 end

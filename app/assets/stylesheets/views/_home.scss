@@ -559,11 +559,13 @@ $home-list-avatar-padding: lines(0.25);
 
   .slick-next {
     right: 50px;
+    background-color: unset !important;
   }
 
   .slick-prev {
     z-index: 2;
     left: 50px;
+    background-color: unset !important;
   }
 
   .content {
@@ -952,17 +954,22 @@ $home-list-avatar-padding: lines(0.25);
 .security-social-media {
   .row{margin-bottom: 0;background-color: #bebebe;}
   background-color: #bebebe;
-  height: 92px;
+  min-height: 92px;
   margin-bottom: 0px;
 
   img {
     float: left;
-    margin: 15px 19px auto 19px;
+    margin: 15px 12px 12px;
   }
 
   .img {
     display: inline-block;
     vertical-align: middle;
+  }
+  .icon-account {
+    img {
+      max-height: 30px;
+    }
   }
 }
 

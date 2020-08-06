@@ -92,12 +92,12 @@ class SocialMedia extends Component {
             <div className="form-control">
               <label className="font-weight-regular mt-1">Vimeo</label>
               <input type='text' value={social_media_accounts['vimeo'] || ""} name="vimeo" onChange={this.handleOnChangeAccount}/>
-              <div className="font-size-14 text-gray">https://vimeo.come/shopify</div>
+              <div className="font-size-14 text-gray">https://vimeo.com/shopify</div>
             </div>
             <div className="form-control">
               <label className="font-weight-regular mt-1">Youtube</label>
               <input type='text' value={social_media_accounts['youtube'] || ""} name="youtube" onChange={this.handleOnChangeAccount}/>
-              <div className="font-size-14 text-gray">https://youtube.come/shopify</div>
+              <div className="font-size-14 text-gray">https://youtube.com/shopify</div>
             </div>
           </div>
         </div>

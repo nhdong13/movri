@@ -1,11 +1,10 @@
 class Admin::PreferenceSettingsService
 
   def update_preferences community, params
-    community.update(facebook_pixel_id: params.delete(:facebook_pixel_id))
+    community.update(facebook_pixel_id: params.delete(:facebook_pixel_id), currency: params.delete(:default_currency))
       
     preferences = community.community_customizations.find(params[:id])
 
-    preferences.favicon_icon = params[:favicon_icon] if params[:favicon_icon]
     preferences.social_media_image = params[:social_media_image] if params[:social_media_image]
     preferences.base_font_size = params[:base_font_size] if params[:base_font_size]
     preferences.general_colors = JSON.parse(params[:general_colors]) if params[:general_colors]
