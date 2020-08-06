@@ -357,7 +357,7 @@ class ListingPresenter < MemoisticPresenter
   end
 
   def available_date
-    (@listing.manually_blocked_dates.split(',').last.to_date + 1.days).strftime("%m/%d/%Y")
+    (@listing.manually_blocked_dates.present? ? (@listing.manually_blocked_dates.split(',').last.to_date + 1.days) : Date.today).strftime("%m/%d/%Y")
   end
 
   memoize_all_reader_methods
