@@ -107,6 +107,7 @@ gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 
 gem 'ckeditor'
 gem 'country-select'
+gem 'rack-tracker'
 
 group :staging, :production do
   gem 'newrelic_rpm', '~> 4.2.0.334'

@@ -455,6 +455,13 @@ module ApplicationHelper
         :name => "invitations"
       },
       {
+        :topic => :manage,
+        :text => t("admin.communities.manager_preferences.preferences"),
+        :icon_class => icon_class("tools"),
+        :path => edit_admin_community_preferences_path(@current_community),
+        :name => "preferences"
+      },
+      {
         :topic => :configure,
         :text => t("admin.communities.edit_details.community_details"),
         :icon_class => icon_class("details"),

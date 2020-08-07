@@ -34,6 +34,22 @@
 #  category_meta_description                  :text(65535)
 #  profile_meta_title                         :string(255)
 #  profile_meta_description                   :text(65535)
+#  general_colors                             :text(65535)
+#  button_colors                              :text(65535)
+#  footer_colors                              :text(65535)
+#  header_colors                              :text(65535)
+#  base_font_size                             :integer
+#  heading_font_settings                      :text(65535)
+#  button_font_settings                       :text(65535)
+#  main_menu_font_settings                    :text(65535)
+#  section_heading_font_settings              :text(65535)
+#  body_text_font_settings                    :text(65535)
+#  social_media_image_file_name               :string(255)
+#  social_media_image_content_type            :string(255)
+#  social_media_image_file_size               :integer
+#  social_media_image_updated_at              :datetime
+#  social_media_accounts                      :text(65535)
+#  currency_settings                          :text(65535)
 #
 # Indexes
 #
@@ -59,6 +75,18 @@ class CommunityCustomization < ApplicationRecord
 
   belongs_to :community
 
+  serialize :general_colors, Hash
+  serialize :button_colors, Hash
+  serialize :footer_colors, Hash
+  serialize :header_colors, Hash
+  serialize :heading_font_settings, Hash
+  serialize :button_font_settings, Hash
+  serialize :main_menu_font_settings, Hash
+  serialize :section_heading_font_settings, Hash
+  serialize :social_media_accounts, Hash
+  serialize :currency_settings, Hash
+  serialize :body_text_font_settings, Hash
+
   CONTENT_FIELDS = %i(
     blank_slate
     welcome_email_content
@@ -73,5 +101,12 @@ class CommunityCustomization < ApplicationRecord
     transaction_agreement_label
     transaction_agreement_content
   )
+
+  has_attached_file :social_media_image, default_url: "/images/missing_image.png"
+  validates_attachment_content_type :social_media_image, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+
+  def as_json
+    super.merge({social_media_image_url: social_media_image.url})
+  end
 
 end
