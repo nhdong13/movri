@@ -14,8 +14,8 @@ module ManuallyBlockedDatesService
   end
 
   def get_manually_blocked_dates(listing, step = 1.day)
-    str_manually_blcoked_dates = listing.manually_blocked_dates
-    blocked_dates_ranges = str_manually_blcoked_dates.split("&")
+    str_manually_blocked_dates = listing.manually_blocked_dates
+    blocked_dates_ranges = str_manually_blocked_dates.split("&")
 
     manually_blocked_dates = Set.new
 

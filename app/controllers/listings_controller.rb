@@ -512,7 +512,9 @@ class ListingsController < ApplicationController
     }
   end
 
-  def show_cart; end
+  def show_cart
+    @have_blocked_dates = Listing.where(id: session[:cart].keys).pluck(:manually_blocked_dates).present?
+  end
 
   def change_booking_days
     # missing params

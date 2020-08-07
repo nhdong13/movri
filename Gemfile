@@ -187,8 +187,6 @@ gem 'transit-ruby', '~> 0.8.602'
 # Markdown parser
 gem 'redcarpet', '~> 3.4.0'
 
-gem 'intercom'
-
 gem 'twitter_cldr'
 gem 'memoist'
 gem 'biz'

@@ -23,9 +23,10 @@
     %span.amount
       = money_to_humanized(@listing.replacement_cents_fee)
 .row.listing-available
-  .col-12.clearfix.availabel
-    %span
-      Available 01/24/20
+  .col-12.clearfix.availabel.yolo
+    - if @listing_presenter.available_date
+      %span
+        = "Available #{@listing_presenter.available_date}"
 -# .row.listing-shipping-date
 -#   .col-6.clearfix.arrival-date
 -#     .form-group
@@ -65,12 +66,11 @@
     - if @listing_presenter.quantity_per_day_or_night?
       - @listing_presenter.blocked_dates_result.on_success do |blocked_dates|
         -# Merge manually blocked dates (via admin) with blocked dates automatic (via website booking)
-        - if @listing.manually_blocked_dates
-          - manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day)
-          - global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community)
-          - blocked_dates.merge(manually_blocked_dates)
-          - blocked_dates.merge(global_blocked_dates)
-
+        - if @listing.manually_blocked_dates && @listing.quantity.to_i > 0
+          - manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
+          - global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
+          - blocked_dates.concat(manually_blocked_dates)
+          - blocked_dates.concat(global_blocked_dates)
         - content_for :extra_javascript do
           :javascript
             window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});

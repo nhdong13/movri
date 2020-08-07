@@ -951,6 +951,7 @@ en:
       preview: "Preview site"
       whats_new: "What's new?"
       orders: "Orders"
+      calendar: "Calendar"
     listing_shapes:
       availability_title: Availability
       read_more: "Read more about automatic availability management."
