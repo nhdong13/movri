@@ -1,26 +1,26 @@
-.mobile-footer.d-none
-  .recently-viewed
-    .d-flex
-      = image_tag("homepage_icons/recently_icon.svg")
-      %span= "Recently Viewed Items"
-      %i.icon-ellipsis-vertical
-    .d-flex
-      %i.icon-plus
-  .mobile-infomation.text-center
-    .col-12
-      %select
-        %option= "US Dollar"
-    .col-12
-      %p= "2000-2020 B&H Foto & Electronics Corp."
-  .mobile-contact-us.d-flex.col-12
-    .d-flex
-      %p= "808.894.9703"
-    .d-flex
-      %a= "Contact Us"
-    .d-flex
-      .helpful-link-mobile-btn
-        %span= t("footer.helpful_link_mobile_btn")
-        %i.icon-chevron-down
-  - footer_helpful_links.each do |section|
-    - helpful_section = section.sectionable
-    = render "homepage/more_helpful_links", helpful_section: helpful_section
+-# .mobile-footer.d-none
+-#   .recently-viewed
+-#     .d-flex
+-#       = image_tag("homepage_icons/recently_icon.svg")
+-#       %span= "Recently Viewed Items"
+-#       %i.icon-ellipsis-vertical
+-#     .d-flex
+-#       %i.icon-plus
+-#   .mobile-infomation.text-center
+-#     .col-12
+-#       %select
+-#         %option= "US Dollar"
+-#     .col-12
+-#       %p= "2000-2020 B&H Foto & Electronics Corp."
+-#   .mobile-contact-us.d-flex.col-12
+-#     .d-flex
+-#       %p= "808.894.9703"
+-#     .d-flex
+-#       %a= "Contact Us"
+-#     .d-flex
+-#       .helpful-link-mobile-btn
+-#         %span= t("footer.helpful_link_mobile_btn")
+-#         %i.icon-chevron-down
+-#   - footer_helpful_links.each do |section|
+-#     - helpful_section = section.sectionable
+-#     = render "homepage/more_helpful_links", helpful_section: helpful_section

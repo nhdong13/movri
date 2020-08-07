@@ -1,0 +1,67 @@
+.col-12.from.br-bottom
+  .col-4
+    %span= "From:"
+  .col-8
+    %span= email_information[:sender]
+.col-12.to.br-bottom
+  .col-4
+    %span= "To:"
+  .col-8
+    %span= email_information[:receiver]
+.col-12.subject
+  .col-4
+    %span= "Subject:"
+  .col-8
+    %span= email_information[:subject]
+.col-12.email-content
+  .row.br-bottom
+    .col-12
+      %h1.left= "MOVRI"
+      %h3.right= "INVOICE #D98"
+    .col-12
+      %h2.left= "Complete your purchase"
+    .col-12
+      %span= email_information[:custom_message]
+    .col-12
+      %button.button.dp-inline= "Complete your purchase"
+      %span= "or"
+      %a= "Visit our store"
+  .row.br-bottom
+    .col-12
+      %h2.left= "Order summary"
+    .col-12.br-bottom
+      .col-6
+        %span.left= "test 1 x 1"
+      .col-6
+        %span.right= "$10.00"
+    .col-8.right
+      .col-12
+        %span.left= "Subtotal"
+        %span.right= "$10.00"
+      .col-12
+        %span.left= "Shipping"
+        %span.right= "$10.00"
+      .col-12.br-bottom
+        %span.left= "Taxes"
+        %span.right= "$10.00"
+      .col-12
+        %span.left= "Total"
+        %span.right= "$11.30 CAD"
+  .row.br-bottom
+    .col-12
+      %h3= "Customer information"
+    .col-6
+      %p= "Shipping Address"
+      %p= "Test Test"
+      %p= "23 Sheppard Avenue East"
+      %p= "Toronto ON M2N OC8"
+      %p= "Canada"
+    .col-6
+      %p= "Billing Address"
+      %p= "Test Test"
+      %p= "23 Sheppard Avenue East"
+      %p= "Toronto ON M2N OC8"
+      %p= "Canada"
+  .row
+    .col-12.align-center
+      %p= "If you have any questions, reply to this email or contact us at sales@movri.ca"

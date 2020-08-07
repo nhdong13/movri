@@ -1,5 +1,9 @@
-= link_to @category_display_names[main_category.id], search_path(category: main_category)
-- if main_category.children
-  - main_category.children.each do |child|
-    = link_to search_path(category: child), class: 'sub-cat' do
-      = @category_display_names[child.id]
+= link_to @category_display_names[main_category.id], categories_path(categories: main_category)
+- if main_category.all_subcategories.any?
+  - main_category.all_subcategories.each do |subcategory|
+    = link_to categories_path(subcategories: subcategory), class: 'sub-cat' do
+      = @category_display_names[subcategory.id]
+      - subcategory.all_children_categories.each do |child|
+        .sub-cat
+          = link_to categories_path(children_categories: child), class: 'sub-cat' do
+            = @category_display_names[child.id]

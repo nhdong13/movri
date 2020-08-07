@@ -6,6 +6,7 @@ import OnboardingTopBar from './OnboardingTopBarApp';
 import TopbarApp from './TopbarApp';
 import SearchPageApp from './SearchPageApp';
 import OnlineStore from './OnlineStore';
+import CommunityPreferences from './CommunityPreferences';
 
 
 
@@ -14,7 +15,8 @@ ReactOnRails.register({
   OnboardingTopBar,
   TopbarApp,
   SearchPageApp,
-  OnlineStore
+  OnlineStore,
+  CommunityPreferences
 });
 
 ReactOnRails.registerStore({

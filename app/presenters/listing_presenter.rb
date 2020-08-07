@@ -5,7 +5,7 @@ class ListingPresenter < MemoisticPresenter
   attr_reader :shape, :current_user
 
   def initialize(listing, current_community, params, current_user)
-    @listing = listing
+    @listing = listing || Listing.new
     @current_community = current_community
     @current_user = current_user
     @params = params
@@ -162,11 +162,15 @@ class ListingPresenter < MemoisticPresenter
   end
 
   def categories
-    @current_community.top_level_categories
+    Category.category
   end
 
   def subcategories
-    @current_community.subcategories
+    Category.subcategory
+  end
+
+  def children_categories
+    Category.children_category
   end
 
   def commission
@@ -281,11 +285,15 @@ class ListingPresenter < MemoisticPresenter
   end
 
   def category_id
-    @listing.category.parent_id || @listing.category.id
+    @listing.category&.id
   end
 
   def subcategory_id
-    @listing.category.parent_id ?  @listing.category.id : nil
+    @listing.subcategory&.id
+  end
+
+  def children_category_id
+    @listing.children_category&.id
   end
 
   def payments_enabled?
@@ -307,6 +315,8 @@ class ListingPresenter < MemoisticPresenter
     {
       "category" => I18n.t("listings.new.select_category"),
       "subcategory" => I18n.t("listings.new.select_subcategory"),
+      "subcategory" => I18n.t("listings.new.select_subcategory"),
+      'children_category' => "Select Children category",
       "listing_shape" => I18n.t("listings.new.select_transaction_type")
     }
   end
@@ -344,6 +354,10 @@ class ListingPresenter < MemoisticPresenter
     else
       listing
     end
+  end
+
+  def available_date
+    (@listing.manually_blocked_dates.present? ? (@listing.manually_blocked_dates.split(',').last.to_date + 1.days) : Date.today).strftime("%m/%d/%Y")
   end
 
   memoize_all_reader_methods

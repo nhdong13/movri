@@ -5,7 +5,7 @@
       = radio_button_tag :shipping_type, 'delivery', false, class: "shipping_type_delivery", disabled: session[:booking][:start_date] == get_today
       %span= t('transactions.shipping_service.delivery')
     .options
-      = radio_button_tag :shipping_type, 'fedex', false, class: "shipping_type_fedex", disabled: session[:booking][:start_date] == get_today
+      = radio_button_tag :shipping_type, 'fedex', false, class: "shipping_type_fedex", disabled: @have_blocked_dates ||session[:booking][:start_date] == get_today
       %span= t('transactions.shipping_service.fedex_office')
     .options
       = radio_button_tag :shipping_type, 'pickup', session[:booking][:start_date] == get_today, class: "shipping_type_pickup"

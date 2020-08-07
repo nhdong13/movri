@@ -302,7 +302,7 @@ class Transaction < ApplicationRecord
   end
 
   def item_total
-    unit_price * listing_quantity
+    unit_price_cents * total_quantity
   end
 
   def coverage_cents

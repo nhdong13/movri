@@ -6,4 +6,4 @@
 
 .left-navi-section.p-3.assurance-options-index
   %h2 URL Redirect
-  = render 'form', redirect_url: @redirect_url
+  = render 'form', redirect_url: @redirect_url, method: 'post', url: admin_community_redirect_urls_path(community_id: @current_community.id)

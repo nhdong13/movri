@@ -31,6 +31,7 @@ require File.expand_path('../../lib/sharetribe_middleware', __FILE__)
 
 module Kassi
   class Application < Rails::Application
+    config.assets.precompile << 'delayed/web/application.css'
     # Initialize configuration defaults for originally generated Rails version.
     # and thus class const
     config.load_defaults 5.1
@@ -243,5 +244,9 @@ module Kassi
     end
 
     config.autoload_paths += %w(#{config.root}/app/models/ckeditor)
+
+    config.middleware.use(Rack::Tracker) do
+      handler :facebook, { id: APP_CONFIG.facebook_pixel_id }
+    end
   end
 end

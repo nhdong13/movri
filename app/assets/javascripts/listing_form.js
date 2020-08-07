@@ -7,7 +7,7 @@ window.ST = window.ST || {};
   /* jshint eqeqeq: false */ // Some parts of the code in this file actually compares number that is string to a number
 
   // Update the state of the new listing form based on current status
-  function update_listing_form_view(locale, attribute_array, listing_form_menu_titles, ordered_attributes, selected_attributes) {
+  function  update_listing_form_view(locale, attribute_array, listing_form_menu_titles, ordered_attributes, selected_attributes) {
     // Hide everything
     $('a.selected').addClass('hidden');
     $('a.option').addClass('hidden');
@@ -28,6 +28,9 @@ window.ST = window.ST || {};
     } else if (should_show_menu_for("subcategory", selected_attributes, attribute_array)) {
       title = listing_form_menu_titles["subcategory"];
       display_option_group("subcategory", selected_attributes, attribute_array);
+    } else if (should_show_menu_for("children_category", selected_attributes, attribute_array)) {
+      title = listing_form_menu_titles["children_category"];
+      display_option_group("children_category", selected_attributes, attribute_array);
     } else if (should_show_menu_for("listing_shape", selected_attributes, attribute_array)) {
       title = listing_form_menu_titles["listing_shape"];
       display_option_group("listing_shape", selected_attributes, attribute_array);
@@ -58,11 +61,33 @@ window.ST = window.ST || {};
       .value();
   }
 
+  function get_children_categories_for(subcategory_id, category_array) {
+    return _.chain(category_array)
+      .filter(function(category) {
+        return category["id"] == subcategory_id;
+      })
+      .filter(function(category) {
+        return category["children_categories"] !== undefined;
+      })
+      .map(function(category) {
+        return category["children_categories"];
+      })
+      .flatten()
+      .value();
+  }
+
   // Check if category has a certain subcategory
   function has_subcategory(category_id, subcategory_id, attribute_array) {
     var subcategories = get_subcategories_for(category_id, attribute_array);
     return _.any(subcategories, function(subcategory) {
       return subcategory['id'] == subcategory_id;
+    });
+  }
+
+  function has_children_category(subcategory_id, children_category_id, attribute_array) {
+    var children_categories = get_children_categories_for(subcategory_id, attribute_array);
+    return _.any(children_categories, function(children_category) {
+      return children_category['id'] == children_category_id;
     });
   }
 
@@ -91,6 +116,13 @@ window.ST = window.ST || {};
     var category = find_by_id(Number(category_id), category_array);
     var subcategory = find_by_id(Number(subcategory_id), category["subcategories"]);
     return subcategory["listing_shapes"];
+  }
+
+  // Returns listing shape of given children category
+  function get_listing_shapes_for_children_category(subcategory_id, children_category_id, category_array) {
+    var subcategory = find_by_id(Number(subcategory_id), category_array);
+    var children_category = find_by_id(Number(children_category_id), subcategory["children_categories"]);
+    return children_category["listing_shapes"];
   }
 
   // Return true if given menu should be displayed
@@ -124,14 +156,32 @@ window.ST = window.ST || {};
           return true;
         }
       }
+    } else if (attribute == "children_category") {
+      if (should_show_menu_for("category", selected_attributes, attribute_array)) {
+        return false;
+      } else {
+        var children_categories = get_children_categories_for(selected_attributes["subcategory"], attribute_array);
+        if (children_categories.length < 2) {
+          if (children_categories.length == 1) {
+            selected_attributes["children_category"] = children_categories[0]["id"];
+          }
+          return false;
+        } else {
+          return true;
+        }
+      }
     } else if (attribute == "listing_shape") {
       if (should_show_menu_for("category", selected_attributes, attribute_array)) {
         return false;
       } else if (should_show_menu_for("subcategory", selected_attributes, attribute_array)) {
         return false;
+      } else if (should_show_menu_for("children_category", selected_attributes, attribute_array)) {
+        return false;
       } else {
         var listing_shapes;
-        if (attribute_selected("subcategory", selected_attributes)) {
+        if (attribute_selected("children_category", selected_attributes)) {
+          listing_shapes = get_listing_shapes_for_children_category(selected_attributes["subcategory"], selected_attributes["children_category"], attribute_array);
+        } else if (attribute_selected("subcategory", selected_attributes)) {
           listing_shapes = get_listing_shapes_for_subcategory(selected_attributes["category"], selected_attributes["subcategory"], attribute_array);
         } else {
           listing_shapes = get_listing_shapes_for_category(selected_attributes["category"], attribute_array);
@@ -233,6 +283,16 @@ window.ST = window.ST || {};
       $('.selectize-recommended-accessories-result').css('display', 'none');
     });
 
+    $('.submit-new-listing').click(function(e){
+      e.preventDefault();
+      var selected_attributes = selectedAttributesFromQueryParams(window.location.search);
+      var attrs = hashCompact(selected_attributes);
+      $("#category_id").val(attrs.category)
+      $("#subcategory_id").val(attrs.subcategory)
+      $("#children_category_id").val(attrs.children_category)
+      $(this).parents('form').submit()
+    });
+
     function idExists(id) {
       return $('.recommended-accessories-list').find('[data-id='+ id +']').length != 0;
     }
@@ -308,6 +368,7 @@ window.ST = window.ST || {};
     $.get(edit_listing_path, request_params, function(data) {
       $('.js-form-fields').html(data);
       $('.js-form-fields').removeClass('hidden');
+      loadSelectize();
     });
   }
 
@@ -338,6 +399,10 @@ window.ST = window.ST || {};
         $(this).removeClass('hidden');
       } else if (group_type == "subcategory") {
         if (has_subcategory(selected_attributes["category"], $(this).attr('data-id'), attribute_array)) {
+          $(this).removeClass('hidden');
+        }
+      } else if (group_type == "children_category") {
+        if (has_children_category(selected_attributes["subcategory"], $(this).attr('data-id'), attribute_array)) {
           $(this).removeClass('hidden');
         }
       } else if (group_type == "listing_shape") {
@@ -394,7 +459,6 @@ window.ST = window.ST || {};
       var q = _.map(attrs, function(val, key) {
         return key + "=" + val;
       }).join("&");
-
       return [url, q].join("?");
     }
   };
@@ -423,7 +487,7 @@ window.ST = window.ST || {};
 
   // Initialize the listing type & category selection part of the form
   module.initialize_new_listing_form_selectors = function(options) {
-    var ordered_attributes = ["category", "subcategory", "listing_shape"];
+    var ordered_attributes = ["category", "subcategory", 'children_category', "listing_shape"];
     var selected_attributes = selectedAttributesFromQueryParams(window.location.search);
 
     // Reset the view to initial state
@@ -462,15 +526,15 @@ window.ST = window.ST || {};
     );
   };
 
-  module.initialize_edit_listing_form_selectors = function(locale, attribute_array, listing_form_menu_titles, category, subcategory, listing_shape, id) {
-    var ordered_attributes = ["category", "subcategory", "listing_shape"];
+  module.initialize_edit_listing_form_selectors = function(locale, attribute_array, listing_form_menu_titles, category, subcategory, children_category, listing_shape, id) {
+    var ordered_attributes = ["category", "subcategory", 'children_category', "listing_shape"];
 
     // Selected values (string or null required)
     category = category ? "" + category : null;
     subcategory = subcategory ? "" + subcategory : null;
+    children_category = children_category ? "" + children_category : null;
     listing_shape = listing_shape ? "" + listing_shape : null;
-
-    var selected_attributes = {"category": category, "subcategory": subcategory, "listing_shape": listing_shape};
+    var selected_attributes = {"category": category, "subcategory": subcategory, 'children_category': children_category, "listing_shape": listing_shape};
     var originalSelection = _.clone(selected_attributes);
     var current_attributes = _.clone(selected_attributes);
 

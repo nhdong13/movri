@@ -1,4 +1,6 @@
-= form.label :name_attributes, t(".category_title")
+.row
+  .col-12
+    %span.bold= "#{@category_type.split("_").join(" ").capitalize} title"
 - available_locales.each do |locale_name, locale_value|
   .row
     - if available_locales.size > 1

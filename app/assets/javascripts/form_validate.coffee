@@ -18,8 +18,6 @@ validateShippingAddressForm = ->
         required: true
         minlength: 6
         cdnPostal: true
-      'transaction_address[phone]':
-        required: true
 
 validateBillingAddressForm = ->
   $(".desktop-payment-form").validate
@@ -61,8 +59,6 @@ validateMobileShippingAddressForm = ->
         required: true
         minlength: 6
         cdnPostal: true
-      'transaction_address[phone]':
-        required: true
 
 onInputRequiredShippingFormField = ->
   $('.transaction-address-req-field').change ->
@@ -125,6 +121,13 @@ onFillColorToShippingInput = ->
     )
   )
 
+addRuleToOptionalFields = ->
+  _.map($('.transaction-address-req-field'), (i) ->
+    $(i).rules('add', {
+      required: true
+    });
+  )
+
 handleSubmitForm = ->
   $(".checkout-section").on "click", ".btn-submit", (e) ->
     e.preventDefault();
@@ -143,3 +146,5 @@ window.ValidateForm =
       handleSubmitForm()
       onShowHideBillingAddress()
       validateBillingAddressForm()
+
+      addRuleToOptionalFields()

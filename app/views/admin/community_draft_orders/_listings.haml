@@ -1,0 +1,30 @@
+%table.margin-bt-15
+  %thead
+    %tr
+      %th
+      %th
+      %th
+        = "Price per item"
+      %th
+      %th
+        = "Quantity"
+      %th
+      %th
+  %tbody
+  - listings.each do |listing|
+    %tr
+      %td.w-5.padding-0
+        = hidden_field_tag "id", listing.id, class: "ids"
+        = image_tag(listing.main_image)
+      %td.w-45.padding-0
+        = listing.title
+      %td
+        = text_field_tag 'price', listing.price, class: "price"
+      %td
+        = "x"
+      %td
+        = text_field_tag 'quantity', 1, class: "quantity"
+      %td.total-price
+        = humanized_money_with_symbol(listing.price)
+      %td
+        %i.icon-times

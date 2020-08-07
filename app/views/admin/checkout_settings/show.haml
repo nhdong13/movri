@@ -1,0 +1,174 @@
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+.brown-background.checkout-settings.left-navi-section.admin-section-box
+  = form_for [:admin, @checkout_setting], url: admin_checkout_setting_path, method: :put do |f|
+    .admin-header.margin-bt-20
+      %span Checkout
+
+    %p.bold.fz-18 Customer accounts
+    .display-flex
+      .width-60.padding-0
+        .setting-box.width-100.margin-bt-20
+          %label
+            = f.radio_button :account_permission, 'only_guest'
+            %span Accounts are disabled
+            %span.block.note Customers are only be able to check out as guests.
+          %label
+            = f.radio_button :account_permission, 'guest_or_accounts'
+            %span Accounts are optional
+            %span.block.note Customers will be able to check out with a customer account or as guest.
+          %label
+            = f.radio_button :account_permission, 'only_accounts'
+            %span Accounts are required
+            %span.block.note Customers are only be able to check out if they have a customer account.
+        .setting-box.width-100
+          %label
+            = f.check_box :order_notes
+            %span Enable order notes text box
+
+      .width-25
+        .setting-box.width-100
+          %span.bold Logo
+          %span.block Custome image
+          #custome-image.center-items
+            #box.center-items
+              -if @checkout_setting.logo.exists?
+                #image.center-items
+                  = image_tag @checkout_setting.logo.url
+              - else
+                .upload-image-btn
+                  %span Select Image
+              = f.file_field :logo, :class => "file_field"
+          %span.block Position
+          = f.select :logo_position, options_for_select([['Left', 'left'], ['Center', 'center'], ['Right', 'right']], selected: f.object.logo_position), {}, {class: 'width-100 margin-bt-10'}
+          %span.block Size
+          = f.select :logo_size, options_for_select([['Small', 'small'], ['Medium', 'medium'], ['Large', 'large']], selected: f.object.logo_size), {}, {class: 'width-100'}
+
+
+    .clearfix-with-border
+
+    %p.bold.fz-18 Customer contact
+    .setting-box
+      %span.bold To check out
+      %label
+        = f.radio_button :contact, 'checkout_with_phone_or_email'
+        %span Customers can checkout using their phone number or email
+        %span.block.note Customers who choose to check out using their phone number will get order updates by SMS. This means that their email may not be collected during checkout.
+      %label
+        = f.radio_button :contact, 'checkout_with_email'
+        %span Customers can only checkout using email.
+    .setting-box
+      %span.bold To recieve shipping updates
+      %label
+        = f.check_box :add_info_after_complete_order
+        %span Customers can choose to add a phone number or email to reveive shipping address after the complete their order.
+      %label
+        = f.check_box :can_download_app
+        %span Customers can download the Shop App from their order status page.
+    .clearfix-with-border
+
+    %p.bold.fz-18 Form options
+    .setting-box
+      %span Full name
+      %label
+        = f.radio_button :full_name_option, 'require_last_name_only'
+        %span Require last name only
+      %label
+        = f.radio_button :full_name_option, 'require_fullname'
+        %span Require first and last name
+    .setting-box
+      %span Company name
+      %label
+        = f.radio_button :company_name_option, 'hidden_company_name'
+        %span Hidden
+      %label
+        = f.radio_button :company_name_option, 'optional_company_name'
+        %span Optional
+      %label
+        = f.radio_button :company_name_option, 'required_company_name'
+        %span Required
+    .setting-box
+      %span Address line 2 (aprtment, unit, etc.)
+      %label
+        = f.radio_button :address_2_option, 'hidden_address_2'
+        %span Hidden
+      %label
+        = f.radio_button :address_2_option, 'optional_address_2'
+        %span Optional
+      %label
+        = f.radio_button :address_2_option, 'required_address_2'
+        %span Required
+    .setting-box
+      %span Shipping address phone number
+      %label
+        = f.radio_button :shipping_address_phone_option, 'hidden_shipping_address_phone'
+        %span Hidden
+      %label
+        = f.radio_button :shipping_address_phone_option, 'optional_shipping_address_phone'
+        %span Optional
+      %label
+        = f.radio_button :shipping_address_phone_option, 'required_shipping_address_phone'
+        %span Required
+    .clearfix-with-border
+
+    %p.bold Order processing
+    .setting-box
+      %span.bold While customers is checking out
+      %label
+        = f.check_box :use_shipping_address_as_billing_address
+        %span Use shipping address  as the billing address by default
+        %span.block.note Reduce the number of fields required to check out. The billing address can still be edited.
+      %label
+        = f.check_box :address_autocompletion
+        %span Enable address autocompletion
+        %span.block.note Give customers address  suggestions when they enter shipping anh billing address.
+
+    .setting-box.margin-bt-20
+      %span.bold After an order has been fulfilled and paid
+      %label
+        = f.check_box :auto_achive_the_order
+        %span Use shipping address  as the billing address by default
+        %span.block.note Fulfilled orders will be automatically removed from the open orders list
+    .clearfix-with-border
+
+    %p.bold.fz-18 Email marketing
+    .setting-box.margin-bt-20
+      %label
+        = f.check_box :show_sign_up_at_checkout
+        %span Show a sign-up option at checkout
+      %label
+        = f.check_box :preselect_sign_up
+        %span Preselect the sign-up option
+
+    %p.bold.fz-18 Abandoned checkouts
+    .setting-box
+      %label
+        = f.check_box :auto_send_abandoned_mails
+        %span Automatically send abandoned checkout emails
+    .setting-box.abandoned-box{class:"#{@checkout_setting.auto_send_abandoned_mails ? 'el-disabled' : ''}"}
+      %span.bold Send to
+      %label
+        = f.radio_button :abandoned_emails_will_send_to_option, 'abandoned_people'
+        %span Anyone who abandons checkout
+      %label
+        = f.radio_button :abandoned_emails_will_send_to_option, 'abandoned_emails'
+        %span Email subcribers who abandone checkout
+      %span.bold Send after
+      %label
+        = f.radio_button :time_abandoned_emails_will_send_option, 'one_hour'
+        %span 1 hour
+      %label
+        = f.radio_button :time_abandoned_emails_will_send_option, 'six_hours'
+        %span 6 hours
+      %label
+        = f.radio_button :time_abandoned_emails_will_send_option, 'ten_hours'
+        %span 10 hours(recommened)
+      %label
+        = f.radio_button :time_abandoned_emails_will_send_option, 'twenty_four_hours'
+        %span 24 hours
+    .clearfix-with-border
+
+    .align-right.margin-bt-20
+      = f.submit 'Save', class: 'btn active'
+
+- content_for :javascript do
+  CheckoutSetting.run();

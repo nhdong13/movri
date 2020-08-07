@@ -3,7 +3,7 @@
   = render partial: "shares/movri_infomation"
   -# = render partial: "shares/helpful_links"
   = render partial: "shares/footer_signup"
-  = render partial: "shares/security_social_media"
+  = render partial: "shares/security_social_media", locals: {community: @current_community}
   = render partial: "shares/copyright"
 .mobile-display
   = render partial: "shares/mobile_footer"

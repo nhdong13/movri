@@ -1,5 +1,5 @@
 .movri-different.text-center
-  %h1.title= grid.heading
+  %h1.section-heading.title= grid.heading
   .row
     - text_styles = grid_styles(grid)
     - grid.store_grid_items.each do |item|
@@ -7,5 +7,6 @@
       .col-6.p-relative
         .assurred-quality
           = image_tag item.image.url, class: "assured_quality"
-        %p.p-absolute.grid-desc{class: grid.text_alignment, style: style}= item.text
+        .p-absolute.font-size-14.grid-desc{class: grid.text_alignment, style: style}
+          = item.text.html_safe
           

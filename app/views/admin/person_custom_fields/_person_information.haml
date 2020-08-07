@@ -1,0 +1,44 @@
+.col-12.customer-information#customer-information
+  .col-12.customer.padding-b-t-15.br-bottom
+    .col-12.header-section
+      %h3.left= "Customer"
+      %i.icon-times.right
+    .col-7
+      = image_tag person_information[:person].image(:small)
+    .col-5
+      %span.right= 'No order'
+      %i.icon-laptop.right
+    .col-10
+      %a.left= person_information[:person].given_name
+      = hidden_field_tag :person_id, person_information[:person].id
+      %br
+      %a.left= person_information[:person].email
+    .col-2
+      %a.right#edit-customer-email{href: "#edit-customer-email-modal", rel: "modal:open"}= "Edit"
+  .col-12.shipping-address.padding-b-t-15.br-bottom
+    .col-12.header-section
+      %h3.left= "SHIPPING ADDRESS"
+      %a.right#edit-shipping-address{href: "#edit-customer-shipping-address-modal", rel: "modal:open"}= "Edit"
+    .col-12.content
+      %p= person_information[:person].given_name
+      %p= person_information[:shipping_address].company.present? ? person_information[:shipping_address].company : ''
+      %p= person_information[:shipping_address].street1
+      %p= person_information[:shipping_address].country
+      %p= person_information[:shipping_address].phone
+  .col-12.billing-address.padding-b-t-15
+    .col-12.header-section
+      %h3.left= "BILLING ADDRESS"
+      %a.right#edit-billing-address{href: "#edit-customer-billing-address-modal", rel: "modal:open"}= "Edit"
+    .col-12.content
+      - if person_information[:shipping_address].id == person_information[:billing_address].id
+        %p= "Same as shipping address"
+      - else
+        %p= person_information[:person].given_name
+        %p= person_information[:billing_address].company.present? ? person_information[:billing_address].company : ''
+        %p= person_information[:billing_address].street1
+        %p= person_information[:billing_address].country
+        %p= person_information[:billing_address].phone
+
+= render 'edit_customer_email', email: person_information[:person].emails.last
+= render 'edit_customer_shipping_address', shipping_address: person_information[:shipping_address]
+= render 'edit_customer_billing_address', billing_address: person_information[:billing_address]

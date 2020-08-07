@@ -43,6 +43,8 @@ class TransactionsController < ApplicationController
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_do_a_transaction")
   end
 
+  before_action :checkout_setting, only: [:checkout]
+
   TransactionForm = EntityUtils.define_builder(
     [:listing_id, :fixnum, :to_integer, :mandatory],
     [:message, :string],
@@ -345,6 +347,16 @@ class TransactionsController < ApplicationController
         @shipping_address = create_shipping_address_without_current_user @transaction
       end
     end
+    add_padding_time_to_listing(@transaction.transaction_items.pluck(:listing_id), @transaction.booking, @current_community)
+  end
+
+  def add_padding_time_to_listing listing_ids, booking, community
+    padding_before_dates = (booking.start_on - community.padding_time_before.days...booking.start_on).to_a
+    padding_after_dates = (booking.end_on.tomorrow...booking.end_on.tomorrow + community.padding_time_after.days).to_a
+    padding_time_array = (padding_after_dates + padding_before_dates).uniq.sort.map{|date| date.to_formatted_s(:iso8601)}.to_s.remove("[", "]").gsub!(/\"/, '\'')
+    Listing.where(id: listing_ids).each do |listing|
+      listing.update(manually_blocked_dates: padding_time_array) if listing.available_quantity <= 1
+    end
   end
 
   def create_shipping_address_without_current_user transaction
@@ -505,6 +517,15 @@ class TransactionsController < ApplicationController
     if @transaction.missing_listings?
       flash[:error] = "Something went wrong with the number of your products. Please check it again."
       return redirect_to show_cart_path
+    end
+
+    if checkout_setting.only_guest? && @current_user
+      flash[:error] = "Only guest can continue with transaction."
+      return redirect_to show_cart_path
+    end
+    if checkout_setting.only_accounts? && !@current_user
+      flash[:error] = t("layouts.notifications.you_must_log_in_to_do_a_transaction")
+      return redirect_to login_path
     end
   end
 
@@ -762,6 +783,10 @@ class TransactionsController < ApplicationController
   def calculate_money_service(transaction=nil)
     transaction = transaction || @transaction
     @calculate_money = TransactionMoneyCalculation.new(transaction, session)
+  end
+
+  def checkout_setting
+    @checkout_setting = CheckoutSetting.last
   end
 
   def transaction_service

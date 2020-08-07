@@ -162,29 +162,27 @@ class ListingsController < ApplicationController
     shape = get_shape(Maybe(params)[:listing][:listing_shape_id].to_i.or_else(nil))
     listing_uuid = UUIDUtils.create
 
-    unless create_booking(shape, listing_uuid)
-      flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
-      return redirect_to new_listing_path
-    end
+    # TODO: comment this until find the way to re-connect Harmany
+    # unless create_booking(shape, listing_uuid)
+    #   flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
+    #   return redirect_to new_listing_path
+    # end
 
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
-
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
       redirect_to new_listing_path
       return
     end
-
     @listing = Listing.new(result.data)
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
 
     ActiveRecord::Base.transaction do
       @listing.author = new_listing_author
       service.create_state(@listing)
-
       if @listing.save
         create_or_update_accessories(result.data[:recommended_accessory_ids])
-        create_or_update_category_listings(result.data[:category_ids])
+        create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -254,7 +252,7 @@ class ListingsController < ApplicationController
 
     if update_successful
       create_or_update_accessories(result.data[:recommended_accessory_ids])
-      create_or_update_category_listings(result.data[:category_ids])
+      create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -514,7 +512,9 @@ class ListingsController < ApplicationController
     }
   end
 
-  def show_cart; end
+  def show_cart
+    @have_blocked_dates = Listing.where(id: session[:cart].keys).pluck(:manually_blocked_dates).present?
+  end
 
   def change_booking_days
     # missing params
@@ -669,7 +669,6 @@ class ListingsController < ApplicationController
     if @listing.new_record?
       @listing.init_origin_location(@listing_presenter.new_listing_author.location)
     end
-
     @listing.category = @current_community.categories.find(params[:subcategory].presence || params[:category])
     @custom_field_questions = @listing.category.custom_fields
     @numeric_field_ids = numeric_field_ids(@custom_field_questions)
