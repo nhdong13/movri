@@ -167,7 +167,10 @@ class Listing < ApplicationRecord
   before_validation :set_valid_until_time
 
   validates_presence_of :author_id
-  validates_length_of :title, :in => 2..65, :allow_nil => false
+  validates_length_of :title, :in => 2..25, :allow_nil => false
+  validates_length_of :spec, :in => 0..29999, :allow_nil => true
+  validates_length_of :spec, :in => 0..29999, :allow_nil => true
+  validates_length_of :overview, :in => 0..29999, :allow_nil => true
 
   validates :available_quantity, numericality: { greater_than_or_equal_to: 0 }
 
