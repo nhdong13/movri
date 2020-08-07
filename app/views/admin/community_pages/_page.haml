@@ -1,8 +1,8 @@
 %tr.display-flex.align-items-center 
   %td.col-10.p-3.pt-1
     %label
-      = page["page.title"].as_text
+      = page.name
     .font-size-14.text-truncate
-      = page["page.paragraph_1"].as_text
+      = page.url
   %td.col-2.p-3.pt-1.text-right
-    = page.first_publication_date.strftime("%d %b %Y")
+    = page.created_at.strftime("%d %b %Y")

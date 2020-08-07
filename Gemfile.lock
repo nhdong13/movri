@@ -305,7 +305,6 @@ GEM
       temple (>= 0.8.0)
       tilt
     hashdiff (0.3.8)
-    hashery (2.1.2)
     hashie (3.6.0)
     hiredis (0.6.3)
     htmlentities (4.3.4)
@@ -465,8 +464,6 @@ GEM
       addressable
       css_parser (>= 1.4.10)
       htmlentities (>= 4.0.0)
-    prismic.io (1.8.0)
-      hashery (~> 2.1.1)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -781,7 +778,6 @@ DEPENDENCIES
   poltergeist
   possibly (~> 1.0.1)
   premailer (~> 1.10.4)
-  prismic.io
   pry-byebug
   public_suffix (~> 2.0.5)
   puma
