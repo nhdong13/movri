@@ -15,7 +15,7 @@ module ShippingRatesService
     listing_sku = listing.sku.present? ? listing.sku : "required_field"
     listings_quantity = params[:listings_quantity] || 1
     state_from_postal_code = convert_postal_code_to_state_in_canada(ship_to_postal_code)
-
+    quantity = 1
     request_body(ship_to_postal_code, state_from_postal_code, dimension, quantity, listing_sku)
   end
 

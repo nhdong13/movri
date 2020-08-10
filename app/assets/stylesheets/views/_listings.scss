@@ -2701,6 +2701,7 @@ $listing-author-avatar-height: 108;
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
+  max-width: unset !important;
 
 
   .modal-content {
@@ -2957,7 +2958,7 @@ $listing-author-avatar-height: 108;
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
-
+  max-width: unset !important;
   tbody tr:nth-child(odd) {
     background-color: white !important;
   }

@@ -10,7 +10,7 @@
 #  community_id  :integer
 #  sort_priority :integer
 #  url           :string(255)
-#  category_type :integer          default(0)
+#  category_type :integer          default("category")
 #
 # Indexes
 #
