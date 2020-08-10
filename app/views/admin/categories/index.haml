@@ -40,3 +40,22 @@
     .ajax-notification.ajax-error.category-ajax-status-message#category-ajax-error
       = t(".save_order_error")
 
+- content_for :extra_javascript do
+  :javascript
+    $('.main-category-header, .main-categories-label').click(function(){
+      $sub_categories = $(this).parents(".top-level-category-container").find('.sub-categories');
+      if($sub_categories.is(":visible")){
+        $sub_categories.slideUp('slow')
+      } else {
+        $sub_categories.slideDown('slow')
+      }
+    });
+
+    $('.subcategory-header, .subcategory-label').click(function(){
+      $children_categories = $(this).parents('.sub-categories').find('.children-categories');
+      if($children_categories.is(":visible")){
+        $children_categories.slideUp('slow')
+      } else {
+        $children_categories.slideDown('slow')
+      }
+    });

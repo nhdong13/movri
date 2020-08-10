@@ -1,6 +1,6 @@
 - children.each do |item|
   .sub-categories
-    %span.bold.header-categories.block Sub Categories
+    %span.bold.header-categories.subcategory-header.block= "Sub Categories - <span class='children-categories-color'>Child Categories(#{item.all_children_categories.count})</span>".html_safe
     .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}", :data => {:id => item.id } }
       .col-10.listed-category-col
         .subcategory-label
@@ -10,5 +10,5 @@
     - if item.all_children_categories.any?
       .children-categories
         .header-children-categories
-          %span.bold.block Child Categories
+          %span.bold.block= "Child Categories(#{item.all_children_categories.count})"
         = render partial: "children_categories", locals: {children: item.all_children_categories, category_count: category_count}

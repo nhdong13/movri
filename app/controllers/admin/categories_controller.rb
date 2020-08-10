@@ -39,6 +39,7 @@ class Admin::CategoriesController < Admin::AdminBaseController
   def edit
     @selected_left_navi_link = "listing_categories"
     @category = @current_community.categories.find_by_url_or_id(params[:id])
+    @category_type = params[:category_type] ? params[:category_type] : 'category'
     shapes = @current_community.shapes
     selected_shape_ids = CategoryListingShape.where(category_id: @category.id).map(&:listing_shape_id)
     render locals: { shapes: shapes, selected_shape_ids: selected_shape_ids }

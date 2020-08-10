@@ -1,6 +1,6 @@
 - categories.each do |category|
   .top-level-category-container{data: {id: category.id}}
-    %span.bold.block.header-categories Category
+    %span.bold.block.header-categories.main-category-header= "Category - <span class='subcategory-color'>SubCategories(#{category.all_subcategories.count})</span>".html_safe
     .row.category-row.margin-0.padding-5
       .col-10.listed-category-col
         .main-categories-label
