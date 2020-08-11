@@ -163,10 +163,10 @@ class ListingsController < ApplicationController
     listing_uuid = UUIDUtils.create
 
     # TODO: comment this until find the way to re-connect Harmany
-    # unless create_booking(shape, listing_uuid)
-    #   flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
-    #   return redirect_to new_listing_path
-    # end
+    unless create_booking(shape, listing_uuid)
+      flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
+      return redirect_to new_listing_path
+    end
 
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
     unless result.success
@@ -232,10 +232,10 @@ class ListingsController < ApplicationController
 
     shape = get_shape(params[:listing][:listing_shape_id])
 
-    # unless create_booking(shape, @listing.uuid_object)
-    #   flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
-    #   return redirect_to edit_listing_path(@listing)
-    # end
+    unless create_booking(shape, @listing.uuid_object)
+      flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
+      return redirect_to edit_listing_path(@listing)
+    end
 
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
     unless result.success
