@@ -48,23 +48,7 @@
             .listing-include-title
               INCLUDES
             .listing-include-items
-              %ul
-                %li
-                  Memory Card
-                %li
-                  Camera Bag
-                %li
-                  Battery Pack
-                %li
-                  Speedlite
-                %li
-                  Memory Card
-                %li
-                  Camera Bag
-                %li
-                  Battery Pack
-                %li
-                  Speedlite
+              = @listing.key_feature.html_safe
       -# .row
       -#   .col-12.listing-description-content
       -#     - if @listing.description && !@listing.description.blank?

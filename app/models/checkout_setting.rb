@@ -26,8 +26,8 @@
 #  logo_content_type                       :string(255)
 #  logo_file_size                          :integer
 #  logo_updated_at                         :datetime
-#  logo_position                           :integer          default(0)
-#  logo_size                               :integer          default(1)
+#  logo_position                           :integer          default("left")
+#  logo_size                               :integer          default("medium")
 #
 
 # check this for more details

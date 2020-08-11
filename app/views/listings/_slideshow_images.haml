@@ -2,29 +2,31 @@
   - if reason == :images_ok
     .listing-image-carousel.right
       - if @listing_presenter.prev_image_id && @listing_presenter.next_image_id
-        .col-1
-          %ul#image-list
-            - listing_images.each_with_index do |listing_image, index|
-              - if index < 4
+        .display-flex
+          .width-15
+            %ul#image-list
+              - listing_images.each_with_index do |listing_image, index|
+                - if index < 4
+                  %li.zoom-image-slide
+                    .zoom-image-item
+                      = image_tag(listing_image.image(:thumb))
+                - elsif index < 5
+                  %li.zoom-image-slide.zoom-image-show-more
+                    .zoom-image-item
+                      = image_tag(listing_image.image(:thumb))
+                      %span
+                        = "+ #{listing_images.count - 4}"
+              - if @listing.video.present?
+                %li.zoom-image-slide.zoom-image-video
+                  .zoom-image-item
+                    %i.icon-play-circle
+
+          .width-85#slideshow-main
+            %ul#slideshow-list
+              - listing_images.each do |listing_image|
                 %li.zoom-image-slide
                   .zoom-image-item
-                    = image_tag(listing_image.image(:thumb))
-              - elsif index < 5
-                %li.zoom-image-slide.zoom-image-show-more
-                  .zoom-image-item
-                    = image_tag(listing_image.image(:thumb))
-                    %span
-                      = "+ #{listing_images.count - 4}"
-            - if @listing.video.present?
-              %li.zoom-image-slide.zoom-image-video
-                .zoom-image-item
-                  %i.icon-play-circle
-        #slideshow-main.right.col-11
-          %ul#slideshow-list
-            - listing_images.each do |listing_image|
-              %li.zoom-image-slide
-                .zoom-image-item
-                  = image_tag(listing_image.image(:original))
+                    = image_tag(listing_image.image(:original))
 
     - content_for :extra_javascript do
       :javascript

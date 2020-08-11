@@ -738,6 +738,8 @@ en:
         url_redirects: URL Redirects
       manager_customer:
         customers: Customers
+      manager_preferences:
+        preferences: Preferences
     landing_page_versions:
       sections:
         hero:

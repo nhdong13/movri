@@ -3,7 +3,7 @@
 .row
   .col-6
     = form.label 'SKU (Stock Keeping Unit)', 'SKU (Stock Keeping Unit)'
-    = form.text_field :sku, :class => "sku", :maxlength => "10", :placeholder => "", :value => (@listing.sku ? @listing.sku.to_s: "")
+    = form.text_field :sku, :class => "sku", :placeholder => "", :value => (@listing.sku ? @listing.sku.to_s: "")
 
   .col-6
     = form.label "Barcode (ISBN, UPC, GTIN, etc.)", "Barcode (ISBN, UPC, GTIN, etc.)"

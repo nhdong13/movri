@@ -9,6 +9,7 @@ import SearchPageApp from './SearchPageApp';
 import ManageAvailabilityApp from './ManageAvailabilityApp';
 import ListingWorkingHoursApp from './ListingWorkingHoursApp';
 import OnlineStore from './OnlineStore';
+import CommunityPreferences from './CommunityPreferences';
 
 ReactOnRails.register({
   OnboardingGuideApp,
@@ -17,7 +18,8 @@ ReactOnRails.register({
   SearchPageApp,
   ManageAvailabilityApp,
   ListingWorkingHoursApp,
-  OnlineStore
+  OnlineStore,
+  CommunityPreferences,
 });
 
 ReactOnRails.registerStore({

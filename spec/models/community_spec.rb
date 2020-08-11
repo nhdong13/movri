@@ -109,6 +109,7 @@
 #  global_blocked_dates                       :string(255)
 #  padding_time_before                        :float(24)        default(0.0)
 #  padding_time_after                         :float(24)        default(0.0)
+#  facebook_pixel_id                          :string(255)
 #
 # Indexes
 #

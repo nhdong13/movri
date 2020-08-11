@@ -13,6 +13,6 @@
 .left-navi-section
   = form_for [:admin, @category] do |form|
     = render :partial => "admin/categories/form/category_name", :locals => { :form => form }
-    = render :partial => "admin/categories/form/category_parent", :locals => { :form => form }
+    = render :partial => "admin/categories/form/category_parent", :locals => { :form => form, category_type: @category_type }
     = render :partial => "admin/categories/form/category_listing_shapes", :locals => { :form => form, shapes: shapes, selected_shape_ids: selected_shape_ids }
     = render :partial => "admin/categories/form/buttons", :locals => { :form => form }

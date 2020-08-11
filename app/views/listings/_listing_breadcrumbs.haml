@@ -1,15 +1,15 @@
 .listing-breadcrumbs
   %div
-    .listing-breadcrumb
-      - ListingViewUtils.get_arr_breadcrumb_listing(@listing).each do |item|
-        %div
-          %a.listing-link-crumb{"data-selenium" => "linkCrumb", :href => "/"}
-            = item.gsub("-", " ").upcase
-        %svg.bhIcon.listing-separator-icon{:height => "12", :viewbox => "0 0 46 86", :width => "12"}
-          %path{:d => "M1 80.1C-.3 81.5-.3 83.6 1 85c1.3 1.3 3.5 1.4 4.8 0L45 45.4c1.3-1.4 1.3-3.5 0-4.9L5.8 1C4.5-.3 2.3-.3 1 1-.3 2.4-.3 4.5 1 5.9L36.7 43 1 80.1z"}
-      -# %div
-      -#   %a.listing-link-crumb{"data-selenium" => "linkCrumb", :href => "/c/browse/Computers-Solutions/ci/9581/N/4294542559"} Digital Cameras
-      -# %svg.bhIcon.listing-separator-icon{:height => "12", :viewbox => "0 0 46 86", :width => "12"}
-      -#   %path{:d => "M1 80.1C-.3 81.5-.3 83.6 1 85c1.3 1.3 3.5 1.4 4.8 0L45 45.4c1.3-1.4 1.3-3.5 0-4.9L5.8 1C4.5-.3 2.3-.3 1 1-.3 2.4-.3 4.5 1 5.9L36.7 43 1 80.1z"}
-      -# %div
-      -#   %a.listing-link-crumb{"data-selenium" => "linkCrumb", :href => "/c/browse/computer-components/ci/26717/N/3835434472"} DSLR Camera
+    .listing-breadcrumb.flex-items
+      = link_to 'HOME', homepage_with_locale_path
+      %i.fa.fa-chevron-right
+      - if @listing.main_category
+        = link_to @listing.main_category.url.gsub("-", " ").upcase, categories_path(categories: @listing.main_category.url)
+        %i.fa.fa-chevron-right
+      - if @listing.subcategory
+        = link_to @listing.subcategory.url.gsub("-", " ").upcase, categories_path(subcategories: @listing.subcategory.url)
+        %i.fa.fa-chevron-right
+      - if @listing.children_category
+        = link_to @listing.children_category.url.gsub("-", " ").upcase, categories_path(children_categories: @listing.children_category.url)
+        %i.fa.fa-chevron-right
+      = link_to @listing.title, listing_path(@listing)

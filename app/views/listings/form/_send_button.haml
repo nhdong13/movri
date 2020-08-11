@@ -4,7 +4,14 @@
 = hidden_field_tag 'listing[category_ids][]', nil, id:'children_category_id'
 = form.hidden_field(:listing_shape_id, :value => @listing.listing_shape_id)
 - key = @listing_presenter.show_submit_for_review? ? t(".submit_for_review") : t(".save_listing")
-= form.button key, :class => "send_button submit-new-listing"
+.flex-items
+  .width-50
+    = form.button key, :class => "send_button submit-new-listing"
+  - if @listing.id
+    .width-50.align-right
+      .common-link-btn.link-delete-btn
+        = link_to t("listings.edit_links.delete_listing"), delete_listing_path(@listing), data: {confirm: t("listings.deleting_a_listing_cannot_be_undone")},
+          method: "delete"
 
 - if @listing_presenter.approval_in_use?
   - if @listing_presenter.show_submit_for_review?
