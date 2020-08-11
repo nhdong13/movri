@@ -1,0 +1,16 @@
+= form_for page, :url => url, :method => method do |f|
+  .customer-page.add-customer-form
+    .section.p-0
+      .row.p-0.m-0
+        .col-8.p-0
+          .section-wrapper.row.m-0.pt-0
+            .col-12.p-0.m-0
+              = f.label :name, "Name", class: 'font-weight-regular'
+              = f.text_field :name, value: page.name, class: 'form-control', placeholder: 'About us'
+            .col-12.p-0.m-0
+              = f.label :url, "Url", class: 'font-weight-regular'
+              = f.text_field :url, value: page.url, class: 'text_field', placeholder: '/about-us'
+           
+    .mt-4.display-flex.justify-content-end
+      = link_to  "Cancel", admin_community_pages_path(@current_community), class: 'btn btn-white'
+      = f.submit "Save", class: 'btn btn-primary ml-2'

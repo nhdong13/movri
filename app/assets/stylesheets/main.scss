@@ -2643,6 +2643,13 @@ figure.fluidratio {
   text-align: left !important;
 }
 
+.text-truncate {
+  max-width: 900px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .line-height-16 {
   line-height: 16px !important;
 }
