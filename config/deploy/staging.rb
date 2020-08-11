@@ -61,7 +61,7 @@
 #   }
 set :branch, 'staging'
 
-set :rails_env, 'staging'
+set :rails_env, 'production'
 set :bundle_flags, "--no-deployment"
 set :puma_workers, 1
 
