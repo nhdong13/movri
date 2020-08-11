@@ -1,7 +1,7 @@
 %tr.display-flex.align-items-center 
   %td.col-10.p-3.pt-1
     %label
-      = page.name
+      = link_to page.name, edit_admin_community_page_path(community_id: @current_community.id, id: page.id)
     .font-size-14.text-truncate
       = page.url
   %td.col-2.p-3.pt-1.text-right

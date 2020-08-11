@@ -16,7 +16,7 @@
 #
 
 class Page < ApplicationRecord
-  validates :url, presence: true, uniqueness: true
+  validates_uniqueness_of :url
 
   belongs_to :community
 end

@@ -10,7 +10,7 @@
     .col-9.row.p-0.m-0
     .col-3.p-0.m-0.display-flex.justify-content-end
       .btn-link
-        = link_to "#" do
+        = link_to new_admin_community_page_path(@current_community) do
           %span Add page
   .assurance-options-lists
     .head-section.p-2
@@ -25,5 +25,5 @@
             %th.col-10.p-3.pt-1
             %th.col-2.p-3.pt-1
         %tbody
-          - @pages&.each do |page|
+          - @service.pages&.each do |page|
             = render 'page', page: page
