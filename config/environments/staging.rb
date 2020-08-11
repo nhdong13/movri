@@ -1,5 +1,4 @@
 require_relative './common.rb'
-
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -40,8 +39,7 @@ Rails.application.configure do
 
   # If you have no front-end server that supports something like X-Sendfile,
   # just comment this out and Rails will serve the files
-
-  config.log_level = :info
+  config.log_level = :debug
   # Basic log config, for calls to Rails.logger.<level> { <message> }
   config.logger = ::Logger.new(STDOUT)
   # Formats log entries into: LEVEL MESSAGE
@@ -84,22 +82,22 @@ Rails.application.configure do
         expires_in: ENV["redis_expires_in"] || 240 # default, 4 hours in minutes
       }]
     else
-      [:dalli_store, (ENV["MEMCACHIER_SERVERS"] || "").split(","), {
-         username: ENV["MEMCACHIER_USERNAME"],
-         password: ENV["MEMCACHIER_PASSWORD"],
+      [:dalli_store, (ENV["MEMCACHIER_GREEN_SERVERS"] || "").split(","), {
+         username: ENV["MEMCACHIER_GREEN_USERNAME"],
+         password: ENV["MEMCACHIER_GREEN_PASSWORD"],
          failover:  true,
          socket_timeout: 1.5,
          socket_failure_delay:  0.2,
-         namespace: ENV["MEMCACHED_NAMESPACE"] || "sharetribe-staging",
+         namespace: ENV["MEMCACHED_NAMESPACE"] || "sharetribe-production",
          compress: true
        }]
     end
 
   # Compress JavaScript and CSS
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true)
 
   # Don't fallback to assets pipeline
-  config.assets.compile = false
+  config.assets.compile = true
 
   # Generate digests for assets URLs
   config.assets.digest = true
