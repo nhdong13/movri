@@ -128,6 +128,8 @@ module PriceCalculationService
       {GST: 6, PST: 5}
     when 'yukon'
       {GST: 5}
+    else
+      {GST: 5}
     end
   end
 end

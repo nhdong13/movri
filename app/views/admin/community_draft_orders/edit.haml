@@ -19,9 +19,9 @@
       %i.icon-print
         %span= "Print"
       %i.icon-chevron-left
-        %span= "Return"
+        %span= "Refund"
       %i.icon-remove
-        %span= "Cancel"
+        %a#cancel-booking{href: "#cancel-booking-modal", rel: "modal:open"}= "Cancel"
   .row
     .col-9
       .col-12.order-info
@@ -43,3 +43,5 @@
   .row
     .col-12
       %btn.button.save-button= "Save"
+
+= render 'cancel_booking', order: @order

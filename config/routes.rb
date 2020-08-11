@@ -375,7 +375,7 @@ Rails.application.routes.draw do
             get 'export_status'
           end
         end
-        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit] do
+        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit, :update] do
           collection do
             get 'add_to_order'
           end

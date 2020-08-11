@@ -36,6 +36,7 @@
 #  order_number                      :integer
 #  billing_address_id                :integer
 #  shipping_address_id               :integer
+#  canceled_order_note               :string(255)
 #
 # Indexes
 #
