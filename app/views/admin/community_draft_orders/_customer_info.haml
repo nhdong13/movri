@@ -16,7 +16,7 @@
   .col-2
     = "Edit"
   .col-12
-    %p= order.shipping_address.full_address.present? ? order.shipping_address.full_address : "No shipping address"
+    %p= order.shipping_address.present? ? order.shipping_address.full_address : "No shipping address"
 .row.billing-address
   .col-12
     %h3= "BILLING ADDRESS"

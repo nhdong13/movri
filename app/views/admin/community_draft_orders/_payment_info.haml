@@ -11,18 +11,20 @@
     .col-2
       = "Tax"
     .col-8
-      %p= "GST #{@rate_type[:GST]}%"
-      %p= "PST #{@rate_type[:PST]}%"
+      %p= "GST #{@payment_info[:GST]}%"
+      - if @payment_info[:PST]
+        %p= "PST #{@payment_info[:PST]}%"
     .col-2
-      %p= "#{number_to_currency(order.total_price_cents * @rate_type[:GST] / 100)}"
-      %p= "#{number_to_currency(order.total_price_cents * @rate_type[:PST] / 100)}"
+      %p= "#{number_to_currency(order.total_price_cents * @payment_info[:GST] / 100)}"
+      - if @payment_info[:PST]
+        %p= "#{number_to_currency(order.total_price_cents * @payment_info[:PST] / 100)}"
   .row
     .col-10
       = "Total"
     .col-2
-      %p= number_to_currency(order.total_price_cents + (order.total_price_cents * @rate_type[:GST] / 100) + (order.total_price_cents * @rate_type[:PST] / 100))
+      %p= number_to_currency(@payment_info[:total])
 .row
   .col-10
     = "Paid by customer"
   .col-2
-    %p= number_to_currency(order.total_price_cents + (order.total_price_cents * @rate_type[:GST] / 100) + (order.total_price_cents * @rate_type[:PST] / 100))
+    %p= number_to_currency(@payment_info[:total])
