@@ -50,7 +50,8 @@ class SectionHeadingsSetting extends Component {
         <FontPicker
           apiKey="AIzaSyD3Th59sA9Qu2P8VUgzh1le91wfHUAnhdg"
           activeFontFamily={section_heading_font_settings['font_family']}
-          onChange={this.handleChangeFontFamily} />
+          onChange={this.handleChangeFontFamily}
+          pickerId='sectionHeadingsFont' />
         <div className='display-flex align-items-center mt-2'>
           <input type='checkbox' name='uppercase' className='mr-2' checked={section_heading_font_settings['uppercase'] || false} onChange={this.handleChangeSectionHeadingsSetting}/>
           <label className='font-weight-regular m-0'>Uppercase</label>

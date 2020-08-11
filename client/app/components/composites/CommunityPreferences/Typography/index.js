@@ -70,7 +70,8 @@ class Typography extends Component {
               <FontPicker
                 apiKey="AIzaSyD3Th59sA9Qu2P8VUgzh1le91wfHUAnhdg"
                 activeFontFamily={body_text_font_settings['font_family']}
-                onChange={this.handleChangeBodyFontFamily} />
+                onChange={this.handleChangeBodyFontFamily}
+                pickerId='bodyTextFont'/>
             </div>
             <MainMenuSetting 
               preferences={this.props.preferences}

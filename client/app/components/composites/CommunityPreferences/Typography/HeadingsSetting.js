@@ -50,7 +50,8 @@ class HeadingsSetting extends Component {
         <FontPicker
           apiKey="AIzaSyD3Th59sA9Qu2P8VUgzh1le91wfHUAnhdg"
           activeFontFamily={heading_font_settings['font_family']}
-          onChange={this.handleChangeHeadingsFont}/>
+          onChange={this.handleChangeHeadingsFont}
+          pickerId='headingsFont' />
         <label className='font-weight-regular'>Size</label>
         <select name='font_weight' value={heading_font_settings['font_weight'] || 'medium'} onChange={this.handleChangeHeadingsSetting}>
           <option value='small'>Small</option>
