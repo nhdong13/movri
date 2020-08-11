@@ -414,6 +414,13 @@ module ApplicationHelper
       },
       {
         :topic => :manage,
+        :text => t("admin.communities.manager_pages.pages_option"),
+        :icon_class => icon_class("edit"),
+        :path => admin_community_pages_path(@current_community),
+        :name => "pages"
+      },
+      {
+        :topic => :manage,
         :text => t("admin.communities.manage_members.manage_members"),
         :icon_class => icon_class("community"),
         :path => admin_community_community_memberships_path(@current_community, sort: "join_date", direction: "desc"),
