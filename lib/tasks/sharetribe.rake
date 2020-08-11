@@ -63,4 +63,41 @@ namespace :sharetribe do
       community.person_custom_fields.phone_number.destroy_all
     end
   end
+
+
+  desc "Create booking for listing"
+  task :create_booking_for_exist_listings => :environment do
+    listings = Listing.all
+    current_community = Community.last
+    listings.each do |listing|
+      shape = listing.listing_shape
+      if shape.present?
+        if shape.booking_per_hour?
+          true
+        elsif APP_CONFIG.harmony_api_in_use && shape.booking?
+          community_uuid = current_community.uuid_object
+          listing_uuid = listing.uuid_object.to_s
+          author_uuid = Person.find_by(username: "adminm").uuid_object
+          res = HarmonyClient.post(
+            :create_bookable,
+            body: {
+              marketplaceId: community_uuid,
+              refId: listing_uuid,
+              authorId: author_uuid
+            },
+            opts: {
+              max_attempts: 3
+            })
+
+          if !res[:success] && res[:data][:status] == 409
+            Result::Success.new("Bookable for listing with UUID #{listing_uuid} already created")
+          else
+            res
+          end
+        else
+          true
+        end
+      end
+    end
+  end
 end
