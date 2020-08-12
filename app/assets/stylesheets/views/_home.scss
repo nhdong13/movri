@@ -664,6 +664,9 @@ $home-list-avatar-padding: lines(0.25);
 .new-products,
 .feature-products {
   margin-top: 25px;
+  & .col-3{
+    padding: 0 30px;
+  }
 
   & p:first-child {
     margin-left: 0.75em;
