@@ -21,9 +21,9 @@ set :deploy_to, "/var/www/rental"
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w(config/database.yml config/config.yml)
+set :linked_files, %w(config/database.yml config/config.yml config/production.sphinx.conf)
 # Default value for linked_dirs is []
-set :linked_dirs, %w(log tmp/pids tmp/sockets vendor/bundle public/system public/uploads .bundle)
+set :linked_dirs, %w(log tmp/pids tmp/sockets vendor/bundle public/system public/uploads .bundle db/sphinx/production)
 
 # remove :linked_dirs, "public/assets"
 # Default value for default_env is {}
