@@ -76,7 +76,7 @@ namespace :sharetribe do
           true
         elsif APP_CONFIG.harmony_api_in_use && shape.booking?
           community_uuid = Community.last.uuid_object
-          listing_uuid = Listing.first.uuid_object
+          listing_uuid = listing.uuid_object
           author_uuid = Person.find_by(username: "adminm").uuid_object
           author_id = Person.find_by(username: "adminm").id
           SessionContextStore.set({:marketplace_id => 1,:marketplace_uuid => community_uuid,:user_id => author_id,:user_uuid => author_uuid,:user_role => :admin})
