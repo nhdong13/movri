@@ -75,25 +75,12 @@ namespace :sharetribe do
         if shape.booking_per_hour?
           true
         elsif APP_CONFIG.harmony_api_in_use && shape.booking?
-          community_uuid = current_community.uuid_object
-          listing_uuid = listing.uuid_object.to_s
+          community_uuid = Community.last.uuid_object
+          listing_uuid = Listing.first.uuid_object
           author_uuid = Person.find_by(username: "adminm").uuid_object
-          res = HarmonyClient.post(
-            :create_bookable,
-            body: {
-              marketplaceId: community_uuid,
-              refId: listing_uuid,
-              authorId: author_uuid
-            },
-            opts: {
-              max_attempts: 3
-            })
-
-          if !res[:success] && res[:data][:status] == 409
-            Result::Success.new("Bookable for listing with UUID #{listing_uuid} already created")
-          else
-            res
-          end
+          author_id = Person.find_by(username: "adminm").id
+          SessionContextStore.set({:marketplace_id => 1,:marketplace_uuid => community_uuid,:user_id => author_id,:user_uuid => author_uuid,:user_role => :admin})
+          HarmonyService.new().create_bookable(community_uuid, listing_uuid, author_uuid).success
         else
           true
         end

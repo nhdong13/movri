@@ -833,7 +833,7 @@ class ListingsController < ApplicationController
       if shape.booking_per_hour?
         true
       elsif APP_CONFIG.harmony_api_in_use && shape.booking?
-        create_bookable(@current_community.uuid_object, listing_uuid, @current_user.uuid_object).success
+        harmony_service.create_bookable(@current_community.uuid_object, listing_uuid, @current_user.uuid_object).success
       else
         true
       end
@@ -866,5 +866,9 @@ class ListingsController < ApplicationController
         TransactionItemsService.new(transaction, session, nil)
       end
     end
+  end
+
+  def harmony_service
+    HarmonyService.new
   end
 end
