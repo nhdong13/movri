@@ -15,6 +15,7 @@
 
 
 .search-result-algolia{
+  width: 65%;
   display: none;
   margin-top: 5px;
   position: absolute;
@@ -75,7 +76,21 @@ mark{
   .suggestion-items{
     padding: 0 0 0 10px;
   }
+  .listing-price{
+    font-size: 18px;
+    color: #222222;
+    font-weight: bold;
+    span:first-child{color: #163f77 !important;}
+    span:last-child{color: #4eb857 !important;}
+  }
+  .sku{
+    color: #7c7c7c !important;
+    font-size: 15px;
+    font-weight: 100;
+  }
+  .width-90{line-height: 1.5}
 }
+
 .snize-label{
   padding: 0px 10px 0px;
   font-size: 10px;
@@ -124,5 +139,32 @@ mark{
         border-radius: 4px;
       }
     }
+  }
+}
+
+.current-refinements-label{
+  background: black;
+  color: white;
+  font-weight: 700;
+  padding: 0.4375rem 0.625rem;
+  border: 1px solid black;
+  margin-right: 1px;
+}
+
+#current-refinements{
+  button{
+    background: black;
+    padding: 0.4375rem 0.625rem;
+    border: 1px solid black;
+    border-radius: 0;
+    margin-right: 10px;
+  }
+}
+
+.current-collection--title{
+  span {
+    font-size: 2.125rem;
+    line-height: 1.3;
+    color: #254e58;
   }
 }

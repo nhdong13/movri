@@ -96,7 +96,7 @@
 class Listing < ApplicationRecord
   include AlgoliaSearch
   algoliasearch index_name: "movri_products" do
-    attribute :id, :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility
+    attribute :id, :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility, :sku
     attributes :main_image do
       main_image
     end
@@ -114,6 +114,16 @@ class Listing < ApplicationRecord
     attributes :children_category do
       children_category&.url
     end
+
+    attributes :children_category do
+      children_category&.url
+    end
+
+    attributes :default_7_days_rental_price do
+      price = Money.new(PriceCalculationService.calculate(self, 7), 'USD')
+      MoneyViewUtils.to_humanized(price)
+    end
+
   end
 
   WIEGHT_TYPE = ['kg', 'pound']

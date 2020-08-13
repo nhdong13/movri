@@ -411,6 +411,7 @@ Rails.application.routes.draw do
         resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create, :edit, :update]
         resources :customers, controller: :community_customers, only: [:index, :new, :create]
         resources :customers, controller: :community_customers, param: :uuid, :only => :show
+        resources :pages, controller: :community_pages
         resource :preferences, controller: :community_preferences, only: [:edit, :update]
         resource :paypal_preferences, only: :index do
 
@@ -668,6 +669,8 @@ Rails.application.routes.draw do
       "/404"
     end
   end
+
+  resources :pages, param: :page_url, :path => "", :only => :show
 
   get "(/:locale)/people/:person_id(*path)" => redirect(id_to_username), :constraints => { :locale => locale_matcher, :person_id => /[a-zA-Z0-9_-]{22}/ }
 

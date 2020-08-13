@@ -1,0 +1,29 @@
+- content_for :title_header do
+  %h1
+    = t("layouts.admin.admin")
+    = "-"
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section.p-3.assurance-options-index
+  %h2 Pages
+  .row.p-0.m-0.display-flex.align-items-center
+    .col-9.row.p-0.m-0
+    .col-3.p-0.m-0.display-flex.justify-content-end
+      .btn-link
+        = link_to new_admin_community_page_path(@current_community) do
+          %span Add page
+  .assurance-options-lists
+    .head-section.p-2
+      .tabs.display-flex
+        .tab-item.tab-active All
+      .filters.m-2.mt-4.mb-4
+        %input{type: :text, class: "form-control", placeholder: "Search page"}
+    .body-section.p-1
+      %table
+        %thead
+          %tr.row.p-0.m-0
+            %th.col-10.p-3.pt-1
+            %th.col-2.p-3.pt-1
+        %tbody
+          - @service.pages&.each do |page|
+            = render 'page', page: page

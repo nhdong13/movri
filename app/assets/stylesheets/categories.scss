@@ -13,6 +13,8 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 
 .listing-box{
+  border-radius: 10px;
+  background: white;
   margin: 10px 0;
   transition: all 0.5s;
   width: 100%;
@@ -218,6 +220,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   padding: 5px 10px;
   border-radius: 5px;
   border: 1px solid #bdbdbd;
+}
+
+.ais-SortBy-select{
+  padding: 5px 5px;
+  min-height: unset !important;
+  margin-left: 10px;
 }
 
 #mobile-sort-by{

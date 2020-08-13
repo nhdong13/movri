@@ -4,14 +4,15 @@
       %p.section-heading.text-center= featured_product.heading
     .products.text-center
       - style = "color: #{featured_product.button_text_color}"
+
       - featured_product.listings.each do |listing|
         .col-3
-          .product
-            .product-image
-              = image_tag(listing.main_image)
-            .product-name
-              %a{href: listing_path(listing.id)}= listing.title
-            .product-rent-price
-              %span= "#{humanized_money_with_symbol listing.price} "
+          .listing-box
+            .main-image
+              = image_tag listing.main_image, :class => "design-image-too-wide"
+            .listing-price
+              %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
               %span= "/ #{ListingViewUtils.get_time_rent(session)}"
-            %a.rent-btn{href: listing_path(listing.id),  style: style}= "Rent now"
+            .listing-information
+              = listing.title
+            = link_to "Rent now", listing_path(listing), class: "rent-now-btn"

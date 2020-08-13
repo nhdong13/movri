@@ -740,6 +740,8 @@ en:
         customers: Customers
       manager_preferences:
         preferences: Preferences
+      manager_pages:
+        pages_option: Pages
     landing_page_versions:
       sections:
         hero:

@@ -38,8 +38,7 @@ Rails.application.configure do
 
   # If you have no front-end server that supports something like X-Sendfile,
   # just comment this out and Rails will serve the files
-  config.log_level = :debug
-  # config.log_level = :info
+  config.log_level = :info
   # Basic log config, for calls to Rails.logger.<level> { <message> }
   config.logger = ::Logger.new(STDOUT)
   # Formats log entries into: LEVEL MESSAGE
@@ -73,27 +72,27 @@ Rails.application.configure do
   end
 
   # Prefer redis instead of memcached
-  config.cache_store =
-    if ENV["redis_host"].present?
-      [:redis_cache_store, {
-        driver: :hiredis,
-        namespace: ENV["redis_cache_namespace"] || "cache",
-        compress: true,
-        timeout: 1,
-        url: "redis://#{ENV["redis_host"]}:#{ENV["redis_port"]}/#{ENV["redis_db"]}",
-        expires_in: ENV["redis_expires_in"] || 240 # default, 4 hours in minutes
-      }]
-    else
-      [:dalli_store, (ENV["MEMCACHIER_GREEN_SERVERS"] || "").split(","), {
-         username: ENV["MEMCACHIER_GREEN_USERNAME"],
-         password: ENV["MEMCACHIER_GREEN_PASSWORD"],
-         failover:  true,
-         socket_timeout: 1.5,
-         socket_failure_delay:  0.2,
-         namespace: ENV["MEMCACHED_NAMESPACE"] || "sharetribe-production",
-         compress: true
-       }]
-    end
+  config.cache_store = :memory_store, { :namespace => "sharetribe-prod"}
+    # if ENV["redis_host"].present?
+    #   [:redis_cache_store, {
+    #     driver: :hiredis,
+    #     namespace: ENV["redis_cache_namespace"] || "cache",
+    #     compress: true,
+    #     timeout: 1,
+    #     url: "redis://#{ENV["redis_host"]}:#{ENV["redis_port"]}/#{ENV["redis_db"]}",
+    #     expires_in: ENV["redis_expires_in"] || 240 # default, 4 hours in minutes
+    #   }]
+    # else
+    #   [:dalli_store, (ENV["MEMCACHIER_GREEN_SERVERS"] || "").split(","), {
+    #      username: ENV["MEMCACHIER_GREEN_USERNAME"],
+    #      password: ENV["MEMCACHIER_GREEN_PASSWORD"],
+    #      failover:  true,
+    #      socket_timeout: 1.5,
+    #      socket_failure_delay:  0.2,
+    #      namespace: ENV["MEMCACHED_NAMESPACE"] || "sharetribe-production",
+    #      compress: true
+    #    }]
+    # end
 
   # Compress JavaScript and CSS
   config.assets.js_compressor = Uglifier.new(harmony: true)
