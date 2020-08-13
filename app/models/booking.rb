@@ -23,8 +23,6 @@
 class Booking < ApplicationRecord
   belongs_to :tx, class_name: "Transaction", foreign_key: "transaction_id", inverse_of: :booking
 
-  before_save :add_listing_blocked_dates
-
   validates :start_on, presence: true
   validates :end_on, presence: true
   scope :in_period, ->(start_time, end_time) { where(['start_time >= ? AND end_time <= ?', start_time, end_time]) }
