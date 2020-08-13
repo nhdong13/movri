@@ -403,7 +403,6 @@ $(document).ready(function() {
         ${items.map(renderListItem).join('')}
       </div>
     `;
-
     [...widgetParams.container.querySelectorAll('button')].forEach(element => {
       element.addEventListener('click', event => {
         const item = Object.keys(event.currentTarget.dataset).reduce(
@@ -549,7 +548,7 @@ $(document).ready(function() {
 
       customCurrentRefinements({
         container: document.querySelector('#current-refinements'),
-      })
+      }),
     ]);
   }
 
