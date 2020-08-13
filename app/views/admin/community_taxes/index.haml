@@ -1,0 +1,90 @@
+- content_for :title_header do
+  %h1
+    = t("layouts.admin.admin")
+    = "-"
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section.p-3.taxes-index
+  %h2 Taxes
+
+  .section.p-0
+    .row.p-0.m-0
+      .col-8.p-0
+        %label Sales tax
+        .section-wrapper.row.pt-0
+          %label.mt-0.mb-2.pl-2.pt-2 Registered tax accounts
+          - @current_community.tax_accounts.each do |account|
+            .sub-wrapper.m-2.mb-0.pb-2
+              = account[:province]
+              .font-size-14.text-gray
+                = account[:tax_number]
+  .section.p-0
+    .row.p-0.m-0
+      .col-8.p-0
+        %label Tax rates
+        .section-wrapper.row.pt-0
+          .sub-header.display-flex.align-items-center.row.m-0.p-2
+            .col-5.p-0
+              %label.m-0.font-weight-regular Regions
+            .col-5.p-0.text-right
+              %a#add-tax-rates.text-white.m-0.btn.btn-link{href: "#add-tax-rates-modal", rel: "modal:open"}= "Add tax rates"
+            .col-2.p-0.text-right
+              Total
+          .tax-rates
+            - @service.taxes.each do |tax|
+              .sub-wrapper.row.display-flex.align-items-center.m-2.mb-0.pb-2
+                .col-5.p-0
+                  = tax.province_display
+                .col-5.p-0.text-right
+                  = tax_rates_in_string(tax.tax_rates)
+                .col-2.p-0.text-right
+                  = total(tax.tax_rates)
+  
+  .section.p-0
+    .row.p-0.m-0
+      .col-8.p-0
+        %label Tax calculations
+        .section-wrapper.row.pt-0
+          = form_tag tax_calculations_admin_community_path(@current_community), method: :put do
+            = fields_for "settings[]", @current_community do |f|
+              .sub-wrapper.m-2.mb-0.pb-2
+                .checkbox-container.p-2
+                  .display-flex
+                    %input{type: 'checkbox', id: 'show_price_with_tax', name: 'settings[show_price_with_tax]', value: 'true', checked: @current_community.settings[:show_price_with_tax], class:'mr-2'}
+                    %input{type: 'hidden', id: 'show_price_with_tax_hidden', name: 'settings[show_price_with_tax]', disabled: true, value: 'false', class:'mr-2'}
+                    %label{for: 'show_price_with_tax', :class => 'm-0 checkbox font-weight-regular'} Show all prices with tax included
+                  .font-size-14.text-gray
+                    If taxes are charged on shipping rates, then taxes are included in the price.
+              .sub-wrapper.m-2.mb-0.pb-2
+                .checkbox-container.p-2
+                  .display-flex
+                    %input{type: 'checkbox', id: 'charge_tax_on_shipping_rates', name: 'settings[charge_tax_on_shipping_rates]', value: 'true', checked: @current_community.settings[:charge_tax_on_shipping_rates], class:'mr-2'}
+                    %input{type: 'hidden', id: 'charge_tax_on_shipping_rates_hidden', name: 'settings[charge_tax_on_shipping_rates]', disabled: true, value: 'false', class:'mr-2'}
+                    %label{for: 'charge_tax_on_shipping_rates', :class => 'm-0 checkbox font-weight-regular'} Charge tax on shipping rates
+                  .font-size-14.text-gray
+                    Include shipping rates in the tax calculation. This is automatically calculated for Canada and the United State.
+            .mt-2.text-right.mr-2
+              = submit_tag 'Save',id: 'update-tax-calculations', disabled: true, class: 'btn active'
+
+= render 'add_tax_rates', taxes: @service.taxes
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function(){
+      document.getElementById('show_price_with_tax').addEventListener('change', (event) => {
+        document.getElementById('update-tax-calculations').disabled = false
+        if (event.target.checked) {
+          document.getElementById('show_price_with_tax_hidden').disabled = true;
+        } else {
+          document.getElementById('show_price_with_tax_hidden').disabled = false;
+        }
+      })
+      document.getElementById('charge_tax_on_shipping_rates').addEventListener('change', (event) => {
+        document.getElementById('update-tax-calculations').disabled = false
+        if (event.target.checked) {
+          document.getElementById('charge_tax_on_shipping_rates_hidden').disabled = true;
+        } else {
+          document.getElementById('charge_tax_on_shipping_rates_hidden').disabled = false;
+        }
+      })
+    })

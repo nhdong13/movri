@@ -1,0 +1,37 @@
+.taxes-index {
+  .section {
+    margin-bottom: 20px !important;
+    border-top: 1px solid lightgray;
+    .section-wrapper {
+      padding-bottom: 15px !important;
+      background-color: white;
+      border-radius: 2px;
+      box-shadow: 0 2px 3px 0 rgba(0,0,0,0.2),0 1px 3px 0 rgba(0,0,0,0.19) !important;
+      margin-bottom: 0.75em;
+      .sub-wrapper {
+        border-bottom: 1px solid gray;
+      }
+      .sub-header {
+        border-bottom: 1px solid gray;
+      }
+      .tax-rates {
+        .sub-wrapper {
+          border-color: lightgray;
+        }
+      }
+    }
+    input[type='checkbox'] {
+      margin-top: 1px;
+    }
+  }
+}
+
+#add-tax-rates-modal {
+  .taxes-form {
+    height: 450px !important;
+    overflow: auto;
+  }
+  .taxes-form-footer {
+    border-top: 1px solid lightgray;
+  }
+}
