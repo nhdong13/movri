@@ -222,6 +222,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   border: 1px solid #bdbdbd;
 }
 
+.ais-SortBy-select{
+  padding: 5px 5px;
+  min-height: unset !important;
+  margin-left: 10px;
+}
+
 #mobile-sort-by{
   .ais-SortBy-select{
     cursor: pointer;

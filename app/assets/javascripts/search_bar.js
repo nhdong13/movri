@@ -175,7 +175,12 @@ $(document).ready(function() {
                   <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
                 </div>
                 <div class='width-90'>
-                  ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                  <span class='block'>${instantsearch.highlight({ attribute: 'title', hit: item })}</span>
+                  <span class='sku block'>SKU: ${item.sku}</span>
+                  <div class='listing-price'>
+                    <span>${item.default_7_days_rental_price}</span>
+                    <span>/ 7 days</span>
+                  </div>
                 </div>
               </div>
             </a>
@@ -183,7 +188,46 @@ $(document).ready(function() {
         `)
       .join('')}
     `;
+  };
+
+  const renderSuggestionCategories = ({hits}) => {
+    hits = hits.slice(0, 3)
+    return `
+    ${hits
+      .map(
+        item =>
+          {
+            category = item.category;
+            return`
+              <div class='padding-5'>
+                <div class='bold fz-18'>
+                  <a class='capitalize' href= ${'/categories?'+"categories="+getCategorySlug(category)}>${category}</>
+                </div>
+              </div>
+            `
+          }
+        )
+      .join('')}
+    `;
   }
+
+  const renderCurrentCategory = ({hits}) => {
+    hits = hits.slice(0, 1)
+    return `
+    ${hits
+      .map(
+        item =>
+          {
+            category = item.category;
+            return`
+              <span class='capitalize'>${category}</>
+            `
+          }
+        )
+      .join('')}
+    `;
+  }
+
 
   const renderCategoryPage = ({hits}) =>`
     <div class="snize-ac-results">
@@ -198,8 +242,8 @@ $(document).ready(function() {
                       <img src=${item.main_image} class="design-image-too-wide" alt="">
                     </div>
                     <div class='listing-price'>
-                      <span>$${item.price_cents/100}</span>
-                      <span> /1 day</span>
+                      <span>$${item.default_7_days_rental_price}</span>
+                      <span> /7 day</span>
                     </div>
                     <div class='listing-information'>
                       ${instantsearch.highlight({ attribute: 'title', hit: item })}
@@ -248,6 +292,33 @@ $(document).ready(function() {
   `;
 
 //============================================================================
+  // Create the render function
+  const createDataAttribtues = refinement =>
+    Object.keys(refinement)
+      .map(key => `data-${key}="${refinement[key]}"`)
+      .join(' ');
+
+  const renderListItem = item => `
+    <div class='flex-items'>
+      <span class='capitalize current-refinements-label'>${item.label}:</span>
+      <div class='flex-items'>
+        ${item.refinements
+          .map(
+            refinement =>
+              `<span class='flex-items current-refinements-label'>
+                ${refinement.label}
+              </span>
+              <button ${createDataAttribtues(refinement)}>
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            `
+          )
+          .join('')}
+      </div>
+    </div>
+  `;
+
+//============================================================================
 
   const renderSuggestionItems = (renderOptions, isFirstRender) => {
     const { indices, currentRefinement, refine } = renderOptions;
@@ -273,7 +344,6 @@ $(document).ready(function() {
     }
     const { hits, widgetParams } = renderOptions;
     widgetParams.container.innerHTML = renderCategoryPage({hits})
-    widgetParams.container.innerHTML = renderCategoryPage({hits})
   };
 
   const customHits = instantsearch.connectors.connectHits(renderHits);
@@ -293,8 +363,12 @@ $(document).ready(function() {
     if (isFirstRender) {}
     const container = document.querySelector('.search-result-algolia');
     const { indices } = renderOptions;
-
-    $('.product-items').html(indices.map(ProductItemsTemplate).join(''));
+    if(indices[0]){
+      $('.product-items').html([indices[0]].map(ProductItemsTemplate).join(''));
+      $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
+      $('.current-category').html([indices[0]].map(renderCurrentCategory).join(''));
+      $('.current-collection--title').html([indices[0]].map(renderCurrentCategory).join(''));
+    }
   };
 
   const searchProductsResult = instantsearch.connectors.connectAutocomplete(
@@ -321,6 +395,35 @@ $(document).ready(function() {
     renderSearchBox
   );
 //============================================================================
+  const renderCurrentRefinements = (renderOptions, isFirstRender) => {
+    const { items, refine, widgetParams } = renderOptions;
+
+    widgetParams.container.innerHTML = `
+      <div>
+        ${items.map(renderListItem).join('')}
+      </div>
+    `;
+
+    [...widgetParams.container.querySelectorAll('button')].forEach(element => {
+      element.addEventListener('click', event => {
+        const item = Object.keys(event.currentTarget.dataset).reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: event.currentTarget.dataset[key],
+          }),
+          {}
+        );
+
+        refine(item);
+      });
+    });
+  };
+
+  const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
+    renderCurrentRefinements
+  );
+//============================================================================
+
 
   // Create the custom widget
   if($('body').find('#refinement-list').length){
@@ -408,8 +511,7 @@ $(document).ready(function() {
       instantsearch.widgets.sortBy({
         container: '#sort-by',
         items: [
-          { label: 'Sort', value: 'movri_products' },
-          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Most Popular', value: 'movri_products' },
           { label: 'Newest', value: 'sort_by_newest_products' },
           { label: 'Price: Low to High', value: 'products_price_cents_asc' },
           { label: 'Price: High to Low', value: 'products_price_cents_desc' },
@@ -419,8 +521,7 @@ $(document).ready(function() {
       instantsearch.widgets.sortBy({
         container: '#mobile-sort-by',
         items: [
-          { label: 'Sort By', value: 'movri_products' },
-          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Most Popular', value: 'movri_products' },
           { label: 'Newest', value: 'sort_by_newest_products' },
           { label: 'Price: Low to High', value: 'products_price_cents_asc' },
           { label: 'Price: High to Low', value: 'products_price_cents_desc' },
@@ -444,6 +545,10 @@ $(document).ready(function() {
         container: '#mobile-categoties-pagination',
         totalPages: 2,
         scrollTo: false,
+      }),
+
+      customCurrentRefinements({
+        container: document.querySelector('#current-refinements'),
       })
     ]);
   }
