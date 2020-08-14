@@ -17,8 +17,8 @@ $(document).ready(function() {
   const search = instantsearch({
     indexName: 'movri_products',
     searchClient: algoliasearch(
-      'IIXUYFGM4K',
-      '304da7c0dd54da7a5ca0c191243a3ced'
+      algolia_application_id,
+      algolia_search_only_api_key
     ),
 
     routing: {
@@ -441,73 +441,73 @@ $(document).ready(function() {
       instantsearch.widgets.refinementList({
         container: '#refinement-list',
         attribute: 'brand',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-refinement-list',
         attribute: 'brand',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-mount',
         attribute: 'mount',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-lens-mount',
         attribute: 'mount',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-type',
         attribute: 'lens_type',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-lens-type',
         attribute: 'lens_type',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-compatibility',
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-compatibility',
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#hidden-categories',
         attribute: 'category',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#hidden-subcategories',
         attribute: 'subcategory',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#hidden-children-categories',
         attribute: 'children_category',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-lens-compatibility',
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.sortBy({
@@ -551,6 +551,7 @@ $(document).ready(function() {
 
       customCurrentRefinements({
         container: document.querySelector('#current-refinements'),
+         excludedAttributes: ['subcategory', 'children_category'],
       })
     ]);
   }

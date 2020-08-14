@@ -20,11 +20,13 @@ module PriceCalculationService
 
   def calculate(listing, days = 7)
     a_day_price = listing.price.cents
-
-    day_price = a_day_price - (a_day_price * PriceCalculationService.get_discount_percent(days)/100)
-
-    # rounding the price
-    ((day_price * days)/100).to_i * 100
+    if days == 1
+      a_day_price
+    else
+      day_price = a_day_price - (a_day_price * PriceCalculationService.get_discount_percent(days)/100)
+      # rounding the price
+      ((day_price * days)/100).to_i * 100
+    end
   end
 
   def get_discount_percent(days)

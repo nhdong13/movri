@@ -45,10 +45,11 @@
         .col-12
           .col-1
           .col-11.listing-include
-            .listing-include-title
-              INCLUDES
-            .listing-include-items
-              = @listing.key_feature.html_safe
+            - if @listing.key_feature.present?
+              .listing-include-title
+                %span KEY FEATURES
+              .listing-include-items
+                = @listing.key_feature.html_safe
       -# .row
       -#   .col-12.listing-description-content
       -#     - if @listing.description && !@listing.description.blank?
