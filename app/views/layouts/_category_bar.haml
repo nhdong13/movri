@@ -2,7 +2,7 @@
   - @main_categories.each do |main_category|
     .dropdown
       %button.dropbtn
-        = link_to @category_display_names[main_category.id], categories_path(categories: main_category), class: 'main-cat'
+        = @category_display_names[main_category.id]
       .dropdown-content
         - if main_category.all_subcategories.any?
           - main_category.all_subcategories.each do |subcategory|

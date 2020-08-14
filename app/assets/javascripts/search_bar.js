@@ -241,14 +241,16 @@ $(document).ready(function() {
                     <div class='main-image'>
                       <img src=${item.main_image} class="design-image-too-wide" alt="">
                     </div>
-                    <div class='listing-price'>
-                      <span>$${item.default_7_days_rental_price}</span>
-                      <span> /7 day</span>
-                    </div>
-                    <div class='listing-information'>
+                    <div class='listing-information center-items'>
                       ${instantsearch.highlight({ attribute: 'title', hit: item })}
                     </div>
-                    <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
+                    <div class='listing-price'>
+                      <span>${item.default_7_days_rental_price}</span>
+                      <span> /7 day</span>
+                    </div>
+                    <div>
+                      <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
+                    </div>
                   </div>
                 </div>`
               )
