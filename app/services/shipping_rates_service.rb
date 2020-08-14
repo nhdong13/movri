@@ -40,7 +40,7 @@ module ShippingRatesService
   def request_body ship_to_postal_code, state_from_postal_code, dimension, quantity, sku
     hash_body = {
       async: false,
-      shipper_accounts:[{id: APP_CONFIG.test_fedex_shipper_id}],
+      shipper_accounts:[{id: APP_CONFIG.fedex_shipper_id}],
       is_document:false,
       shipment: {
         ship_from: {
@@ -104,7 +104,7 @@ module ShippingRatesService
       APP_CONFIG.test_postmen_get_shipping_rates_url,
       request_body,
       "Content-Type" => "application/json",
-      "postmen-api-key" => APP_CONFIG.test_postmen_api_key
+      "postmen-api-key" => APP_CONFIG.postmen_api_key
     )
     response_body = JSON.parse(response.body)
     if response_body["meta"]["code"] == 200 && response_body["data"]["rates"][0]["total_charge"]

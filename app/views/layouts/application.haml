@@ -28,6 +28,10 @@
   }();
   drift.SNIPPET_VERSION = '0.3.1';
   drift.load('#{APP_CONFIG.DRIFT_APP_ID}');
+
+:javascript
+  var algolia_application_id = '#{APP_CONFIG.algolia_application_id}';
+  var algolia_search_only_api_key = '#{APP_CONFIG.algolia_search_only_api_key}';
 %body
 
   #sidewinder-wrapper

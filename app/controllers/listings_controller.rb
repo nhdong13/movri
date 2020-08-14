@@ -573,7 +573,7 @@ class ListingsController < ApplicationController
       APP_CONFIG.test_postmen_get_shipping_rates_url,
       request_body,
       "Content-Type" => "application/json",
-      "postmen-api-key" => APP_CONFIG.test_postmen_api_key
+      "postmen-api-key" => APP_CONFIG.postmen_api_key
     )
 
     if response.status == 200
