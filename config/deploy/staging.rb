@@ -63,7 +63,6 @@ set :branch, 'staging'
 
 set :rails_env, 'production'
 set :bundle_flags, "--no-deployment"
-set :puma_workers, 1
 
 server '3.96.100.237', user: 'ubuntu', roles: %w{web app db}
 

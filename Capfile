@@ -18,7 +18,6 @@ require "capistrano/rvm"
 require 'capistrano/puma'
 install_plugin Capistrano::Puma
 install_plugin Capistrano::Puma::Nginx
-install_plugin Capistrano::Puma::Workers
 
 # https://github.com/capistrano/npm/
 require 'capistrano/npm'
