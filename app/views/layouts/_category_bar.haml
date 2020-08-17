@@ -2,7 +2,7 @@
   - @main_categories.each do |main_category|
     .dropdown
       %button.dropbtn
-        = @category_display_names[main_category.id]
+        = main_category.url_name
       .dropdown-content
         - if main_category.all_subcategories.any?
           - main_category.all_subcategories.each do |subcategory|
@@ -12,7 +12,7 @@
                   %button.dropbtn
                     .flex-items
                       .width-80
-                        = link_to @category_display_names[subcategory.id], categories_path(subcategories: subcategory), class: "category-bar-label"
+                        = link_to subcategory.url_name, categories_path(subcategories: subcategory), class: "category-bar-label"
                       .width-20.algin-right
                         - if subcategory.all_children_categories.any?
                           %i.fa.fa-chevron-right
@@ -21,7 +21,7 @@
                       - subcategory.all_children_categories.each do |child|
                         %ul
                           %li
-                            = link_to @category_display_names[child.id], categories_path(children_categories: child), class: "category-bar-label width-100"
+                            = link_to child.url_name, categories_path(children_categories: child), class: "category-bar-label width-100"
   %a.icon.icon-reorder.category-menu-mobile{:href => "javascript:void(0);"}
 
 - content_for :extra_javascript do

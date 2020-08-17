@@ -23,7 +23,6 @@ module PriceCalculationService
     if days == 1
       a_day_price
     else
-      byebug
       day_price = a_day_price - (a_day_price * PriceCalculationService.get_discount_percent(days)/100)
       # rounding the price
       ((day_price * days)/100).to_i * 100

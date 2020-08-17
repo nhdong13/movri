@@ -52,9 +52,9 @@ class ApplicationController < ActionController::Base
   attr_reader :current_user
 
   def fetch_categories
-    @categories = @current_community.categories.includes(:children)
-    @main_categories = @categories.select { |c| c.parent_id == nil }
-    @category_display_names = category_display_names(@current_community, @main_categories, @categories)
+    @categories = @current_community.categories.includes([:children, :parent])
+    @main_categories = Category.category
+    # @category_display_names = category_display_names(@current_community, @main_categories, @categories)
   end
 
   CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME = 24.hours

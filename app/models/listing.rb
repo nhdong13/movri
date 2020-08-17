@@ -196,7 +196,7 @@ class Listing < ApplicationRecord
         pattern: "%#{pattern}%")
   end
 
-  default_scope { includes(:listing_images) }
+  # default_scope { includes(:listing_images) }
 
   HOMEPAGE_INDEX = "listings_homepage_query"
   # Use this scope before any query part to give DB server an index hint

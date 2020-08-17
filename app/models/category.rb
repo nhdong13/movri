@@ -168,6 +168,10 @@ class Category < ApplicationRecord
     self.find_by_url(url_or_id) || self.find_by_id(url_or_id)
   end
 
+  def url_name
+    url.split('-').join(' ').capitalize
+  end
+
   def update_category_type
     if parent
       if parent.category?

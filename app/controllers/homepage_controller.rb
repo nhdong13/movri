@@ -31,21 +31,14 @@ class HomepageController < ApplicationController
       @view_type = SearchPageHelper.selected_view_type(params[:view], @current_community.default_browse_view, APP_DEFAULT_VIEW_TYPE, VIEW_TYPES)
       @big_cover_photo = !(@current_user || CustomLandingPage::LandingPageStore.enabled?(@current_community.id)) || params[:big_cover_photo]
 
-      @categories = @current_community.categories.includes(:children)
-      @main_categories = @categories.select { |c| c.parent_id == nil }
-
       # This assumes that we don't never ever have communities with only 1 main share type and
       # only 1 sub share type, as that would make the listing type menu visible and it would look bit silly
       listing_shape_menu_enabled = all_shapes.size > 1
-      @show_categories = @categories.size > 1
       show_price_filter = @current_community.show_price_filter && all_shapes.any? { |s| s[:price_enabled] }
 
       @show_custom_fields = relevant_filters.present? || show_price_filter
       @category_menu_enabled = @show_categories || @show_custom_fields
 
-      if @show_categories
-        @category_display_names = category_display_names(@current_community, @main_categories, @categories)
-      end
     end
 
     listing_shape_param = params[:transaction_type]
