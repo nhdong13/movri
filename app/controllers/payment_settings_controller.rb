@@ -5,7 +5,7 @@ class PaymentSettingsController < ApplicationController
 
   before_action :set_service
   before_action :ensure_payments_enabled
-  skip_before_action :warn_about_missing_payment_info, only: [:update]
+  # skip_before_action :warn_about_missing_payment_info, only: [:update]
 
   def index; end
 
@@ -17,7 +17,7 @@ class PaymentSettingsController < ApplicationController
     @service.create
     flash.now[:error] = @service.stripe_error_message
 
-    warn_about_missing_payment_info
+    # warn_about_missing_payment_info
     render 'index'
   end
 
@@ -29,7 +29,7 @@ class PaymentSettingsController < ApplicationController
     @service.update
     flash.now[:error] = @service.stripe_error_message
 
-    warn_about_missing_payment_info
+    # warn_about_missing_payment_info
     render 'index'
   end
 
