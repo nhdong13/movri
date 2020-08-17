@@ -242,6 +242,7 @@ class Listing < ApplicationRecord
   end
 
   before_create :add_uuid
+  before_save :convert_replacement_value_to_cents
   def add_uuid
     self.uuid ||= UUIDUtils.create_raw
   end
@@ -257,6 +258,15 @@ class Listing < ApplicationRecord
   validates_presence_of :category
   validates_inclusion_of :valid_until, :allow_nil => true, :in => proc{ DateTime.now..DateTime.now + 7.months }
   validates_numericality_of :price_cents, :only_integer => true, :greater_than_or_equal_to => 0, :message => "price must be numeric", :allow_nil => true
+
+
+  def convert_replacement_value_to_cents
+    self.replacement_cents_fee = self.replacement_cents_fee * 100
+  end
+
+  def replacement_fee
+    replacement_cents_fee/100
+  end
 
   # sets the time to midnight
   def set_valid_until_time
