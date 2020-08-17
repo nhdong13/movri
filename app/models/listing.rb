@@ -196,6 +196,8 @@ class Listing < ApplicationRecord
         pattern: "%#{pattern}%")
   end
 
+  default_scope { includes(:listing_images) }
+
   HOMEPAGE_INDEX = "listings_homepage_query"
   # Use this scope before any query part to give DB server an index hint
   scope :use_index, ->(index) { from("#{self.table_name} USE INDEX (#{index})") }

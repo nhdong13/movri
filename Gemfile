@@ -145,6 +145,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'ed25519', '~> 1.2'
   gem 'bcrypt_pbkdf', '~> 1'
+  gem 'bullet'
 end
 
 group :test do
