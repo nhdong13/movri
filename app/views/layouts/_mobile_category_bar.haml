@@ -1,11 +1,11 @@
 .visible-mobile.cat-section
   - first4 = @main_categories.first(4)
   - first4.each do |main_category|
-    = render 'layouts/mobile_category_item', main_category: main_category
+    = render partial: 'layouts/mobile_category_item', locals: {main_category: main_category}
 
   .the-rest.hidden
     - (@main_categories - first4).each do |main_category|
-      = render 'layouts/mobile_category_item', main_category: main_category
+      = render partial: 'layouts/mobile_category_item', locals: {main_category: main_category}
   %a.toggle-cat{href: 'javascript:void(0)'}
     View
     %span.all

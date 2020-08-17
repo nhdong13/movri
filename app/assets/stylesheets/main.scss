@@ -48,10 +48,6 @@ body {
   background: white;
   overflow: auto;
 
-  &.no-cover-photo {
-    padding-top: lines(0.5);
-  }
-
   p {
     margin-bottom: lines(0.5);
     -webkit-hyphens: auto;
@@ -63,12 +59,6 @@ body {
 
   br {
     height: lines(0.5);
-  }
-
-  @include media(tablet) {
-    &.no-cover-photo {
-      padding-top: 33px;
-    }
   }
 
   @media #{$mobile}, #{$tablet} {

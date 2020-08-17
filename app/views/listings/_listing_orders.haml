@@ -1,10 +1,10 @@
 .row.listing-title#listing-title-sticky
-  .col-12.clearfix
+  .col-12.clearfix.padding-0
     %span
       = @listing.title
     - if @current_user.present? && (current_user?(@listing.author) || @current_user.has_admin_rights?(@current_community))
       = link_to 'Edit', edit_listing_path(@listing)
-  .col-12.listing-sku
+  .col-12.listing-sku.padding-0
     %span
       SKU :
     %span.sku
@@ -56,7 +56,7 @@
 -#     .configuration-item
 -#       With Cinema Kit
 .row.listing-payment-method
-  .col-9.clearfix.payment-method
+  .col-9.clearfix.payment-method.padding-0
     - @current_community.assurance_options.each do |assurance_option|
       - if assurance_option.visible
         %div{class: "payment-method-item col-2", id: "assurance_option_#{assurance_option.id}", title: assurance_option.content}
@@ -66,7 +66,7 @@
 
 
 .row.listing-save-availabe
-  .col-6.clearfix.save-available
+  .col-6.clearfix.save-available.padding-0
     %p
       Savings Availabe:
     .saving-available-item
