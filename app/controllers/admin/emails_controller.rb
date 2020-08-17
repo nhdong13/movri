@@ -1,4 +1,6 @@
 class Admin::EmailsController < Admin::AdminBaseController
+  before_action :set_email, only: :update
+
   def new
     @selected_tribe_navi_tab = "admin"
     @selected_left_navi_link = "email_members"
@@ -16,6 +18,12 @@ class Admin::EmailsController < Admin::AdminBaseController
       Delayed::Job.enqueue(email_job)
       flash[:notice] = t("admin.emails.new.email_sent")
       redirect_to :action => :new
+    end
+  end
+
+  def update
+    if @email.update_attributes(email_params)
+      redirect_to edit_admin_community_draft_order_path(@email.community_id, params[:transaction_id])
     end
   end
 
@@ -62,4 +70,14 @@ class Admin::EmailsController < Admin::AdminBaseController
   end
 
   helper_method :admin_email_options
+
+  private
+
+  def set_email
+    @email = Email.find(params[:id])
+  end
+
+  def email_params
+    params.require(:email).permit(:address)
+  end
 end
