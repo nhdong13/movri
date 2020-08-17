@@ -33,7 +33,6 @@ class ApplicationController < ActionController::Base
     :redirect_locale_param,
     :setup_seo_service,
     :fetch_community_admin_status,
-    # :warn_about_missing_payment_info,
     :set_homepage_path,
     :maintenance_warning,
     :cannot_access_if_banned,
