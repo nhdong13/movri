@@ -126,6 +126,9 @@ GEM
     bootsnap (1.4.3)
       msgpack (~> 1.0)
     builder (3.2.3)
+    bullet (6.1.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     byebug (11.0.1)
     callsite (0.0.11)
     camertron-eprun (1.1.1)
@@ -671,6 +674,7 @@ GEM
     unf_ext (0.0.7.4)
     unicode-display_width (1.5.0)
     unicode_utils (1.4.0)
+    uniform_notifier (1.13.0)
     uuidtools (2.1.5)
     warden (1.2.8)
       rack (>= 2.0.6)
@@ -722,6 +726,7 @@ DEPENDENCIES
   binding_of_caller
   biz
   bootsnap
+  bullet
   capistrano (~> 3.11)
   capistrano-bundler
   capistrano-npm

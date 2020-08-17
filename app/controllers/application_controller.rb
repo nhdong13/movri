@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     :redirect_locale_param,
     :setup_seo_service,
     :fetch_community_admin_status,
-    :warn_about_missing_payment_info,
+    # :warn_about_missing_payment_info,
     :set_homepage_path,
     :maintenance_warning,
     :cannot_access_if_banned,
@@ -41,7 +41,6 @@ class ApplicationController < ActionController::Base
     :ensure_consent_given,
     :ensure_user_belongs_to_community,
     :set_display_expiration_notice,
-    :setup_intercom_user,
     :setup_custom_footer,
     :disarm_custom_head_script,
     :update_booking_session
@@ -68,7 +67,7 @@ class ApplicationController < ActionController::Base
                        main_categories],
                       expires_in: CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME) do
       cat_names = {}
-      categories.each do |cat|
+      categories.includes([:translations]).each do |cat|
         cat_names[cat.id] = cat.display_name(I18n.locale)
       end
       cat_names

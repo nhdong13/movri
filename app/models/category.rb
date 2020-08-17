@@ -43,6 +43,7 @@ class Category < ApplicationRecord
   before_destroy :can_be_destroyed?
 
   enum category_type: [:category, :subcategory, :children_category]
+  default_scope { includes([:children, :parent]) }
 
   def translation_attributes=(attributes)
     build_attrs = attributes.map { |locale, values| { locale: locale, values: values } }

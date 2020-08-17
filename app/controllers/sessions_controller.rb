@@ -71,7 +71,7 @@ class SessionsController < ApplicationController
     sign_out
 
     # Admin Intercom shutdown
-    IntercomHelper::ShutdownHelper.intercom_shutdown(session, cookies, request.host_with_port)
+    # IntercomHelper::ShutdownHelper.intercom_shutdown(session, cookies, request.host_with_port)
 
     flash[:notice] = t("layouts.notifications.logout_successful")
     mark_logged_out(flash, logged_out_user)
