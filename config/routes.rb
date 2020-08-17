@@ -278,6 +278,7 @@ Rails.application.routes.draw do
       end
 
       resources :slideshows, only: [:update] do
+        put :sort_items, on: :member
         resources :slide_items, only: [:new, :create, :update, :destroy] do
           post :image_upload, on: :member
         end
