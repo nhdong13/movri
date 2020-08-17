@@ -63,9 +63,8 @@ set :branch, 'staging'
 
 set :rails_env, 'production'
 set :bundle_flags, "--no-deployment"
-set :puma_workers, 1
 
-server '3.96.100.237', user: 'ubuntu', roles: %w{web app db}
+server '3.96.77.159', user: 'ubuntu', roles: %w{web app db}
 
 set :ssh_options, {
   keys: '/Users/nhatnkv/.ssh/jack_rsa',

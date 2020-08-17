@@ -17,8 +17,8 @@ $(document).ready(function() {
   const search = instantsearch({
     indexName: 'movri_products',
     searchClient: algoliasearch(
-      'IIXUYFGM4K',
-      '304da7c0dd54da7a5ca0c191243a3ced'
+      algolia_application_id,
+      algolia_search_only_api_key
     ),
 
     routing: {
@@ -241,14 +241,16 @@ $(document).ready(function() {
                     <div class='main-image'>
                       <img src=${item.main_image} class="design-image-too-wide" alt="">
                     </div>
-                    <div class='listing-price'>
-                      <span>$${item.default_7_days_rental_price}</span>
-                      <span> /7 day</span>
-                    </div>
-                    <div class='listing-information'>
+                    <div class='listing-information center-items'>
                       ${instantsearch.highlight({ attribute: 'title', hit: item })}
                     </div>
-                    <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
+                    <div class='listing-price'>
+                      <span>${item.default_7_days_rental_price}</span>
+                      <span> /7 day</span>
+                    </div>
+                    <div>
+                      <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
+                    </div>
                   </div>
                 </div>`
               )
@@ -439,73 +441,73 @@ $(document).ready(function() {
       instantsearch.widgets.refinementList({
         container: '#refinement-list',
         attribute: 'brand',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-refinement-list',
         attribute: 'brand',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-mount',
         attribute: 'mount',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-lens-mount',
         attribute: 'mount',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-type',
         attribute: 'lens_type',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-lens-type',
         attribute: 'lens_type',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-compatibility',
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#lens-compatibility',
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#hidden-categories',
         attribute: 'category',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#hidden-subcategories',
         attribute: 'subcategory',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#hidden-children-categories',
         attribute: 'children_category',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.refinementList({
         container: '#mobile-lens-compatibility',
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
       }),
 
       instantsearch.widgets.sortBy({
@@ -549,6 +551,7 @@ $(document).ready(function() {
 
       customCurrentRefinements({
         container: document.querySelector('#current-refinements'),
+        excludedAttributes: ['subcategory', 'children_category'],
       }),
     ]);
   }

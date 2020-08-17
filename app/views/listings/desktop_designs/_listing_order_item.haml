@@ -3,10 +3,6 @@
     %span.amount
       - number_price = Money.new(PriceCalculationService.calculate(@listing, ListingViewUtils.get_booking_days(session)), 'USD')
       = MoneyViewUtils.to_humanized(number_price)
-    -# - with_quantity_text(@current_community, @listing) do |text|
-    -#   %span.time-rent
-    -#     \/
-    -#     = text
     %span.time-rent
       \/
       = ListingViewUtils.get_time_rent(session)

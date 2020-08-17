@@ -16,9 +16,6 @@ install_plugin Capistrano::SCM::Git
 require "capistrano/rvm"
 #   https://github.com/seuros/capistrano-puma
 require 'capistrano/puma'
-install_plugin Capistrano::Puma
-install_plugin Capistrano::Puma::Nginx
-install_plugin Capistrano::Puma::Workers
 
 # https://github.com/capistrano/npm/
 require 'capistrano/npm'
@@ -29,6 +26,9 @@ require "capistrano/bundler"
 require 'capistrano/rails'
 
 require 'capistrano/delayed_job'
+
+install_plugin Capistrano::Puma
+install_plugin Capistrano::Puma::Nginx
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
