@@ -40,7 +40,16 @@ window.ST.ListingTags = (function() {
     });
   }
 
+  function handleChangeItemType() {
+    $('#listing_item_type').on('change', function(){
+      listing_type = $(this).val().toLowerCase()
+      $('.accessories-list').hide()
+      $("." + listing_type).slideDown('slow')
+    })
+  }
+
   return {
-    initTagsForEditListing: initTagsForEditListing
+    initTagsForEditListing: initTagsForEditListing,
+    handleChangeItemType: handleChangeItemType
   };
 })();

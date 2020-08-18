@@ -333,7 +333,6 @@ $listing-author-avatar-height: 108;
 
   @media #{$mobile}, #{$tablet} {
     margin: 0;
-
     .page-content {
       padding-top: 0;
     }
@@ -673,7 +672,7 @@ $listing-author-avatar-height: 108;
         img {
           position: absolute;
           width: 20px;
-          top: 45px;
+          top: 56px;
           right: 10px;
         }
       }
@@ -1414,6 +1413,15 @@ $listing-author-avatar-height: 108;
 }
 
 @media #{$mobile}, #{$tablet} {
+  .listing-breadcrumbs{
+    .listing-breadcrumb{
+      display: inline;
+    }
+    a{
+      font-size: 12px;
+    }
+  }
+
   .listing-user-manual {
     border-bottom: 1px solid;
   }
@@ -1828,8 +1836,6 @@ $listing-author-avatar-height: 108;
 
 .mobile-listing-order {
   background: #f0f0f0;
-  margin-left: -12px;
-  margin-right: -12px;
   padding: 0px 10px;
 }
 

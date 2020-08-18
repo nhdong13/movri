@@ -1,4 +1,4 @@
-.mobile-listing-order
+.mobile-listing-order.padding-15
   .row.listing-price
     .col-6.clearfix
       %span.amount
@@ -38,13 +38,13 @@
               window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});
           .col-6.clearfix.arrival-date
             .form-group
-              %label{for: 'arrival-date'} Arrival Date:
+              %label{for: 'arrival-date'} Arrival Date
               %input#arrival-date.form-control.required#start-on{value: session[:booking] ? session[:booking][:start_date] : '', type: "arrival-date", :data => { :output => "booking-start-output" }}
               %input#booking-start-output{:type => 'hidden', :name => 'start_on'}
               = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
           .col-6.clearfix.return-date
             .form-group
-              %label{for: "return-date"} Return Date:
+              %label{for: "return-date"} Return Date
               %input#return-date.form-control.required#end-on{value: session[:booking] ? session[:booking][:end_date] : '',type: "return-date",  :data => { :output => "booking-end-output" }}
               %input#booking-end-output{:type => 'hidden', :name => 'end_on'}
               = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
@@ -53,7 +53,7 @@
   .row.listing-order-quantity
     .col-6.row
       .col-5.quantity
-        %input{type: 'number', class: 'order-quantity-number-field', max: '99', min: '1'}
+        = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field'
         %i.icon-caret-up
         %i.icon-caret-down
       .col-7.add-wish-list

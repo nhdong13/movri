@@ -169,6 +169,7 @@ class Listing < ApplicationRecord
   has_many :pricing_charts, dependent: :destroy
   accepts_nested_attributes_for :pricing_charts, allow_destroy: true
   has_one :redirect_url, as: :redirectable
+  has_one :listing_accessory, dependent: :destroy
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency

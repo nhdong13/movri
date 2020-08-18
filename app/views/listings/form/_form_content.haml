@@ -5,23 +5,6 @@
     .col-12.form-listing-title
       %span
         = @listing.title
-    .col-12.form-list-action
-      %ul
-        %li
-          %i.icon-copy
-          %span
-            Duplicate
-        %li
-          %i.icon-eye-open
-          %span
-            View
-        %li
-          %span
-            More actions
-          %i.icon-caret-down
-        %li
-          %a
-            View product history
     .col-12.form-input-wrap
       = form_for @listing_presenter.listing_form_object, :html => {:multipart => true} do |form|
         .row
@@ -48,7 +31,7 @@
               = render :partial => "listings/form/weight", :locals => { :form => form }
               = render :partial => "listings/form/user_manual_file", :locals => { :form => form }
             .col-12.form-listing-wrap
-              = render :partial => "listings/form/shipping", :locals => { :form => form }
+              -# = render :partial => "listings/form/shipping", :locals => { :form => form }
               = render :partial => "listings/form/customs_info", :locals => { :form => form }
               -# = render :partial => "listings/form/description", :locals => { :form => form }
               = render :partial => "listings/form/custom_fields", :locals => { :form => form }
@@ -76,21 +59,121 @@
               -#       - @listing.tags.split(',').each do |tag|
               -#         %li
               -#           = tag
-              .form-brands.margin-bt-20
-                = form.label 'BRAND', class: 'input'
-                = form.select :brand, options_for_select(BRAND, @listing.brand), {prompt: "Select"}, {class: 'listing_brand width-100'}
 
+              = form.label 'Accessories', class: 'input'
               .form-brands.margin-bt-20
-                = form.label 'MOUNT', class: 'input'
-                = form.select :mount, options_for_select(MOUNT, @listing.mount), {prompt: "Select"}, {class: 'listing_brand width-100'}
+                = form.label 'ITEM TYPE', class: 'input'
+                = select_tag 'listing[item_type]', options_for_select(ITEM_TYPE.sort), {prompt: "Select", class: 'listing_brand width-100'}
 
-              .form-brands.margin-bt-20
-                = form.label 'LENS TYPE', class: 'input'
-                = form.select :lens_type, options_for_select(LENS_TYPE, @listing.lens_type), {prompt: "Select"}, {class: 'listing_brand width-100'}
+              #filter_types
+                .form-brands.margin-bt-20.accessories-list
+                  = form.label 'LENS TYPE', class: 'input'
+                  = form.select :lens_type, options_for_select(LENS_TYPE.sort, @listing.lens_type), {prompt: "Select"}, {class: 'listing_brand width-100 lens'}
 
-              .form-brands.margin-bt-20
-                = form.label 'COMPATIBILITY', class: 'input'
-                = form.select :compatibility, options_for_select(COMPATIBILITY, @listing.compatibility), {prompt: "Select"}, {class: 'listing_brand width-100'}
+                .accessories-list.form-brands.margin-bt-20.lens
+                  = form.label 'BRAND', class: 'input'
+                  = form.select :brand, options_for_select(BRAND.sort, @listing.brand), {prompt: "Select"}, {class: 'listing_brand width-100 '}
+
+                .accessories-list.form-brands.margin-bt-20.lens.cameras.lighting
+                  = form.label 'MOUNT', class: 'input'
+                  = form.select :mount, options_for_select(MOUNT.sort, @listing.mount), {prompt: "Select"}, {class: 'listing_brand width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.lens
+                  = form.label 'COMPATIBILITY', class: 'input'
+                  = form.select :compatibility, options_for_select(COMPATIBILITY, @listing.compatibility), {prompt: "Select"}, {class: 'listing_brand width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.cameras
+                  = form.label 'CAMERA TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(ITEM_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.cameras
+                  = form.label 'CAMERA TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(CAMERA_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.cameras.camera_support
+                  = form.label 'CAMORDER TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(CAMORDER_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.cameras
+                  = form.label 'SENSOR SIZE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(SENSOR_SIZE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.cameras
+                  = form.label 'ACTION CAM COMPATIBILITY', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(ACTION_CAM_COMPATIBILITY.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.lighting
+                  = form.label 'LIGHTING TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(LIGHTING_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.lighting.accessory.camera_support.tripods
+                  = form.label 'ACCESSORY_TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(ACCESSORY_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.memory
+                  = form.label 'CAPACITY', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(CAPACITY.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.memory
+                  = form.label 'MEMORY TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(MEMORY_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.memory
+                  = form.label 'READ_TRANSFER_SPEED (MAX.)', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(READ_TRANSFER_SPEED.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.memory
+                  = form.label 'BUS SPEED', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(BUS_SPEED.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.power
+                  = form.label 'POWER COMPATIBILITY', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(POWER_COMPATIBILITY.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.power
+                  = form.label 'POWER TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(POWER_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20.camera_support
+                  = form.label 'SUPPORT TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(SUPPORT_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'HEAD TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(HEAD_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'QUICK RELEASE SYSTEM', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(QUICK_RELEASE_SYSTEM.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'COLOR TEMPERATURE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(COLOR_TEMPERATURE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'FILTER SIZE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(FILTER_SIZE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'FILTER STYLE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(FILTER_STYLE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'FILTER TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(FILTER_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'AUDIO TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(AUDIO_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'MONITORING TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(MONITORING_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
+                .accessories-list.form-brands.margin-bt-20
+                  = form.label 'CAMERA SUPPORT TYPE', class: 'input'
+                  = select_tag 'listing[camera_type]', options_for_select(CAMERA_SUPPORT_TYPE.sort), {prompt: "Select", class: 'width-100'}
+
 
             .col-12.form-listing-wrap.form-recommended-accessories
               = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }
@@ -104,6 +187,7 @@
 - content_for :extra_javascript do
   :javascript
     ST.ListingTags.initTagsForEditListing();
+    ST.ListingTags.handleChangeItemType();
     ST.BlockedDates.addBlockedDates();
     $(document).ready(function(){
       $('#start-date-blocked').datepicker({
