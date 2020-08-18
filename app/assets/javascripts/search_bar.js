@@ -236,23 +236,25 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<div class="col-3">
-                  <div class="listing-box">
-                    <div class='main-image'>
-                      <img src=${item.main_image} class="design-image-too-wide" alt="">
-                    </div>
-                    <div class='listing-information center-items'>
-                      ${instantsearch.highlight({ attribute: 'title', hit: item })}
-                    </div>
-                    <div class='listing-price'>
-                      <span>${item.default_7_days_rental_price}</span>
-                      <span> /7 day</span>
-                    </div>
-                    <div>
-                      <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
+                `<a href= ${'/listings/'+ item.id}>
+                  <div class="col-3">
+                    <div class="listing-box">
+                      <div class='main-image'>
+                        <img src=${item.main_image} class="design-image-too-wide" alt="">
+                      </div>
+                      <div class='listing-information center-items'>
+                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                      </div>
+                      <div class='listing-price'>
+                        <span>${item.default_7_days_rental_price}</span>
+                        <span> /7 day</span>
+                      </div>
+                      <div>
+                        <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent Now</a>
+                      </div>
                     </div>
                   </div>
-                </div>`
+                </a>`
               )
           .join('')}
         </div>
@@ -267,26 +269,28 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<div class="col-12">
-                  <div class="listing-box-mobile">
-                    <div class='main-image'>
-                      <img src=${item.main_image} class="design-image-too-wide" alt="">
-                    </div>
-                    <div class='listing-information'>
-                      <div class='listing-title cut-text'>
-                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                `<a href= ${'/listings/'+ item.id}>
+                  <div class="col-12">
+                    <div class="listing-box-mobile">
+                      <div class='main-image'>
+                        <img src=${item.main_image} class="design-image-too-wide" alt=""/>
                       </div>
-                      <div class='listing-price'>
-                        <span>${item.price_cents}</span>
-                        <span> /1 day</span>
-                      </div>
-                      <div class='listing-rent-now'>
-                        <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
+                      <div class='listing-information'>
+                        <div class='listing-title'>
+                          ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                        </div>
+                        <div class='listing-price'>
+                          <span>${item.default_7_days_rental_price}</span>
+                          <span> /7 day</span>
+                        </div>
+                        <div class='listing-rent-now'>
+                          <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent Now</a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>`
-              )
+                </a>`
+             )
           .join('')}
         </div>
       </div>
@@ -547,6 +551,12 @@ $(document).ready(function() {
         container: '#mobile-categoties-pagination',
         totalPages: 2,
         scrollTo: false,
+        templates: {
+          previous: "Previous",
+          next: "Next"
+        },
+         showFirst: false,
+         showLast: false,
       }),
 
       customCurrentRefinements({

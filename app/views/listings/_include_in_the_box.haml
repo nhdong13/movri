@@ -1,10 +1,12 @@
-.include-box
-  .title
-    In the Box
-  .include-items
-    = safe_join([raw(@listing.in_the_box)])
-.not-include-box
-  .title
-    Not in the Box
-  .include-items
-    = safe_join([raw(@listing.not_in_the_box)])
+- if @listing.in_the_box.present?
+  .include-box
+    .title
+      In the Box
+    .include-items
+      = safe_join([raw(@listing.in_the_box)])
+- if @listing.not_in_the_box.present?
+  .not-include-box
+    .title
+      Not in the Box
+    .include-items
+      = safe_join([raw(@listing.not_in_the_box)])

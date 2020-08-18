@@ -1,12 +1,13 @@
-.listing-header
-  %span.fa-fw
-    = link_to "Home", ""
+.listing-header.flex-items.padding-l-15
+  %span= link_to 'Home', homepage_with_locale_path
   %i.icon-angle-right.fa-fw
-  %span Camera
+  .current-category
 .sort-filter-bar.flex-items
-  #mobile-sort-by
-  #filter
-    Filter
+  .width-50
+    #mobile-sort-by
+  .width-50
+    #filter.width-100
+      Filter
 
 .mobile-listing-filter.common-box
   .filter-listing

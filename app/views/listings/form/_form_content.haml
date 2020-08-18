@@ -98,8 +98,8 @@
               = render partial: 'listings/form/packing_dimension', :locals => { :form => form }
             .col-12.form-listing-wrap.form-blocked-dates
               = render partial: 'listings/form/blocked_dates', :locals => { :form => form }
-            .col-12.form-listing-wrap.form-pricing-dates
-              = render partial: 'listings/form/pricing_charts', :locals => { :form => form }
+            -# .col-12.form-listing-wrap.form-pricing-dates
+            -#   = render partial: 'listings/form/pricing_charts', :locals => { :form => form }
 
 - content_for :extra_javascript do
   :javascript

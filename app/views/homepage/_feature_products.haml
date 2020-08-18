@@ -6,14 +6,15 @@
       - style = "color: #{featured_product.button_text_color}"
 
       - featured_product.listings.each do |listing|
-        .col-3
-          .listing-box
-            .main-image
-              = image_tag listing.main_image, :class => "design-image-too-wide"
-            .listing-information.center-items
-              = listing.title
-            .listing-price
-              %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
-              %span= "/ #{ListingViewUtils.get_time_rent(session)}"
-            %div
-              = link_to "Rent now", listing_path(listing), class: "rent-now-btn"
+        = link_to listing_path(listing) do
+          .col-3
+            .listing-box
+              .main-image
+                = image_tag listing.main_image, :class => "design-image-too-wide"
+              .listing-information.center-items
+                = listing.title
+              .listing-price
+                %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
+                %span= "/ #{ListingViewUtils.get_time_rent(session)}"
+              %div
+                = link_to "Rent Now", listing_path(listing), class: "rent-now-btn"
