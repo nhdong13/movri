@@ -1,27 +1,27 @@
 .row.listing-price
   .col-12.clearfix.padding-0
-    %span.amount
+    %span.amount.font-open-sans.font-size-25
       - number_price = Money.new(PriceCalculationService.calculate(@listing, ListingViewUtils.get_booking_days(session)), 'USD')
       = MoneyViewUtils.to_humanized(number_price)
-    %span.time-rent
+    %span.time-rent.font-open-sans.font-size-25
       \/
       = ListingViewUtils.get_time_rent(session)
 
 .row.listing-identity
   .col-6.clearfix.listing-sku.padding-0
-    %span
+    %span.font-open-sans
       SKU :
-    %span.sku
+    %span.sku.font-open-sans
       = @listing.sku
   .col-6.clearfix.listing-replacement-value
-    %span
+    %span.font-size-16.font-open-sans
       Replacement Value :
-    %span.amount
+    %span.amount.font-size-16.font-open-sans
       = money_to_humanized(@listing.replacement_cents_fee)
 .row.listing-available
-  .col-12.clearfix.availabel.yolo
+  .col-12.clearfix.availabel
     - if @listing_presenter.available_date
-      %span
+      %span.font-open-sans
         = "Available #{@listing_presenter.available_date}"
 -# .row.listing-shipping-date
 -#   .col-6.clearfix.arrival-date

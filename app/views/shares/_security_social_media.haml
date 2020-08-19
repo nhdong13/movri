@@ -4,16 +4,16 @@
   .wrapper
     .row
       .col-12.display-flex.justify-content-center.align-items-center
-        .img
-          = image_tag("homepage_icons/mcafee.png")
-        .img
-          = image_tag("homepage_icons/norton.png")
-        .img
-          = image_tag("homepage_icons/bbb.png")
-        .img
-          = image_tag("homepage_icons/bhapp.png")
-        .img
-          = image_tag("homepage_icons/bhmobile.png")
+        -# .img
+        -#   = image_tag("homepage_icons/mcafee.png")
+        -# .img
+        -#   = image_tag("homepage_icons/norton.png")
+        -# .img
+        -#   = image_tag("homepage_icons/bbb.png")
+        -# .img
+        -#   = image_tag("homepage_icons/bhapp.png")
+        -# .img
+        -#   = image_tag("homepage_icons/bhmobile.png")
         - if accounts['youtube']
           = link_to accounts['youtube'], {target: 'blank'} do
             .img.icon-account
