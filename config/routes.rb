@@ -296,6 +296,7 @@ Rails.application.routes.draw do
       resources :store_featured_products, only: [:create, :update, :destroy]
 
       resources :store_grids, only: [:create, :update, :destroy] do
+        put :sort_items, on: :member
         resources :store_grid_items, only: [:create, :update, :destroy]
       end
 
