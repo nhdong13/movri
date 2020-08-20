@@ -217,11 +217,10 @@ MOUNT = [
   '5/8 Receiver',
 ]
 
-CAMORDER_TYPE = [
+CAMCORDER_TYPE = [
   'Prosumer',
   'ENG-style',
   'VR / 360˚',
-  'Prosumer',
   'Cinema',
   'Action Cam'
 ]
@@ -239,7 +238,9 @@ LIGHTING_TYPE = [
 SENSOR_SIZE = [
   'CMOS',
   'Crop Frame',
-  'Full Frame'
+  'Full Frame',
+  'Micro 4/3rds',
+  'Super 35'
 ]
 
 ACCESSORY_TYPE = [
@@ -247,12 +248,15 @@ ACCESSORY_TYPE = [
   'Tethering',
   'Binoculars',
   'Covers',
-  'Cables'
+  'Cables',
+  'Filter'
 ]
 
 CABLE_TYPE = [
   'Coaxial Video Cable',
-  'HDMI'
+  'HDMI',
+  'SDI-BNC',
+  'XLR',
 ]
 
 ACTION_CAM_COMPATIBILITY = [
@@ -271,7 +275,6 @@ SUPPORT_TYPE = [
   'Tripod Legs',
   'Monopod',
   'Fluidhead Kits, Monopod',
-  'Tripod Heads',
   'Arca-Swiss Plates',
   'Ballhead',
   'Tripod Heads',
@@ -326,22 +329,23 @@ LENS_TYPE = [
   'Cine and Normal Range'
 ]
 
-ITEM_TYPE = [
-  'Lens',
-  'Mirrorless',
-  'Flashes',
-  'Memory',
-  'Power',
-  'Accessory',
-  'Tripods',
-  'Camera Support',
-  'Lighting',
-  'Drone',
-  'Audio',
-  'Monitoring',
-  'Stabilizers',
-  'Switcher',
-]
+ITEM_TYPE = {
+  'Lens': 'lens',
+  'Mirrorless': 'mirrorless',
+  'Flashes': 'flashes',
+  'Memory': 'memory',
+  'Power': 'power',
+  'Accessory': 'accessory',
+  'Tripods': 'tripods',
+  'Camera Support': 'camera_support',
+  'Lighting': 'lighting',
+  'Drone': 'drone',
+  'Audio': 'audio',
+  'Monitoring': 'monitoring',
+  'Stabilizers': 'stabilizers',
+  'Switcher': 'switcher',
+  'Camera': 'camera'
+}
 
 CAMERA_TYPE = [
   "Camcorder",

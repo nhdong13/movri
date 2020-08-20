@@ -41,15 +41,22 @@ window.ST.ListingTags = (function() {
   }
 
   function handleChangeItemType() {
-    $('#listing_item_type').on('change', function(){
+    $('body').on('change', '#listing_accessory_item_type', function(){
       listing_type = $(this).val().toLowerCase()
       $('.accessories-list').hide()
       $("." + listing_type).slideDown('slow')
     })
   }
 
+  function handleLoadItemType() {
+    listing_type = $('#listing_accessory_item_type').val().toLowerCase()
+    $('.accessories-list').hide()
+    $("." + listing_type).slideDown('slow')
+  }
+
   return {
     initTagsForEditListing: initTagsForEditListing,
-    handleChangeItemType: handleChangeItemType
+    handleChangeItemType: handleChangeItemType,
+    handleLoadItemType: handleLoadItemType
   };
 })();
