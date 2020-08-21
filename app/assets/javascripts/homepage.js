@@ -44,7 +44,6 @@ $(function() {
   relocate(768, $("#header-user-mobile-anchor"), $("#header-user-desktop-anchor").get(0));
 
   $(".add-item-to-cart").on("click", function() {
-
     var id = event.target.id;
     var listing_id = id.split("-").pop();
     var addToCartUrl = "/en/listings/" + listing_id + "/add_item_to_cart";
@@ -190,21 +189,7 @@ $(function() {
   });
 
   $(".cart-icon-header").on("click", function() {
-    alert("i");
-    var loadCartUrl = "/load_cart";
-
-    $.ajax({
-      url: loadCartUrl,
-      type: "GET"
-    }).done(function(response) {
-      if (response.success === true) {
-        var data = response.data;
-      } else {
-        // TODO:
-      }
-    }).fail(function(error) {
-      console.log("Error:", error);
-    });
+    $('#header-menu-toggle-cart').toggle("show")
   });
 
   // User change booking date

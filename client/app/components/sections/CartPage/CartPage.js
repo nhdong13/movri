@@ -25,7 +25,6 @@ class CartPage extends React.Component {
   }
 
   render() {
-    debugger
     const item = this.state.cart.item
     return (
       <div>

@@ -211,6 +211,23 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
+.category-breadcrumbs{
+  padding-top: 20px;
+  font-size: 16px;
+  span a{
+    color: #000000;
+  }
+  .current-category, .fa-chevron-right{
+    color: #757575
+  }
+}
+
+.current-collection--title span{
+  display: block;
+  line-height: 1 !important;
+  padding: 15px 0;
+}
+
 #search-within-results{
   input{
     background-image: url('/assets/mf_icons/icon-movri-search.svg');

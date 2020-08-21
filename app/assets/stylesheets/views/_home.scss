@@ -1313,3 +1313,39 @@ $home-list-avatar-padding: lines(0.25);
   right: 0;
   text-align: right;
 }
+
+.header-logo-mobile{
+  width: 115px;
+  img{
+    width: 100%
+  }
+}
+
+#mobile-menu{
+  font-size: 14px;
+  padding: 15px;
+  background: white;
+  width: 75%;
+  position: absolute;
+  height: 650px;
+  overflow: scroll;
+  a, span{
+    line-height: 2.5;
+    color: black;
+  }
+  .subcategories{
+    padding-left: 20px;
+    background: rgb(229, 229, 229);
+  }
+  .child-categories{
+    padding-left: 20px;
+  }
+}
+.cart-icon-mobile{
+  width: 30px;
+}
+
+.cart-icon-header{
+  cursor: pointer;
+  padding: 20px 0;
+}

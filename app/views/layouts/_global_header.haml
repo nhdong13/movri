@@ -73,11 +73,21 @@
                             = t("header.my_account")
                             %i{class: 'icon-chevron-down'}
         .width-20
-          #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+          .cart-icon-header
+            = image_tag("mf_icons/icon-movri-cart.svg", class: 'header-menu-icon icon-movri-chat custom-cart-icon')
+            %span.number-on-cart.number-on-cart-style-desktop
+              - session[:cart] ||= {}
+              = session[:cart].values.sum
+            %strong
+              = "View Cart"
+            %i.icon-chevron-down
+          = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
+
+          -# #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
 
     .mobile-display
-      .header-right.controls
-        = render :partial => "layouts/header_anchors"
+      .header-bar.controls
+        = render :partial => "layouts/header_anchors", locals: {store_header: store_header}
         = render :partial => "layouts/header_contact"
         = render :partial => "layouts/header_user_menu"
 
@@ -95,22 +105,7 @@
             %a{href: locale_change_link[:url]}
               = locale_change_link[:title]
 
-    .header-left.hidden-tablet
-      .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
-        #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
-          = icon_map_tag(icons, "rows", ["header-menu-icon"])
-        #header-menu-mobile-cart.header-menu-toggle-container.toggle-header-container
-          .cart-icon-header
-            = image_tag("mf_icons/icon-movri-cart.svg", class: 'header-menu-icon icon-movri-chat custom-cart-icon')
-            %span.number-on-cart.number-on-cart-style-desktop
-              - session[:cart] ||= {}
-              = session[:cart].values.sum
-            %strong
-              = "View Cart"
-            %i.icon-chevron-down
-
     = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
-    = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
 
 .header.category-nav.hidden-mobile
   .header-wrapper

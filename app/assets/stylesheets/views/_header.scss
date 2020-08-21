@@ -373,7 +373,6 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 .header-menu-container {
   display: inline-table;
   padding: $elementPadding $elementSpacing;
-  height: $headerHeight;
 
   &.toggled {
     background-color: #ababab !important;
@@ -1308,6 +1307,11 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
     padding-right: 3px;
     margin-right: 5px;
   }
+}
+
+.search-mobile-icon,
+.header-mobile-phone-icon {
+  width: 30px;
 }
 
 @media #{$tablet} {
