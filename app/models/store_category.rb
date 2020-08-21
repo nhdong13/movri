@@ -14,6 +14,8 @@
 #
 
 class StoreCategory < ApplicationRecord
+  include Sectionable
+
   has_many :store_category_items, dependent: :destroy
 
   def as_json
