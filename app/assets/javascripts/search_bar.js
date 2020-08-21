@@ -481,9 +481,9 @@ $(document).ready(function() {
       container.innerHTML = `
         <div class ='group-filter'>
           <ul>
-            <li class='head capitalize refinementListMobile-header flex-items'>
+            <li class='head refinementListMobile-header flex-items'>
               <div class='width-70 padding-0'>
-                <span>${header_label}</span>
+                <span class='capitalize'>${header_label}</span>
               </div>
               <div class='width-30 align-right'>
                 <i class="fa fa-plus" aria-hidden="true"></i>
@@ -496,8 +496,8 @@ $(document).ready(function() {
                     return`
                       <li>
                         <label class="ais-RefinementListMobile-label">
-                          <input type="checkbox" class="ais-RefinementList-checkbox" data-value=${item.value} ${item.isRefined ? 'checked' : ''}/>
-                          <span class="ais-RefinementList-labelText">${item.label}</span>
+                          <input type="checkbox" class="ais-RefinementList-checkbox" data-value='${item.value}' ${item.isRefined ? 'checked' : ''}/>
+                          <span class="capitalize ais-RefinementList-labelText">${item.label.split("_").join(" ")}</span>
                         </label>
                       </li>`
                   }
@@ -537,6 +537,12 @@ $(document).ready(function() {
 
       customListingTypeRefinement({
         container: document.querySelector('#item_type'),
+        attribute: 'item_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_item_type'),
         attribute: 'item_type',
         operator: 'and',
       }),
