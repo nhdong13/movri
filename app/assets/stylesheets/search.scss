@@ -41,6 +41,7 @@
 }
 
 .ais-RefinementList-label{
+  input{transform: scale(1.25)}
   cursor: pointer;
 }
 
@@ -155,6 +156,7 @@ mark{
 }
 
 #current-refinements{
+  display: flex;
   button{
     background: black;
     padding: 0.4375rem 0.625rem;

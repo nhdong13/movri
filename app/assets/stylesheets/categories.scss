@@ -190,15 +190,37 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .mobile-listing-filter{
+  width: 350px;
   display: none;
   right: 0;
   top:0;
-  width: 90%;
-  max-height: 500px;
-  overflow: scroll;
+  height: 528px;
   background: #f0f0f0 !important;
   z-index: 1000;
   position: absolute;
+  .refinementListMobile-header, .ais-RefinementListMobile-label{padding-left: 37px !important}
+  .ais-RefinementListMobile-label{
+    padding-top: 0 !important;
+  }
+  .group-btn-filter{
+    justify-content: flex-end;
+  }
+  .filter-listing{
+    height: 450px;
+    overflow: scroll;
+  }
+}
+
+#search-within-results{
+  input{
+    background-image: url('/assets/mf_icons/icon-movri-search.svg');
+    background-repeat: no-repeat;
+    padding-left: 45px;
+    border: transparent;
+    width: 100%;
+    height: 46px;
+    font-size: 18px;
+  }
 }
 
 .quick-filter-btn{
