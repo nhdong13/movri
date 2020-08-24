@@ -52,6 +52,48 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
+.mobile-listing-box{
+  border-radius: 10px;
+  background: white;
+  margin: 10px 0;
+  width: 100%;
+  height: 241px;
+  border: 1px solid #f0f0f0;
+  text-align: center;
+  padding: 5px;
+  .main-image{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 120px;
+    overflow: hidden;
+    img {
+      max-width:100%;
+      max-height: 120px;
+    }
+  }
+  .listing-price{
+    font-size: 14px;
+    color: #222222;
+    font-weight: bold;
+    margin-bottom: 5px;
+    span:last-child{
+      color: #4eb857;
+    }
+  }
+  .listing-information{
+    color: #333333 !important;
+    line-height: 1;
+    min-height: 40px;
+    max-height: 50px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  .rent-now-btn{
+    width: 92px;
+  }
+}
+
 .listing-box:hover{
   box-shadow: 0px 0px 20px #e6e6e6;
   .rent-now-btn{
@@ -222,7 +264,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   }
 }
 
-.current-collection--title span{
+.current-collection--title{
   display: block;
   line-height: 1 !important;
   padding: 15px 0;

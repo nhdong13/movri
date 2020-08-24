@@ -220,9 +220,7 @@ $(document).ready(function() {
         item =>
           {
             category = item.category;
-            return`
-              <span class='capitalize'>${category}</>
-            `
+            return`${category}`
           }
         )
       .join('')}

@@ -51,12 +51,6 @@
 -#       Shipping Rates
 -#     %span
 -#       Pricing Chart
--# .row.listing-save-availabe
--# .col-6.clearfix.save-available
--#   %p
--#     Savings Availabe:
--#   .saving-available-item
-
 = form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do
   .row.listing-shipping-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
     - if @listing_presenter.quantity_per_day_or_night?
@@ -114,12 +108,6 @@
         Shipping Rates
       %span.show-pricing-chart-modal{'data-toggle': 'modal', 'data-target': "#pricing-chart-modal"}
         Pricing Chart
-  .row.listing-save-availabe
-  .col-6.clearfix.save-available.padding-0
-    %p
-      Savings Availabe:
-    .saving-available-item
-
 = render partial: "listings/desktop_designs/shipping_rates_realtime", locals: { listing: @listing }
 = render partial: "listings/desktop_designs/pricing_chart", locals: { listing: @listing }
 = render partial: "listings/desktop_designs/view_cart", locals: { listing: @listing }

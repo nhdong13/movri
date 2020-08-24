@@ -16,7 +16,7 @@
       %span
         Replacement Value :
       %span.amount
-        $1299
+        = money_to_humanized(@listing.replacement_cents_fee)
   .row.listing-available
     .col-12.clearfix.availabel
       - if @listing_presenter.available_date
@@ -50,7 +50,7 @@
               = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
         - @listing_presenter.blocked_dates_result.on_error do
           = t("listings.listing_actions.unable_load_availability")
-      .row.listing-order-quantity.flex-items
+      .row.listing-order-quantity
         .col-6.row
           .col-5.quantity
             = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field'
@@ -82,19 +82,9 @@
           .content
             Rent Now
 
-.row
-  .col-12.in-stock
-    .in-stock-label
-      In Stock
-    .in-stock-star
-      %i.icon-star
-      %i.icon-star
-      %i.icon-star
-      %i.icon-star-half
-      %i.icon-star-empty
-    .in-stock-quantity
-      \/ 3.5 (1009)
-    %i.icon-angle-right
+.padding-15.in-stock
+  .in-stock-label
+    In Stock
 
 = render partial: "listings/mobile_designs/shipping_rates_realtime", locals: { listing: @listing }
 = render partial: "listings/mobile_designs/pricing_chart", locals: { listing: @listing }

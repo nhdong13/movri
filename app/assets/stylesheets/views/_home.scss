@@ -1149,6 +1149,20 @@ $home-list-avatar-padding: lines(0.25);
 
 
 @media #{$mobile}, #{$tablet} {
+  .movri-different{
+    margin-top : 0;
+    .title {
+      font-size: 22px;
+      margin-bottom:10px;
+    }
+  }
+
+  .how-it-works {
+    span.section-heading {
+      font-size: 22px;
+    }
+  }
+
   .movri-different .col-6 .different-desc{
     padding: 30px 60px;
   }

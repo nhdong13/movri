@@ -1,8 +1,9 @@
 - show_remove_icon = el == 'recently-viewed' ? 'show' : 'hide'
 .container
   .row
-    %span.viewed-title
-      = title
+    .col-12
+      %span.viewed-title
+        = title
   .row
     .col-md-12.heroSlider-fixed
       .overlay
@@ -18,7 +19,7 @@
             .slide-item-detail
               %p.slide-item-title
                 Canon EF 135mm f/2L USM  Lens
-              .listing-price 
+              .listing-price
                 %span.amount
                   = MoneyViewUtils.to_humanized(@listing.price)
                 - with_quantity_text(@current_community, @listing) do |text|
@@ -45,7 +46,7 @@
             .slide-item-detail
               %p.slide-item-title
                 Canon EF 135mm f/2L USM  Lens
-              .listing-price 
+              .listing-price
                 %span.amount
                   = MoneyViewUtils.to_humanized(@listing.price)
                 - with_quantity_text(@current_community, @listing) do |text|
@@ -72,7 +73,7 @@
             .slide-item-detail
               %p.slide-item-title
                 Canon EF 135mm f/2L USM  Lens
-              .listing-price 
+              .listing-price
                 %span.amount
                   = MoneyViewUtils.to_humanized(@listing.price)
                 - with_quantity_text(@current_community, @listing) do |text|
@@ -88,7 +89,7 @@
                 %i.icon-star
                 %span
                   \/ (921)
-                
+
         .slide-item-container
           .slide-item
             %div{class: "#{show_remove_icon}"}
@@ -100,34 +101,7 @@
             .slide-item-detail
               %p.slide-item-title
                 Canon EF 135mm f/2L USM  Lens
-              .listing-price 
-                %span.amount
-                  = MoneyViewUtils.to_humanized(@listing.price)
-                - with_quantity_text(@current_community, @listing) do |text|
-                  %span.time-rent
-                    \/
-                    = text
-              %button
-                Rent Now
-              .viewed-slide-star.mobile-display{class: "#{el}-star"}
-                %i.icon-star
-                %i.icon-star
-                %i.icon-star
-                %i.icon-star
-                %span
-                  \/ (921)
-        .slide-item-container
-          .slide-item
-            %div{class: "#{show_remove_icon}"}
-              %span.viewed-time
-                2 hours ago
-              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
-            -# = image_tag(@listing.listing_images.first.image(:original))
-            %img{:alt => "", :src => "http://placehold.it/198x198"}/
-            .slide-item-detail
-              %p.slide-item-title
-                Canon EF 135mm f/2L USM  Lens
-              .listing-price 
+              .listing-price
                 %span.amount
                   = MoneyViewUtils.to_humanized(@listing.price)
                 - with_quantity_text(@current_community, @listing) do |text|
@@ -154,7 +128,7 @@
             .slide-item-detail
               %p.slide-item-title
                 Canon EF 135mm f/2L USM  Lens
-              .listing-price 
+              .listing-price
                 %span.amount
                   = MoneyViewUtils.to_humanized(@listing.price)
                 - with_quantity_text(@current_community, @listing) do |text|
@@ -181,7 +155,34 @@
             .slide-item-detail
               %p.slide-item-title
                 Canon EF 135mm f/2L USM  Lens
-              .listing-price 
+              .listing-price
+                %span.amount
+                  = MoneyViewUtils.to_humanized(@listing.price)
+                - with_quantity_text(@current_community, @listing) do |text|
+                  %span.time-rent
+                    \/
+                    = text
+              %button
+                Rent Now
+              .viewed-slide-star.mobile-display{class: "#{el}-star"}
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %i.icon-star
+                %span
+                  \/ (921)
+        .slide-item-container
+          .slide-item
+            %div{class: "#{show_remove_icon}"}
+              %span.viewed-time
+                2 hours ago
+              %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            -# = image_tag(@listing.listing_images.first.image(:original))
+            %img{:alt => "", :src => "http://placehold.it/198x198"}/
+            .slide-item-detail
+              %p.slide-item-title
+                Canon EF 135mm f/2L USM  Lens
+              .listing-price
                 %span.amount
                   = MoneyViewUtils.to_humanized(@listing.price)
                 - with_quantity_text(@current_community, @listing) do |text|

@@ -1,6 +1,3 @@
 .cat-section
   - @main_categories.each do |main_category|
     = render partial: 'layouts/mobile_category_item', locals: {main_category: main_category}
-
-- content_for :javascript do
-  ToggleCat.run();

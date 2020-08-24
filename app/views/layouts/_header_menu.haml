@@ -48,10 +48,3 @@
       - locale_change_links.each do |locale_change_link|
         %a{href: locale_change_link[:url]}
           = locale_change_link[:title]
-
-
-- content_for :javascript do
-  :javascript
-    $('.mobile-menu-icon').click(function(){
-      $("#mobile-menu").show();
-    })
