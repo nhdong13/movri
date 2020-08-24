@@ -66,22 +66,21 @@
             %span.mobile-show-pricing-chart-modal{'data-toggle': 'modal', 'data-target': "#mobile-pricing-chart-modal"}
               Pricing Chart
 
-      .row
-        .col-12.rent-container
-          - if @listing_presenter.quantity_per_day_or_night?
-            - @listing_presenter.blocked_dates_result.on_success do
-              %button.rent-btn.content.add-item-to-cart{:id => "view-cart-desktop-#{@listing.id}"}
-                Rent Now
+  .row
+    .col-12.rent-container
+      - if @listing_presenter.quantity_per_day_or_night?
+        - @listing_presenter.blocked_dates_result.on_success do
+          %button.rent-btn.content.add-item-to-cart{:id => "view-cart-desktop-#{@listing.id}"}
+            Rent Now
 
-            - @listing_presenter.blocked_dates_result.on_error do
-              %button.disabled-book-button{disabled: true}
-                .content
-                  = action_button_label(@listing)
+        - @listing_presenter.blocked_dates_result.on_error do
+          %button.disabled-book-button{disabled: true}
+            Rent Now
 
-          -else
-            %button.disabled-book-button{disabled: true}
-              .content
-                = action_button_label(@listing)
+      - else
+        %button.disabled-book-button{disabled: true}
+          .content
+            Rent Now
 
 .row
   .col-12.in-stock

@@ -95,12 +95,12 @@
         - @listing_presenter.blocked_dates_result.on_success do
           %button.rent-btn.show-view-cart-modal{'data-toggle': 'modal', 'data-target': '#pricing-chart-modal', 'type' => 'button'}
             .content.add-item-to-cart{:id => "view-cart-desktop-#{@listing.id}"}
-              = action_button_label(@listing)
+              Rent Now
 
         - @listing_presenter.blocked_dates_result.on_error do
           %button.disabled-book-button{disabled: true}
             .content
-              = action_button_label(@listing)
+              Rent Now
       - else
         %button.rent-btn.show-view-cart-modal{'data-toggle': 'modal', 'data-target': '#pricing-chart-modal', 'type' => 'button'}
           .content.add-item-to-cart{:id => "view-cart-desktop-#{@listing.id}"}
