@@ -1336,6 +1336,7 @@ $home-list-avatar-padding: lines(0.25);
 }
 
 #mobile-menu{
+  z-index: 9999;
   font-size: 14px;
   padding: 15px;
   background: white;
