@@ -5,23 +5,6 @@
     .col-12.form-listing-title
       %span
         = @listing.title
-    .col-12.form-list-action
-      %ul
-        %li
-          %i.icon-copy
-          %span
-            Duplicate
-        %li
-          %i.icon-eye-open
-          %span
-            View
-        %li
-          %span
-            More actions
-          %i.icon-caret-down
-        %li
-          %a
-            View product history
     .col-12.form-input-wrap
       = form_for @listing_presenter.listing_form_object, :html => {:multipart => true} do |form|
         .row
@@ -48,7 +31,7 @@
               = render :partial => "listings/form/weight", :locals => { :form => form }
               = render :partial => "listings/form/user_manual_file", :locals => { :form => form }
             .col-12.form-listing-wrap
-              = render :partial => "listings/form/shipping", :locals => { :form => form }
+              -# = render :partial => "listings/form/shipping", :locals => { :form => form }
               = render :partial => "listings/form/customs_info", :locals => { :form => form }
               -# = render :partial => "listings/form/description", :locals => { :form => form }
               = render :partial => "listings/form/custom_fields", :locals => { :form => form }
@@ -76,21 +59,122 @@
               -#       - @listing.tags.split(',').each do |tag|
               -#         %li
               -#           = tag
+
+              = form.label 'Accessories', class: 'input'
+              .form-brands.margin-bt-20
+                = form.label 'ITEM TYPE', class: 'input'
+                = select_tag 'listing_accessory[item_type]', options_for_select(ITEM_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.item_type : ""), {prompt: "Select", class: 'width-100'}
+
               .form-brands.margin-bt-20
                 = form.label 'BRAND', class: 'input'
-                = form.select :brand, options_for_select(BRAND, @listing.brand), {prompt: "Select"}, {class: 'listing_brand width-100'}
+                = select_tag 'listing_accessory[brand]', options_for_select(BRAND.sort, @listing.listing_accessory ? @listing.listing_accessory.brand : ""), {prompt: "Select", class: 'width-100 '}
 
-              .form-brands.margin-bt-20
-                = form.label 'MOUNT', class: 'input'
-                = form.select :mount, options_for_select(MOUNT, @listing.mount), {prompt: "Select"}, {class: 'listing_brand width-100'}
 
-              .form-brands.margin-bt-20
-                = form.label 'LENS TYPE', class: 'input'
-                = form.select :lens_type, options_for_select(LENS_TYPE, @listing.lens_type), {prompt: "Select"}, {class: 'listing_brand width-100'}
+              #filter_types
+                .d-none.form-brands.margin-bt-20.accessories-list.lens
+                  = form.label 'LENS TYPE', class: 'input'
+                  = select_tag 'listing_accessory[lens_type]', options_for_select(LENS_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.lens_type : ""), {prompt: "Select", class: 'width-100'}
 
-              .form-brands.margin-bt-20
-                = form.label 'COMPATIBILITY', class: 'input'
-                = form.select :compatibility, options_for_select(COMPATIBILITY, @listing.compatibility), {prompt: "Select"}, {class: 'listing_brand width-100'}
+                .d-none.accessories-list.form-brands.margin-bt-20.lens.camera.lighting.accessory.flashes
+                  = form.label 'MOUNT', class: 'input'
+                  = select_tag 'listing_accessory[mount]', options_for_select(MOUNT.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.mount : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.lens
+                  = form.label 'COMPATIBILITY', class: 'input'
+                  = select_tag 'listing_accessory[compatibility]', options_for_select(COMPATIBILITY.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.compatibility : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.camera.camera_support
+                  = form.label 'CAMERA TYPE', class: 'input'
+                  = select_tag 'listing_accessory[camera_type]', options_for_select(CAMERA_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.camera_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.camera.camera_support
+                  = form.label 'CAMCORDER TYPE', class: 'input'
+                  = select_tag 'listing_accessory[camcorder_type]', options_for_select(CAMCORDER_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.camcorder_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.camera
+                  = form.label 'SENSOR SIZE', class: 'input'
+                  = select_tag 'listing_accessory[sensor_size]', options_for_select(SENSOR_SIZE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.sensor_size : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.camera.camera_support
+                  = form.label 'ACTION CAM COMPATIBILITY', class: 'input'
+                  = select_tag 'listing_accessory[action_cam_compatibility]', options_for_select(ACTION_CAM_COMPATIBILITY.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.action_cam_compatibility : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.lighting.flashes
+                  = form.label 'LIGHTING TYPE', class: 'input'
+                  = select_tag 'listing_accessory[lighting_type]', options_for_select(LIGHTING_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.lighting_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.lighting.accessory.camera_support.tripods.flashes
+                  = form.label 'ACCESSORY_TYPE', class: 'input'
+                  = select_tag 'listing_accessory[accessory_type]', options_for_select(ACCESSORY_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.accessory_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.memory
+                  = form.label 'CAPACITY', class: 'input'
+                  = select_tag 'listing_accessory[capacity]', options_for_select(CAPACITY.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.capacity : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.memory
+                  = form.label 'MEMORY TYPE', class: 'input'
+                  = select_tag 'listing_accessory[memory_type]', options_for_select(MEMORY_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.memory_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.memory
+                  = form.label "READ TRANSFER SPEED", class: 'input'
+                  = select_tag 'listing_accessory[read_transfer_speed]', options_for_select(READ_TRANSFER_SPEED.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.read_transfer_speed : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.memory
+                  = form.label 'BUS SPEED', class: 'input'
+                  = select_tag 'listing_accessory[bus_speed]', options_for_select(BUS_SPEED.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.bus_speed : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.power
+                  = form.label 'POWER COMPATIBILITY', class: 'input'
+                  = select_tag 'listing_accessory[power_compatibility]', options_for_select(POWER_COMPATIBILITY.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.power_compatibility : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.power
+                  = form.label 'POWER TYPE', class: 'input'
+                  = select_tag 'listing_accessory[power_type]', options_for_select(POWER_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.power_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.camera_support.tripods.accessory
+                  = form.label 'SUPPORT TYPE', class: 'input'
+                  = select_tag 'listing_accessory[support_type]', options_for_select(SUPPORT_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.support_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.tripods
+                  = form.label 'HEAD TYPE', class: 'input'
+                  = select_tag 'listing_accessory[head_type]', options_for_select(HEAD_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.head_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.tripods
+                  = form.label 'QUICK RELEASE SYSTEM', class: 'input'
+                  = select_tag 'listing_accessory[quick_release_system]', options_for_select(QUICK_RELEASE_SYSTEM.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.quick_release_system : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.lighting
+                  = form.label 'COLOR TEMPERATURE', class: 'input'
+                  = select_tag 'listing_accessory[color_temperature]', options_for_select(COLOR_TEMPERATURE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.color_temperature : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.accessory
+                  = form.label 'FILTER SIZE', class: 'input'
+                  = select_tag 'listing_accessory[filter_size]', options_for_select(FILTER_SIZE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.filter_size : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.accessory.camera_support
+                  = form.label 'FILTER STYLE', class: 'input'
+                  = select_tag 'listing_accessory[filter_style]', options_for_select(FILTER_STYLE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.filter_style : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.accessory
+                  = form.label 'FILTER TYPE', class: 'input'
+                  = select_tag 'listing_accessory[filter_type]', options_for_select(FILTER_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.filter_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.audio
+                  = form.label 'AUDIO TYPE', class: 'input'
+                  = select_tag 'listing_accessory[audio_type]', options_for_select(AUDIO_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.audio_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.monitoring.switcher
+                  = form.label 'MONITORING TYPE', class: 'input'
+                  = select_tag 'listing_accessory[monitoring_type]', options_for_select(MONITORING_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.monitoring_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.accessory.camera_support
+                  = form.label 'CAMERA SUPPORT TYPE', class: 'input'
+                  = select_tag 'listing_accessory[camera_support_type]', options_for_select(CAMERA_SUPPORT_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.camera_support_type : ""), {prompt: "Select", class: 'width-100'}
+
+                .d-none.accessories-list.form-brands.margin-bt-20.accessory
+                  = form.label 'CABLE TYPE', class: 'input'
+                  = select_tag 'listing_accessory[cable_type]', options_for_select(CABLE_TYPE.sort, selected: @listing.listing_accessory ? @listing.listing_accessory.cable_type : ""), {prompt: "Select", class: 'width-100'}
+
 
             .col-12.form-listing-wrap.form-recommended-accessories
               = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }
@@ -104,6 +188,8 @@
 - content_for :extra_javascript do
   :javascript
     ST.ListingTags.initTagsForEditListing();
+    ST.ListingTags.handleChangeItemType();
+    ST.ListingTags.handleLoadItemType();
     ST.BlockedDates.addBlockedDates();
     $(document).ready(function(){
       $('#start-date-blocked').datepicker({

@@ -1,13 +1,13 @@
 .row.listing-title#listing-title-sticky
   .col-12.clearfix.padding-0
-    %span
+    %span.font-size-24.font-open-sans
       = @listing.title
     - if @current_user.present? && (current_user?(@listing.author) || @current_user.has_admin_rights?(@current_community))
       = link_to 'Edit', edit_listing_path(@listing)
   .col-12.listing-sku.padding-0
-    %span
+    %span.font-open-sans
       SKU :
-    %span.sku
+    %span.sku.font-open-sans
       = @listing.sku
 .desktop-display
   = render partial: 'listings/desktop_designs/listing_order_item'
@@ -63,14 +63,6 @@
           = image_tag(assurance_option.image.url, class: 'header-menu-icon icon-movri-calendar')
           %span.line-height-16
             = assurance_option.title
-
-
-.row.listing-save-availabe
-  .col-6.clearfix.save-available.padding-0
-    %p
-      Savings Availabe:
-    .saving-available-item
-
 .desktop-display
   = render partial: 'listings/desktop_designs/trade'
 .mobile-display

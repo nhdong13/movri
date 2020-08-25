@@ -305,7 +305,7 @@ $listing-author-avatar-height: 108;
 }
 
 .listing-breadcrumbs {
-  margin: 0.75rem 0 1.25rem 0.75em;
+  margin: 10px 0;
   width: 100%;
   i{
     margin: 0 5px;
@@ -333,7 +333,6 @@ $listing-author-avatar-height: 108;
 
   @media #{$mobile}, #{$tablet} {
     margin: 0;
-
     .page-content {
       padding-top: 0;
     }
@@ -348,11 +347,12 @@ $listing-author-avatar-height: 108;
 
   .listing-include {
     .listing-include-title {
-      font-size: 21px;
+      display: inline-block;
+      padding: 10px 0;
+      margin-bottom: 10px;
+      font-size: 18px;
       color: #333333;
-      padding-bottom: 5px;
       border-bottom: 1px solid #cdcdcd;
-      display: inline;
       font-weight: bold;
     }
 
@@ -481,8 +481,6 @@ $listing-author-avatar-height: 108;
     }
 
     #slideshow-main {
-      float: left;
-      margin-left: 10px;
       width: 540px;
       height: 540px;
       padding-left: 0px;
@@ -601,11 +599,12 @@ $listing-author-avatar-height: 108;
       margin-top: 0 !important;
 
       .listing-replacement-value {
+        color: #7d7d7d;
         font-size: 14px;
         font-weight: normal;
 
         .amount {
-          color: #0e426e;
+          color: #13588d;
         }
       }
     }
@@ -626,8 +625,9 @@ $listing-author-avatar-height: 108;
     }
 
     .listing-replacement-value {
+      color: #7d7d7d;
       .amount {
-        color: #0e426e;
+        color: #13588d;
       }
     }
 
@@ -673,7 +673,7 @@ $listing-author-avatar-height: 108;
         img {
           position: absolute;
           width: 20px;
-          top: 45px;
+          top: 56px;
           right: 10px;
         }
       }
@@ -930,16 +930,6 @@ $listing-author-avatar-height: 108;
         img {
           display: block;
         }
-      }
-    }
-  }
-
-  .listing-save-availabe {
-    .save-available {
-      .saving-available-item {
-        height: 50px;
-        width: 100%;
-        background: #c3c3c3;
       }
     }
   }
@@ -1373,16 +1363,14 @@ $listing-author-avatar-height: 108;
   }
 }
 
-.listing-user-manual,
-.listing-firmware-updates {
+.listing-user-manual{
   margin-top: 30px;
   background: #ececec;
   position: relative;
   height: 96px;
   border-radius: 4px;
 
-  .user-manual-title,
-  .firmware-updates-title {
+  .user-manual-title{
     position: absolute;
     left: 35%;
     top: 35%;
@@ -1414,12 +1402,20 @@ $listing-author-avatar-height: 108;
 }
 
 @media #{$mobile}, #{$tablet} {
+  .listing-breadcrumbs{
+    .listing-breadcrumb{
+      display: inline;
+    }
+    a{
+      font-size: 12px;
+    }
+  }
+
   .listing-user-manual {
     border-bottom: 1px solid;
   }
 
-  .listing-user-manual,
-  .listing-firmware-updates {
+  .listing-user-manual {
     height: auto;
     background: none;
     margin-top: 0;
@@ -1441,14 +1437,12 @@ $listing-author-avatar-height: 108;
       }
     }
 
-    .user-manual-title,
-    .firmware-updates-title {
+    .user-manual-title{
       font-size: 20px;
       color: #757575;
     }
 
     .user-manual-title,
-    .firmware-updates-title,
     .user-manual-file-size {
       font-weight: normal;
       left: 5px;
@@ -1461,17 +1455,12 @@ $listing-author-avatar-height: 108;
     }
 
     .user-manual-title,
-    .firmware-updates-title,
     .user-manual-file-size,
     .user-manual-file-icon,
     .firmware-updates-file-icon {
       position: relative;
     }
   }
-}
-
-.listing-firmware-updates {
-  margin-top: 10px;
 }
 
 .not-include-box {
@@ -1587,6 +1576,7 @@ $listing-author-avatar-height: 108;
 
 .recently_viewed {
   .slide-item {
+    margin: 0 12px !important;
     position: relative;
   }
 
@@ -1828,8 +1818,6 @@ $listing-author-avatar-height: 108;
 
 .mobile-listing-order {
   background: #f0f0f0;
-  margin-left: -12px;
-  margin-right: -12px;
   padding: 0px 10px;
 }
 

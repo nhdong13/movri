@@ -2,7 +2,7 @@
 .tab-content#accessories_tab
   .row
     .tab-title
-      %p Showcased Accessories
+      %p Accessories
   - @listing.listing_accessories.each_slice(4).to_a.each do |group_listing|
     .row
       - group_listing.each do |listing|

@@ -12,8 +12,10 @@
 .row
   .col-12
     = form.label :track_quantity do
-      = form.check_box :track_quantity
-      Track quantity
+      .flex-items
+        = form.check_box :track_quantity
+        Track quantity
     = form.label :contiunue_sell do
-      = form.check_box :contiunue_sell
-      Continue selling when out of stock
+      .flex-items
+        = form.check_box :contiunue_sell
+        Continue selling when out of stock

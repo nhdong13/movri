@@ -176,13 +176,13 @@ class ListingsController < ApplicationController
     end
     @listing = Listing.new(result.data)
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
-
     ActiveRecord::Base.transaction do
       @listing.author = new_listing_author
       service.create_state(@listing)
       if @listing.save
         create_or_update_accessories(result.data[:recommended_accessory_ids])
         create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
+        create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -253,6 +253,7 @@ class ListingsController < ApplicationController
     if update_successful
       create_or_update_accessories(result.data[:recommended_accessory_ids])
       create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
+      create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -616,6 +617,14 @@ class ListingsController < ApplicationController
   def create_or_update_accessories(recommended_accessory_ids)
     ListingUpdateAccessoryService.new(recommended_accessory_ids.split(','), @listing)
                                  .add_recommended_accessories
+  end
+
+  def create_or_update_listing_assessory listing, listing_accessory_attrs
+    if listing.listing_accessory
+      listing.listing_accessory.update(listing_accessory_attrs)
+    else
+      listing.create_listing_accessory(listing_accessory_attrs)
+    end
   end
 
   def update_flash(old_availability:, new_availability:)
