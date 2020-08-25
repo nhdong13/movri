@@ -273,7 +273,9 @@ Rails.application.routes.draw do
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
       resources :online_stores, only: [] do
-        resources :store_sections, only: [:create]
+        resources :store_sections, only: [:create] do
+          put :sort_sections, on: :collection
+        end
       end
 
       resources :store_headers, only: [:update] do
@@ -299,6 +301,7 @@ Rails.application.routes.draw do
       resources :store_featured_products, only: [:create, :update, :destroy]
 
       resources :store_grids, only: [:create, :update, :destroy] do
+        put :sort_items, on: :member
         resources :store_grid_items, only: [:create, :update, :destroy]
       end
 

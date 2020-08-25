@@ -1198,6 +1198,12 @@ $home-list-avatar-padding: lines(0.25);
     font-size: 20px;
     color: #33475b;
   }
+  .helpful-links {
+    a img {
+      width: 40px;
+      height: auto;
+    }
+  }
 }
 .helpful-link-section{
   margin-bottom: 0px;
@@ -1214,7 +1220,7 @@ $home-list-avatar-padding: lines(0.25);
     padding: 10px 0;
     width: 230px;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: 600;
   }
 }
 

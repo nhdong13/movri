@@ -55,7 +55,7 @@ export const sectionData = [
     categoryName: 'FOOTER',
     items: [
       {
-        name: 'Footer section(Contact us, Shipping Section)',
+        name: 'Footer section (Contact us, Footer Section)',
         model: 'StoreFooter'
       },
       {
