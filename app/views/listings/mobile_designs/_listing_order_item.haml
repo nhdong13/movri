@@ -1,7 +1,7 @@
 .mobile-listing-order.padding-15
   .row.listing-price
     .col-6.clearfix
-      %span.amount
+      %span.amount.font-open-sans
         - number_price = Money.new(PriceCalculationService.calculate(@listing, ListingViewUtils.get_booking_days(session)), 'USD')
         = MoneyViewUtils.to_humanized(number_price)
         -# = MoneyViewUtils.to_humanized(@listing.price)
@@ -9,18 +9,18 @@
       -#   %span.time-rent
       -#     \/
       -#     = text
-      %span.time-rent
+      %span.time-rent.font-open-sans
         \/
         = ListingViewUtils.get_time_rent(session)
     .col-6.clearfix.listing-replacement-value
-      %span
+      %span.font-open-sans
         Replacement Value :
-      %span.amount
+      %span.amount.font-open-sans
         = money_to_humanized(@listing.replacement_cents_fee)
   .row.listing-available
     .col-12.clearfix.availabel
       - if @listing_presenter.available_date
-        %span
+        %span.font-open-sans
           = "Available #{@listing_presenter.available_date}"
   .row.listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
     = form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do

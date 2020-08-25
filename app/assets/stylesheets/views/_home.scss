@@ -608,6 +608,7 @@ $home-list-avatar-padding: lines(0.25);
 }
 
 .how-it-works {
+  border-bottom: 1px solid #f3f3f3;
   span.section-heading {
     font-size: 30px;
     font-weight: 500;
@@ -777,6 +778,7 @@ $home-list-avatar-padding: lines(0.25);
 
     .different-desc{
       padding: 29px 145px;
+      height: inherit;
     }
 
     p {
