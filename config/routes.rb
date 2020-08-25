@@ -216,7 +216,10 @@ Rails.application.routes.draw do
       end
     end
 
+
     namespace :admin do
+      resource :custom_style, only: [:edit ,:create, :update]
+
       get '' => "getting_started_guide#index"
 
       # Payments
