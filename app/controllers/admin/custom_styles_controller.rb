@@ -6,13 +6,15 @@ class Admin::CustomStylesController < Admin::AdminBaseController
 
   def create
     @custom_style = CustomStyle.create(custom_style_param)
+    redirect_to edit_admin_custom_style_path
   end
 
   def update
     @custom_style.update(custom_style_param)
+    redirect_to edit_admin_custom_style_path
   end
-  private
 
+  private
   def custom_style_param
     params
       .require(:custom_style)

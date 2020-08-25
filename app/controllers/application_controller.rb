@@ -215,9 +215,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def custome_style_url
-    @custome_style_url = CustomStyle.last ? CustomStyle.last.style_file.url : ""
-  end
   # Ensure that user belongs to community
   #
   # This check is in most cases useless: When user logs in we already
