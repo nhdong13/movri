@@ -1,0 +1,51 @@
+.wrapper
+  = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+  .left-navi-section
+    = form_for [:admin, @support_info], url: admin_support_info_path do |f|
+      .row
+        .col-12
+          .support-info-image.flex-items
+            .image-box.center-items
+              .support_info_box
+              - if @support_info.image.exists?
+                .preview.center-items
+                  = image_tag @support_info.image.url
+              = f.file_field :image
+
+            .block
+              .common-link-btn.padding-15.change-support-image-btn
+                %span Choose Image
+              .common-link-btn.padding-15
+                %span Remove Image
+      .row
+        .col-12
+          .form-control
+            %span Heading
+            = f.text_field :heading
+        .col-12
+          .form-control
+            %span Sub Heading
+            = f.text_field :sub_heading
+      .form-control
+        .flex-items
+          .width-30
+            %span Phone No.
+            = f.text_field :phone, class: "phone-input"
+          .width-70
+            %span Link
+            = f.text_field :phone_link
+      .form-control
+        .flex-items
+          .width-30
+            %span Email Us
+            = f.text_field :email
+          .width-70
+            %span Link
+            = f.text_field :email_link
+      .row
+        .col-12
+          .form-control
+            = f.submit "Submit", class: 'btn active'
+
+- content_for :javascript do
+  SupportInfo.run()
