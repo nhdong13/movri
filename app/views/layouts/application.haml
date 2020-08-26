@@ -127,6 +127,8 @@
     = javascript_include_tag "i18n/#{I18n.locale}"
 
     = javascript_include_tag 'application'
+    :javascript
+      $('article.page-content').css("margin-top", $('#sticky-header').height() || 0);
 
     :javascript
       window.ST.jsonTranslations = #{raw JSONTranslations.get(I18n.locale)}
@@ -155,3 +157,5 @@
     = render :partial => 'analytics/bottom_scripts'
 
     = render :partial => "layouts/noscript"
+
+  

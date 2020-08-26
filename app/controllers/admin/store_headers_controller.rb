@@ -16,6 +16,12 @@ class Admin::StoreHeadersController < Admin::AdminBaseController
 
   private
   def header_params
+    tag_line_setting = JSON.parse(params[:store_header][:tag_line_setting])
+    phone_number_setting = JSON.parse(params[:store_header][:phone_number_setting])
+    contact_us_setting = JSON.parse(params[:store_header][:contact_us_setting])
+    faq_setting = JSON.parse(params[:store_header][:faq_setting])
+    announcement_bar_setting = JSON.parse(params[:store_header][:announcement_bar_setting])
+  
     params
       .require(:store_header)
       .permit(
@@ -26,6 +32,12 @@ class Admin::StoreHeadersController < Admin::AdminBaseController
         :link,
         :text_color,
         :background_color
-      )
+      ).merge({
+        tag_line_setting: tag_line_setting,
+        phone_number_setting: phone_number_setting,
+        contact_us_setting: contact_us_setting,
+        faq_setting: faq_setting,
+        announcement_bar_setting: announcement_bar_setting
+      })
   end
 end

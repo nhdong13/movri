@@ -4,6 +4,11 @@ import axios from 'axios'
 import ImageUploader from 'react-images-upload';
 import './style.css'
 import { previewUploadImageSrc } from '../../../utils/common';
+import TagLine from './TagLine'
+import Phone from './Phone'
+import ContactUs from './ContactUs'
+import Faq from './Faq'
+import AnnouncementBar from './AnnouncementBar'
 
 class StoreHeader extends Component {
   constructor(props) {
@@ -17,6 +22,11 @@ class StoreHeader extends Component {
     this.handleClose = this.handleClose.bind(this)
     this.onloadCallback = this.onloadCallback.bind(this)
     this.onDrop = this.onDrop.bind(this)
+    this.handleChangeTagLineSetting = this.handleChangeTagLineSetting.bind(this)
+    this.handleChangePhoneSetting = this.handleChangePhoneSetting.bind(this)
+    this.handleChangeContactUsSetting = this.handleChangeContactUsSetting.bind(this)
+    this.handleChangeFaqSetting = this.handleChangeFaqSetting.bind(this)
+    this.handleChangeAnnouncementBarSetting = this.handleChangeAnnouncementBarSetting.bind(this)
 
     this.axiosDefaultParams = {
       authenticity_token: $('input[name ="authenticity_token"]').val()
@@ -50,12 +60,11 @@ class StoreHeader extends Component {
     e.preventDefault()
     const store_header = {
       sticky_enabled: this.state.object.sticky_enabled,
-      announcement_enabled: this.state.object.announcement_enabled,
-      home_only_enabled: this.state.object.home_only_enabled,
-      title: this.state.object.title,
-      link: this.state.object.link,
-      text_color: this.state.object.text_color,
-      background_color: this.state.object.background_color
+      tag_line_setting: JSON.stringify(this.state.object.tag_line_setting),
+      phone_number_setting: JSON.stringify(this.state.object.phone_number_setting),
+      contact_us_setting: JSON.stringify(this.state.object.contact_us_setting),
+      faq_setting: JSON.stringify(this.state.object.faq_setting),
+      announcement_bar_setting: JSON.stringify(this.state.object.announcement_bar_setting),
     }
 
     const params = {...this.axiosDefaultParams, store_header}
@@ -103,7 +112,6 @@ class StoreHeader extends Component {
     })
   }
 
-
   colorPickToggle() {
     this.setState({textColorEnabled: !this.state.textColorEnabled})
   }
@@ -124,6 +132,36 @@ class StoreHeader extends Component {
     })
   }
 
+  handleChangeTagLineSetting(tagLineSetting) {
+    this.setState({
+      object: {...this.state.object, tag_line_setting: tagLineSetting}
+    })
+  }
+
+  handleChangePhoneSetting(phoneSetting) {
+    this.setState({
+      object: {...this.state.object, phone_number_setting: phoneSetting}
+    })
+  }
+
+  handleChangeContactUsSetting(contactUsSetting) {
+    this.setState({
+      object: {...this.state.object, contact_us_setting: contactUsSetting}
+    })
+  }
+
+  handleChangeFaqSetting(faqSetting) {
+    this.setState({
+      object: {...this.state.object, faq_setting: faqSetting}
+    })
+  }
+
+  handleChangeAnnouncementBarSetting(announcementBarSetting) {
+    this.setState({
+      object: {...this.state.object, announcement_bar_setting: announcementBarSetting}
+    })
+  }
+
   render() {
     const styles = {
       cover: {
@@ -135,7 +173,12 @@ class StoreHeader extends Component {
       }
     }
 
-      
+    let tagLineSetting = this.state.object.tag_line_setting || {}
+    let phoneNumberSetting = this.state.object.phone_number_setting || {}
+    let contactUsSetting = this.state.object.contact_us_setting || {}
+    let faqSetting = this.state.object.faq_setting || {}
+    let announcementBarSetting = this.state.object.announcement_bar_setting || {}
+
     return (
       <div className='store-header'>
         <div className='breabcrum' onClick={() => this.props.toggleActiveSub('')}>
@@ -171,71 +214,32 @@ class StoreHeader extends Component {
                   singleImage={true}
                 />
               </div>
-              <div className=''>
-                <label>ANNOUNCEMENT BAR</label>
-                <div className='checkbox-control'>
-                  <input 
-                    className='checkbox-input'
-                    name='announcement_enabled'
-                    type='checkbox'
-                    checked={this.state.object.announcement_enabled}
-                    onChange={this.handleFormOnChange}
-                    id='announcement_enabled' />
-                  <label className='checkbox-label' htmlFor='announcement_enabled'>Show announcement</label>
-                </div>
-                <div className='checkbox-control'>
-                  <input
-                    className='checkbox-input'
-                    name='home_only_enabled'
-                    type='checkbox'
-                    checked={this.state.object.home_only_enabled}
-                    onChange={this.handleFormOnChange}
-                    id='home_only_enabled' />
-                  <label className='checkbox-label' htmlFor='home_only_enabled'>Show on Homepage only</label>
-                </div>
-              </div>
-              <div className=''>
-                <label>Text</label>
-                <textarea name='title' value={this.state.object.title} onChange={ this.handleFormOnChange }></textarea>
-              </div>
-              <div className=''>
-                <label>Link</label>
-                <textarea name='link' value={this.state.object.link} onChange={ this.handleFormOnChange }></textarea>
-              </div>
-              <div>
-                <button
-                  type='button'
-                  className='color-box' 
-                  style={{backgroundColor: this.state.object.text_color}} 
-                  onClick={this.colorPickToggle}>
-                </button>
-                <label>Text color</label>
-                {this.state.textColorEnabled && 
-                  <div>
-                    <div style={ styles.cover } onClick={ this.handleClose }/>
-                    <SketchPicker
-                      color={ this.state.object.text_color }
-                      onChangeComplete={ this.handleTextColorChangeComplete }
-                    />
-                  </div>}
-              </div>
-              <div>
-                <button 
-                  type='button'
-                  className='color-box' 
-                  style={{backgroundColor: this.state.object.background_color}}  
-                  onClick={this.bgPickToggle}>
-                </button>
-                <label>Background color</label>
-                {this.state.bgColorEnabled && 
-                  <div>
-                    <div style={ styles.cover } onClick={ this.handleClose }/>
-                    <SketchPicker 
-                    color={ this.state.object.background_color }
-                    onChangeComplete={ this.handleBgColorChangeComplete }
-                  />
-                </div>}
-              </div>
+            </div>
+            <div className='border-top-gray'>
+              <TagLine 
+                object={tagLineSetting} 
+                handleChangeTagLineSetting={this.handleChangeTagLineSetting}/>
+            </div>
+            <div className='border-top-gray'>
+              <Phone 
+                object={phoneNumberSetting} 
+                handleChangePhoneSetting={this.handleChangePhoneSetting}/>
+            </div>
+            <div className='border-top-gray'>
+              <ContactUs 
+                object={contactUsSetting} 
+                handleChangeContactUsSetting={this.handleChangeContactUsSetting}/>
+            </div>
+            <div className='border-top-gray'>
+              <Faq 
+                object={faqSetting} 
+                handleChangeFaqSetting={this.handleChangeFaqSetting}/>
+            </div>
+            <div className='border-top-gray'>
+              <AnnouncementBar 
+                object={announcementBarSetting}
+                handleChangeAnnouncementBarSetting={this.handleChangeAnnouncementBarSetting}
+              />                
             </div>
                 <button className='btn' type='submit'>{ this.state.loading ? 'Saving...' : 'Save' }</button>
           </form>
