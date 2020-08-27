@@ -2453,6 +2453,14 @@ figure.fluidratio {
   padding-left: 15px !important;
 }
 
+.pl-5 {
+  padding-left: 25px !important;
+}
+
+.pr-0 {
+  padding-right: 0px !important;
+}
+
 .m-0 {
   margin: 0 !important;
 }
@@ -2667,4 +2675,9 @@ figure.fluidratio {
 
 .position-relative {
   position: relative;
+}
+
+// border
+.border-top-gray {
+  border-top: 1px solid gray;
 }
