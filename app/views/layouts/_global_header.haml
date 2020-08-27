@@ -99,7 +99,7 @@
               %a{href: locale_change_link[:url]}
                 = locale_change_link[:title]
 
-      = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
+      = render :partial => "layouts/header_menu", locals: {store_header: store_header, locale_change_links: locale_change_links, icons: icons}
 
   .header.category-nav.hidden-mobile
     .header-wrapper
