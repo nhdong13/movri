@@ -17,11 +17,6 @@
         Replacement Value :
       %span.amount.font-open-sans
         = money_to_humanized(@listing.replacement_cents_fee)
-  .row.listing-available
-    .col-12.clearfix.availabel
-      - if @listing_presenter.available_date
-        %span.font-open-sans
-          = "Available #{@listing_presenter.available_date}"
   .row.listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
     = form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do
       - if @listing_presenter.quantity_per_day_or_night?

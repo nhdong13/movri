@@ -638,28 +638,6 @@ $listing-author-avatar-height: 108;
     }
   }
 
-  .listing-available {
-    font-weight: bold;
-    font-size: 14px;
-
-    .availabel {
-      background: #f3f3f3;
-      padding: 10px 10px;
-      border-radius: 4px;
-      width: auto;
-    }
-
-    @media #{$mobile}, #{$tablet} {
-      font-weight: normal;
-
-      .availabel {
-        background: #bdbdbd;
-        border-radius: 0;
-        width: fit-content;
-      }
-    }
-  }
-
   .listing-shipping-date {
     .arrival-date,
     .return-date {
@@ -2761,7 +2739,7 @@ $listing-author-avatar-height: 108;
       background: #eaeaea;
 
       input {
-        width: 382px;
+        width: 100%;
         height: 35px;
         margin-left: 10px;
         margin-top: 20px;
@@ -2884,8 +2862,9 @@ $listing-author-avatar-height: 108;
       }
 
       .mobile-button-calculate-shipping {
+        padding: 10px;
         margin-top: 20px;
-        height: 35px;
+        height: 100%;
         background-color: #4eb857;
         font-size: 13px;
         margin-left: 5px;

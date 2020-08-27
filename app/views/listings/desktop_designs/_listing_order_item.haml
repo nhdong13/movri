@@ -18,11 +18,6 @@
       Replacement Value :
     %span.amount.font-size-16.font-open-sans
       = money_to_humanized(@listing.replacement_cents_fee)
-.row.listing-available
-  .col-12.clearfix.availabel
-    - if @listing_presenter.available_date
-      %span.font-open-sans
-        = "Available #{@listing_presenter.available_date}"
 -# .row.listing-shipping-date
 -#   .col-6.clearfix.arrival-date
 -#     .form-group
