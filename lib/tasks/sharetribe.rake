@@ -94,7 +94,13 @@ namespace :sharetribe do
     tabs = %w[spec overview q_a in_the_box not_in_the_box key_feature]
     Listing.all.each do |listing|
       tabs.each do |tab|
-        listing.listing_tabs.create(title: tab.split("_").join(" "), tab_type: tab, description: listing.send(tab))
+        begin
+          l_tabs = listing.listing_tabs.where(tab_type: tab).last
+          unless l_tabs
+            l_tabs = listing.listing_tabs.create(title: tab.split("_").join(" "), tab_type: tab, description: listing.send(tab))
+          end
+        rescue
+        end
       end
     end
     ListingTab.where(tab_type: 'q_a').update_all(tab_type: 'q_and_a')
