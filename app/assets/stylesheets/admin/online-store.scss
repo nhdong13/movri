@@ -41,7 +41,7 @@
           .title {
             width: 100%;
             text-transform: capitalize;
-          } 
+          }
         }
       }
 
@@ -101,7 +101,7 @@
               border-radius: 6px;
               position: relative;
               &.banner-item {
-                
+
                 img {
                   max-width: 100%;
                   max-width: 100%;
@@ -208,4 +208,23 @@
 form .form-control {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.edit-tilte-tab{
+  cursor: pointer;
+  padding: 5px 5px 5px 7px;
+  border: 1px solid #c4cdd3;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.title-tab-input{
+  width: 70% !important;
+}
+
+.tab-section{
+  margin: 20px 0;
+  .tab-header{
+    margin-bottom: 10px;
+  }
 }

@@ -1,2 +1,15 @@
-= form.label :overview, 'OVERVIEW', :class => "input"
-= form.cktext_area(:overview, :class => "listing_overview_textarea")
+- tab = @listing.overview_tab || ListingTab.new(title: 'overview', tab_type: 'overview')
+.tab-section
+  = form.fields_for :tabs do |form2|
+    = form2.fields_for tab.tab_type, tab do |attr|
+      .flex-items.tab-header
+        .width-85.flex-items.padding-0
+          %span.uppercase.tab-title= tab.title.split("_").join(" ")
+          = attr.text_field :title, class: "title-tab-input hidden"
+          %span.edit-tilte-tab
+            %i.fa.fa-pencil-square-o
+        .width-15.padding-0.align-right
+          = attr.select :is_active, options_for_select({On: 1, Off: 0}, selected: tab.is_active ? 1 : 0)
+      = attr.cktext_area :description
+-# = form.label :overview, 'OVERVIEW', :class => "input"
+-# = form.cktext_area(:overview, :class => "listing_overview_textarea")

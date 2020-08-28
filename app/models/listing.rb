@@ -112,9 +112,6 @@ class Listing < ApplicationRecord
     attributes :children_category do
       children_category&.url
     end
-    attributes :children_category do
-      children_category&.url
-    end
     attributes :default_7_days_rental_price do
       price = Money.new(PriceCalculationService.calculate(self, 7), 'USD')
       MoneyViewUtils.to_humanized(price)
@@ -172,6 +169,7 @@ class Listing < ApplicationRecord
   accepts_nested_attributes_for :pricing_charts, allow_destroy: true
   has_one :redirect_url, as: :redirectable
   has_one :listing_accessory, dependent: :destroy
+  has_many :listing_tabs, dependent: :destroy
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency
@@ -232,6 +230,31 @@ class Listing < ApplicationRecord
     self.updates_email_at ||= Time.now
   end
 
+
+  def specs_tab
+    listing_tabs.where(tab_type: "specs").last
+  end
+
+  def not_in_the_box_tab
+    listing_tabs.where(tab_type: "not_in_the_box").last
+  end
+
+  def in_the_box_tab
+    listing_tabs.where(tab_type: "in_the_box").last
+  end
+
+  def overview_tab
+    listing_tabs.where(tab_type: "overview").last
+  end
+
+  def key_features_tab
+    listing_tabs.where(tab_type: "key_features").last
+  end
+
+  def q_and_a_tab
+    listing_tabs.where(tab_type: "q_and_a").last
+  end
+
   def uuid_object
     if self[:uuid].nil?
       nil
@@ -245,7 +268,7 @@ class Listing < ApplicationRecord
   end
 
   before_create :add_uuid
-  before_save :convert_replacement_value_to_cents
+  # before_save :convert_replacement_value_to_cents
   def add_uuid
     self.uuid ||= UUIDUtils.create_raw
   end
@@ -310,7 +333,7 @@ class Listing < ApplicationRecord
 
   def update_fields(params)
     update_attribute(:valid_until, nil) unless params[:valid_until]
-    update(params)
+    update!(params)
   end
 
   def closed?

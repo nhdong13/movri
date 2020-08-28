@@ -31,11 +31,11 @@
     .flex-items
       .width-10.padding-0
       .width-90.listing-include.padding-0
-        - if @listing.key_feature.present?
+        - if @listing.key_features_tab.present? && @listing.key_features_tab.is_active
           .listing-include-title
-            %span KEY FEATURES
+            %span= @listing.key_features_tab.title
           .listing-include-items
-            = @listing.key_feature.html_safe
+            = @listing.key_features_tab.description.html_safe
 
 
     - content_for :extra_javascript do
