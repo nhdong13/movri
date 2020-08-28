@@ -73,6 +73,7 @@ module ListingFormViewUtils
     listing_params = filter(with_currency, shape, valid_until_enabled)
     listing_unit   = parse_listing_unit_param(params)
     listing_params = filter_additional_shipping(listing_params, listing_unit)
+    listing_params.delete(:tabs)
     validation_result = validate(
       params: listing_params,
       shape: shape,

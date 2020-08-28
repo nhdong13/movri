@@ -207,4 +207,9 @@
         startDate: new Date(),
         format: 'yyyy/mm/dd'
       });
+
+      $(".edit-tilte-tab").click(function(){
+        $(this).parents(".tab-section").find(".title-tab-input").show()
+        $(this).parents(".tab-section").find(".tab-title").hide()
+      })
     });

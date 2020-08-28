@@ -1,12 +1,12 @@
-- if @listing.in_the_box.present?
+- if @listing.in_the_box_tab && @listing.in_the_box_tab.is_active
   .include-box
-    .title
-      In the Box
+    .title.capitalize
+      = @listing.in_the_box_tab.title
     .include-items
-      = safe_join([raw(@listing.in_the_box)])
-- if @listing.not_in_the_box.present?
+      = safe_join([raw(@listing.in_the_box_tab.description)])
+- if @listing.not_in_the_box_tab && @listing.in_the_box_tab.is_active
   .not-include-box
-    .title
-      Not in the Box
+    .title.capitalize
+      = @listing.not_in_the_box_tab.title
     .include-items
-      = safe_join([raw(@listing.not_in_the_box)])
+      = safe_join([raw(@listing.not_in_the_box_tab.description)])

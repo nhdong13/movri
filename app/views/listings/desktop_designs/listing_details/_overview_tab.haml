@@ -1,2 +1,3 @@
-.col-11.tab-content#overview_tab
-  = safe_join([raw(@listing.overview)])
+- if @listing.overview_tab.is_active
+  .col-11.tab-content#overview_tab
+    = safe_join([raw(@listing.overview_tab.description)])

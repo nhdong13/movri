@@ -2,11 +2,11 @@
   %div.clearfix.specification-list
     %ul.nav.nav-pills.listing-categories-detail.clearfix.col-12
       %li.active
-        %a.tab-link{'data-tab' => 'spec_tab'} SPECS
+        %a.uppercase.tab-link{'data-tab' => 'spec_tab'}= @listing.specs_tab.title
       %li
-        %a.tab-link{'data-tab' => 'overview_tab'} OVERVIEW
+        %a.uppercase.tab-link{'data-tab' => 'overview_tab'}=@listing.overview_tab.title
       %li
-        %a.tab-link{'data-tab' => 'qa_tab'} Q&A
+        %a.uppercase.tab-link{'data-tab' => 'qa_tab'}=@listing.q_and_a_tab.title
       %li
         %a.tab-link{'data-tab' => 'compare_tab'} QUICK COMPARE
       %li

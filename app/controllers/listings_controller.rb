@@ -169,6 +169,7 @@ class ListingsController < ApplicationController
       return redirect_to new_listing_path
     end
 
+    tabs = params.to_unsafe_hash[:listing][:tabs]
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
@@ -181,6 +182,7 @@ class ListingsController < ApplicationController
       @listing.author = new_listing_author
       service.create_state(@listing)
       if @listing.save
+        create_or_update_tabs(@listing, tabs)
         create_or_update_accessories(result.data[:recommended_accessory_ids])
         create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
         create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
@@ -238,6 +240,7 @@ class ListingsController < ApplicationController
       return redirect_to edit_listing_path(@listing)
     end
 
+    tabs = params.to_unsafe_hash[:listing][:tabs]
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
@@ -252,6 +255,7 @@ class ListingsController < ApplicationController
     @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
 
     if update_successful
+      create_or_update_tabs(@listing, tabs)
       create_or_update_accessories(result.data[:recommended_accessory_ids])
       create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
       create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
@@ -618,6 +622,17 @@ class ListingsController < ApplicationController
   def create_or_update_accessories(recommended_accessory_ids)
     ListingUpdateAccessoryService.new(recommended_accessory_ids.split(','), @listing)
                                  .add_recommended_accessories
+  end
+
+  def create_or_update_tabs listing, params
+    params.keys.each do |key|
+      tab = listing.listing_tabs.where(tab_type: key).last
+      if tab
+        tab.update(params[key])
+      else
+        listing.listing_tabs.create(params[key].merge({tab_type: key}))
+      end
+    end
   end
 
   def create_or_update_listing_assessory listing, listing_accessory_attrs
