@@ -273,12 +273,32 @@ window.ST = window.ST || {};
       var id = $(this).data('id');
       var title = $(this).text();
       if (idExists(id) != true) {
-        html = '<div class="recommended-accessory-item" data-id="'+ id +'">' +
-                '<span>' + title + '</span>' +
-                '<i class="icon-remove" data-id="'+ id +'"></i>' +
-                '</div>';
-        $('.recommended-accessories-list').append(html);
+        html =  '<li class="cursor-pointer background" draggable="false" style="" data-id="'+ id +'" >'+
+                  '<div class="recommended-accessory-item row m-0 pl-0 pr-0">' +
+                    '<div class="col-1 p-0 m-0">' +
+                      '<span>' +
+                        '<i class="fa fas fa-ellipsis-v" style="margin-right: 3px"></i>' +
+                        '<i class="fa fas fa-ellipsis-v"></i>' +
+                      '</span>' +
+                    '</div>' +
+                    '<div class="col-9 p-0 m-0">' + title + '</div>' +
+                    '<div class="col-2 p-0 m-0 text-right">'+
+                      '<i class="icon-remove" data-id="'+ id +'"></i>' +
+                    '</div>'+
+                  '</div>'+
+                '</li>';
+        $('#recommendedAccessoriesSortableList').append(html);
         updateAccessoriesSelectize();
+        var listingId = document.getElementById('recommendedAccessoriesSortableList').dataset.listingId
+        var paramsData = {listing_accessory_id: id}
+        $.ajax({
+          url: `/listings/${listingId}/add_accessories`,
+          type: 'POST',
+          data: paramsData,
+          success: function() {
+            return;
+          }
+        });
       };
       $('.selectize-recommended-accessories-result').css('display', 'none');
     });
@@ -309,6 +329,16 @@ window.ST = window.ST || {};
       var id = $(this).data('id');
       $('.recommended-accessories-list').find('[data-id='+ id + ']').remove();
       updateAccessoriesSelectize();
+      var listingId = document.getElementById('recommendedAccessoriesSortableList').dataset.listingId
+      paramsData = {listing_accessory_id: id}
+      $.ajax({
+        url: `/listings/${listingId}/remove_accessory`,
+        type: 'PUT',
+        data: paramsData,
+        success: function() {
+          return;
+        }
+      });
     });
   }
 

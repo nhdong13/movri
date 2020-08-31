@@ -509,6 +509,9 @@ Rails.application.routes.draw do
         get :plus_item
         get :minus_item
         post :change_number_of_item
+        post :add_accessories
+        put :reorder_accessories
+        put :remove_accessory
       end
       collection do
         get :new_form_content
