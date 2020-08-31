@@ -39,6 +39,7 @@
 //= require autosize
 //= require regenerator-runtime/runtime
 
+//= require Sortable.min.js
 //= require selectize-standalone.js
 //= require datepicker/bootstrap-datepicker.js
 

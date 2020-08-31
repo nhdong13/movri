@@ -183,7 +183,7 @@ class ListingsController < ApplicationController
       service.create_state(@listing)
       if @listing.save
         create_or_update_tabs(@listing, tabs)
-        create_or_update_accessories(result.data[:recommended_accessory_ids])
+        # create_or_update_accessories(result.data[:recommended_accessory_ids])
         create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
         create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
@@ -256,7 +256,7 @@ class ListingsController < ApplicationController
 
     if update_successful
       create_or_update_tabs(@listing, tabs)
-      create_or_update_accessories(result.data[:recommended_accessory_ids])
+      # create_or_update_accessories(result.data[:recommended_accessory_ids])
       create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
       create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
       if shape.booking_per_hour? && !@listing.per_hour_ready
@@ -610,6 +610,30 @@ class ListingsController < ApplicationController
     respond_to do |format|
       format.js {render 'add_packing_dimension.js.haml', layout: false}
     end
+  end
+
+  def add_accessories
+    listing = Listing.find params[:id]
+    position = listing.recommended_accessories.count + 1
+    recommended_accessory = listing.recommended_accessories.create(listing_accessory_id: params[:listing_accessory_id], position: position)
+  end
+
+  def reorder_accessories
+    listing = Listing.find params[:id]
+    recommended_accessories = listing.recommended_accessories.order(position: :asc).to_a
+    sorted = recommended_accessories.insert(params[:to].to_i, recommended_accessories.delete_at(params[:from].to_i))
+
+    sorted.each_with_index do |item, index|
+      item.update(position: index+1)
+    end
+  end
+
+  def remove_accessory
+    listing = Listing.find params[:id]
+    listing.recommended_accessories.find_by(listing_accessory_id: params[:listing_accessory_id])&.destroy
+    render json: {
+      success: true
+    }
   end
 
   private
