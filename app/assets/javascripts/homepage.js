@@ -276,6 +276,7 @@ window.ST = window.ST || {};
       autoplaySpeed: options.autoplaySpeed,
       arrows: true,
       dots: true,
+      centerMode: false,
       prevArrow:"<button type='button' class='slick-prev pull-left'><i class='icon-chevron-left' aria-hidden='true'></i></button>",
       nextArrow:"<button type='button' class='slick-next pull-right'><i class='icon-chevron-right' aria-hidden='true'></i></button>"
     })

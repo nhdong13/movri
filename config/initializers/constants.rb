@@ -355,3 +355,8 @@ CAMERA_TYPE = [
   'Compact',
   'Stand Alone'
 ]
+
+COVERAGE_OPTIONS = {
+  'Movri Coverage': "movri_coverage",
+  'No Coverage': "no_coverage"
+}

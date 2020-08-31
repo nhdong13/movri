@@ -23,6 +23,14 @@ class Admin::CommunityCustomizationsController < Admin::AdminBaseController
       @current_community.update(global_blocked_dates: params[:global_blocked_dates_str])
     end
 
+    if params[:shipping_rates_content]
+      @current_community.update(shipping_rates_content: params[:shipping_rates_content])
+    end
+
+    if params[:pricing_chart_content]
+      @current_community.update(pricing_chart_content: params[:pricing_chart_content])
+    end
+
     # Update padding time
     @current_community.update(
       padding_time_before: params[:padding_time_before],
