@@ -3,7 +3,7 @@
     %span
       = @listing.title
   .spec-category.row
-    = safe_join([raw(@listing.spec)])
+    = @listing.spec.html_safe
   .spec-view-all.clearfix
     %button
       View All Specs

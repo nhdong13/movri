@@ -510,6 +510,9 @@ Rails.application.routes.draw do
         get :minus_item
         post :change_number_of_item
         delete :remove_user_manual
+        post :add_accessories
+        put :reorder_accessories
+        put :remove_accessory
       end
       collection do
         get :new_form_content

@@ -361,16 +361,17 @@ $listing-author-avatar-height: 108;
         margin-top: 10px;
         margin-left: -6px;
         -moz-column-count: 2;
-        -moz-column-gap: 20px;
+        -moz-column-gap: 100px;
         -webkit-column-count: 2;
-        -webkit-column-gap: 20px;
+        -webkit-column-gap: 100px;
         column-count: 2;
-        column-gap: 20px;
+        column-gap: 100px;
       }
 
       li {
         display: list-item;
         padding-bottom: 5px;
+        list-style: unset;
       }
     }
 
@@ -1259,6 +1260,13 @@ $listing-author-avatar-height: 108;
 .listing-specifications {
   .tab-content {
     border: none;
+    ol {
+      padding-left: 15px;
+    }
+
+    li {
+      list-style: unset;
+    }
   }
 
   .tab-link {
