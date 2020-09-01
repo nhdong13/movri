@@ -509,6 +509,7 @@ Rails.application.routes.draw do
         get :plus_item
         get :minus_item
         post :change_number_of_item
+        delete :remove_user_manual
         post :add_accessories
         put :reorder_accessories
         put :remove_accessory

@@ -19,7 +19,7 @@ class ListingsController < ApplicationController
     controller.ensure_current_user_is_listing_author t("layouts.notifications.only_listing_author_can_close_a_listing")
   end
 
-  before_action :only => [:edit, :edit_form_content, :update, :delete] do |controller|
+  before_action :only => [:edit, :edit_form_content, :update, :delete, :remove_user_manual] do |controller|
     controller.ensure_current_user_is_listing_author t("layouts.notifications.only_listing_author_can_edit_a_listing")
   end
 
@@ -124,6 +124,9 @@ class ListingsController < ApplicationController
         end
       end
     end
+
+    session[:recently_viewed] ||= []
+    session[:recently_viewed] = session[:recently_viewed].unshift(@listing.id).uniq
 
     record_event(
       flash.now,
@@ -610,6 +613,12 @@ class ListingsController < ApplicationController
     respond_to do |format|
       format.js {render 'add_packing_dimension.js.haml', layout: false}
     end
+  end
+
+  def remove_user_manual
+    @listing.user_manual = nil
+    @listing.save
+    redirect_to edit_listing_path(@listing)
   end
 
   def add_accessories

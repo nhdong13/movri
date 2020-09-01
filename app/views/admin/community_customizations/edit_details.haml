@@ -77,7 +77,6 @@
                 %td.global-blocked-date-delete-icon{:style => "text-align: right;"}
                   %i.icon-remove{:style => "cursor: pointer;"}
 
-
       = hidden_field_tag :global_blocked_dates_str, @current_community.global_blocked_dates.to_s
 
     .row
@@ -87,6 +86,16 @@
       .col-5
         %label Padding Time After:
         = text_field_tag :padding_time_after, @current_community.padding_time_after, class: 'form-control'
+
+    .row
+      .col-10
+        %label Pricing Chart:
+        = text_area_tag :pricing_chart_content, @current_community.pricing_chart_content, class: 'form-control'
+
+    .row
+      .col-10
+        %label Shipping Rates:
+        = text_area_tag :shipping_rates_content, @current_community.shipping_rates_content, class: 'form-control'
 
     .row
       .col-12

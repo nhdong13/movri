@@ -16,4 +16,7 @@
 - else
   .row
     %iframe{src: "#{@listing.user_manual.url(:original)}"}
+  .row
+    .link-delete-btn.common-link-btn
+      = link_to "Remove" , remove_user_manual_listing_path(@listing), {method: :delete, data: { confirm: "Are you sure you want to delete the user manual?" }}
 
