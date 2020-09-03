@@ -51,7 +51,9 @@ window.ST.ListingTags = (function() {
   function handleLoadItemType() {
     listing_type = $('#listing_accessory_item_type').val().toLowerCase()
     $('.accessories-list').hide()
-    $("." + listing_type).slideDown('slow')
+    if(listing_type.length){
+      $("." + listing_type).slideDown('slow')
+    }
   }
 
   return {

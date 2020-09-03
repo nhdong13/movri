@@ -667,7 +667,7 @@ class ListingsController < ApplicationController
       tab = listing.listing_tabs.where(tab_type: key).last
       if tab
         if tab.tab_type == "new_tab"
-          tab.update(params[key].merge({tab_type: params[key][:title].split(" ").join("_")}))
+          tab.update(params[key].merge({tab_type: params[key][:title].split(" ").join("_").downcase}))
         else
           tab.update(params[key])
         end

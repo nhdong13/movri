@@ -3538,3 +3538,18 @@ $listing-author-avatar-height: 108;
     cursor: pointer;
   }
 }
+
+.heroSlider-fixed {
+  .slider .slide-item-container .slide-item{
+    .listing-box{
+      .main-image{
+        height: auto;
+        width: auto;
+        img{
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+}
+

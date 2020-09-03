@@ -1,12 +1,9 @@
 .row.listing-specifications#specification-bar
   %div.clearfix.specification-list
     %ul.nav.nav-pills.listing-categories-detail.clearfix.col-12
-      %li.active
-        %a.uppercase.tab-link{'data-tab' => 'spec_tab'}= @listing.specs_tab.title
-      %li
-        %a.uppercase.tab-link{'data-tab' => 'overview_tab'}=@listing.overview_tab.title
-      %li
-        %a.uppercase.tab-link{'data-tab' => 'qa_tab'}=@listing.q_and_a_tab.title
+      - @listing.listing_tabs.where.not(tab_type: ['in_the_box', 'not_in_the_box', 'key_features']).each do |tab|
+        %li{class: tab.tab_type == 'specs' ? "active" : ""}
+          %a.uppercase.tab-link{'data-tab' => "#{tab.tab_type}"}= tab.title
       %li
         %a.tab-link{'data-tab' => 'compare_tab'} QUICK COMPARE
       %li
