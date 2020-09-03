@@ -1201,9 +1201,19 @@ $listing-author-avatar-height: 108;
       display: none;
       font-size: 16px;
 
-
       &:first-child {
         display: table;
+      }
+
+      tbody tr {
+        background-color: unset;
+        border-bottom: 1px solid #ccc;
+        td {
+          padding-left: 0px;
+        }
+      }
+      h2, h3, h4 {
+        color: inherit !important;
       }
     }
 
@@ -1212,8 +1222,6 @@ $listing-author-avatar-height: 108;
       padding-right: 0;
     }
   }
-
-
 
   .table {
     margin-top: 20px;
@@ -1905,6 +1913,7 @@ $listing-author-avatar-height: 108;
       .spec-content {
         font-size: 22px;
         margin-bottom: 10px;
+        padding: 0em 10px;
       }
 
       .spec-view-all {
@@ -1923,6 +1932,8 @@ $listing-author-avatar-height: 108;
 
       .spec-category {
         margin-bottom: 10px;
+        height: 450px;
+        overflow: hidden;
 
         .spec-model-number {
           font-size: 16px;
@@ -1944,6 +1955,20 @@ $listing-author-avatar-height: 108;
             margin: 15px 0;
             font-size: 13px;
           }
+        }
+        tbody tr {
+          background-color: #f0f0f0 !important;
+          border-bottom: 1px solid #ffffff !important;
+          td {
+            font-size: 13px;
+            padding-left: 10px;
+            padding-right: 10px;
+          }
+        }
+        h2, h3, h4 {
+          font-size: 16px !important;
+          font-weight: unset;
+          padding: 0em 10px;
         }
       }
     }
@@ -2679,7 +2704,7 @@ $listing-author-avatar-height: 108;
 #shipping-rates-realtime-modal{
   display: none;
   position: fixed;
-  z-index: 999;
+  z-index: 1001;
   padding-top: 100px;
   left: 0;
   top: 0;
@@ -2823,7 +2848,7 @@ $listing-author-avatar-height: 108;
 #mobile-shipping-rates-realtime-modal {
   display: none;
   position: fixed;
-  z-index: 999;
+  z-index: 1001;
   left: 0;
   top: 0;
   width: 100%;
@@ -2937,7 +2962,7 @@ $listing-author-avatar-height: 108;
 #pricing-chart-modal {
   display: none;
   position: fixed;
-  z-index: 999;
+  z-index: 1001;
   padding-top: 100px;
   left: 0;
   top: 0;
@@ -3057,7 +3082,7 @@ $listing-author-avatar-height: 108;
 #mobile-pricing-chart-modal {
   display: none;
   position: fixed;
-  z-index: 999;
+  z-index: 1001;
   left: 0;
   top: 0;
   width: 100%;
@@ -3168,8 +3193,6 @@ $listing-author-avatar-height: 108;
   }
 
   .slide-item {
-    width: 200px;
-    height: 400px;
     margin: 0 auto;
 
     .viewed-time {
