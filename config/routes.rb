@@ -513,6 +513,7 @@ Rails.application.routes.draw do
         post :add_accessories
         put :reorder_accessories
         put :remove_accessory
+        put :add_tab
       end
       collection do
         get :new_form_content

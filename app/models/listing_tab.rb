@@ -14,5 +14,7 @@
 #
 
 class ListingTab < ApplicationRecord
+  TAB_TYPES = ["specs", "overview", "q_and_a", "in_the_box", "not_in_the_box", "key_features"]
   belongs_to :listing
+  scope :extra_tabs, -> { where.not(tab_type: TAB_TYPES) }
 end

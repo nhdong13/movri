@@ -3,8 +3,8 @@
     %span
       = @listing.title
   .spec-category.row
-    = @listing.spec.html_safe
+    = @listing.spec.html_safe?
   .spec-view-all.clearfix
     %button
       View All Specs
-          
+

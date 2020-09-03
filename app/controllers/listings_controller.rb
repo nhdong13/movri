@@ -19,7 +19,7 @@ class ListingsController < ApplicationController
     controller.ensure_current_user_is_listing_author t("layouts.notifications.only_listing_author_can_close_a_listing")
   end
 
-  before_action :only => [:edit, :edit_form_content, :update, :delete, :remove_user_manual] do |controller|
+  before_action :only => [:edit, :edit_form_content, :update, :delete, :remove_user_manual, :add_tab] do |controller|
     controller.ensure_current_user_is_listing_author t("layouts.notifications.only_listing_author_can_edit_a_listing")
   end
 
@@ -238,10 +238,10 @@ class ListingsController < ApplicationController
 
     shape = get_shape(params[:listing][:listing_shape_id])
 
-    unless create_booking(shape, @listing.uuid_object)
-      flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
-      return redirect_to edit_listing_path(@listing)
-    end
+    # unless create_booking(shape, @listing.uuid_object)
+    #   flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
+    #   return redirect_to edit_listing_path(@listing)
+    # end
 
     tabs = params.to_unsafe_hash[:listing][:tabs]
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
@@ -645,6 +645,11 @@ class ListingsController < ApplicationController
     }
   end
 
+  def add_tab
+    @listing.listing_tabs.create(title: 'New tab', tab_type: "new_tab", is_active: false)
+    redirect_to edit_listing_path(@listing)
+  end
+
   private
 
   def create_or_update_category_listings(category_ids)
@@ -661,7 +666,11 @@ class ListingsController < ApplicationController
     params.keys.each do |key|
       tab = listing.listing_tabs.where(tab_type: key).last
       if tab
-        tab.update(params[key])
+        if tab.tab_type == "new_tab"
+          tab.update(params[key].merge({tab_type: params[key][:title].split(" ").join("_")}))
+        else
+          tab.update(params[key])
+        end
       else
         listing.listing_tabs.create(params[key].merge({tab_type: key}))
       end
