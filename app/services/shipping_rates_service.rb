@@ -40,7 +40,10 @@ module ShippingRatesService
   def request_body ship_to_postal_code, state_from_postal_code, dimension, quantity, sku
     hash_body = {
       async: false,
-      shipper_accounts:[{id: APP_CONFIG.fedex_shipper_id}],
+      shipper_accounts:[
+        # {id: APP_CONFIG.fedex_shipper_id},
+        {id: APP_CONFIG.ups_shipper_id}
+      ],
       is_document:false,
       shipment: {
         ship_from: {
@@ -120,9 +123,24 @@ module ShippingRatesService
     rates = response["data"]["rates"]
     shipping_selection = []
     rates.each do |rate|
-      shipping_selection.push({'service_name' => rate['service_name'], 'total_charge' => rate['total_charge'], 'service_type' => rate['service_type']})
+      shipping_selection.push(
+        {
+          'service_name' => rate['service_name'],
+          'total_charge' => add_shipping_additional_fee(rate['total_charge']),
+          'service_type' => rate['service_type']
+        }
+      )
     end
     shipping_selection
+  end
+
+  def add_shipping_additional_fee total_charge
+    amount = total_charge["amount"]
+    additional_fee = ShippingAdditionalFee.last
+    total_fee_percent = additional_fee.handling + additional_fee.insurance
+    final_fee = amount + (amount * total_fee_percent / 100)
+    total_charge['amount'] = final_fee.round(2)
+    total_charge
   end
 
   def convert_postal_code_to_state_in_canada(postal_code)

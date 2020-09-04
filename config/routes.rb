@@ -220,6 +220,7 @@ Rails.application.routes.draw do
     namespace :admin do
       resource :custom_style, only: [:edit ,:create, :update]
       resource :support_info, only: [:edit ,:create, :update]
+      resource :shipping_additional_fee, only: [:edit ,:create, :update]
 
       get '' => "getting_started_guide#index"
 
