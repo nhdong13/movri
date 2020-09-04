@@ -2152,6 +2152,7 @@ en:
       visit_admin: "Would you like to %{link}?"
       visit_admin_link: "visit your admin panel"
       create_assurance_option_failed: 'Assurance option has been created failed.'
+      update_assurance_option_failed: 'Assurance option has been updated failed.'
       create_url_redirect_failed: 'URL Redirect has been created failed.'
       update_url_redirect_failed: 'URL Redirect has been updated failed.'
       add_new_customer_failed: 'New customer has been created failed.'
