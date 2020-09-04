@@ -23,9 +23,9 @@ class Category < ApplicationRecord
 
   attr_accessor :basename
 
-  has_many :subcategories, -> { order("sort_priority") }, :class_name => "Category", :foreign_key => "parent_id", :dependent => :destroy, :inverse_of => :parent
+  has_many :subcategories, :class_name => "Category", :foreign_key => "parent_id", :dependent => :destroy, :inverse_of => :parent
   # children is a more generic alias for sub categories, used in classification.rb
-  has_many :children, -> { order("sort_priority") }, :class_name => "Category", :foreign_key => "parent_id", :inverse_of => :parent
+  has_many :children, :class_name => "Category", :foreign_key => "parent_id", :inverse_of => :parent
   belongs_to :parent, :class_name => "Category", touch: true
   has_many :listings, :dependent => :nullify
   has_many :category_listings, :dependent => :nullify
@@ -43,7 +43,7 @@ class Category < ApplicationRecord
   before_destroy :can_be_destroyed?
 
   enum category_type: [:category, :subcategory, :children_category]
-  default_scope { includes([:children, :parent]) }
+  # default_scope { includes([:children, :parent]) }
 
   def translation_attributes=(attributes)
     build_attrs = attributes.map { |locale, values| { locale: locale, values: values } }
