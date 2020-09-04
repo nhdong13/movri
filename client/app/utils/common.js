@@ -36,3 +36,7 @@ export const editorCustomConfig = {
     { name: 'insert' },
   ]
 }
+
+export const sortByOrderNumber = (array) => {
+  return array.sort((a,b) => (a.order_number > b.order_number) ? 1 : ((b.order_number > a.order_number) ? -1 : 0));
+}

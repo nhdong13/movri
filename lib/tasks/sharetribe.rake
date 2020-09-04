@@ -87,4 +87,24 @@ namespace :sharetribe do
       end
     end
   end
+
+
+  desc "Update tab for listing"
+  task :update_tabs_for_listing => :environment do
+    tabs = %w[spec overview q_a in_the_box not_in_the_box key_feature]
+    Listing.all.each do |listing|
+      tabs.each do |tab|
+        begin
+          l_tabs = listing.listing_tabs.where(tab_type: tab).last
+          unless l_tabs
+            l_tabs = listing.listing_tabs.create(title: tab.split("_").join(" "), tab_type: tab, description: listing.send(tab))
+          end
+        rescue
+        end
+      end
+    end
+    ListingTab.where(tab_type: 'q_a').update_all(tab_type: 'q_and_a')
+    ListingTab.where(tab_type: 'spec').update_all(tab_type: 'specs')
+    ListingTab.where(tab_type: 'key_feature').update_all(tab_type: 'key_features')
+  end
 end

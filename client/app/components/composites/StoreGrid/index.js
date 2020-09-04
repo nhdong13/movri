@@ -3,8 +3,25 @@ import { onlineStoreActions } from '../../../actions/OnlineStoreActions'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import StoreGridItem from '../StoreGridItem'
-import { randomString } from '../../../utils/common'
+import { randomString, sortByOrderNumber } from '../../../utils/common'
+import {
+  sortableContainer,
+  sortableElement,
+} from 'react-sortable-hoc';
+import arrayMove from 'array-move';
+import _ from 'lodash';
 
+const SortableItem = sortableElement(({item, content}) => {
+  return (
+    <li key={`grid-${item.id}` || randomString()}>
+      {content}
+    </li>
+  )
+});
+
+const SortableContainer = sortableContainer(({children}) => {
+  return <ul className='p-0'>{children}</ul>;
+});
 
 class StoreGrid extends Component {
   constructor(props) {
@@ -16,7 +33,7 @@ class StoreGrid extends Component {
     this.handleAddItem = this.handleAddItem.bind(this)
     this.handleUpdateNewItem = this.handleUpdateNewItem.bind(this)
     this.handleRemoveItem = this.handleRemoveItem.bind(this)
-
+    this.onSortEnd = this.onSortEnd.bind(this)
 
     let object = props.section && props.section.id ? props.section.object : props.object
     this.state = {
@@ -144,6 +161,36 @@ class StoreGrid extends Component {
     })
   }
 
+  onSortEnd({oldIndex, newIndex}) {
+    let items = sortByOrderNumber(this.state.object.items)
+    let newItems = arrayMove(items, oldIndex, newIndex).map((item, index) => {
+      return {...item, order_number: index + 1 }
+    })
+
+    this.setState({
+      object: {...this.state.object, items: newItems}
+    })
+
+    let dataParams = {
+      authenticity_token: $('input[name ="authenticity_token"]').val(),
+      items: newItems.map((item) => {return {id: item.id, order_number: item.order_number}})
+    }
+    const axiosOptions = {
+      url: `/admin/store_grids/${this.state.object.id}/sort_items`,
+      method: 'put',
+      data: dataParams
+    }
+
+    axios(axiosOptions).then(res => {
+      this.setState({
+        object: res.data.object
+      })
+      $("#homepage-preview-iframe").attr("src", function(index, attr){ 
+        return attr;
+      });
+    })
+  }
+
   render() {
     const { heights, text_alignments } = JSConstant.SECTION_GRID_OPTIONS
 
@@ -208,18 +255,22 @@ class StoreGrid extends Component {
           </form>
           <h1>Content</h1>
           <ul className='slide-list'>
-            {
-              this.state.object.items.map(item => {
-                return <li key={item.id || randomString()}>
-                  <StoreGridItem 
-                  key={item.id || randomString()}
+            <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
+              {this.state.object.items.map((item, index) => (
+                <SortableItem
+                  key={`grid-item-${item.id}` || randomString()}
+                  index={index}
                   item={item}
-                  removing={this.state.removing}
-                  handleUpdateNewItem={this.handleUpdateNewItem}
-                  handleRemoveItem={this.handleRemoveItem} />
-                </li>
-              })
-            }
+                  content={
+                    <StoreGridItem
+                      item={item}
+                      removing={this.state.removing}
+                      handleUpdateNewItem={this.handleUpdateNewItem}
+                      handleRemoveItem={this.handleRemoveItem}
+                    />
+                  }/>
+              ))}
+            </SortableContainer>
             <div className='add-more-slide pl-3'>
               <button className='btn' type='button' onClick={this.handleAddItem}>Add promotional item</button>
             </div>

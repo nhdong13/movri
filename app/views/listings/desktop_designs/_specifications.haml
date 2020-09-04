@@ -1,12 +1,9 @@
 .row.listing-specifications#specification-bar
   %div.clearfix.specification-list
     %ul.nav.nav-pills.listing-categories-detail.clearfix.col-12
-      %li.active
-        %a.tab-link{'data-tab' => 'spec_tab'} SPECS
-      %li
-        %a.tab-link{'data-tab' => 'overview_tab'} OVERVIEW
-      %li
-        %a.tab-link{'data-tab' => 'qa_tab'} Q&A 6
+      - @listing.listing_tabs.where.not(tab_type: ['in_the_box', 'not_in_the_box', 'key_features']).each do |tab|
+        %li{class: tab.tab_type == 'specs' ? "active" : ""}
+          %a.uppercase.tab-link{'data-tab' => "#{tab.tab_type}"}= tab.title
       %li
         %a.tab-link{'data-tab' => 'compare_tab'} QUICK COMPARE
       %li
@@ -30,8 +27,3 @@
             User Manual
           %span.user-manual-file-size
             15.6 MB
-      .listing-firmware-updates
-        %span.firmware-updates-file-icon
-          = image_tag("mf_icons/icon-movri-repair.svg", class: 'header-menu-icon icon-movri-repair')
-        %span.firmware-updates-title
-          Firmware Updates

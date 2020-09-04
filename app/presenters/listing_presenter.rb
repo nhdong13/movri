@@ -316,7 +316,6 @@ class ListingPresenter < MemoisticPresenter
     {
       "category" => I18n.t("listings.new.select_category"),
       "subcategory" => I18n.t("listings.new.select_subcategory"),
-      "subcategory" => I18n.t("listings.new.select_subcategory"),
       'children_category' => "Select Children category",
       "listing_shape" => I18n.t("listings.new.select_transaction_type")
     }

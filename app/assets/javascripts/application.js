@@ -39,6 +39,7 @@
 //= require autosize
 //= require regenerator-runtime/runtime
 
+//= require Sortable.min.js
 //= require selectize-standalone.js
 //= require datepicker/bootstrap-datepicker.js
 
@@ -85,6 +86,7 @@
 //= require admin/landing_page_section_editor.js
 //= require admin/orders.js
 //= require admin/draft_orders.js
+//= require admin/support_infos
 //= require payment_math
 //= require dropdown
 //= require jquery.nouislider

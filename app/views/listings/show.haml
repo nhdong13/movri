@@ -37,19 +37,10 @@
   .row
     .col-12.listing_breadcrumbs
       = render partial: 'listings/listing_breadcrumbs'
-    .col-6.listing-details-container
+    .col-6.listing-details-container.padding-0
       .row
         .col-12
           = render partial: 'listings/slideshow_images'
-      .row
-        .col-12
-          .col-1
-          .col-11.listing-include
-            - if @listing.key_feature.present?
-              .listing-include-title
-                %span KEY FEATURES
-              .listing-include-items
-                = @listing.key_feature.html_safe
       -# .row
       -#   .col-12.listing-description-content
       -#     - if @listing.description && !@listing.description.blank?
@@ -106,28 +97,15 @@
     %aside.col-6.listing-details
       = render partial: 'listings/listing_orders'
 
-    .desktop-display
-      = render partial: 'listings/desktop_designs/recommended_accessories'
-    .mobile-display
-      = render partial: 'listings/mobile_designs/recommended_accessories'
+  .desktop-display
+    = render partial: 'listings/desktop_designs/recommended_accessories'
+  .mobile-display
+    = render partial: 'listings/mobile_designs/recommended_accessories'
 
   .desktop-display
     = render partial: 'listings/desktop_designs/specifications'
   .mobile-display
     = render partial: 'listings/mobile_designs/specifications'
-
-  .row
-    .customers-also-viewed
-      = render partial: 'listings/viewed_slide_show', locals: {title: 'Customers Also Viewed', el: 'customer-also-viewed'}
-
-  .row.desktop-display
-    .browsing-history.col-12
-      %button.pull-right.browsing-history-btn-clear
-        Clear History
-      %button.pull-right.browsing-history-btn-on
-        ON
-      %span.pull-right
-        Browsing History
 
   .row.desktop-display
     .recently_viewed

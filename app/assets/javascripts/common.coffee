@@ -54,9 +54,42 @@ window.Commons =
           if href
             window.location.href = href
 
+  handleToggleCategories: ->
+    $('.toggle-cat').click ->
+      subcategories = $(this).parents('.menu-categories').find(".subcategories");
+      icon = $(this).parents(".main-category").find("i")
+      if subcategories.is(":visible")
+        subcategories.slideUp("slow");
+        icon.removeClass("icon-chevron-up").addClass("icon-chevron-down")
+      else
+        subcategories.slideDown("slow");
+        icon.removeClass("icon-chevron-down").addClass("icon-chevron-up")
+
+  handleToggleChildCategories: ->
+    $('.toggle-subcategory').click (e) ->
+      e.preventDefault();
+      icon = $(this)
+      childcategories = $(this).parents('.subcategory').find(".child-categories");
+      if childcategories.is(":visible")
+        childcategories.slideUp("slow");
+        icon.removeClass("icon-chevron-up").addClass("icon-chevron-down")
+      else
+        childcategories.slideDown("slow");
+        icon.removeClass("icon-chevron-down").addClass("icon-chevron-up")
+
+  handleToggleMenuCategory: ->
+    $('.mobile-menu-icon, #close-mobile-menu').click (e) ->
+      if($('#mobile-menu').is(":visible"))
+        $('#mobile-menu').hide()
+      else
+        $('#mobile-menu').show()
+
 $(document).ready ->
   Commons.formatPhone()
   Commons.CanadianZipCodeRule()
   Commons.formatEmail()
   Commons.formatCardName()
   Commons.handleArrowUpDownListing()
+  Commons.handleToggleCategories()
+  Commons.handleToggleChildCategories()
+  Commons.handleToggleMenuCategory()

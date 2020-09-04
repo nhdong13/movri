@@ -1,13 +1,13 @@
 .row.listing-title#listing-title-sticky
-  .col-12.clearfix
-    %span
+  .col-12.clearfix.padding-0
+    %span.font-size-24.font-open-sans
       = @listing.title
     - if @current_user.present? && (current_user?(@listing.author) || @current_user.has_admin_rights?(@current_community))
       = link_to 'Edit', edit_listing_path(@listing)
-  .col-12.listing-sku
-    %span
+  .col-12.listing-sku.padding-0
+    %span.font-open-sans
       SKU :
-    %span.sku
+    %span.sku.font-open-sans
       = @listing.sku
 .desktop-display
   = render partial: 'listings/desktop_designs/listing_order_item'
@@ -56,21 +56,13 @@
 -#     .configuration-item
 -#       With Cinema Kit
 .row.listing-payment-method
-  .col-9.clearfix.payment-method
+  .col-9.clearfix.payment-method.padding-0
     - @current_community.assurance_options.each do |assurance_option|
       - if assurance_option.visible
         %div{class: "payment-method-item col-2", id: "assurance_option_#{assurance_option.id}", title: assurance_option.content}
           = image_tag(assurance_option.image.url, class: 'header-menu-icon icon-movri-calendar')
           %span.line-height-16
             = assurance_option.title
-
-
-.row.listing-save-availabe
-  .col-6.clearfix.save-available
-    %p
-      Savings Availabe:
-    .saving-available-item
-
 .desktop-display
   = render partial: 'listings/desktop_designs/trade'
 .mobile-display

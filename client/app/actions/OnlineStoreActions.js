@@ -21,8 +21,16 @@ const removeSectionItem = (sectionId) => {
   }
 }
 
+const updateSectionsList = (sections) => {
+  return {
+    type: onlineStoreConstants.UPDATE_SECTIONS_LIST,
+    payload: sections
+  }
+}
+
 export const onlineStoreActions = {
   addSectionItem,
   updateSectionItem,
-  removeSectionItem
+  removeSectionItem,
+  updateSectionsList
 }

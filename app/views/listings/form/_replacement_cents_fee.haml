@@ -1,5 +1,5 @@
 = form.label 'Replace Value', 'Replace Value', {class: 'input'}
 .row
   .col-6
-    = form.label :replacement_cents_fee, 'Value'
-    = form.text_field :replacement_cents_fee
+    = form.label :replacement_cents_fee, 'Value ($)'
+    = form.text_field :replacement_cents_fee, :value => (@listing.replacement_cents_fee ? @listing.replacement_fee : 0)

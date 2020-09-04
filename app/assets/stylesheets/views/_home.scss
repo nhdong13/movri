@@ -611,6 +611,7 @@ $home-list-avatar-padding: lines(0.25);
 }
 
 .how-it-works {
+  border-bottom: 1px solid #f3f3f3;
   span.section-heading {
     font-size: 30px;
     font-weight: 500;
@@ -780,6 +781,7 @@ $home-list-avatar-padding: lines(0.25);
 
     .different-desc{
       padding: 29px 145px;
+      height: inherit;
     }
 
     p {
@@ -1152,6 +1154,20 @@ $home-list-avatar-padding: lines(0.25);
 
 
 @media #{$mobile}, #{$tablet} {
+  .movri-different{
+    margin-top : 0;
+    .title {
+      font-size: 22px;
+      margin-bottom:10px;
+    }
+  }
+
+  .how-it-works {
+    span.section-heading {
+      font-size: 22px;
+    }
+  }
+
   .movri-different .col-6 .different-desc{
     padding: 30px 60px;
   }
@@ -1185,6 +1201,12 @@ $home-list-avatar-padding: lines(0.25);
     font-size: 20px;
     color: #33475b;
   }
+  .helpful-links {
+    a img {
+      width: 40px;
+      height: auto;
+    }
+  }
 }
 .helpful-link-section{
   margin-bottom: 0px;
@@ -1201,7 +1223,7 @@ $home-list-avatar-padding: lines(0.25);
     padding: 10px 0;
     width: 230px;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: 600;
   }
 }
 
@@ -1315,4 +1337,48 @@ $home-list-avatar-padding: lines(0.25);
   bottom: 0;
   right: 0;
   text-align: right;
+}
+
+.header-logo-mobile{
+  width: 115px;
+  img{
+    width: 100%
+  }
+}
+
+#mobile-menu{
+  z-index: 9999;
+  font-size: 14px;
+  background: white;
+  width: 75%;
+  position: absolute;
+  min-height: 250px;
+  max-height: 650px;
+  overflow: scroll;
+  a, span{
+    line-height: 2.5;
+    color: black;
+  }
+  .subcategories{
+    padding-left: 20px;
+    background: rgb(229, 229, 229);
+  }
+  .child-categories{
+    padding-left: 20px;
+  }
+  .sub-section-mobile-menu {
+    background-color: #f0f0f0;
+    margin-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  padding-bottom: 15px;
+}
+.cart-icon-mobile{
+  width: 30px;
+}
+
+.cart-icon-header{
+  cursor: pointer;
+  padding: 20px 0;
 }

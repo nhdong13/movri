@@ -96,7 +96,7 @@
 class Listing < ApplicationRecord
   include AlgoliaSearch
   algoliasearch index_name: "movri_products" do
-    attribute :id, :title, :brand, :price_cents, :number_of_rent, :brand, :mount, :lens_type, :compatibility, :sku
+    attribute :id, :title, :price_cents, :number_of_rent, :sku
     attributes :main_image do
       main_image
     end
@@ -106,25 +106,24 @@ class Listing < ApplicationRecord
     attributes :category do
       category.url
     end
-
     attributes :subcategory do
       subcategory&.url
     end
-
     attributes :children_category do
       children_category&.url
     end
-
-    attributes :children_category do
-      children_category&.url
-    end
-
     attributes :default_7_days_rental_price do
       price = Money.new(PriceCalculationService.calculate(self, 7), 'USD')
       MoneyViewUtils.to_humanized(price)
     end
 
+    %i[brand mount lens_type item_type camera_type camcorder_type sensor_size action_cam_compatibility compatibility lighting_type accessory_type capacity memory_type read_transfer_speed bus_speed power_compatibility power_compatibility power_type support_type head_type quick_release_system color_temperature filter_size filter_style filter_type audio_type monitoring_type camera_support_type cable_type]. each do |attr|
+      attributes attr do
+        listing_accessory&.send(attr.to_s)
+      end
+    end
   end
+  after_touch :index!
 
   WIEGHT_TYPE = ['kg', 'pound']
   enum weight_type: { kg: 0, pound: 1 }
@@ -169,6 +168,8 @@ class Listing < ApplicationRecord
   has_many :pricing_charts, dependent: :destroy
   accepts_nested_attributes_for :pricing_charts, allow_destroy: true
   has_one :redirect_url, as: :redirectable
+  has_one :listing_accessory, dependent: :destroy
+  has_many :listing_tabs, dependent: :destroy
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency
@@ -229,6 +230,31 @@ class Listing < ApplicationRecord
     self.updates_email_at ||= Time.now
   end
 
+
+  def specs_tab
+    listing_tabs.where(tab_type: "specs").last
+  end
+
+  def not_in_the_box_tab
+    listing_tabs.where(tab_type: "not_in_the_box").last
+  end
+
+  def in_the_box_tab
+    listing_tabs.where(tab_type: "in_the_box").last
+  end
+
+  def overview_tab
+    listing_tabs.where(tab_type: "overview").last
+  end
+
+  def key_features_tab
+    listing_tabs.where(tab_type: "key_features").last
+  end
+
+  def q_and_a_tab
+    listing_tabs.where(tab_type: "q_and_a").last
+  end
+
   def uuid_object
     if self[:uuid].nil?
       nil
@@ -242,6 +268,7 @@ class Listing < ApplicationRecord
   end
 
   before_create :add_uuid
+  # before_save :convert_replacement_value_to_cents
   def add_uuid
     self.uuid ||= UUIDUtils.create_raw
   end
@@ -258,6 +285,15 @@ class Listing < ApplicationRecord
   validates_inclusion_of :valid_until, :allow_nil => true, :in => proc{ DateTime.now..DateTime.now + 7.months }
   validates_numericality_of :price_cents, :only_integer => true, :greater_than_or_equal_to => 0, :message => "price must be numeric", :allow_nil => true
 
+
+  def convert_replacement_value_to_cents
+    self.replacement_cents_fee = self.replacement_cents_fee * 100
+  end
+
+  def replacement_fee
+    replacement_cents_fee/100
+  end
+
   # sets the time to midnight
   def set_valid_until_time
     if valid_until
@@ -267,12 +303,13 @@ class Listing < ApplicationRecord
 
   # Overrides the to_param method to implement clean URLs
   def to_param
-    self.class.to_param(id, title)
+    "#{id}-#{title.to_url}"
+    # self.class.to_param(id, title)
   end
 
-  def self.to_param(id, title)
-    "#{id}-#{title.to_url}"
-  end
+  # def self.to_param(id, title)
+  #   "#{id}-#{title.to_url}"
+  # end
 
   def self.find_by_category_and_subcategory(category)
     Listing.where(:category_id => category.own_and_subcategory_ids)
@@ -297,7 +334,7 @@ class Listing < ApplicationRecord
 
   def update_fields(params)
     update_attribute(:valid_until, nil) unless params[:valid_until]
-    update(params)
+    update!(params)
   end
 
   def closed?

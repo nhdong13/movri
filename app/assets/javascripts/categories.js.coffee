@@ -5,7 +5,7 @@ window.ST = window.ST or {}
       $('.mobile-listing-filter').show()
 
   onQuickCategoriesFilter = ->
-    $('.quick-filter-btn').click ->
+    $('.quick-filter-btn, .quick-filter-icon').click ->
       $('.mobile-listing-filter').hide()
 
   module.HandleMobilePagination = ->

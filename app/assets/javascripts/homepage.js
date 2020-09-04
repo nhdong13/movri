@@ -44,43 +44,39 @@ $(function() {
   relocate(768, $("#header-user-mobile-anchor"), $("#header-user-desktop-anchor").get(0));
 
   $(".add-item-to-cart").on("click", function() {
-
     var id = event.target.id;
     var listing_id = id.split("-").pop();
     var addToCartUrl = "/en/listings/" + listing_id + "/add_item_to_cart";
-    if($(this).parents('form').valid()){
-      $.ajax({
-        url: addToCartUrl,
-        type: "GET"
-      }).done(function(response) {
-        if (response.success === true) {
-          swal("Successfully!", "1 Item Added to Your Cart!", "success", {
-            buttons: false,
-            timer: 1000,
-          });
+    $.ajax({
+      url: addToCartUrl,
+      type: "GET"
+    }).done(function(response) {
+      if (response.success === true) {
+        swal("Successfully!", "1 Item Added to Your Cart!", "success", {
+          buttons: false,
+          timer: 1000,
+        });
 
-          var data = response.data;
+        var data = response.data;
 
-          // Change number show on cart
-          $(".number-on-cart").html(data.total_items);
-          $(".number-item-in-cart").html(data.total_items);
+        // Change number show on cart
+        $(".number-on-cart").html(data.total_items);
+        $(".number-item-in-cart").html(data.total_items);
 
-          var divListingId = "#wrap-item-cart-" + data.item;
+        var divListingId = "#wrap-item-cart-" + data.item;
 
-          if ($(divListingId).length) {
-            var quantityNumber = "#quantity-item-" + data.item;
-            $(quantityNumber).html(data.item_count);
-          } else {
-            location.reload();
-          }
-        } else {
-          // TODO:
+        if ($(divListingId).length) {
+          var quantityNumber = "#quantity-item-" + data.item;
+          $(quantityNumber).html(data.item_count);
         }
-      }).fail(function(error) {
-        swal("Failure!", "Something went wrong!", "error");
-        console.log("Error:", error);
-      })
-    }
+        location.reload();
+      } else {
+        // TODO:
+      }
+    }).fail(function(error) {
+      swal("Failure!", "Something went wrong!", "error");
+      console.log("Error:", error);
+    })
   });
 
   $(".remove-item-in-cart").on("click", function() {
@@ -190,21 +186,7 @@ $(function() {
   });
 
   $(".cart-icon-header").on("click", function() {
-    alert("i");
-    var loadCartUrl = "/load_cart";
-
-    $.ajax({
-      url: loadCartUrl,
-      type: "GET"
-    }).done(function(response) {
-      if (response.success === true) {
-        var data = response.data;
-      } else {
-        // TODO:
-      }
-    }).fail(function(error) {
-      console.log("Error:", error);
-    });
+    $('#header-menu-toggle-cart').toggle("show")
   });
 
   // User change booking date
@@ -294,6 +276,7 @@ window.ST = window.ST || {};
       autoplaySpeed: options.autoplaySpeed,
       arrows: true,
       dots: true,
+      centerMode: false,
       prevArrow:"<button type='button' class='slick-prev pull-left'><i class='icon-chevron-left' aria-hidden='true'></i></button>",
       nextArrow:"<button type='button' class='slick-next pull-right'><i class='icon-chevron-right' aria-hidden='true'></i></button>"
     })

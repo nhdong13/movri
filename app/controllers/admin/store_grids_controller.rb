@@ -1,5 +1,5 @@
 class Admin::StoreGridsController < Admin::AdminBaseController
-  before_action :set_store_grid, only: [:update, :destroy]
+  before_action :set_store_grid, only: [:update, :destroy, :sort_items]
 
   def create
     store_grid = StoreGrid.new(store_grid_params)
@@ -30,6 +30,14 @@ class Admin::StoreGridsController < Admin::AdminBaseController
     else
       render json: { success: false, messages: @store_grid.errors.full_messages }
     end
+  end
+
+  def sort_items
+    params[:items].each do |item|
+      @store_grid.store_grid_items.find(item[:id]).update(order_number: item[:order_number])
+    end
+
+    render json: { success: true, object: @store_grid.as_json }
   end
 
   private

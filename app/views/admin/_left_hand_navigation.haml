@@ -63,6 +63,8 @@
       %span.block Taxes
       %span.block Permissions
       %span.block Files
+      %span.block= link_to 'Custom App Style', edit_admin_custom_style_path, class: "padding-0"
+      %span.block= link_to 'Ask Our Experts', edit_admin_support_info_path, class: "padding-0"
 
 - links.each do |link|
   - if link[:name].eql?(sel_link)

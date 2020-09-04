@@ -1,10 +1,10 @@
 .row
   .col-12
-    .listing-breadcrumbs.flex-items.margin-0
-      = link_to 'Home', homepage_with_locale_path
+    .listing-breadcrumbs.flex-items.margin-0.category-breadcrumbs
+      %span= link_to 'Home', homepage_with_locale_path
       %i.fa.fa-chevron-right
       .current-category
-    .current-collection--title
+    .current-collection--title.capitalize
 
     #current-refinements
   .col-12

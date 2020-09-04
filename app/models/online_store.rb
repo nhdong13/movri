@@ -23,4 +23,8 @@ class OnlineStore < ApplicationRecord
       sections.where(sectionable_type: model.camelize).last&.sectionable
     end
   end
+
+  def as_json
+    super.merge({sections: sections.map(&:as_json)})
+  end
 end

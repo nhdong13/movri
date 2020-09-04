@@ -216,7 +216,11 @@ Rails.application.routes.draw do
       end
     end
 
+
     namespace :admin do
+      resource :custom_style, only: [:edit ,:create, :update]
+      resource :support_info, only: [:edit ,:create, :update]
+
       get '' => "getting_started_guide#index"
 
       # Payments
@@ -270,7 +274,9 @@ Rails.application.routes.draw do
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
       resources :online_stores, only: [] do
-        resources :store_sections, only: [:create]
+        resources :store_sections, only: [:create] do
+          put :sort_sections, on: :collection
+        end
       end
 
       resources :store_headers, only: [:update] do
@@ -297,6 +303,7 @@ Rails.application.routes.draw do
       resources :store_featured_products, only: [:create, :update, :destroy]
 
       resources :store_grids, only: [:create, :update, :destroy] do
+        put :sort_items, on: :member
         resources :store_grid_items, only: [:create, :update, :destroy]
       end
 
@@ -503,6 +510,11 @@ Rails.application.routes.draw do
         get :plus_item
         get :minus_item
         post :change_number_of_item
+        delete :remove_user_manual
+        post :add_accessories
+        put :reorder_accessories
+        put :remove_accessory
+        put :add_tab
       end
       collection do
         get :new_form_content

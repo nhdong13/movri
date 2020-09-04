@@ -27,7 +27,7 @@ class StoreGrid < ApplicationRecord
   enum width: SECTION_GRID_OPTIONS[:widths].keys
 
   def as_json
-    super.merge(items: store_grid_items.as_json)
+    super.merge(items: store_grid_items.order(order_number: :asc).as_json)
   end
 end
   
