@@ -84,6 +84,8 @@ class SlideItem extends Component {
     for (let key in slide_item) {
       if(slide_item[key]) {
         formData.append(`slide_item[${key}]`, slide_item[key])
+      } else {
+        formData.append(`slide_item[${key}]`, '')
       }
     }
 
