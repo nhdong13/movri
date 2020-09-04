@@ -1,0 +1,33 @@
+.modal#view-inventory-history-modal
+  .row.title.margin-bt-0
+    = "Inventory history"
+  %table
+    %thead
+      %tr.row.p-0.m-0
+        %th.col-2.p-0.pt-1
+          Date
+        %th.col-2.p-0.pt-1
+          Event
+        %th.col-4.p-0.pt-1
+          Adjusted by
+        %th.col-2.p-0.pt-1.text-right
+          Adjustment
+        %th.col-2.p-0.pt-1.text-right
+          Quantity
+    %tbody
+      - versions.each do |ver|
+        %tr.row.p-0.m-0
+          - data = normalize_paper_trail_data(ver)
+          %td.col-2.p-0.pt-1
+            = data[:date]
+          %td.col-2.p-0.pt-1
+            = data[:event]
+          %td.col-4.p-0.pt-1
+            = data[:adjusted_by]
+          %td.col-2.p-0.pt-1.text-right
+            = data[:adjustment]
+          %td.col-2.p-0.pt-1.text-right
+            = ver.changeset[:available_quantity][1]
+           
+
+    

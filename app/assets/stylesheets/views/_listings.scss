@@ -3569,3 +3569,8 @@ $listing-author-avatar-height: 108;
   }
 }
 
+.modal {
+  &#view-inventory-history-modal {
+    max-width: 90vw !important;
+  }
+}
