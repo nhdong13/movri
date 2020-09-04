@@ -47,9 +47,12 @@ $(function() {
     var id = event.target.id;
     var listing_id = id.split("-").pop();
     var addToCartUrl = "/en/listings/" + listing_id + "/add_item_to_cart";
+    var quantity = $('input#quantity-number').val()
+
     $.ajax({
       url: addToCartUrl,
-      type: "GET"
+      type: "PUT",
+      data: {quantity: quantity}
     }).done(function(response) {
       if (response.success === true) {
         swal("Successfully!", "1 Item Added to Your Cart!", "success", {

@@ -505,7 +505,7 @@ Rails.application.routes.draw do
         delete :unfollow
         delete :delete
         post :get_shipping_rates_from_postmen
-        get :add_item_to_cart
+        put :add_item_to_cart
         get :remove_cart_item
         get :plus_item
         get :minus_item
