@@ -33,14 +33,12 @@ window.ST = window.ST || {};
           }
         }).done(function(response) {
           $(".loading").hide();
-          var hashResponse = JSON.parse(response.data.rates);
-          var rates = hashResponse.data.rates;
+          var rates = response.data.rates;
 
-          if(rates && hashResponse.meta.code === 200) {
+          if(!!rates.length) {
             $('#shipping-rates-table').empty();
-
             for (var i = 0; i < rates.length; i++ ) {
-              var shippingRateRow = "<tr>" + "<td>" + hashResponse.data.rates[i].service_name + "</td>" + "<td align='right'>" + hashResponse.data.rates[i].total_charge.amount + "shipping" + " (" + hashResponse.data.rates[i].total_charge.currency + ")" + "</td>" + "</tr>";
+              var shippingRateRow = "<tr>" + "<td>" + rates[i].service_name + "</td>" + "<td align='right'>" + "$" + rates[i].total_charge.amount + " shipping" + " (" + rates[i].total_charge.currency + ")" + "</td>" + "</tr>";
               $('#shipping-rates-table').append(shippingRateRow);
             }
           } else {
@@ -78,14 +76,13 @@ window.ST = window.ST || {};
           }
         }).done(function(response) {
           $(".mobile-loading").hide();
-          var hashResponse = JSON.parse(response.data.rates);
-          var rates = hashResponse.data.rates;
+          var rates = response.data.rates || [];
 
-          if(rates && hashResponse.meta.code === 200) {
+          if(!!rates.length) {
             $('#mobile-shipping-rates-table').empty();
 
             for (var i = 0; i < rates.length; i++ ) {
-              var shippingRateRow = "<tr>" + "<td>" + hashResponse.data.rates[i].service_name + "</td>" + "<td align='right'>" + hashResponse.data.rates[i].total_charge.amount + "shipping" + " (" + hashResponse.data.rates[i].total_charge.currency + ")" + "</td>" + "</tr>"
+              var shippingRateRow = "<tr>" + "<td>" + rates[i].service_name + "</td>" + "<td align='right'>" + "$" + rates[i].total_charge.amount + " shipping" + " (" + rates[i].total_charge.currency + ")" + "</td>" + "</tr>"
 
               $('#mobile-shipping-rates-table').append(shippingRateRow);
             }

@@ -98,8 +98,6 @@ module ShippingRatesService
     request_body(ship_to_postal_code, state_from_postal_code, dimension, quantity, listing_skus)
   end
 
-
-
   def get_shipping_rates_for_cart_page listing_ids, zipcode , total_quantity
     request_body = create_body_request_to_postmen_with_multiple_listings(listing_ids, zipcode, total_quantity)
 

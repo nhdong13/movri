@@ -180,7 +180,7 @@ module ListingsHelper
     available_quantity_changeset = changeset[:available_quantity]
     if available_quantity_changeset
       number_of_rent_changeset = changeset[:number_of_rent]
-      adjustment = available_quantity_changeset[1] - available_quantity_changeset[0]
+      adjustment = available_quantity_changeset[1].to_i - available_quantity_changeset[0].to_i
       action = adjustment >= 0 ? 'positive' : 'negative'
 
       event = ''
