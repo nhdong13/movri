@@ -50,7 +50,7 @@
   .row.listing-shipping-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
     - if @listing_presenter.quantity_per_day_or_night?
       - logger.info "================================================================================================"
-      - logger.info "ahihi #{@listing_presenter.blocked_dates_result.on_success} ahihi"
+      - logger.info "ahihi #{@listing_presenter.blocked_dates_result} ahihi"
       - logger.info "================================================================================================"
       - @listing_presenter.blocked_dates_result.on_success do |blocked_dates|
         - blocked_dates = blocked_dates.to_a
