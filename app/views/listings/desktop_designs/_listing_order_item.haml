@@ -49,31 +49,28 @@
 = form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do
   .row.listing-shipping-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
     - if @listing_presenter.quantity_per_day_or_night?
-      - logger.info "================================================================================================"
-      - logger.info "ahihi #{@listing_presenter.blocked_dates_result  } ahihi"
-      - logger.info "================================================================================================"
-      - @listing_presenter.blocked_dates_result.on_success do |blocked_dates|
-        - if blocked_dates.is_a?(Array)
-          -# Merge manually blocked dates (via admin) with blocked dates automatic (via website booking)
-          - global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
-          - blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
-          - manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
-          - blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
-          - content_for :extra_javascript do
-            :javascript
-              window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});
-          .col-6.clearfix.arrival-date.padding-0
-            .form-group
-              %label{for: 'arrival-date'} Arrival Date
-              %input.form-control.required#start-on{value: session[:booking] ? session[:booking][:start_date] : '',type: "arrival-date", :data => { :output => "booking-start-output" }, autocomplete: 'off'}
-              %input#booking-start-output{:type => 'hidden', :name => 'start_on'}
-              = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
-          .col-6.clearfix.return-date
-            .form-group
-              %label{for: "return-date"} Return Date
-              %input.form-control.required#end-on{value: session[:booking] ? session[:booking][:end_date] : '', type: "return-date",  :data => { :output => "booking-end-output" }, autocomplete: 'off'}
-              %input#booking-end-output{:type => 'hidden', :name => 'end_on'}
-              = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+      - blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
+      - if blocked_dates.any?
+        -# Merge manually blocked dates (via admin) with blocked dates automatic (via website booking)
+        - global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
+        - blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
+        - manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
+        - blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
+        - content_for :extra_javascript do
+          :javascript
+            window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});
+        .col-6.clearfix.arrival-date.padding-0
+          .form-group
+            %label{for: 'arrival-date'} Arrival Date
+            %input.form-control.required#start-on{value: session[:booking] ? session[:booking][:start_date] : '',type: "arrival-date", :data => { :output => "booking-start-output" }, autocomplete: 'off'}
+            %input#booking-start-output{:type => 'hidden', :name => 'start_on'}
+            = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
+        .col-6.clearfix.return-date
+          .form-group
+            %label{for: "return-date"} Return Date
+            %input.form-control.required#end-on{value: session[:booking] ? session[:booking][:end_date] : '', type: "return-date",  :data => { :output => "booking-end-output" }, autocomplete: 'off'}
+            %input#booking-end-output{:type => 'hidden', :name => 'end_on'}
+            = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
       - @listing_presenter.blocked_dates_result.on_error do
         = t("listings.listing_actions.unable_load_availability")
   .row.listing-order-quantity
