@@ -95,6 +95,13 @@
 
 class Listing < ApplicationRecord
   include AlgoliaSearch
+  has_paper_trail(
+    only: [:available_quantity, :number_of_rent],
+    versions: {
+      scope: -> { order("id desc") }
+    }
+  )
+
   algoliasearch index_name: "movri_products" do
     attribute :id, :title, :price_cents, :number_of_rent, :sku
     attributes :main_image do

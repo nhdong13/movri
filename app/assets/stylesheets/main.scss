@@ -2709,3 +2709,7 @@ figure.fluidratio {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.jquery-modal {
+  z-index: 10001 !important;
+}

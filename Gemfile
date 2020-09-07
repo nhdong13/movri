@@ -109,6 +109,7 @@ gem 'ckeditor'
 gem 'country-select'
 gem 'rack-tracker'
 gem 'httparty', '~> 0.18.1'
+gem 'paper_trail'
 
 group :staging, :production do
   gem 'newrelic_rpm', '~> 4.2.0.334'

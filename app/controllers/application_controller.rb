@@ -42,7 +42,8 @@ class ApplicationController < ActionController::Base
     :set_display_expiration_notice,
     :setup_custom_footer,
     :disarm_custom_head_script,
-    :update_booking_session
+    :update_booking_session,
+    :set_paper_trail_whodunnit
 
   # This updates translation files from WTI on every page load. Only useful in translation test servers.
   before_action :fetch_translations if APP_CONFIG.update_translations_on_every_page_load == "true"
@@ -476,6 +477,10 @@ class ApplicationController < ActionController::Base
   def get_next_day current_day
     next_day = Date.strptime(current_day, "%m/%d/%Y") + 1.day
     next_day.strftime("%m/%d/%Y")
+  end
+
+  def user_for_paper_trail
+    logged_in? ? @current_user.fullname : 'Online Store'
   end
 
   private
