@@ -174,4 +174,34 @@ module ListingsHelper
   def date_to_humanized date
     date.to_date.to_formatted_s(:long)
   end
+
+  def get_invertory_history_data version
+    changeset = version.changeset
+    available_quantity_changeset = changeset[:available_quantity]
+    if available_quantity_changeset
+      number_of_rent_changeset = changeset[:number_of_rent]
+      adjustment = available_quantity_changeset[1] - available_quantity_changeset[0]
+      action = adjustment >= 0 ? 'positive' : 'negative'
+
+      event = ''
+      if action == 'positive' && number_of_rent_changeset.nil?
+        event = 'Manually added'
+      elsif action == 'negative' && number_of_rent_changeset.nil?
+        event = 'Manually subtracted'
+      elsif action == 'negative' && number_of_rent_changeset.present?
+        event = 'Order created'
+      end
+
+      {
+        date: version.created_at.in_time_zone.strftime("%b %d, at %H:%M %P %Z"),
+        event: event,
+        adjusted_by: version.whodunnit,
+        adjustment: adjustment,
+        action: action
+      }
+    else
+      nil
+    end
+  end
+
 end

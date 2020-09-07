@@ -687,6 +687,9 @@ $listing-author-avatar-height: 108;
         position: absolute;
         position: absolute;
         padding: 5px 10px;
+        &:hover {
+          cursor: pointer;
+        }
       }
 
       .icon-caret-up {
@@ -3569,3 +3572,17 @@ $listing-author-avatar-height: 108;
   }
 }
 
+.modal {
+  &#view-inventory-history-modal {
+    max-width: 90vw !important;
+    tbody tr:nth-child(odd){
+      background-color: #f0f0f0;
+    }
+    .positive {
+      color: green;
+    }
+    .negative {
+      color: red;
+    }
+  }
+}
