@@ -1,0 +1,18 @@
+.wrapper
+  = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+  .left-navi-section
+    = form_for [:admin, @shipping_additional_fee], url: admin_shipping_additional_fee_path do |f|
+
+      .row
+        .col-12
+          %h3 Additional Fees
+        .col-6
+          .form-control
+            %span Handling (%)
+            = f.text_field :handling
+        .col-6
+          .form-control
+            %span Insurance (%)
+            = f.text_field :insurance
+        .col-12
+          = f.submit "Submit", class: 'btn active'

@@ -220,7 +220,46 @@ $(document).ready(function() {
         item =>
           {
             category = item.category;
-            return`${category}`
+            subcategory = item.subcategory;
+            children_category = item.children_category;
+            if(children_category){
+              return`${children_category}`
+            } else {
+              return`${subcategory}`
+            }
+          }
+        )
+      .join('')}
+    `;
+  }
+
+  const renderBreadCrumbCategory = ({hits}) => {
+    hits = hits.slice(0, 1)
+    return `
+    ${hits
+      .map(
+        item =>
+          {
+            category = item.category;
+            subcategory = item.subcategory;
+            children_category = item.children_category;
+            if(children_category){
+              return`
+                <i class='fa fa-chevron-right'></i>
+                <span>${category}</span>
+                <i class='fa fa-chevron-right'></i>
+                <span>${subcategory}</span>
+                <i class='fa fa-chevron-right'></i>
+                <span>${children_category}</span>
+              `
+            }else{
+              return`
+                <i class='fa fa-chevron-right'></i>
+                <span>${category}</span>
+                <i class='fa fa-chevron-right'></i>
+                <span>${subcategory}</span>
+              `
+            }
           }
         )
       .join('')}
@@ -370,7 +409,7 @@ $(document).ready(function() {
     if(indices[0]){
       $('.product-items').html([indices[0]].map(ProductItemsTemplate).join(''));
       $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
-      $('.current-category').html([indices[0]].map(renderCurrentCategory).join(''));
+      $('.current-category').html([indices[0]].map(renderBreadCrumbCategory).join(''));
       $('.current-collection--title').html([indices[0]].map(renderCurrentCategory).join(''));
     }
   };

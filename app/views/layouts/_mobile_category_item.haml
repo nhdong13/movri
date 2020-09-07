@@ -7,7 +7,7 @@
   - if main_category.all_subcategories.any?
     .subcategories.hidden
       - main_category.all_subcategories.each do |subcategory|
-        = link_to categories_path(subcategories: subcategory), class: 'sub-cat' do
+        .sub-cat
           .subcategory
             .flex-items
               .width-70.padding-0
