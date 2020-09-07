@@ -48,9 +48,9 @@
       .row.listing-order-quantity
         .col-6.row
           .col-5.quantity
-            = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field'
-            %i.icon-caret-up
-            %i.icon-caret-down
+            = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field', id: 'quantity-number-mobile'
+            %i.icon-caret-up#quantity-up-mobile
+            %i.icon-caret-down#quantity-down-mobile
           .col-7.add-wish-list
             %button.wish-list-btn
               Wish List
@@ -85,8 +85,18 @@
 = render partial: "listings/mobile_designs/pricing_chart", locals: { listing: @listing }
 = render partial: "listings/mobile_designs/view_cart", locals: { listing: @listing }
 
--# - content_for :extra_javascript do
--#   :javascript
+- content_for :extra_javascript do
+  :javascript
+    $('#quantity-up-mobile').on('click', function() {
+      var currentVal = parseInt($('input#quantity-number').val()) || 0
+      $("input#quantity-number").val(currentVal+1)
+    })
+    $('#quantity-down-mobile').on('click', function() {
+      var currentVal = parseInt($('input#quantity-number').val()) || 1
+      if(currentVal !== 0) {
+        $('input#quantity-number').val(currentVal-1)
+      }
+    })
 -#     ST.ListingTags.initTagsForEditListing();
 -#     ST.BlockedDates.addBlockedDates();
 -#     $(document).ready(function(){

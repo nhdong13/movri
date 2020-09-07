@@ -687,6 +687,9 @@ $listing-author-avatar-height: 108;
         position: absolute;
         position: absolute;
         padding: 5px 10px;
+        &:hover {
+          cursor: pointer;
+        }
       }
 
       .icon-caret-up {

@@ -348,7 +348,7 @@ class ListingsController < ApplicationController
     # Add item to session
     session[:cart] ||= {}
     listing_id = params[:id]
-    session[:cart][listing_id] = session[:cart][listing_id] ? (session[:cart][listing_id] + 1) : 1
+    session[:cart][listing_id] = session[:cart][listing_id] ? (session[:cart][listing_id].to_i + params[:quantity].to_i) : params[:quantity].to_i
     transaction_items_service.add_new_transaction_items(listing_id) if transaction_items_service
 
     # Get total items in cart
