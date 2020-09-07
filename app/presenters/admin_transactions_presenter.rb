@@ -7,7 +7,8 @@ class AdminTransactionsPresenter
   end
 
   def transactions
-    @tx_search.paginated
+    Transaction.all
+    # @tx_search.paginated
   end
 
   def selected_statuses_title

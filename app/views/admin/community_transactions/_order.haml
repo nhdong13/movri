@@ -4,7 +4,7 @@
   %td
     = order.created_at.to_formatted_s(:long)
   %td
-    = order.buyer.given_name
+    = order.buyer&.given_name
   %td
     %span.order-payment-process{class: (order.paid? ? "pending-span" : "grey-span")}
       %i.icon-circle-blank
@@ -14,7 +14,7 @@
       %i.icon-circle
       = order.status.capitalize
   %td
-    = number_to_currency(order.item_total)
+    = money_to_humanized(order.item_total)
   %td
     = "#{order.total_quantity} #{order.total_quantity > 1 ? 'items' : 'item'}"
   %td
