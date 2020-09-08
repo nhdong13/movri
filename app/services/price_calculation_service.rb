@@ -30,24 +30,7 @@ module PriceCalculationService
   end
 
   def get_discount_percent(days)
-    case days
-    when 2
-      DiscountConstants::TWO_DAYS
-    when 3
-      DiscountConstants::THREE_DAYS
-    when 4
-      DiscountConstants::FOUR_DAYS
-    when 5
-      DiscountConstants::FIVE_DAYS
-    when 6
-      DiscountConstants::SIX_DAYS
-    when 7
-      DiscountConstants::SEVEN_DAYS
-    when 8
-      DiscountConstants::EIGHT_DAYS
-    else
-      DiscountConstants::SEVEN_DAYS
-    end
+    DISCOUNT_CONSTANS["#{days}_days"]
   end
 
   def get_discount_from_promo_code(price, promo_code)
