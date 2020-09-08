@@ -84,6 +84,10 @@ window.Commons =
       else
         $('#mobile-menu').show()
 
+  toShowCalendarOnClickIcon: ->
+    $('.icon-movri-calendar').click ->
+      $(this).parent().find('input').datepicker('show')
+
 $(document).ready ->
   Commons.formatPhone()
   Commons.CanadianZipCodeRule()
@@ -93,3 +97,4 @@ $(document).ready ->
   Commons.handleToggleCategories()
   Commons.handleToggleChildCategories()
   Commons.handleToggleMenuCategory()
+  Commons.toShowCalendarOnClickIcon()

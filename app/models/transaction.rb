@@ -414,13 +414,4 @@ class Transaction < ApplicationRecord
     stripe_payments.last.sum_cents
   end
 
-  def missing_listings?
-    is_missing = false
-    transaction_items.each do |item|
-      if item.quantity > item.listing.available_quantity
-        is_missing = true
-      end
-    end
-    is_missing
-  end
 end

@@ -91,13 +91,6 @@ $border-color: #E1E3E5;
     min-height: unset !important;
     padding: 0 !important;
   }
-  &.error{
-    border: 1px solid red;
-    color:red;
-    input{
-      color:red;
-    }
-  }
 }
 .br{border: 1px solid $border-color;}
 .br-bottom{border-bottom: 1px solid $border-color;}

@@ -481,16 +481,10 @@ class ListingsController < ApplicationController
     @item_count = params[:total].to_i
     @promo_code = PromoCode.find_by(code: params[:promo_code])
     @listing = Listing.find_by_id(id)
-    if @item_count > @listing.available_quantity
-      @success = false
-      @message = "There is only #{@listing.available_quantity} product(s) available in stock!"
-    else
-      if session[:cart].key?(id) && @item_count > 0
-        session[:cart][id] = @item_count
-      end
-      transaction_items_service.increase_quantity_of_transaction_items(@listing.id, @item_count) if transaction_items_service
-      @success = true
+    if session[:cart].key?(id) && @item_count > 0
+      session[:cart][id] = @item_count
     end
+    transaction_items_service.increase_quantity_of_transaction_items(@listing.id, @item_count) if transaction_items_service
 
     # Get total items in cart
     @cart_total_items = session[:cart].values.sum

@@ -515,10 +515,6 @@ class TransactionsController < ApplicationController
       flash[:error] = "Please contact us for this. This package is overweight. We'd love to help you with completing the transaction."
       return redirect_to show_cart_path
     end
-    if @transaction.missing_listings?
-      flash[:error] = "Something went wrong with the number of your products. Please check it again."
-      return redirect_to show_cart_path
-    end
 
     if checkout_setting.only_guest? && @current_user
       flash[:error] = "Only guest can continue with transaction."
