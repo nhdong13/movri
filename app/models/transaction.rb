@@ -303,7 +303,9 @@ class Transaction < ApplicationRecord
   end
 
   def item_total
-    unit_price_cents * total_quantity
+    price = 0
+    transaction_items.map {|item| price += item.price_cents * item.quantity}
+    price
   end
 
   def coverage_cents

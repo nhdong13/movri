@@ -293,8 +293,8 @@ class Listing < ApplicationRecord
   validates_numericality_of :price_cents, :only_integer => true, :greater_than_or_equal_to => 0, :message => "price must be numeric", :allow_nil => true
 
 
-  def convert_replacement_value_to_cents
-    self.replacement_cents_fee = self.replacement_cents_fee * 100
+  def replacement_cents_fee=(replacement_cents_fee)
+    write_attribute(:replacement_cents_fee, replacement_cents_fee.to_i * 100)
   end
 
   def replacement_fee

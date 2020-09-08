@@ -197,24 +197,7 @@
       .mobile-sidenav
         %a.mobile-closebtn{href: "javascript:void(0)"}
           %i.icon-chevron-left
-          Sales Department
         %hr
-        .mobile-side-mail-wrap
-          %p.title By Phone
-          %p.item= "Phone: #{APP_CONFIG.contact_phone}"
-          %p.item= "Fax: #{APP_CONFIG.contact_phone}"
-
-          .row.foreign-cus-line
-            .col-6
-              %p.title-btn Foreign Customers Line
-            .col-6.arrow-col
-              %i.icon-chevron-right
-
-          %p.title House Of Opreation:
-          %p.item Sunday: 10:00AM - 5:00PM
-          %p.item Mon-Thu: 9:00AM - 7:00PM
-          %p.item Friday: 9:00AM - 1:00PM
-
           .row.holiday-schedule
             .col-6
               %p.title-btn Holiday Schedule
@@ -270,6 +253,16 @@
       $(".tab-content").hide();
       $(".mobile-display #"+$(this).data('tab')).show();
       return false;
+    });
+
+    $("input[name='coverage']").click(function(){
+      if($(this).val() == "movri-coverage"){
+        $('.rental-price-with-no-insurance').hide()
+        $('.rental-price-with-insurance').show()
+      } else {
+        $('.rental-price-with-no-insurance').show()
+        $('.rental-price-with-insurance').hide()
+      }
     });
 
     $(document).ready(function() {
