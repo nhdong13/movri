@@ -2793,6 +2793,9 @@ $listing-author-avatar-height: 108;
 
   .modal-list-shipping {
     margin: 15px;
+    tbody tr:nth-child(odd) {
+      background-color: unset;
+    }
 
     ul {
       list-style-type: none;
@@ -2907,6 +2910,9 @@ $listing-author-avatar-height: 108;
 
   .mobile-modal-list-shipping {
     margin: 15px;
+    tbody tr:nth-child(odd) {
+      background-color: unset;
+    }
 
     ul {
       list-style-type: none;
@@ -3130,7 +3136,9 @@ $listing-author-avatar-height: 108;
 
   .mobile-modal-list-shipping {
     margin: 15px;
-
+    tbody tr:nth-child(odd) {
+      background-color: unset;
+    }
     ul {
       list-style-type: none;
     }
