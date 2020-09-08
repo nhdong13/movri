@@ -17,7 +17,7 @@ window.ST = window.ST || {};
     return date.getFullYear() + '-' + pad((date.getMonth() + 1), 2) + '-' +  pad(date.getDate(), 2);
   };
 
-  var setupPerDayOrNight = function(options) {
+  var setupPerDayOrNight = function(options, current_start_date) {
     var disabledDates = options.blocked_dates.map(function(d) {
       return new Date(d * 1000);
     });
@@ -80,7 +80,7 @@ window.ST = window.ST || {};
 
     var endDate = new Date(options.end_date * 1000);
 
-    initializeFromToDatePicker('datepicker', {disabledDates: disabledDates, endDate: endDate, nightPicker: quantityNight });
+    initializeFromToDatePicker('datepicker', {disabledDates: disabledDates, endDate: endDate, nightPicker: quantityNight, current_start_date: current_start_date });
   };
 
   /**
@@ -109,6 +109,7 @@ window.ST = window.ST || {};
       var new_day = day.setDate(day.getDate() + 1)
       return new Date(new_day)
     }
+    var current_start_date = opts.current_start_date || next_day
 
     $('.input-arrival-date').datepicker({
       autoclose: true,
@@ -120,7 +121,7 @@ window.ST = window.ST || {};
     $('.input-return-date').datepicker({
       daysOfWeekDisabled: '0',
       autoclose: true,
-      startDate: next_day(new Date),
+      startDate: next_day(new Date(current_start_date)),
       todayHighlight: true,
       datesDisabled: disabledStartDates,
     });

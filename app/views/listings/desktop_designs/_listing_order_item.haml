@@ -58,7 +58,7 @@
         - blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
         - content_for :extra_javascript do
           :javascript
-            window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json});
+            window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json}, #{raw session[:booking] ? session[:booking][:start_date].to_json : ''});
         .col-6.clearfix.arrival-date.padding-0
           .form-group
             %label{for: 'arrival-date'} Arrival Date
