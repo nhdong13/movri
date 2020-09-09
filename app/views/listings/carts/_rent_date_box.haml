@@ -6,14 +6,13 @@
         .common-input-date-with-icon
           = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : ''), class: "input-arrival-date"
           %i.fa.fa-calendar
-
-
       .return-date
         %p.center-title= t('transactions.label.return_date')
         .common-input-date-with-icon
           = text_field_tag :cart_deatail_return_date, (session[:booking] ? session[:booking][:end_date] : ''), class: "input-return-date"
           %i.fa.fa-calendar
 
+-# window.ST.CommonDatePicker.setupForDay();
 - content_for :extra_javascript do
   :javascript
-    window.ST.CommonDatePicker.setupForDay();
+    window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(@blocked_dates).to_json}, #{raw session[:booking] ? session[:booking][:start_date].to_json : ''}, ".input-arrival-date", ".input-return-date");
