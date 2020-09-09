@@ -517,6 +517,12 @@ class ListingsController < ApplicationController
 
   def show_cart
     @have_blocked_dates = Listing.where(id: session[:cart].keys).pluck(:manually_blocked_dates).present?
+    make_listing_presenter
+    @blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
+    global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
+    @blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
+    # manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
+    # @blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
   end
 
   def change_booking_days

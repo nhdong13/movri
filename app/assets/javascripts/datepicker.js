@@ -17,7 +17,7 @@ window.ST = window.ST || {};
     return date.getFullYear() + '-' + pad((date.getMonth() + 1), 2) + '-' +  pad(date.getDate(), 2);
   };
 
-  var setupPerDayOrNight = function(options, current_start_date) {
+  var setupPerDayOrNight = function(options, current_start_date, input_arrival_date_el, input_return_date_el) {
     var disabledDates = options.blocked_dates.map(function(d) {
       return new Date(d * 1000);
     });
@@ -80,7 +80,7 @@ window.ST = window.ST || {};
 
     var endDate = new Date(options.end_date * 1000);
 
-    initializeFromToDatePicker('datepicker', {disabledDates: disabledDates, endDate: endDate, nightPicker: quantityNight, current_start_date: current_start_date });
+    initializeFromToDatePicker('datepicker', {disabledDates: disabledDates, endDate: endDate, nightPicker: quantityNight, current_start_date: current_start_date, input_arrival_date_el: input_arrival_date_el, input_return_date_el: input_return_date_el });
   };
 
   /**
@@ -94,6 +94,8 @@ window.ST = window.ST || {};
   */
   var initializeFromToDatePicker = function(rangeContainerId, opts) {
     opts = opts || {};
+    var input_arrival_date_el = opts.input_arrival_date_el
+    var input_return_date_el = opts.input_return_date_el
     var nightPicker = opts.nightPicker || false;
     var endDate = opts.endDate;
     var disabledStartDates = opts.disabledDates || [];
@@ -111,14 +113,14 @@ window.ST = window.ST || {};
     }
     var current_start_date = opts.current_start_date || next_day
 
-    $('.input-arrival-date').datepicker({
+    $(input_arrival_date_el).datepicker({
       autoclose: true,
       startDate: today,
       todayHighlight: true,
       datesDisabled: disabledStartDates,
     });
 
-    $('.input-return-date').datepicker({
+    $(input_return_date_el).datepicker({
       daysOfWeekDisabled: '0',
       autoclose: true,
       startDate: next_day(new Date(current_start_date)),
@@ -130,25 +132,25 @@ window.ST = window.ST || {};
     // $('.input-arrival-date').datepicker('.input-daterange')
     // $('.input-return-date').datepicker('.input-daterange')
     today = dateAtBeginningOfDay(new Date)
-    endDate = $('.input-return-date').datepicker('getDate')
+    endDate = $(input_return_date_el).datepicker('getDate')
 
-    $('.input-arrival-date').on('changeDate', function(e){
+    $(input_arrival_date_el).on('changeDate', function(e){
       newDate = e.dates[0];
       oneDayMore = next_day(newDate);
-      endDate = $('.input-return-date').datepicker('getDate');
+      endDate = $(input_arrival_date_el).datepicker('getDate');
       if(oneDayMore <= endDate){
         newDate = oneDayMore
       }
-      $('.input-return-date').focus().datepicker('setDate', '')
-      $('.input-arrival-date').datepicker('hide');
-      $('.input-return-date').focus().datepicker('setStartDate', newDate)
-      $('.input-return-date').focus().datepicker('show')
+      $(input_return_date_el).focus().datepicker('setDate', '')
+      $(input_arrival_date_el).datepicker('hide');
+      $(input_return_date_el).focus().datepicker('setStartDate', newDate)
+      $(input_return_date_el).focus().datepicker('show')
     });
 
-    $('.input-return-date').on('changeDate', function(){
+    $(input_return_date_el).on('changeDate', function(){
       var changeBookingDayUrl = "/en/change_cart_detail_booking_days.js";
       var end_date = $(this).val();
-      var start_date = $('.input-arrival-date').val();
+      var start_date = $(input_arrival_date_el).val();
       if(end_date != "" && start_date != ""){
         $.ajax({
           url: changeBookingDayUrl,
@@ -158,9 +160,13 @@ window.ST = window.ST || {};
              end_date: end_date,
           }
         })
-        $('.input-return-date').datepicker('hide')
+        $(input_return_date_el).datepicker('hide')
       }
     });
+
+    $('.fa-calendar, .icon-movri-calendar').click(function(){
+      $(this).parent().find('input').datepicker('show')
+    })
 
     // picker.on('changeDate', function(e) {
     //   var newDate = e.dates[0];
