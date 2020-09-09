@@ -1055,7 +1055,6 @@ $(document).ready(function() {
       $(e.target).parents('.search-mobile-icon')[0] == $('.search-mobile-icon')[0]) {
       $(search_result).show();
     } else {
-      $('.mobile-display .searchbox-algolia input').hide()
       $(search_result).hide();
     }
   });

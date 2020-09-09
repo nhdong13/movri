@@ -200,14 +200,17 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 .main-header {
   @media #{$mobile} {
-    border-bottom: 2px solid #4eb857;
+    .header-bar {
+      .icons {
+       border-bottom: 2px solid #4eb857;
+      }
+    }
   }
 }
 
 .header-wrapper {
   @include wrapper(0);
   @media #{$mobile} {
-    height: 45px;
     padding: 0 !important;
     background: white !important;
     .header-menu-toggle-container {
@@ -1312,7 +1315,12 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 .search-mobile-icon,
 .header-mobile-phone-icon {
-  width: 30px;
+  width: 24px;
+  height: auto;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 @media #{$tablet} {
@@ -1341,4 +1349,28 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
   left: 0;
   right: 0;
   z-index: 1000;
+}
+
+.header-wrapper {
+  @include wrapper(0);
+  @media #{$mobile} {
+    .toggle-header-container{
+      height: unset !important;
+      line-height: unset !important;
+      .icon-movri-user {
+        width: 24px !important;
+        height: auto !important;
+      }
+    }
+  }
+}
+
+.header-search-icon {
+  height: 55px;
+  width: 55px;
+  background-color: #ef3825;
+  img {
+    height: 24px;
+    width: auto;
+  }
 }
