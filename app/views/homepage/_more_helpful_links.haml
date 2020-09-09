@@ -1,10 +1,14 @@
 .more-helpful-links
-  .row.display-flex
+  .row.display-flex.justify-content-center
+    - grid_raito = 2
+    - if [1, 2, 3, 4].include? helpful_section.helpful_link_items.where(enabled: true).count
+      - grid_raito = 12/helpful_section.helpful_link_items.where(enabled: true).count
+
     - helpful_section.helpful_link_items.each do |item|
       - if item.enabled?
         - heading_color = "color: #{item.heading_color};"
         - subheading_color = "color: #{item.text_color};"
-        .flex-item
+        %div{class: "col-#{grid_raito}"}
           .helpful-link-header
             %p{style: heading_color}= item.heading
           .helpful-links
@@ -16,6 +20,14 @@
               - item.footer_social_accounts.each do |acc|
                 = link_to acc.link do 
                   = image_tag acc.image.url, alt: acc.alt_text
+            - elsif item.sign_up?
+              %div.footer-contact-information{style: subheading_color}= item.text.html_safe
+              = form_tag '', :method => :get do
+                .row.mt-4
+                  .col-10.pl-0
+                    = text_field_tag :email, params[:email], placeholder: 'Email address'
+                  .col-2.p-0
+                    = submit_tag 'Sign Up', class: 'btn btn-submit font-size-14'
             - else
               %div.footer-contact-information{style: subheading_color}= item.text.html_safe
       
