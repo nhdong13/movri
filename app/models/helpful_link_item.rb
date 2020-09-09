@@ -26,7 +26,7 @@ class HelpfulLinkItem < ApplicationRecord
   accepts_nested_attributes_for :footer_links
   accepts_nested_attributes_for :footer_social_accounts
 
-  enum content_type: %w(normal footer_link social_account)
+  enum content_type: %w(normal footer_link social_account sign_up)
   
   def as_json
     sub_items = if self.normal?
