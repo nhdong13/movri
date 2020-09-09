@@ -20,6 +20,7 @@ class AddDefaultTaxRatesOfCanada < ActiveRecord::Migration[5.2]
       taxe_rates.each do |tax_rate|
         Tax.find_or_create_by(community_id: community.id, province: tax_rate[:province]) do |new_tax|
           new_tax.province_display = tax_rate[:province_display]
+          new_tax.tax_rates = tax_rate[:tax_rates]
         end
       end
     end
