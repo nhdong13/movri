@@ -4,7 +4,6 @@ window.ST = window.ST || {};
   module.initViewCart = function() {
     showViewCart();
     closeViewCart();
-    showMobileViewCart();
     closeMobileViewCart();
   };
 
@@ -19,13 +18,6 @@ window.ST = window.ST || {};
       $("#view-cart-modal").css('display', "none");
     });
   }
-
-
-  function showMobileViewCart() {
-    // $(".mobile-show-view-cart-modal").on('click', function() {
-    //   $("#mobile-view-cart-modal").css('display', "block");
-    // })
-  };
 
   function closeMobileViewCart () {
     $('#mobile-view-cart-modal .mobile-close').on('click', function() {

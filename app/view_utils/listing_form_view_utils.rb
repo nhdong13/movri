@@ -31,8 +31,8 @@ module ListingFormViewUtils
 
     errors << :price_required if shape[:price_enabled] && params[:price].nil?
     errors << :currency_required if shape[:price_enabled] && params[:currency].blank?
-    errors << :delivery_method_required if shape[:shipping_enabled] && params[:delivery_methods].empty?
-    errors << :unknown_delivery_method if shape[:shipping_enabled] && params[:delivery_methods].any? { |method| !["shipping", "pickup"].include?(method) }
+    # errors << :delivery_method_required if shape[:shipping_enabled] && params[:delivery_methods].empty?
+    # errors << :unknown_delivery_method if shape[:shipping_enabled] && params[:delivery_methods].any? { |method| !["shipping", "pickup"].include?(method) }
 
     errors << :unit_required if shape_units(shape).present? && unit.blank?
     errors << :unit_does_not_belong if shape_units(shape).present? && unit.present? && !shape_units(shape).any? { |u| u.slice(*unit.keys) == unit }
@@ -73,6 +73,7 @@ module ListingFormViewUtils
     listing_params = filter(with_currency, shape, valid_until_enabled)
     listing_unit   = parse_listing_unit_param(params)
     listing_params = filter_additional_shipping(listing_params, listing_unit)
+    listing_params.delete(:tabs)
     validation_result = validate(
       params: listing_params,
       shape: shape,

@@ -1,4 +1,4 @@
-= form_for assurance_option, :url => admin_community_assurance_options_path(community_id: @current_community.id), :method => :post do |f|
+= form_for assurance_option, :url => url, :method => method.to_sym do |f|
   .row.create-assurance-option-form
     .col-8.row.p-0.m-0
       .col-12.section-wrapper

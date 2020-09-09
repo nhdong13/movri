@@ -19,7 +19,7 @@
       %i.icon-print
         %span= "Print"
       %i.icon-chevron-left
-        %span= "Refund"
+        %a#refund{href: "#refund-modal", rel: "modal:open"}= "Refund"
       %i.icon-remove
         %a#cancel-booking{href: "#cancel-booking-modal", rel: "modal:open"}= "Cancel"
   .row
@@ -34,10 +34,10 @@
           .col-10
             %h3= "Notes"
           .col-2
-            = "Edit"
+            %a{href: "#edit-customer-note", rel: "modal:open"}= "Edit"
         .row
           .col-12
-            = "#{@order.booking.start_on.to_formatted_s(:short)} to #{@order.booking.end_on.to_formatted_s(:short)}"
+            = @order.note
       .col-12.edit-customer-info
         = render "customer_info", order: @order
   .row
@@ -45,3 +45,5 @@
       %btn.button.save-button= "Save"
 
 = render 'cancel_booking', order: @order
+= render 'refund', order: @order
+= render 'edit_customer_note', order: @order

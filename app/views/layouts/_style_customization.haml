@@ -9,6 +9,7 @@
 - body_text_font_settings = preferences&.body_text_font_settings
 
 :css
+  @import url("//fonts.googleapis.com/css?family=Open+Sans:400,600,700&subset=latin-ext");
   @import url("//fonts.googleapis.com/css?family=#{heading_font_settings['font_family']&.split(' ')&.join('+')}:400,600,700&subset=latin-ext");
   @import url("//fonts.googleapis.com/css?family=#{button_font_settings['font_family']&.split(' ')&.join('+')}:400,600,700&subset=latin-ext");
   @import url("//fonts.googleapis.com/css?family=#{main_menu_font_settings['font_family']&.split(' ')&.join('+')}:400,600,700&subset=latin-ext");
@@ -42,7 +43,6 @@
 
   .page-content {
     color: #{ general_colors["text"] } !important;
-    background-color: #{ general_colors["background"] } !important ;
     font-family: #{ body_text_font_settings["font_family"] };
   }
 

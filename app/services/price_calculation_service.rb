@@ -20,32 +20,17 @@ module PriceCalculationService
 
   def calculate(listing, days = 7)
     a_day_price = listing.price.cents
-
-    day_price = a_day_price - (a_day_price * PriceCalculationService.get_discount_percent(days)/100)
-
-    # rounding the price
-    ((day_price * days)/100).to_i * 100
+    if days == 1
+      a_day_price
+    else
+      day_price = a_day_price - (a_day_price * PriceCalculationService.get_discount_percent(days)/100)
+      # rounding the price
+      ((day_price * days)/100).to_i * 100
+    end
   end
 
   def get_discount_percent(days)
-    case days
-    when 2
-      DiscountConstants::TWO_DAYS
-    when 3
-      DiscountConstants::THREE_DAYS
-    when 4
-      DiscountConstants::FOUR_DAYS
-    when 5
-      DiscountConstants::FIVE_DAYS
-    when 6
-      DiscountConstants::SIX_DAYS
-    when 7
-      DiscountConstants::SEVEN_DAYS
-    when 8
-      DiscountConstants::EIGHT_DAYS
-    else
-      DiscountConstants::SEVEN_DAYS
-    end
+    DISCOUNT_CONSTANS["#{days}_days"]
   end
 
   def get_discount_from_promo_code(price, promo_code)

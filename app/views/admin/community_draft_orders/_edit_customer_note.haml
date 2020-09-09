@@ -1,0 +1,10 @@
+.modal#edit-customer-note
+  = form_for order, url: {controller: "admin/community_draft_orders", action: :update} do |form|    
+    .row.title.margin-bt-0
+      = "Edit Customer Note"
+    .row
+      %span= "Order Note"
+      = form.text_field :note, {placeholder: "Order note."}
+    .row.footer
+      = form.submit "Save", class: "button right margin-l-5"
+      %a.button.right{rel: "modal:close"}= "Cancel"

@@ -1,5 +1,9 @@
-= form.label 'Quantity', 'Quantity', {class: 'input'}
-
+.display-flex.align-items-center.justify-content-between.row.p-0.m-0
+  .col-9.p-0
+    = form.label 'Quantity', 'Quantity', {class: 'input'}
+  .col-3.p-0
+    .collapsible.collapsed.display-flex.align-items-center
+      %a#view-inventory-history.font-size-14{href: "#view-inventory-history-modal", rel: "modal:open"}= 'View inventory history'
 .row
   .col-6
     = form.label :available_quantity, 'Available'
@@ -8,3 +12,5 @@
   .col-6
     = form.label 'Incomming', 'Incomming'
     = form.label "0"
+
+= render 'listings/form/inventory_history_modal', versions: @listing.versions

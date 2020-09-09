@@ -4,7 +4,7 @@ module StripeService::API
       @session = session
       @transaction = transaction
       @current_user = current_user
-      Stripe.api_key = APP_CONFIG.stripe_api_test_secret_key
+      Stripe.api_key = APP_CONFIG.stripe_api_secret_key
       @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session)
       @amount = @calculate_money_service.final_price.to_i
     end

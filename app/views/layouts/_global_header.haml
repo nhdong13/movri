@@ -1,117 +1,118 @@
--# Hide header in map view if mobile
-.desktop-display
-  %header.header.sticky-header
-    - if store_header && (header_on_homepage?(store_header) || header_on_pages?(store_header))
-      - style = "color:  #{store_header.text_color};"
-      - style += "background: #{store_header.background_color};"
-      - style += "text-align: center;"
-      - style += "height: 50px;"
-      .header-wrapper.clearfix{style: style}
-        %h2{style: "color: #{store_header.text_color};line-height: 50px;"}= store_header.title.html_safe?
-%header.header.info-header
-  .header-wrapper.clearfix
-    .header-left
-      %select.select
-        %option= "B&H for B2B, Gov, Students & More"
-    .header-left
-      =image_tag('homepage_icons/explora.jpeg', class: "explora-icon")
-    .header-right
-      = link_to about_infos_path, class: 'de-a' do
-        .info-header-text.header-about-us
-          = t('header.about_us')
-    .header-right
-      .info-header-text.display-inline-flex
-        = image_tag("mf_icons/icon-movri-info.svg", class: 'header-menu-icon icon-movri-info')
-        .smbold
-          = t('header.help')
-    .header-right
-      .info-header-text
-        .smbold
-          = t('header.phone_number')
-    .header-left.header-info
-      .info-header-text.history-since-text
-        = raw t('header.history_since')
+%div{id: "#{ store_header.sticky_enabled ? 'sticky-header' : ''}"}
+  %header.header.info-header
+    - tag_line_setting = store_header.tag_line_setting || {}
+    - phone_number_setting = store_header.phone_number_setting || {}
+    - contact_us_setting = store_header.contact_us_setting || {}
+    - faq_setting = store_header.faq_setting || {}
+    .header-wrapper.clearfix
+      .row.p-0.m-0
+        .col-3.m-0.p-0
+          .header-left
+        .col-6.m-0.p-0
+          .header-left.header-info
+            - if tag_line_setting['enabled']
+              .pr-0.info-header-text.history-since-text{style: "color: #{tag_line_setting['text_color'] || '#7A9F5C'} !important;background-color:  #{tag_line_setting['background_color'] || '#e8e9ea'} !important;"}
+                = link_to tag_line_setting['link'] || '/', {style: "color: #{tag_line_setting['text_color'] || '#7A9F5C'}"} do
+                  = tag_line_setting['text']&.html_safe
+        .col-3.m-0.p-0
+          .header-right
+            .info-header-text.display-inline-flex.mr-2
+              = image_tag("mf_icons/icon-movri-info.svg", class: 'header-menu-icon icon-movri-info')
+              = link_to faq_setting['link'], {style: "color: #{faq_setting['text_color'] || '#959698'} !important;background-color:  #{faq_setting['background_color'] || '#e8e9ea'} !important;"} do
+                = faq_setting['text']&.html_safe
+          .header-right{style: "color: #{contact_us_setting['text_color'] || '#959698'} !important;background-color:  #{contact_us_setting['background_color'] || '#e8e9ea'} !important;"}
+            = link_to contact_us_setting['link'], {style: "color: #{contact_us_setting['text_color'] || '#959698'}"} do
+              .info-header-text
+                = contact_us_setting['text']&.html_safe
+          .header-right
+            .info-header-text
+              .smbold{style: "color: #{phone_number_setting['text_color'] || '#959698'} !important;background-color:  #{phone_number_setting['background_color'] || '#e8e9ea'} !important;"}
+                = link_to phone_number_setting['link'], {style: "color: #{phone_number_setting['text_color'] || '#959698'}"} do
+                  = phone_number_setting['phone_number']
+      
 
-%header.header.main-header
-  .header-wrapper.header-nav.clearfix
-    .desktop-display
-      .flex-items
-        .width-10
-          .header-left.header-logo-container
-            = link_to landing_page_path, :class => "header-logo", :id => "header-logo" do
-              - if @current_community.logo.present?
-                %i.header-square-logo.hidden-tablet
-                  -# Logo is here, it's a CSS background
-              - if @current_community.wide_logo.present?
-                .header-wide-logo
-                  = image_tag(store_header.logo.url)
-              - else
-                %span.header-wide-logo-text.visible-tablet
-                  = @current_community.name(I18n.locale)
-        .search-partial.width-40
-          = render :partial => 'layouts/searchs/search_box'
-        .width-10.br-r
-          .bh-gift-card
-            = image_tag("homepage_icons/b_h_gift_cards.jpeg")
-        .width-15
-          .mega-dealzone
-            = image_tag("homepage_icons/mega_dealzone.jpeg")
-        .width-20
-          #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-            .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-              #header-user-mobile-anchor
-                .left
-                  .header-menu-container.header-user-contain.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
-                    .header-menu-toggle-container.toggle-header-container
-                      .display-inline-flex
-                        = image_tag PersonViewUtils.person_avatar(@current_user), height: 62, width: 62, class: 'header-menu-icon icon-movri-user'
-                        .visible-tablet-inline.myaccount-header
-                          %small
-                            - username = @current_user.present? ? @current_user.username : t("header.login")
-                            = t("header.hello", name: username )
-                          %strong
-                            = t("header.my_account")
-                            %i{class: 'icon-chevron-down'}
-        .width-20
-          #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+  %header.header.main-header
+    .header-wrapper.header-nav.clearfix
+      .desktop-display
+        .flex-items
+          .width-15.padding-0
+            .header-left.header-logo-container
+              = link_to landing_page_path, :class => "header-logo", :id => "header-logo" do
+                - if @current_community.logo.present?
+                  %i.header-square-logo.hidden-tablet
+                    -# Logo is here, it's a CSS background
+                - if @current_community.wide_logo.present?
+                  .header-wide-logo
+                    = image_tag(store_header.logo.url)
+                - else
+                  %span.header-wide-logo-text.visible-tablet
+                    = @current_community.name(I18n.locale)
+          .search-partial.width-65.pr-0
+            .w-100
+              = render :partial => 'layouts/searchs/search_box'
+          .width-20
+            #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+              .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+                #header-user-mobile-anchor
+                  .left
+                    .header-menu-container.header-user-contain.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+                      .header-menu-toggle-container.toggle-header-container
+                        .display-inline-flex
+                          = image_tag PersonViewUtils.person_avatar(@current_user), height: 62, width: 62, class: 'header-menu-icon icon-movri-user'
+                          .visible-tablet-inline.myaccount-header
+                            %small
+                              - username = @current_user.present? ? @current_user.username : t("header.login")
+                              = t("header.hello", name: username )
+                            %strong
+                              = t("header.my_account")
+                              %i{class: 'icon-chevron-down'}
+          .width-20
+            .cart-icon-header
+              = image_tag("mf_icons/icon-movri-cart.svg", class: 'header-menu-icon icon-movri-chat custom-cart-icon')
+              %span.number-on-cart.number-on-cart-style-desktop
+                - session[:cart] ||= {}
+                = session[:cart].values.sum
+              %strong
+                = "View Cart"
+              %i.icon-chevron-down
+            = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
 
-    .mobile-display
-      .header-right.controls
-        = render :partial => "layouts/header_anchors"
-        = render :partial => "layouts/header_contact"
-        = render :partial => "layouts/header_user_menu"
+            -# #header-menu-desktop-cart.header-menu-container.toggle{data: {toggle: '#header-menu-toggle-cart', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
 
-    - if logged_in
-      = render :partial => "layouts/header_right_visible_tablet", locals: {unread_count: unread_count, inbox_path: inbox_path, icons: icons}
+      .mobile-display
+        .header-bar.controls
+          = render :partial => "layouts/header_anchors", locals: {store_header: store_header}
+          = render "layouts/header_contact", store_header: store_header
+      = render :partial => "layouts/header_user_menu"
 
-    - if available_locales.size > 1
-      .header-right.visible-desktop
-        #header-locales-menu.toggle.header-hover{data: {toggle: '#header-locales-toggle-menu', 'toggle-position' => 'absolute'}}
-          %span.header-text-link
-            = current_locale_name
-            = icon_map_tag(icons, "dropdown", ["icon-dropdown"])
-        #header-locales-toggle-menu.toggle-menu.header-toggle-menu-language.hidden
-          - locale_change_links.each do |locale_change_link|
-            %a{href: locale_change_link[:url]}
-              = locale_change_link[:title]
+      - if logged_in
+        = render :partial => "layouts/header_right_visible_tablet", locals: {unread_count: unread_count, inbox_path: inbox_path, icons: icons}
 
-    .header-left.hidden-tablet
-      .header-menu-container.toggle.hidden{data: {toggle: '#header-menu-toggle-menu', 'toggle-position' => 'absolute'}}
-        #header-menu-mobile-anchor.header-menu-toggle-container.toggle-header-container
-          = icon_map_tag(icons, "rows", ["header-menu-icon"])
-        #header-menu-mobile-cart.header-menu-toggle-container.toggle-header-container
-          .cart-icon-header
-            = image_tag("mf_icons/icon-movri-cart.svg", class: 'header-menu-icon icon-movri-chat custom-cart-icon')
-            %span.number-on-cart.number-on-cart-style-desktop
-              - session[:cart] ||= {}
-              = session[:cart].values.sum
-            %strong
-              = "View Cart"
-            %i.icon-chevron-down
+      - if available_locales.size > 1
+        .header-right.visible-desktop
+          #header-locales-menu.toggle.header-hover{data: {toggle: '#header-locales-toggle-menu', 'toggle-position' => 'absolute'}}
+            %span.header-text-link
+              = current_locale_name
+              = icon_map_tag(icons, "dropdown", ["icon-dropdown"])
+          #header-locales-toggle-menu.toggle-menu.header-toggle-menu-language.hidden
+            - locale_change_links.each do |locale_change_link|
+              %a{href: locale_change_link[:url]}
+                = locale_change_link[:title]
 
-    = render :partial => "layouts/header_menu", locals: { locale_change_links: locale_change_links, icons: icons}
-    = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
+      = render :partial => "layouts/header_menu", locals: {store_header: store_header, locale_change_links: locale_change_links, icons: icons}
 
-.header.category-nav.hidden-mobile
-  .header-wrapper
-    = render :partial => 'layouts/category_bar'
+  .header.category-nav.hidden-mobile
+    .header-wrapper
+      = render :partial => 'layouts/category_bar'
+  -# Hide header in map view if mobile
+  .desktop-display
+    %header.header
+      - if store_header
+        - announcement_bar_setting = store_header.announcement_bar_setting || {}
+        - style = "color:  #{announcement_bar_setting['text_color'] || '#FFFFFF'} !important;"
+        - style += "background: #{announcement_bar_setting['background_color'] || '#EEEEEE'} !important;"
+        - style += "height: 50px;"
+        - if announcement_bar_setting['text'].present? && announcement_bar_setting['enabled']
+          .pl-5.pr-3{style: style}
+            = link_to announcement_bar_setting['link'],{style: "color: #{announcement_bar_setting['text_color'] || '#FFFFFF'} !important;line-height: 50px;"} do
+              = announcement_bar_setting['text']&.html_safe

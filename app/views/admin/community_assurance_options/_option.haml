@@ -1,7 +1,14 @@
-%tr.row.p-0.m-0
+%tr.row.p-0.m-0.display-flex.align-items-center
   %td.assurance-image.col-1.p-3.pt-1
     = image_tag option.image.url, alt: "assurance-option-#{option.id}", class: 'assurance-option-image'
-  %td.col-7.p-3.pt-1
+  %td.col-5.p-3.pt-1
     = option.title
-  %td.col-4.p-3.pt-1
+  %td.col-3.p-3.pt-1
     = option.created_at.strftime('%d/%m/%Y')
+  %td.col-3.p-3.pt-1.display-flex.align-items-center
+    .btn-link.mr-2
+      = link_to edit_admin_community_assurance_option_path(community_id: @current_community.id, id: option.id) do
+        %span Edit
+    .common-link-btn.link-delete-btn
+      = link_to admin_community_assurance_option_path(community_id: @current_community.id, id: option.id), {method: :delete} do
+        %span Delete

@@ -6,6 +6,9 @@
   $(".show-cart-page .checkout-box").html("<%= j render(partial: 'listings/carts/checkout_box', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");
   //mobile-display
   $(".show-cart-page .mobile-cart-listings").html("<%= j render(partial: 'listings/carts/mobile/list_listing', locals: { promo_code: @promo_code }) %>");
+  swal("Successfully!", "Update booking dates successfully!", "success", {buttons: false});
+  location.reload();
+
 <% else %>
   $('.zipcode-error').html('<%= @message %>').css('display', 'block').delay(5000).slideUp("slow");
 <% end %>

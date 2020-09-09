@@ -3,8 +3,11 @@ import axios from 'axios'
 import ImageUploader from 'react-images-upload';
 import { SketchPicker } from 'react-color';
 import { previewUploadImageSrc } from '../../../utils/common';
+import {
+  sortableHandle,
+} from 'react-sortable-hoc';
 
-
+const DragHandle = sortableHandle(() => <span className='font-size-16'>::</span>);
 class SlideItem extends Component {
   constructor(props) {
     super(props)
@@ -55,11 +58,10 @@ class SlideItem extends Component {
   }
 
   handleOnChange(e) {
+    let item = this.state.item
+    item[e.target.name] = e.target.value
     this.setState({
-      item: {
-        ...this.state.item,
-        [e.target.name]: e.target.value
-      }
+      item: item
     })
   }
 
@@ -80,7 +82,11 @@ class SlideItem extends Component {
     formData.append('authenticity_token', $('input[name ="authenticity_token"]').val())
 
     for (let key in slide_item) {
-      formData.append(`slide_item[${key}]`, slide_item[key])
+      if(slide_item[key]) {
+        formData.append(`slide_item[${key}]`, slide_item[key])
+      } else {
+        formData.append(`slide_item[${key}]`, '')
+      }
     }
 
     if (item.image) {
@@ -94,11 +100,7 @@ class SlideItem extends Component {
     }
     this.setState({saving: true})
     axios(axiosOptions).then(res => {
-      this.setState({
-        saving: false,
-        collapsed: false,
-        item: res.data.slide_item
-      })
+      this.props.handleUpdateItems(res.data.slide_item)
       $("#homepage-preview-iframe").attr("src", function(index, attr){ 
         return attr;
       });
@@ -137,12 +139,24 @@ class SlideItem extends Component {
 
     return (
       <div className='collapsible slideshow-item'>
-        <div className='row section-column-header-toggle' onClick={this.handleToggleItem}>
-          <i className={`icon-caret-right ${this.state.collapsed ? 'down' : ''}`}></i>
-          <div className='slide-image-placeholder'>
-            <img src={this.state.item.image_url} alt=''></img>
+        <div className='row section-column-header-toggle display-flex align-items-center' onClick={this.handleToggleItem}>
+          <div className='col-4 p-0 row m-0 display-flex align-items-center'>
+            <div className='col-2 p-0'>
+              <i className={`icon-caret-right ${this.state.collapsed ? 'down' : ''}`}></i>
+            </div>
+            <div className='col-10 p-0'>
+              <div className='slide-image-placeholder'>
+                <img src={this.state.item.image_url} alt=''></img>
+              </div>
+            </div>
+           
           </div>
-          <div className='heading-title'>{this.state.item.heading}</div>
+          <div className='col-7 p-0 text-truncate'>
+            <div className='heading-title font-size-16'>{this.state.item.heading}</div>
+          </div>
+          <div className='col-1 p-0'>
+            <DragHandle />
+          </div>
         </div>
         { this.state.collapsed && <div className='collapse-item'>
             <form id='slide-item-form' onSubmit={this.handleSubmitForm}>
@@ -210,10 +224,10 @@ class SlideItem extends Component {
                 <input name='button_link' value={this.state.item.button_link || ''} type='text' onChange={this.handleOnChange}/>
               </div>
               <div className='row'>
-                <div className='col-8'>
+                <div className='col-8 p-0'>
                   <button className='p-2 btn' type='button' onClick={() => this.props.handleRemoveItem(this.state.item)}>{ this.state.removing ? 'Removing...' : 'Remove content'}</button>
                 </div>
-                <div className='col-4'>
+                <div className='col-4 p-0'>
                   <button className='p-2 btn' type='submit'>{ this.state.saving ? 'Saving' : 'Save' }</button>
                 </div>
               </div>

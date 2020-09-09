@@ -40,7 +40,10 @@ module ShippingRatesService
   def request_body ship_to_postal_code, state_from_postal_code, dimension, quantity, sku
     hash_body = {
       async: false,
-      shipper_accounts:[{id: APP_CONFIG.test_fedex_shipper_id}],
+      shipper_accounts:[
+        # {id: APP_CONFIG.fedex_shipper_id},
+        {id: APP_CONFIG.ups_shipper_id}
+      ],
       is_document:false,
       shipment: {
         ship_from: {
@@ -95,16 +98,14 @@ module ShippingRatesService
     request_body(ship_to_postal_code, state_from_postal_code, dimension, quantity, listing_skus)
   end
 
-
-
   def get_shipping_rates_for_cart_page listing_ids, zipcode , total_quantity
     request_body = create_body_request_to_postmen_with_multiple_listings(listing_ids, zipcode, total_quantity)
 
     response = Faraday.post(
-      APP_CONFIG.test_postmen_get_shipping_rates_url,
+      APP_CONFIG.postmen_get_shipping_rates_url,
       request_body,
       "Content-Type" => "application/json",
-      "postmen-api-key" => APP_CONFIG.test_postmen_api_key
+      "postmen-api-key" => APP_CONFIG.postmen_api_key
     )
     response_body = JSON.parse(response.body)
     if response_body["meta"]["code"] == 200 && response_body["data"]["rates"][0]["total_charge"]
@@ -120,9 +121,24 @@ module ShippingRatesService
     rates = response["data"]["rates"]
     shipping_selection = []
     rates.each do |rate|
-      shipping_selection.push({'service_name' => rate['service_name'], 'total_charge' => rate['total_charge'], 'service_type' => rate['service_type']})
+      shipping_selection.push(
+        {
+          'service_name' => rate['service_name'],
+          'total_charge' => add_shipping_additional_fee(rate['total_charge']),
+          'service_type' => rate['service_type']
+        }
+      )
     end
     shipping_selection
+  end
+
+  def add_shipping_additional_fee total_charge
+    amount = total_charge["amount"]
+    additional_fee = ShippingAdditionalFee.last
+    total_fee_percent = additional_fee.handling + additional_fee.insurance
+    final_fee = amount + (amount * total_fee_percent / 100)
+    total_charge['amount'] = final_fee.round(2)
+    total_charge
   end
 
   def convert_postal_code_to_state_in_canada(postal_code)

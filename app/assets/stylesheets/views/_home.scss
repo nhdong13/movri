@@ -572,9 +572,12 @@ $home-list-avatar-padding: lines(0.25);
     .description {
       position: absolute;
       top: 50%;
-      margin-left: 2%;
       margin-top: -55px;
-
+      width: inherit;
+      .content {
+        margin-left: 100px;
+        margin-right: 100px;
+      }
       p:first-of-type {
         font-size: 34px;
       }
@@ -608,18 +611,14 @@ $home-list-avatar-padding: lines(0.25);
 }
 
 .how-it-works {
-  h1 {
+  border-bottom: 1px solid #f3f3f3;
+  span.section-heading {
     font-size: 30px;
     font-weight: 500;
-
   }
 
   .row {
     margin-top: 25px;
-
-    .col-1 {
-      margin-top: 115px;
-    }
 
     .col-3,
     .col-4 {
@@ -664,6 +663,9 @@ $home-list-avatar-padding: lines(0.25);
 .new-products,
 .feature-products {
   margin-top: 25px;
+  & .col-3{
+    padding: 0 30px;
+  }
 
   & p:first-child {
     margin-left: 0.75em;
@@ -747,16 +749,16 @@ $home-list-avatar-padding: lines(0.25);
   margin-top: 25px;
 
   .title {
+    margin-bottom: 25px;
     font-size: 30px;
     font-weight: 500;
   }
 
   .col-6 {
-    background-color: #f3f9fe;
-    height: 300px;
-    width: 619px;
-    margin: 0 10px 10px 0;
-
+    padding: 10px;
+    .different-box{
+      background-color: #f3f9fe;
+    }
     img {
       margin-top: 50px;
       width: 82px;
@@ -777,10 +779,13 @@ $home-list-avatar-padding: lines(0.25);
       width: 369px;
     }
 
+    .different-desc{
+      padding: 29px 145px;
+      height: inherit;
+    }
+
     p {
-      margin: 2em auto 0px auto;
       font-size: 18px;
-      line-height: 1.3;
     }
     .grid-desc {
       margin: 0;
@@ -1127,13 +1132,6 @@ $home-list-avatar-padding: lines(0.25);
     display: none;
   }
 
-  .movri-different{
-    .col-6 {
-      margin: 10px auto;
-      width: auto;
-    }
-  }
-
   .new-products,
   .feature-products {
     text-align: center;
@@ -1154,13 +1152,47 @@ $home-list-avatar-padding: lines(0.25);
   }
 }
 
+
+@media #{$mobile}, #{$tablet} {
+  .movri-different{
+    margin-top : 0;
+    .title {
+      font-size: 22px;
+      margin-bottom:10px;
+    }
+  }
+
+  .how-it-works {
+    span.section-heading {
+      font-size: 22px;
+    }
+    .how-it-work-item {
+      margin-top: 20px;
+      .description {
+        &::before {
+          content: "[";
+          color: #e1050a;
+        }
+  
+        &::after {
+          content: "]";
+          color: #e1050a;
+        }
+      }
+    }
+  }
+
+  .movri-different .col-6 .different-desc{
+    padding: 30px 60px;
+  }
+}
+
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .movri-different {
     .col-6 {
       width: 100%;
     }
   }
-
   .new-products,
   .feature-products {
     .col-3 {
@@ -1177,11 +1209,16 @@ $home-list-avatar-padding: lines(0.25);
 .more-helpful-links{
   padding: 15px 50px;
   color: #999999;
-  display: none;
   text-align: left;
   .helpful-link-header {
     font-size: 20px;
     color: #33475b;
+  }
+  .helpful-links {
+    a img {
+      width: 40px;
+      height: auto;
+    }
   }
 }
 .helpful-link-section{
@@ -1199,7 +1236,7 @@ $home-list-avatar-padding: lines(0.25);
     padding: 10px 0;
     width: 230px;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: 600;
   }
 }
 
@@ -1313,4 +1350,48 @@ $home-list-avatar-padding: lines(0.25);
   bottom: 0;
   right: 0;
   text-align: right;
+}
+
+.header-logo-mobile{
+  width: 115px;
+  img{
+    width: 100%
+  }
+}
+
+#mobile-menu{
+  z-index: 9999;
+  font-size: 14px;
+  background: white;
+  width: 75%;
+  position: absolute;
+  min-height: 250px;
+  max-height: 650px;
+  overflow: scroll;
+  a, span{
+    line-height: 2.5;
+    color: black;
+  }
+  .subcategories{
+    padding-left: 20px;
+    background: rgb(229, 229, 229);
+  }
+  .child-categories{
+    padding-left: 20px;
+  }
+  .sub-section-mobile-menu {
+    background-color: #f0f0f0;
+    margin-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  padding-bottom: 15px;
+}
+.cart-icon-mobile{
+  width: 24px;
+}
+
+.cart-icon-header{
+  cursor: pointer;
+  padding: 20px 0;
 }

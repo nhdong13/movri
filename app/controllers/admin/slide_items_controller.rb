@@ -1,5 +1,5 @@
 class Admin::SlideItemsController < Admin::AdminBaseController
-  before_action :set_slideshow, only: [:new, :create, :update, :image_upload]
+  before_action :set_slideshow, only: [:new, :create, :update, :image_upload, :destroy]
   before_action :set_item, only: [:update, :destroy, :image_upload]
 
   def new
@@ -26,7 +26,7 @@ class Admin::SlideItemsController < Admin::AdminBaseController
 
   def destroy
     if @slide_item.destroy
-      render json: { success: true }
+      render json: { success: true, object: @slideshow.reload.as_json }
     else
       render json: { success: false, messages: @slide_item_params.errors.full_messages}
     end

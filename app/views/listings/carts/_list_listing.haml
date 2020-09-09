@@ -10,16 +10,12 @@
             .listing-title
               %span= listing.title
             .listing-sku
-              %span{style: "font-weight: bold"} SKU:
+              %span SKU:
               %span= listing.sku.present? ? listing.sku.upcase : 'CAE5D3'
             .listing-coverage
-              = select_tag :select_coverage, options_for_select(['Movri Coverage']), class: 'custom-select-coverage'
-            .quantity-left.alert-success
-              %i.fa.fa-info-circle
-              = fa_icon "fa-info-circle"
-              %span= "#{listing.available_quantity} product(s) available in stock."
+              = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS), class: 'custom-select-coverage'
           .col-3
-            .quantity-box{class: value > listing.available_quantity ? "error" : ""}
+            .quantity-box
               %span= t('transactions.label.quantity')
               %input.cart-detail-item-quantity{id: "cart-detail-item-quantity-#{listing.id}",value: value, :max => 5, :min => "1", :name => "quantity", :type => "number", :maxlength => 4}
           .col-3

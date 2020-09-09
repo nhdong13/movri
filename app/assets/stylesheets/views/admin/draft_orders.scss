@@ -144,7 +144,7 @@ $border-color: #E1E3E5;
     .total-info {
       padding: 0;
     }
-  
+
     .total-info {
       padding-left: 0.75em;
 
@@ -185,7 +185,7 @@ $border-color: #E1E3E5;
       i {
         padding: 1.5em 0.75em 0 0;
       }
-      
+
       span {
         font-weight: 600;
       }
@@ -219,7 +219,12 @@ $border-color: #E1E3E5;
 #edit-customer-billing-address-modal,
 #send-invoice-email-modal,
 #review-email-modal,
-#cancel-booking-modal {
+#cancel-booking-modal,
+#refund-modal,
+#edit-billing-address,
+#edit-shipping-address,
+#edit-contact-information,
+#edit-customer-note {
   max-width: 100%;
   width: 40%;
 
@@ -228,6 +233,7 @@ $border-color: #E1E3E5;
 
     .footer {
       margin-bottom: 0;
+      padding: 0 0.75em !important;
     }
 
     .row {
@@ -238,6 +244,15 @@ $border-color: #E1E3E5;
       border-bottom: 1px solid $border-color;
       font-size: 24px;
     }
+  }
+}
+
+#refund-modal {
+  width: 70%;
+
+  img {
+    width: 50px;
+    height: 50px;
   }
 }
 

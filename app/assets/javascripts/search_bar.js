@@ -17,8 +17,8 @@ $(document).ready(function() {
   const search = instantsearch({
     indexName: 'movri_products',
     searchClient: algoliasearch(
-      'IIXUYFGM4K',
-      '304da7c0dd54da7a5ca0c191243a3ced'
+      algolia_application_id,
+      algolia_search_only_api_key
     ),
 
     routing: {
@@ -108,7 +108,6 @@ $(document).ready(function() {
       stateMapping: {
         stateToRoute(uiState) {
           const indexUiState = uiState['movri_products'] || {};
-
           return {
             query: indexUiState.query,
             page: indexUiState.page,
@@ -148,6 +147,8 @@ $(document).ready(function() {
     ${hits
       .map(
         item => {
+          if(item.movri_products.facets.exact_matches){return;}
+
           [brand] = item.movri_products.facets.exact_matches.brand;
           [lens_type] = item.movri_products.facets.exact_matches.lens_type;
           [mount] = item.movri_products.facets.exact_matches.mount;
@@ -175,7 +176,12 @@ $(document).ready(function() {
                   <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
                 </div>
                 <div class='width-90'>
-                  ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                  <span class='block'>${instantsearch.highlight({ attribute: 'title', hit: item })}</span>
+                  <span class='sku block'>SKU: ${item.sku}</span>
+                  <div class='listing-price'>
+                    <span>${item.default_7_days_rental_price}</span>
+                    <span>/ 7 days</span>
+                  </div>
                 </div>
               </div>
             </a>
@@ -183,7 +189,83 @@ $(document).ready(function() {
         `)
       .join('')}
     `;
+  };
+
+  const renderSuggestionCategories = ({hits}) => {
+    hits = hits.slice(0, 3)
+    return `
+    ${hits
+      .map(
+        item =>
+          {
+            category = item.category;
+            return`
+              <div class='padding-5'>
+                <div class='bold fz-18'>
+                  <a class='capitalize' href= ${'/categories?'+"categories="+getCategorySlug(category)}>${category}</>
+                </div>
+              </div>
+            `
+          }
+        )
+      .join('')}
+    `;
   }
+
+  const renderCurrentCategory = ({hits}) => {
+    hits = hits.slice(0, 1)
+    return `
+    ${hits
+      .map(
+        item =>
+          {
+            category = item.category;
+            subcategory = item.subcategory;
+            children_category = item.children_category;
+            if(children_category){
+              return`${children_category}`
+            } else {
+              return`${subcategory}`
+            }
+          }
+        )
+      .join('')}
+    `;
+  }
+
+  const renderBreadCrumbCategory = ({hits}) => {
+    hits = hits.slice(0, 1)
+    return `
+    ${hits
+      .map(
+        item =>
+          {
+            category = item.category;
+            subcategory = item.subcategory;
+            children_category = item.children_category;
+            if(children_category){
+              return`
+                <i class='fa fa-chevron-right'></i>
+                <span>${category}</span>
+                <i class='fa fa-chevron-right'></i>
+                <span>${subcategory}</span>
+                <i class='fa fa-chevron-right'></i>
+                <span>${children_category}</span>
+              `
+            }else{
+              return`
+                <i class='fa fa-chevron-right'></i>
+                <span>${category}</span>
+                <i class='fa fa-chevron-right'></i>
+                <span>${subcategory}</span>
+              `
+            }
+          }
+        )
+      .join('')}
+    `;
+  }
+
 
   const renderCategoryPage = ({hits}) =>`
     <div class="snize-ac-results">
@@ -192,21 +274,25 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<div class="col-3">
-                  <div class="listing-box">
-                    <div class='main-image'>
-                      <img src=${item.main_image} class="design-image-too-wide" alt="">
+                `<a href= ${'/listings/'+ item.id}>
+                  <div class="col-3">
+                    <div class="listing-box">
+                      <div class='main-image'>
+                        <img src=${item.main_image} class="design-image-too-wide" alt="">
+                      </div>
+                      <div class='listing-information center-items'>
+                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                      </div>
+                      <div class='listing-price'>
+                        <span>${item.default_7_days_rental_price}</span>
+                        <span> /7 day</span>
+                      </div>
+                      <div>
+                        <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent Now</a>
+                      </div>
                     </div>
-                    <div class='listing-price'>
-                      <span>$${item.price_cents/100}</span>
-                      <span> /1 day</span>
-                    </div>
-                    <div class='listing-information'>
-                      ${instantsearch.highlight({ attribute: 'title', hit: item })}
-                    </div>
-                    <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
                   </div>
-                </div>`
+                </a>`
               )
           .join('')}
         </div>
@@ -221,29 +307,57 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<div class="col-12">
-                  <div class="listing-box-mobile">
-                    <div class='main-image'>
-                      <img src=${item.main_image} class="design-image-too-wide" alt="">
-                    </div>
-                    <div class='listing-information'>
-                      <div class='listing-title cut-text'>
-                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                `<a href= ${'/listings/'+ item.id}>
+                  <div class="col-12">
+                    <div class="listing-box-mobile">
+                      <div class='main-image'>
+                        <img src=${item.main_image} class="design-image-too-wide" alt=""/>
                       </div>
-                      <div class='listing-price'>
-                        <span>${item.price_cents}</span>
-                        <span> /1 day</span>
-                      </div>
-                      <div class='listing-rent-now'>
-                        <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent now</a>
+                      <div class='listing-information'>
+                        <div class='listing-title'>
+                          ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                        </div>
+                        <div class='listing-price'>
+                          <span>${item.default_7_days_rental_price}</span>
+                          <span> /7 day</span>
+                        </div>
+                        <div class='listing-rent-now'>
+                          <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent Now</a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>`
-              )
+                </a>`
+             )
           .join('')}
         </div>
       </div>
+    </div>
+  `;
+
+//============================================================================
+  // Create the render function
+  const createDataAttribtues = refinement =>
+    Object.keys(refinement)
+      .map(key => `data-${key}="${refinement[key]}"`)
+      .join(' ');
+
+  const renderListItem = item => `
+    <div class='flex-items'>
+      ${item.refinements
+        .map(
+          refinement =>{
+            return`
+              <span class='flex-items current-refinements-label'>
+                ${refinement.label}
+              </span>
+              <button ${createDataAttribtues(refinement)}>
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            `
+          }
+        )
+        .join('')}
     </div>
   `;
 
@@ -273,7 +387,6 @@ $(document).ready(function() {
     }
     const { hits, widgetParams } = renderOptions;
     widgetParams.container.innerHTML = renderCategoryPage({hits})
-    widgetParams.container.innerHTML = renderCategoryPage({hits})
   };
 
   const customHits = instantsearch.connectors.connectHits(renderHits);
@@ -293,8 +406,12 @@ $(document).ready(function() {
     if (isFirstRender) {}
     const container = document.querySelector('.search-result-algolia');
     const { indices } = renderOptions;
-
-    $('.product-items').html(indices.map(ProductItemsTemplate).join(''));
+    if(indices[0]){
+      $('.product-items').html([indices[0]].map(ProductItemsTemplate).join(''));
+      $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
+      $('.current-category').html([indices[0]].map(renderBreadCrumbCategory).join(''));
+      $('.current-collection--title').html([indices[0]].map(renderCurrentCategory).join(''));
+    }
   };
 
   const searchProductsResult = instantsearch.connectors.connectAutocomplete(
@@ -321,95 +438,533 @@ $(document).ready(function() {
     renderSearchBox
   );
 //============================================================================
+  const renderCurrentRefinements = (renderOptions, isFirstRender) => {
+    const { items, refine, widgetParams } = renderOptions;
+
+    widgetParams.container.innerHTML = `
+      ${items.map(renderListItem).join('')}
+    `;
+    Object.assign([], widgetParams.container.querySelectorAll('button')).forEach(element => {
+      element.addEventListener('click', event => {
+        const item = Object.keys(event.currentTarget.dataset).reduce(function (acc, key) {
+          attr = key;
+          value = event.currentTarget.dataset[key]
+          newObj = {};
+          newObj[attr] = value
+          return Object.assign(acc,newObj);
+        },{}
+        );
+
+        refine(item);
+      });
+    });
+  };
+
+  const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
+    renderCurrentRefinements
+  );
+//============================================================================
+  const renderListingTypeRefinement = (renderOptions, isFirstRender) => {
+    const { items, refine, widgetParams } = renderOptions;
+    const container = widgetParams.container
+    const header_label = widgetParams.attribute.split("_").join(" ")
+    if(!items.length){
+      container.innerHTML = ``
+    } else{
+      container.innerHTML = `
+        <div class ='group-filter'>
+          <ul>
+            <li class='head capitalize'>${header_label}</li>
+              ${items
+                .map(
+                  item =>{
+                    return`
+                      <li>
+                        <label class="ais-RefinementList-label">
+                          <input type="radio" class="ais-RefinementList-checkbox" data-value='${item.value}' ${item.isRefined ? 'checked' : ''}/>
+                          <span class="ais-RefinementList-labelText">${item.label.split("_").join(" ")}</span>
+                        </label>
+                      </li>`
+                  }
+                )
+                .join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+
+    [...container.querySelectorAll('.ais-RefinementList-label input')].forEach(element => {
+      element.addEventListener('click', event => {
+        event.preventDefault();
+        refine(event.currentTarget.dataset.value);
+      });
+    });
+  };
+
+  const customListingTypeRefinement = instantsearch.connectors.connectRefinementList(
+    renderListingTypeRefinement
+  );
+
+//============================================================================
+  const renderListingTypeRefinementMobile = (renderOptions, isFirstRender) => {
+    const { items, refine, widgetParams } = renderOptions;
+    const container = widgetParams.container
+    const header_label = widgetParams.attribute.split("_").join(" ")
+    if(!items.length){
+      container.innerHTML = ``
+
+    } else {
+      container.innerHTML = `
+        <div class ='group-filter'>
+          <ul>
+            <li class='head refinementListMobile-header flex-items'>
+              <div class='width-70 padding-0'>
+                <span class='capitalize'>${header_label}</span>
+              </div>
+              <div class='width-30 align-right'>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </div>
+            </li>
+            <div class='list-refinement ${items[0].isRefined ? "" : "hidden"} '>
+              ${items
+                .map(
+                  item => {
+                    return`
+                      <li>
+                        <label class="ais-RefinementListMobile-label">
+                          <input type="checkbox" class="ais-RefinementList-checkbox" data-value='${item.value}' ${item.isRefined ? 'checked' : ''}/>
+                          <span class="capitalize ais-RefinementList-labelText">${item.label.split("_").join(" ")}</span>
+                        </label>
+                      </li>`
+                  }
+                )
+                .join('')}
+            </div>
+          </ul>
+        </div>
+      `;
+    }
+
+    [...container.querySelectorAll('.ais-RefinementListMobile-label input')].forEach(element => {
+      element.addEventListener('click', event => {
+        event.preventDefault();
+        refine(event.currentTarget.dataset.value);
+      });
+    });
+  };
+
+  const customListingTypeRefinementMobile = instantsearch.connectors.connectRefinementList(
+    renderListingTypeRefinementMobile
+  );
+//============================================================================
+
 
   // Create the custom widget
-  if($('body').find('#refinement-list').length){
+  if($('body').find('#item_type').length){
     search.addWidgets([
       customHits({
         container: document.querySelector('#categories-page'),
+
       }),
 
       customMobileHits({
         container: document.querySelector('#mobile-categories-page'),
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#refinement-list',
+      customListingTypeRefinement({
+        container: document.querySelector('#item_type'),
+        attribute: 'item_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_item_type'),
+        attribute: 'item_type',
+        operator: 'and',
+      }),
+
+
+      customListingTypeRefinement({
+        container: document.querySelector('#brand_refinement'),
         attribute: 'brand',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#mobile-refinement-list',
-        attribute: 'brand',
-        operator: 'or',
+      customListingTypeRefinement({
+        container: document.querySelector('#camera_support_type_refinement'),
+        attribute: 'camera_support_type',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#lens-mount',
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_camera_support_type_refinement'),
+        attribute: 'camera_support_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#camcorder_type_refinement'),
+        attribute: 'camcorder_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_camcorder_type_refinement'),
+        attribute: 'camcorder_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#sensor_size_refinement'),
+        attribute: 'sensor_size',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_sensor_size_refinement'),
+        attribute: 'sensor_size',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#action_cam_compatibility_refinement'),
+        attribute: 'action_cam_compatibility',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_action_cam_compatibility_refinement'),
+        attribute: 'action_cam_compatibility',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#lighting_type_refinement'),
+        attribute: 'lighting_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_lighting_type_refinement'),
+        attribute: 'lighting_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#capacity_refinement'),
+        attribute: 'capacity',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_capacity_refinement'),
+        attribute: 'capacity',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#memory_type_refinement'),
+        attribute: 'memory_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_memory_type_refinement'),
+        attribute: 'memory_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#read_transfer_speed_refinement'),
+        attribute: 'read_transfer_speed',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_read_transfer_speed_refinement'),
+        attribute: 'read_transfer_speed',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#bus_speed_refinement'),
+        attribute: 'bus_speed',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_bus_speed_refinement'),
+        attribute: 'bus_speed',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#power_compatibility_refinement'),
+        attribute: 'power_compatibility',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_power_compatibility_refinement'),
+        attribute: 'power_compatibility',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#power_type_refinement'),
+        attribute: 'power_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_power_type_refinement'),
+        attribute: 'power_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#color_temperature_refinement'),
+        attribute: 'color_temperature',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_color_temperature_refinement'),
+        attribute: 'color_temperature',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#filter_size_refinement'),
+        attribute: 'filter_size',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_filter_size_refinement'),
+        attribute: 'filter_size',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#filter_style_refinement'),
+        attribute: 'filter_style',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_filter_style_refinement'),
+        attribute: 'filter_style',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#filter_type_refinement'),
+        attribute: 'filter_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_filter_type_refinement'),
+        attribute: 'filter_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#audio_type_refinement'),
+        attribute: 'audio_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_audio_type_refinement'),
+        attribute: 'audio_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#monitoring_type_refinement'),
+        attribute: 'monitoring_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_monitoring_type_refinement'),
+        attribute: 'monitoring_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#cable_type_refinement'),
+        attribute: 'cable_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_cable_type_refinement'),
+        attribute: 'cable_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#camera_support_type_refinement'),
+        attribute: 'camera_support_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_camera_support_type_refinement'),
+        attribute: 'camera_support_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#accessory_type_refinement'),
+        attribute: 'accessory_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_accessory_type_refinement'),
+        attribute: 'accessory_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#support_type_refinement'),
+        attribute: 'support_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_support_type_refinement'),
+        attribute: 'support_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#head_type_refinement'),
+        attribute: 'head_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_head_type_refinement'),
+        attribute: 'head_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#quick_release_system_refinement'),
+        attribute: 'quick_release_system',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_quick_release_system_refinement'),
+        attribute: 'quick_release_system',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinement({
+        container: document.querySelector('#camera_type_refinement'),
+        attribute: 'camera_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_camera_type_refinement'),
+        attribute: 'camera_type',
+        operator: 'and',
+      }),
+
+
+      customListingTypeRefinement({
+        container: document.querySelector('#lens-mount'),
         attribute: 'mount',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#mobile-lens-mount',
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_lens_mount'),
         attribute: 'mount',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#lens-type',
+
+      customListingTypeRefinement({
+        container: document.querySelector('#lens-type'),
         attribute: 'lens_type',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#mobile-lens-type',
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_lens_type'),
         attribute: 'lens_type',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#lens-compatibility',
+
+      customListingTypeRefinement({
+        container: document.querySelector('#lens-compatibility'),
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#lens-compatibility',
-        attribute: 'compatibility',
-        operator: 'or',
-      }),
-
-      instantsearch.widgets.refinementList({
-        container: '#hidden-categories',
+      customListingTypeRefinement({
+        container: document.querySelector('#hidden-categories'),
         attribute: 'category',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#hidden-subcategories',
+      customListingTypeRefinement({
+        container: document.querySelector('#hidden-subcategories'),
         attribute: 'subcategory',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#hidden-children-categories',
+      customListingTypeRefinement({
+        container: document.querySelector('#hidden-children-categories'),
         attribute: 'children_category',
-        operator: 'or',
+        operator: 'and',
       }),
 
-      instantsearch.widgets.refinementList({
-        container: '#mobile-lens-compatibility',
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_brand_refinement'),
+        attribute: 'brand',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_lens_mount'),
+        attribute: 'mount',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_lens_type'),
+        attribute: 'lens_type',
+        operator: 'and',
+      }),
+
+      customListingTypeRefinementMobile({
+        container: document.querySelector('#mobile_lens_compatibility'),
         attribute: 'compatibility',
-        operator: 'or',
+        operator: 'and',
+      }),
+
+      instantsearch.widgets.searchBox({
+        container: '#search-within-results',
+        placeholder: 'Search within results',
+        showReset: false,
+        showSubmit: false,
       }),
 
       instantsearch.widgets.sortBy({
         container: '#sort-by',
         items: [
-          { label: 'Sort', value: 'movri_products' },
-          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Most Popular', value: 'movri_products' },
           { label: 'Newest', value: 'sort_by_newest_products' },
           { label: 'Price: Low to High', value: 'products_price_cents_asc' },
           { label: 'Price: High to Low', value: 'products_price_cents_desc' },
@@ -419,8 +974,7 @@ $(document).ready(function() {
       instantsearch.widgets.sortBy({
         container: '#mobile-sort-by',
         items: [
-          { label: 'Sort By', value: 'movri_products' },
-          { label: 'Most Popular', value: 'most_popular_products' },
+          { label: 'Most Popular', value: 'movri_products' },
           { label: 'Newest', value: 'sort_by_newest_products' },
           { label: 'Price: Low to High', value: 'products_price_cents_asc' },
           { label: 'Price: High to Low', value: 'products_price_cents_desc' },
@@ -444,7 +998,18 @@ $(document).ready(function() {
         container: '#mobile-categoties-pagination',
         totalPages: 2,
         scrollTo: false,
-      })
+        templates: {
+          previous: "Previous",
+          next: "Next"
+        },
+         showFirst: false,
+         showLast: false,
+      }),
+
+      customCurrentRefinements({
+        container: document.querySelector('#current-refinements'),
+        excludedAttributes: ['subcategory', 'children_category'],
+      }),
     ]);
   }
 
@@ -490,20 +1055,8 @@ $(document).ready(function() {
       $(e.target).parents('.search-mobile-icon')[0] == $('.search-mobile-icon')[0]) {
       $(search_result).show();
     } else {
-      $('.mobile-display .searchbox-algolia input').hide()
       $(search_result).hide();
     }
   });
 
-  $(document).click (function (e) {
-    if($('.mobile-listing-filter').is(":visible")){
-      if($(e.target).parents('.mobile-listing-filter')[0] == $('.mobile-listing-filter')[0] ||
-        e.target == $('.sort-filter-bar #filter')[0]){
-        $('.mobile-listing-filter').show();
-      } else {
-        $('.mobile-listing-filter').hide();
-        e.preventDefault();
-      }
-    }
-  });
 });

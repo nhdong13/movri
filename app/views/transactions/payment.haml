@@ -26,7 +26,7 @@
 - content_for :extra_javascript do
   :javascript
     window.ST.StripePayment.initIntent({
-      publishable_key: '#{APP_CONFIG.stripe_api_test_publishable_key}'
+      publishable_key: '#{APP_CONFIG.stripe_api_publishable_key}'
     });
     Shipment.run();
 

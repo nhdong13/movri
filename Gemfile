@@ -109,6 +109,7 @@ gem 'ckeditor'
 gem 'country-select'
 gem 'rack-tracker'
 gem 'httparty', '~> 0.18.1'
+gem 'paper_trail'
 
 group :staging, :production do
   gem 'newrelic_rpm', '~> 4.2.0.334'
@@ -145,6 +146,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'ed25519', '~> 1.2'
   gem 'bcrypt_pbkdf', '~> 1'
+  gem 'bullet'
 end
 
 group :test do

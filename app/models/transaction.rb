@@ -303,7 +303,9 @@ class Transaction < ApplicationRecord
   end
 
   def item_total
-    unit_price_cents * total_quantity
+    price = 0
+    transaction_items.map {|item| price += item.price_cents * item.quantity}
+    price
   end
 
   def coverage_cents
@@ -412,13 +414,4 @@ class Transaction < ApplicationRecord
     stripe_payments.last.sum_cents
   end
 
-  def missing_listings?
-    is_missing = false
-    transaction_items.each do |item|
-      if item.quantity > item.listing.available_quantity
-        is_missing = true
-      end
-    end
-    is_missing
-  end
 end

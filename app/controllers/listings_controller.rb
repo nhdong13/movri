@@ -19,7 +19,7 @@ class ListingsController < ApplicationController
     controller.ensure_current_user_is_listing_author t("layouts.notifications.only_listing_author_can_close_a_listing")
   end
 
-  before_action :only => [:edit, :edit_form_content, :update, :delete] do |controller|
+  before_action :only => [:edit, :edit_form_content, :update, :delete, :remove_user_manual, :add_tab] do |controller|
     controller.ensure_current_user_is_listing_author t("layouts.notifications.only_listing_author_can_edit_a_listing")
   end
 
@@ -91,6 +91,7 @@ class ListingsController < ApplicationController
     make_listing_presenter
     @listing_presenter.form_path = new_transaction_path(listing_id: @listing.id)
     @seo_service.listing = @listing
+    @support_info = SupportInfo.last
 
     # Remove session booking dates if it in blocked dates
     if @listing.manually_blocked_dates && session[:booking]
@@ -123,6 +124,9 @@ class ListingsController < ApplicationController
         end
       end
     end
+
+    session[:recently_viewed] ||= []
+    session[:recently_viewed] = session[:recently_viewed].unshift(@listing.id).uniq
 
     record_event(
       flash.now,
@@ -168,6 +172,7 @@ class ListingsController < ApplicationController
       return redirect_to new_listing_path
     end
 
+    tabs = params.to_unsafe_hash[:listing][:tabs]
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
@@ -176,13 +181,14 @@ class ListingsController < ApplicationController
     end
     @listing = Listing.new(result.data)
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
-
     ActiveRecord::Base.transaction do
       @listing.author = new_listing_author
       service.create_state(@listing)
       if @listing.save
-        create_or_update_accessories(result.data[:recommended_accessory_ids])
+        create_or_update_tabs(@listing, tabs)
+        # create_or_update_accessories(result.data[:recommended_accessory_ids])
         create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
+        create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -237,6 +243,7 @@ class ListingsController < ApplicationController
       return redirect_to edit_listing_path(@listing)
     end
 
+    tabs = params.to_unsafe_hash[:listing][:tabs]
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
     unless result.success
       flash[:error] = t("listings.error.something_went_wrong", error_code: result.data.join(', '))
@@ -251,8 +258,10 @@ class ListingsController < ApplicationController
     @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
 
     if update_successful
-      create_or_update_accessories(result.data[:recommended_accessory_ids])
+      create_or_update_tabs(@listing, tabs)
+      # create_or_update_accessories(result.data[:recommended_accessory_ids])
       create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
+      create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -339,7 +348,7 @@ class ListingsController < ApplicationController
     # Add item to session
     session[:cart] ||= {}
     listing_id = params[:id]
-    session[:cart][listing_id] = session[:cart][listing_id] ? (session[:cart][listing_id] + 1) : 1
+    session[:cart][listing_id] = session[:cart][listing_id] ? (session[:cart][listing_id].to_i + params[:quantity].to_i) : params[:quantity].to_i
     transaction_items_service.add_new_transaction_items(listing_id) if transaction_items_service
 
     # Get total items in cart
@@ -472,16 +481,10 @@ class ListingsController < ApplicationController
     @item_count = params[:total].to_i
     @promo_code = PromoCode.find_by(code: params[:promo_code])
     @listing = Listing.find_by_id(id)
-    if @item_count > @listing.available_quantity
-      @success = false
-      @message = "There is only #{@listing.available_quantity} product(s) available in stock!"
-    else
-      if session[:cart].key?(id) && @item_count > 0
-        session[:cart][id] = @item_count
-      end
-      transaction_items_service.increase_quantity_of_transaction_items(@listing.id, @item_count) if transaction_items_service
-      @success = true
+    if session[:cart].key?(id) && @item_count > 0
+      session[:cart][id] = @item_count
     end
+    transaction_items_service.increase_quantity_of_transaction_items(@listing.id, @item_count) if transaction_items_service
 
     # Get total items in cart
     @cart_total_items = session[:cart].values.sum
@@ -514,6 +517,12 @@ class ListingsController < ApplicationController
 
   def show_cart
     @have_blocked_dates = Listing.where(id: session[:cart].keys).pluck(:manually_blocked_dates).present?
+    make_listing_presenter
+    @blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
+    global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
+    @blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
+    # manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
+    # @blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
   end
 
   def change_booking_days
@@ -568,20 +577,21 @@ class ListingsController < ApplicationController
     end
 
     request_body = ShippingRatesService.create_body_request_to_postmen(params)
-
     response = Faraday.post(
-      APP_CONFIG.test_postmen_get_shipping_rates_url,
+      APP_CONFIG.postmen_get_shipping_rates_url,
       request_body,
       "Content-Type" => "application/json",
-      "postmen-api-key" => APP_CONFIG.test_postmen_api_key
-    )
+      "postmen-api-key" => APP_CONFIG.postmen_api_key)
 
     if response.status == 200
+      response_body = JSON.parse(response.body)
+      shipping_rates = ShippingRatesService.convert_to_shipping_selection(response_body)
+
       render json: {
         success: true,
         message: "Calculated shipping rates sucessfully",
         data: {
-          rates: response.body
+          rates: shipping_rates
         }
       }
     else
@@ -606,6 +616,41 @@ class ListingsController < ApplicationController
     end
   end
 
+  def remove_user_manual
+    @listing.user_manual = nil
+    @listing.save
+    redirect_to edit_listing_path(@listing)
+  end
+
+  def add_accessories
+    listing = Listing.find params[:id]
+    position = listing.recommended_accessories.count + 1
+    recommended_accessory = listing.recommended_accessories.create(listing_accessory_id: params[:listing_accessory_id], position: position)
+  end
+
+  def reorder_accessories
+    listing = Listing.find params[:id]
+    recommended_accessories = listing.recommended_accessories.order(position: :asc).to_a
+    sorted = recommended_accessories.insert(params[:to].to_i, recommended_accessories.delete_at(params[:from].to_i))
+
+    sorted.each_with_index do |item, index|
+      item.update(position: index+1)
+    end
+  end
+
+  def remove_accessory
+    listing = Listing.find params[:id]
+    listing.recommended_accessories.find_by(listing_accessory_id: params[:listing_accessory_id])&.destroy
+    render json: {
+      success: true
+    }
+  end
+
+  def add_tab
+    @listing.listing_tabs.create(title: 'New tab', tab_type: "new_tab", is_active: false)
+    redirect_to edit_listing_path(@listing)
+  end
+
   private
 
   def create_or_update_category_listings(category_ids)
@@ -616,6 +661,29 @@ class ListingsController < ApplicationController
   def create_or_update_accessories(recommended_accessory_ids)
     ListingUpdateAccessoryService.new(recommended_accessory_ids.split(','), @listing)
                                  .add_recommended_accessories
+  end
+
+  def create_or_update_tabs listing, params
+    params.keys.each do |key|
+      tab = listing.listing_tabs.where(tab_type: key).last
+      if tab
+        if tab.tab_type == "new_tab"
+          tab.update(params[key].merge({tab_type: params[key][:title].split(" ").join("_").downcase}))
+        else
+          tab.update(params[key])
+        end
+      else
+        listing.listing_tabs.create(params[key].merge({tab_type: key}))
+      end
+    end
+  end
+
+  def create_or_update_listing_assessory listing, listing_accessory_attrs
+    if listing.listing_accessory
+      listing.listing_accessory.update(listing_accessory_attrs)
+    else
+      listing.create_listing_accessory(listing_accessory_attrs)
+    end
   end
 
   def update_flash(old_availability:, new_availability:)
@@ -833,7 +901,7 @@ class ListingsController < ApplicationController
       if shape.booking_per_hour?
         true
       elsif APP_CONFIG.harmony_api_in_use && shape.booking?
-        create_bookable(@current_community.uuid_object, listing_uuid, @current_user.uuid_object).success
+        harmony_service.create_bookable(@current_community.uuid_object, listing_uuid, @current_user.uuid_object).success
       else
         true
       end
@@ -866,5 +934,9 @@ class ListingsController < ApplicationController
         TransactionItemsService.new(transaction, session, nil)
       end
     end
+  end
+
+  def harmony_service
+    HarmonyService.new
   end
 end

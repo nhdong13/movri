@@ -2,14 +2,17 @@
 .tab-content#accessories_tab
   .row
     .tab-title
-      %p Showcased Accessories
+      %p Accessories
   - @listing.listing_accessories.each_slice(4).to_a.each do |group_listing|
     .row
       - group_listing.each do |listing|
         .col-3
           .slide-item-container
             .slide-item
-              %img{:alt => "", :src => "http://placehold.it/198x198"}/
+              - if listing.main_image != nil
+                = image_tag listing.main_image, class: 'img-responsive'
+              - else
+                %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
               .slide-item-detail
                 %p.slide-item-title
                   = listing.title

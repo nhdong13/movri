@@ -1,6 +1,6 @@
 class Admin::StoreSectionsController < Admin::AdminBaseController
   skip_before_action :ensure_is_admin
-  before_action :set_store, only: [:create]
+  before_action :set_store, only: [:create, :sort_sections]
 
   def create
     section =  @store.sections.new(name: params[:name])
@@ -14,6 +14,13 @@ class Admin::StoreSectionsController < Admin::AdminBaseController
     end
   end
 
+  def sort_sections
+    params[:sections].each do |section|
+      @store.sections.find(section[:id]).update(order_number: section[:order_number])
+    end
+
+    render json: { success: true, store: @store.as_json }
+  end
 
   private
   def set_store

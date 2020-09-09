@@ -75,29 +75,36 @@ namespace :sharetribe do
         if shape.booking_per_hour?
           true
         elsif APP_CONFIG.harmony_api_in_use && shape.booking?
-          community_uuid = current_community.uuid_object
-          listing_uuid = listing.uuid_object.to_s
+          community_uuid = Community.last.uuid_object
+          listing_uuid = listing.uuid_object
           author_uuid = Person.find_by(username: "adminm").uuid_object
-          res = HarmonyClient.post(
-            :create_bookable,
-            body: {
-              marketplaceId: community_uuid,
-              refId: listing_uuid,
-              authorId: author_uuid
-            },
-            opts: {
-              max_attempts: 3
-            })
-
-          if !res[:success] && res[:data][:status] == 409
-            Result::Success.new("Bookable for listing with UUID #{listing_uuid} already created")
-          else
-            res
-          end
+          author_id = Person.find_by(username: "adminm").id
+          SessionContextStore.set({:marketplace_id => 1,:marketplace_uuid => community_uuid,:user_id => author_id,:user_uuid => author_uuid,:user_role => :admin})
+          HarmonyService.new().create_bookable(community_uuid, listing_uuid, author_uuid).success
         else
           true
         end
       end
     end
+  end
+
+
+  desc "Update tab for listing"
+  task :update_tabs_for_listing => :environment do
+    tabs = %w[spec overview q_a in_the_box not_in_the_box key_feature]
+    Listing.all.each do |listing|
+      tabs.each do |tab|
+        begin
+          l_tabs = listing.listing_tabs.where(tab_type: tab).last
+          unless l_tabs
+            l_tabs = listing.listing_tabs.create(title: tab.split("_").join(" "), tab_type: tab, description: listing.send(tab))
+          end
+        rescue
+        end
+      end
+    end
+    ListingTab.where(tab_type: 'q_a').update_all(tab_type: 'q_and_a')
+    ListingTab.where(tab_type: 'spec').update_all(tab_type: 'specs')
+    ListingTab.where(tab_type: 'key_feature').update_all(tab_type: 'key_features')
   end
 end

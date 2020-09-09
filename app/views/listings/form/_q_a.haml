@@ -1,2 +1,34 @@
-= form.label :q_a, 'Q&A', :class => "input"
-= form.cktext_area(:q_a, :maxlength => "5000", :class => "listing_q_a_textarea")
+- tab = @listing.q_and_a_tab || ListingTab.new(title: "q & a", tab_type: 'q_and_a')
+.tab-section
+  = form.fields_for :tabs do |form2|
+    = form2.fields_for tab.tab_type, tab do |attr|
+      .flex-items.tab-header
+        .width-85.flex-items.padding-0
+          %span.uppercase.tab-title= tab.title.split("_").join(" ")
+          = attr.text_field :title, class: "title-tab-input hidden"
+          %span.edit-tilte-tab
+            %i.fa.fa-pencil-square-o
+        .width-15.padding-0.align-right
+          = attr.select :is_active, options_for_select({On: 1, Off: 0}, selected: tab.is_active ? 1 : 0)
+      = attr.cktext_area :description, :maxlength => "5000"
+-# = form.label :q_a, 'Q&A', :class => "input"
+-# = form.cktext_area(:q_a, :maxlength => "5000", :class => "listing_q_a_textarea")
+
+- extra_tabs = @listing.listing_tabs.extra_tabs
+- extra_tabs.each do |extra_tab|
+  .tab-section
+    = form.fields_for :tabs do |form2|
+      = form2.fields_for extra_tab.tab_type, extra_tab do |attr|
+        .flex-items.tab-header
+          .width-85.flex-items.padding-0
+            %span.uppercase.tab-title= extra_tab.title.split("_").join(" ")
+            = attr.text_field :title, class: "title-tab-input hidden"
+            %span.edit-tilte-tab
+              %i.fa.fa-pencil-square-o
+          .width-15.padding-0.align-right
+            = attr.select :is_active, options_for_select({On: 1, Off: 0}, selected: extra_tab.is_active ? 1 : 0)
+        = attr.cktext_area :description, :maxlength => "5000"
+
+- unless @listing.new_record?
+  .align-right
+    = link_to "Add More Tab", add_tab_listing_path(@listing), method: :put, class: 'edit-tilte-tab'

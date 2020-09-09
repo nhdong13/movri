@@ -1,6 +1,9 @@
 .ais-InstantSearch
   .right-panel
-    .searchbox-algolia
+    .display-flex.align-items-center
+      .searchbox-algolia
+      .header-search-icon.display-flex.align-items-center.justify-content-center
+        = image_tag("homepage_icons/search.svg", class: '')
     .search-result-algolia.common-box.padding-0
       %span.snize-label.block.align-right POPULAR SUGGESTIONS
       .suggestion-items
@@ -8,8 +11,7 @@
       .product-items.snize-ac-results
         .snize-ac-results-column
       %span.snize-label.block.align-right CATEGORIES
-      .padding-5
-        .bold.fz-22= link_to 'Lens', categories_path()
+      #suggestion-categories
       %span.snize-label.block.align-right PAGES
       .page-items
         .item

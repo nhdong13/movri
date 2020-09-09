@@ -1,0 +1,6 @@
+.wrapper
+  %h1 Custom CSS
+  .form
+    = form_for [:admin, @custom_style], url: admin_custom_style_path do |f|
+      = f.text_area :style_string
+      = f.submit 'Submit'

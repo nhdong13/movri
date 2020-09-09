@@ -1,26 +1,23 @@
 .row.listing-trade-in-your-gear-for-cash
-  .col-6.clearfix
-    %p
-      Trade in your gear for cash:
-      %a{href: '#'}
-        Learn more >
-    .trade-in-your-gear-item
-      .trade-in-your-gear-avatar
-        = small_avatar_thumb(@listing.author)
-      .trade-in-your-gear-info
-        .trade-in-your-gear-title
-          True Know-How
-          .think-text
-            Ask Our Experts
-        .trade-in-live-chat
-          %a{href: "#"}
-            Live Chat
-        .trade-in-your-gear-phone
-          %a{href: "tel:#{@listing.author.phone_number}"}
-            = @listing.author.phone_number
-        .trade-in-your-gear-email
-          %a{href: "javascript:void(0)"}
-            Email
+  .col-6.clearfix.padding-0
+    - if @support_info
+      .trade-in-your-gear-item
+        .trade-in-your-gear-avatar.center-items
+          - if @support_info.image.exists?
+            = image_tag @support_info.image.url
+          - else
+            = small_avatar_thumb(@listing.author)
+        .trade-in-your-gear-info
+          .trade-in-your-gear-title
+            = @support_info.heading
+            .think-text
+              =@support_info.sub_heading
+          .trade-in-your-gear-phone
+            %a{href: "tel:#{@support_info.phone}"}
+              = @support_info.phone
+          .trade-in-your-gear-email
+            %a{href: "mailto:#{@support_info.email}"}
+              Email
 - content_for :extra_javascript  do
   :javascript
     ST.ListingContact.contactFormSlider()

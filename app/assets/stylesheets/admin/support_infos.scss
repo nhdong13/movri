@@ -1,0 +1,45 @@
+.support-info-image{
+  margin-top: 20px;
+  .image-box{
+    float: left;
+  }
+
+  .support_info_box{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    background: #e8e9eb;
+  }
+
+  #support_info_image{
+    opacity: 0;
+    width: 200px;
+    height: 200px;
+  }
+  .preview{
+    width: 200px;
+    position: absolute;
+    img{
+      border-radius: 50%;
+      width: 170px;
+      height: 170px;
+      background: white;
+    }
+  }
+  .common-link-btn{
+    cursor: pointer;
+    margin-left: 20px;
+    display: block !important;
+    &:first-child{
+      color: white;
+      border-color: #498fe2;
+      background: #498fe2;
+      margin-bottom: 20px;
+    }
+    &:last-child{
+      color: white;
+      border-color: #919599;
+      background: #919599;
+    }
+  }
+}

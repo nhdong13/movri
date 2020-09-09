@@ -1,9 +1,11 @@
 .row
   .col-12
-    .listing-header
-      = link_to "Home", ""
-      %span / Camera
-      %p.heading Camera
+    .listing-breadcrumbs.flex-items.margin-0.category-breadcrumbs
+      %span= link_to 'Home', homepage_with_locale_path
+      .current-category.capitalize
+    .current-collection--title.capitalize
+
+    #current-refinements
   .col-12
     .brown-bar.align-right
       .inline-flex-items

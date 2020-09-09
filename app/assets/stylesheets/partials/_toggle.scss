@@ -96,9 +96,7 @@
   }
 
   &.toggled {
-    background: $light-body;
     color: $background !important;
-    border-color: $light-body;
 
     @include media(tablet) {
       width: auto;
