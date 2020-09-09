@@ -4,13 +4,20 @@
     color: "color: #{@highlight_banner.text_color}" }
   .how-it-works.text-center{style: style[:background_color]}
     %span.section-heading HOW IT WORKS
-    .row.center-items
+    .desktop-display
+      .row.center-items
+        - items.each_with_index do |item, index|
+          %div{class: "#{index != 1 ? 'col-3' : 'col-4'}"}
+            %div
+              = image_tag(item.image.url)
+              %span.title= item.heading
+              %span.description= item.sub_heading
+          - if index != (items.size - 1)
+            .col-1
+              %i.icon-chevron-right
+    .mobile-display
       - items.each_with_index do |item, index|
-        %div{class: "#{index != 1 ? 'col-3' : 'col-4'}"}
-          %div
-            = image_tag(item.image.url)
-            %span.title= item.heading
-            %span.description= item.sub_heading
-        - if index != (items.size - 1)
-          .col-1
-            %i.icon-chevron-right
+        .how-it-work-item
+          = image_tag(item.image.url)
+          .title= item.heading
+          .description= item.sub_heading

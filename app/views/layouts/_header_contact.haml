@@ -1,13 +1,20 @@
 %ul.toggle-menu#header-contact.hidden
+  - phone_number_setting = store_header.phone_number_setting
+  - faq_setting = store_header.faq_setting || {}
+  - contact_us_setting = store_header.contact_us_setting || {}
   %li
     = image_tag("mf_icons/icon-movri-phone.svg", class: 'contact-icon')
     %span
-      800.894.9703
+      = link_to phone_number_setting['link'] do
+        = phone_number_setting['phone_number']
   %li
     = image_tag("mf_icons/icon-movri-email.svg", class: 'contact-icon')
     %span
-      Email Us
+      = link_to "mailto:sales@movri.ca" do
+        = 'Email Us'
   %li
     = image_tag("mf_icons/icon-movri-help.svg", class: 'contact-icon')
     %span
-      Help Center
+      = link_to contact_us_setting['link'] do
+        = 'Help Center'
+      
