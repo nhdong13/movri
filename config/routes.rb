@@ -216,7 +216,12 @@ Rails.application.routes.draw do
       end
     end
 
+
     namespace :admin do
+      resource :custom_style, only: [:edit ,:create, :update]
+      resource :support_info, only: [:edit ,:create, :update]
+      resource :shipping_additional_fee, only: [:edit ,:create, :update]
+
       get '' => "getting_started_guide#index"
 
       # Payments
@@ -270,7 +275,9 @@ Rails.application.routes.draw do
       get   "/landing_page"         => "communities#landing_page",                  as: :landing_page
 
       resources :online_stores, only: [] do
-        resources :store_sections, only: [:create]
+        resources :store_sections, only: [:create] do
+          put :sort_sections, on: :collection
+        end
       end
 
       resources :store_headers, only: [:update] do
@@ -278,6 +285,7 @@ Rails.application.routes.draw do
       end
 
       resources :slideshows, only: [:update] do
+        put :sort_items, on: :member
         resources :slide_items, only: [:new, :create, :update, :destroy] do
           post :image_upload, on: :member
         end
@@ -296,6 +304,7 @@ Rails.application.routes.draw do
       resources :store_featured_products, only: [:create, :update, :destroy]
 
       resources :store_grids, only: [:create, :update, :destroy] do
+        put :sort_items, on: :member
         resources :store_grid_items, only: [:create, :update, :destroy]
       end
 
@@ -376,6 +385,7 @@ Rails.application.routes.draw do
             get 'export_status'
           end
         end
+        resources :transaction_addresses, controller: :community_transaction_addresses, only: [:update]
         resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit, :update] do
           collection do
             get 'add_to_order'
@@ -408,7 +418,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :assurance_options, controller: :community_assurance_options, only: [:index, :new, :create]
+        resources :assurance_options, controller: :community_assurance_options, except: [:show]
         resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create, :edit, :update]
         resources :customers, controller: :community_customers, only: [:index, :new, :create]
         resources :customers, controller: :community_customers, param: :uuid, :only => :show
@@ -502,11 +512,16 @@ Rails.application.routes.draw do
         delete :unfollow
         delete :delete
         post :get_shipping_rates_from_postmen
-        get :add_item_to_cart
+        put :add_item_to_cart
         get :remove_cart_item
         get :plus_item
         get :minus_item
         post :change_number_of_item
+        delete :remove_user_manual
+        post :add_accessories
+        put :reorder_accessories
+        put :remove_accessory
+        put :add_tab
       end
       collection do
         get :new_form_content

@@ -1771,9 +1771,13 @@ en:
     signup: "Create a Movri Account"
     menu: Menu
     my_account: My Account
+    my_orders: My Orders
+    wish_list: Wish List
     hello: 'Hello, %{name}'
     about_us: About Us
     help: Help
+    help_center: Help Center
+    store_location: Store Location
     live_chat: Live Chat
     phone_number: '866.766.6861 / 212.868.4476'
     history_since: "<b>The Professional's Source </b> Since 1973"
@@ -2148,6 +2152,7 @@ en:
       visit_admin: "Would you like to %{link}?"
       visit_admin_link: "visit your admin panel"
       create_assurance_option_failed: 'Assurance option has been created failed.'
+      update_assurance_option_failed: 'Assurance option has been updated failed.'
       create_url_redirect_failed: 'URL Redirect has been created failed.'
       update_url_redirect_failed: 'URL Redirect has been updated failed.'
       add_new_customer_failed: 'New customer has been created failed.'

@@ -1,8 +1,8 @@
-#myTopnav.topnav.flex-items
+#myTopnav.topnav.flex-items.font-open-sans
   - @main_categories.each do |main_category|
     .dropdown
       %button.dropbtn
-        = link_to @category_display_names[main_category.id], categories_path(categories: main_category), class: 'main-cat'
+        = main_category.url_name
       .dropdown-content
         - if main_category.all_subcategories.any?
           - main_category.all_subcategories.each do |subcategory|
@@ -12,7 +12,10 @@
                   %button.dropbtn
                     .flex-items
                       .width-80
-                        = link_to @category_display_names[subcategory.id], categories_path(subcategories: subcategory), class: "category-bar-label"
+                        - if subcategory.all_children_categories.any?
+                          .category-bar-label= subcategory.url_name
+                        - else
+                          = link_to subcategory.url_name, categories_path(subcategories: subcategory), class: "category-bar-label"
                       .width-20.algin-right
                         - if subcategory.all_children_categories.any?
                           %i.fa.fa-chevron-right
@@ -21,21 +24,11 @@
                       - subcategory.all_children_categories.each do |child|
                         %ul
                           %li
-                            = link_to @category_display_names[child.id], categories_path(children_categories: child), class: "category-bar-label width-100"
-  %a.icon.icon-reorder.category-menu-mobile{:href => "javascript:void(0);"}
+                            = link_to child.url_name, categories_path(children_categories: child), class: "category-bar-label width-100"
 
 - content_for :extra_javascript do
   :javascript
     $(document).ready(function() {
-      $(document).on('click', '.category-menu-mobile', function() {
-        var x = document.getElementById("myTopnav");
-        if (x.className === "topnav") {
-          x.className += " responsive";
-        } else {
-          x.className = "topnav";
-        }
-      });
-
       $('input[name="q"]').click(function() {
         if ($(this).val() != '') {
           var search_result = $('#search-results');

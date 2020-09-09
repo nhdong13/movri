@@ -24,6 +24,11 @@ const onlineStoreReducer = (state = initialState, action) => {
         ...state,
         sections: newSections
       }
+    case onlineStoreConstants.UPDATE_SECTIONS_LIST:
+      return {
+        ...state,
+        sections: action.payload
+      }
     default:
       return state;
   }

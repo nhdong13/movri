@@ -39,6 +39,6 @@
         %p= person_information[:billing_address].country
         %p= person_information[:billing_address].phone
 
-= render 'edit_customer_email', email: person_information[:person].emails.last
-= render 'edit_customer_shipping_address', shipping_address: person_information[:shipping_address]
-= render 'edit_customer_billing_address', billing_address: person_information[:billing_address]
+= render 'admin/shared/edit_customer_email', email: person_information[:person].emails.last
+= render 'admin/shared/edit_customer_shipping_address', shipping_address: person_information[:shipping_address]
+= render 'admin/shared/edit_customer_billing_address', billing_address: person_information[:billing_address]

@@ -37,18 +37,10 @@
   .row
     .col-12.listing_breadcrumbs
       = render partial: 'listings/listing_breadcrumbs'
-    .col-6.listing-details-container
+    .col-6.listing-details-container.padding-0
       .row
         .col-12
           = render partial: 'listings/slideshow_images'
-      .row
-        .col-12
-          .col-1
-          .col-11.listing-include
-            .listing-include-title
-              INCLUDES
-            .listing-include-items
-              = @listing.key_feature.html_safe
       -# .row
       -#   .col-12.listing-description-content
       -#     - if @listing.description && !@listing.description.blank?
@@ -105,28 +97,15 @@
     %aside.col-6.listing-details
       = render partial: 'listings/listing_orders'
 
-    .desktop-display
-      = render partial: 'listings/desktop_designs/recommended_accessories'
-    .mobile-display
-      = render partial: 'listings/mobile_designs/recommended_accessories'
+  .desktop-display
+    = render partial: 'listings/desktop_designs/recommended_accessories'
+  .mobile-display
+    = render partial: 'listings/mobile_designs/recommended_accessories'
 
   .desktop-display
     = render partial: 'listings/desktop_designs/specifications'
   .mobile-display
     = render partial: 'listings/mobile_designs/specifications'
-
-  .row
-    .customers-also-viewed
-      = render partial: 'listings/viewed_slide_show', locals: {title: 'Customers Also Viewed', el: 'customer-also-viewed'}
-
-  .row.desktop-display
-    .browsing-history.col-12
-      %button.pull-right.browsing-history-btn-clear
-        Clear History
-      %button.pull-right.browsing-history-btn-on
-        ON
-      %span.pull-right
-        Browsing History
 
   .row.desktop-display
     .recently_viewed
@@ -218,24 +197,7 @@
       .mobile-sidenav
         %a.mobile-closebtn{href: "javascript:void(0)"}
           %i.icon-chevron-left
-          Sales Department
         %hr
-        .mobile-side-mail-wrap
-          %p.title By Phone
-          %p.item= "Phone: #{APP_CONFIG.contact_phone}"
-          %p.item= "Fax: #{APP_CONFIG.contact_phone}"
-
-          .row.foreign-cus-line
-            .col-6
-              %p.title-btn Foreign Customers Line
-            .col-6.arrow-col
-              %i.icon-chevron-right
-
-          %p.title House Of Opreation:
-          %p.item Sunday: 10:00AM - 5:00PM
-          %p.item Mon-Thu: 9:00AM - 7:00PM
-          %p.item Friday: 9:00AM - 1:00PM
-
           .row.holiday-schedule
             .col-6
               %p.title-btn Holiday Schedule
@@ -291,6 +253,16 @@
       $(".tab-content").hide();
       $(".mobile-display #"+$(this).data('tab')).show();
       return false;
+    });
+
+    $("input[name='coverage']").click(function(){
+      if($(this).val() == "movri-coverage"){
+        $('.rental-price-with-no-insurance').hide()
+        $('.rental-price-with-insurance').show()
+      } else {
+        $('.rental-price-with-no-insurance').show()
+        $('.rental-price-with-insurance').hide()
+      }
     });
 
     $(document).ready(function() {

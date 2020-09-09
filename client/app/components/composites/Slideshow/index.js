@@ -1,11 +1,32 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import SlideItem from '../SlideItem'
+import {
+  sortableContainer,
+  sortableElement,
+} from 'react-sortable-hoc';
+import arrayMove from 'array-move';
+import _ from 'lodash';
 
 const randomString = () => {
   return Math.random().toString(36).substring(7)
 }
 
+const SortableItem = sortableElement(({item, content}) => {
+  return (
+    <li key={item.id || randomString()}>
+      {content}
+    </li>
+  )
+});
+
+const SortableContainer = sortableContainer(({children}) => {
+  return <ul className='p-0'>{children}</ul>;
+});
+
+const sortByOrderNumber = (array) => {
+  return array.sort((a,b) => (a.order_number > b.order_number) ? 1 : ((b.order_number > a.order_number) ? -1 : 0));
+}
 class Slideshow extends Component {
   constructor(props) {
     super(props)
@@ -13,12 +34,14 @@ class Slideshow extends Component {
     this.handleFormOnChange = this.handleFormOnChange.bind(this)
     this.handleRemoveItem = this.handleRemoveItem.bind(this)
     this.handleAddItem = this.handleAddItem.bind(this)
-
+    this.onSortEnd = this.onSortEnd.bind(this)
+    this.handleUpdateItems = this.handleUpdateItems.bind(this)
 
     this.state = {
       loading: false,
       object: props.object,
-      authenticity_token: $('input[name ="authenticity_token"]').val()
+      authenticity_token: $('input[name ="authenticity_token"]').val(),
+      disabledDragable: false
     }
 
     this.axiosDefaultParams = {
@@ -60,13 +83,10 @@ class Slideshow extends Component {
       authenticity_token: this.state.authenticity_token
     }
     axios.delete(`/admin/slideshows/${item.slideshow_id}/slide_items/${item.id}`, {data: params}).then(res => {
-      this.setState({removing: false})
-      let slide_items = this.state.object.slide_items.filter(it => it.id != item.id)
+      this.setState({})
       this.setState({
-        object: {
-          ...this.state.object,
-          slide_items: slide_items
-        }
+        removing: false,
+        object: res.data.object
       })
       $("#homepage-preview-iframe").attr("src", function(index, attr){ 
         return attr;
@@ -82,14 +102,59 @@ class Slideshow extends Component {
           object: {
             ...this.state.object,
             slide_items: [...this.state.object.slide_items, item]
-          }
+          },
+          disabledDragable: true
         })
       }
     })
   }
 
+  onSortEnd({oldIndex, newIndex}) {
+    let slideItems = sortByOrderNumber(this.state.object.slide_items)
+    let newSlideItems = arrayMove(slideItems, oldIndex, newIndex).map((item, index) => {
+      return {...item, order_number: index + 1 }
+    })
+
+    this.setState({
+      object: {...this.state.object, list_items: newSlideItems}
+    })
+
+    let dataParams = {
+      authenticity_token: $('input[name ="authenticity_token"]').val(),
+      slide_items: newSlideItems.map((item) => {return {id: item.id, order_number: item.order_number}})
+    }
+    const axiosOptions = {
+      url: `/admin/slideshows/${this.state.object.id}/sort_items`,
+      method: 'put',
+      data: dataParams 
+    }
+
+    axios(axiosOptions).then(res => {
+      this.setState({
+        object: res.data.object
+      })
+      $("#homepage-preview-iframe").attr("src", function(index, attr){ 
+        return attr;
+      });
+    })
+  }
+
+  handleUpdateItems(item) {
+    let slideItems = this.state.object.slide_items.filter(it => !!it.id ) || []
+    let idx = _.findIndex(slideItems, slide_item => slide_item.id === item.id )
+    if(idx !== -1) {
+      slideItems[idx] = item
+    } else {
+      slideItems = _.concat(slideItems, [item])
+    }
+    this.setState({
+      object: { ...this.state.object, slide_items: sortByOrderNumber(slideItems) },
+      disabledDragable: false
+    })
+  }
+
   render() {
-    let slideItems = this.state.object.slide_items
+    let slideItems = sortByOrderNumber(this.state.object.slide_items)
     return(
       <div className='store-header store-slideshow'>
         <div className='breabcrum' onClick={() => this.props.toggleActiveSub('')}>
@@ -129,17 +194,22 @@ class Slideshow extends Component {
         <hr/>
         <h1 className=''>Content</h1>
         <ul className='slide-list'>
-          { 
-            slideItems.map(item => {
-              return <li key={item.id || randomString()}>
-                <SlideItem 
-                  key={item.id || randomString()} 
-                  item={item}
-                  handleRemoveItem={this.handleRemoveItem}
-                />
-              </li>
-            })
-          }
+          <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
+            {slideItems.map((item, index) => (
+              <SortableItem
+                key={`item-${item.id}` || randomString()}
+                index={index}
+                item={item}
+                disabled={this.state.disabledDragable}
+                content={
+                  <SlideItem
+                    item={item}
+                    handleRemoveItem={this.handleRemoveItem}
+                    handleUpdateItems={this.handleUpdateItems}
+                  />
+                }/>
+            ))}
+          </SortableContainer>
         </ul>
         <div className='add-more-slide'>
           <button className='btn' type='button' onClick={this.handleAddItem}>Add slide</button>

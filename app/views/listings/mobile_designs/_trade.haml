@@ -1,19 +1,18 @@
-.row.listing-trade-in-your-gear-for-cash
-  .col-12.clearfix
-    .trade-in-your-gear-item
-      .trade-in-your-gear-info
-        .trade-in-your-gear-title
-          Ask Our Experts
-        .trade-in-your-gear-phone
-          %a{href: 'tel:1231231234'}
-            %i.icon-phone
-            %span
-              = @listing.author.phone_number
-        .trade-in-your-gear-email
-          %a{href: "javascript:void(0)"}
-            %i.icon-envelope-alt
-            %span
-              Email
+- if @support_info
+  .row.listing-trade-in-your-gear-for-cash
+    .col-12.clearfix
+      .trade-in-your-gear-item
+        .trade-in-your-gear-info
+          .trade-in-your-gear-title
+            = @support_info.sub_heading
+          .trade-in-your-gear-phone
+            %a{href: "tel:#{@support_info.phone}"}
+              %i.icon-phone
+              %span= @support_info.phone
+          .trade-in-your-gear-email
+            %a{href: "mailto:#{@support_info.email}"}
+              %i.icon-envelope-alt
+              %span Email
 
 - content_for :extra_javascript  do
   :javascript

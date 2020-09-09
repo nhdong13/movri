@@ -32,4 +32,12 @@ class OnlineStore::SectionsPresenter
   def footer_helpful_links
     online_store.sections.helpful_links
   end
+
+  def body_sections
+    online_store.sections.body_sections
+  end
+
+  def footer_sections
+    online_store.sections.footer_sections
+  end
 end

@@ -1,16 +1,16 @@
 -# Admin navigation is split into link groups.
 - grouped_links = links.group_by {|l| l[:topic]}
 
-- if IntercomHelper.admin_intercom_respond_enabled?
-  - content_for :extra_javascript do
-    :javascript
-      window.ST = window.ST || {};
-      var desktop_selector = "#admin-support-link";
-      var mobile_selector = "#support_left_navi_link";
-      $([desktop_selector, mobile_selector].join(", ")).click(function(e) {
-        e.preventDefault();
-        Intercom && Intercom('show');
-      });
+-# - if IntercomHelper.admin_intercom_respond_enabled?
+-#   - content_for :extra_javascript do
+-#     :javascript
+-#       window.ST = window.ST || {};
+-#       var desktop_selector = "#admin-support-link";
+-#       var mobile_selector = "#support_left_navi_link";
+-#       $([desktop_selector, mobile_selector].join(", ")).click(function(e) {
+-#         e.preventDefault();
+-#         Intercom && Intercom('show');
+-#       });
 
 - sel_link = (local_assigns.has_key? :selected_left_navi_link) ? selected_left_navi_link : @selected_left_navi_link
 
@@ -63,6 +63,9 @@
       %span.block= link_to "Taxes", admin_community_taxes_path(@current_community), class: 'p-0'
       %span.block Permissions
       %span.block Files
+      %span.block= link_to 'Custom App Style', edit_admin_custom_style_path, class: "padding-0"
+      %span.block= link_to 'Ask Our Experts', edit_admin_support_info_path, class: "padding-0"
+      %span.block= link_to 'Shipping Additional Fee', edit_admin_shipping_additional_fee_path, class: "padding-0"
 
 - links.each do |link|
   - if link[:name].eql?(sel_link)

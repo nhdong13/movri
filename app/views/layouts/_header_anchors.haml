@@ -1,17 +1,22 @@
-.display-inline-flex.icons
-  = render :partial => 'layouts/searchs/search_box'
-  .search-mobile-icon
-    = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
-  .toggle{data: {toggle: '#header-contact', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-    = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
-  #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-    .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
-      #header-user-mobile-anchor
-        .left
-          .header-menu-container.header-user-contain.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
-            .header-menu-toggle-container.toggle-header-container
-              .display-inline-flex
-                = image_tag PersonViewUtils.person_avatar(@current_user), height: 62, width: 62, class: 'header-menu-icon icon-movri-user'
+.flex-items.icons
+  .width-10
+    %i.fa.fa-bars.mobile-menu-icon
+  .width-40
+    .header-logo-mobile
+      = link_to landing_page_path do
+        = image_tag(store_header.logo.url)
+  .width-50.display-flex.align-items-center.justify-content-between
+    .search-mobile-icon
+      = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
+    .toggle{data: {toggle: '#header-contact', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+      = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
+    #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+      .header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
+        #header-user-mobile-anchor
+          .left
+            .header-menu-container.header-user-contain.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}
+              .header-menu-toggle-container.toggle-header-container.p-0
+                = image_tag PersonViewUtils.person_avatar(@current_user), width: 62, class: 'header-menu-icon icon-movri-user'
                 .visible-tablet-inline.myaccount-header
                   %small
                     - username = @current_user.present? ? @current_user.username : t("header.login")
@@ -19,9 +24,14 @@
                   %strong
                     = t("header.my_account")
                     %i{class: 'icon-chevron-down'}
-  = link_to image_tag("mf_icons/icon-movri-mobile-cart.svg", class: 'header-menu-icon hidden-desktop'), show_cart_path
-  %span.number-on-cart-style-mobile
-    - session[:cart] ||= {}
-    = session[:cart].values.sum
+    .display-flex.mt-1
+      .cart-icon-mobile
+        = link_to image_tag("mf_icons/icon-movri-mobile-cart.svg"), show_cart_path
+      %span.number-on-cart-style-mobile
+        - session[:cart] ||= {}
+        = session[:cart].values.sum
+.search-partial.w-100.m-1
+  = render :partial => 'layouts/searchs/search_box'
+
 - content_for :javascript do
   SearchMobile.run();

@@ -6,5 +6,5 @@
 
 .left-navi-section.p-3.assurance-options-index
   %h2 Assurance Option
-  = render 'form', assurance_option: @assurance_option
+  = render 'form', assurance_option: @assurance_option, url: admin_community_assurance_options_path(community_id: @current_community.id), method: 'post'
          

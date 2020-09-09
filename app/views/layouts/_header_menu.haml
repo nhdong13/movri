@@ -1,43 +1,73 @@
-#header-menu-toggle-menu.toggle-menu.header-toggle-menu-menu.hidden
-  = render :partial => 'layouts/mobile_category_bar'
+#mobile-menu.hidden
+  .align-right.pl-3.pr-3.pt-3
+    %i.fa.fa-times#close-mobile-menu
+  .pl-3.pr-3
+    = render :partial => 'layouts/mobile_category_bar'
 
   - if @current_user && @current_community && @current_user.has_admin_rights?(@current_community)
-    = link_to new_listing_path do
-      = icon_map_tag(icons, "new_listing", ["icon-with-text"])
-      = t("homepage.index.post_new_listing")
+    .sub-section-mobile-menu
+      .item
+        = link_to new_listing_path do
+          -# = icon_map_tag(icons, "new_listing", ["icon-with-text"])
+          %span= t("homepage.index.post_new_listing")
 
-  - if @current_community.configuration.display_about_menu?
-    = link_to about_infos_path do
-      = icon_map_tag(icons, "information", ["icon-with-text"])
-      = t("header.about")
+      .item
+        = link_to admin_details_edit_path do
+          -# = icon_map_tag(icons, "admin", ["icon-with-text"])
+          %span= t("layouts.logged_in.admin")
 
-  - if @current_community.configuration.display_contact_menu?
-    = link_to new_user_feedback_path do
-      = icon_map_tag(icons, "feedback", ["icon-with-text"])
-      = t("header.contact_us")
+  .sub-section-mobile-menu
+    .item
+      = link_to (logged_in? ? person_path(@current_user) : sign_up_path) do
+        %span= t("header.my_account")
 
-  - if @current_community.configuration.display_invite_menu?
-    - with_invite_link do
-      = link_to new_invitation_path do
-        = icon_map_tag(icons, "invite", ["icon-with-text"])
-        = t("header.invite")
+    .item
+      = link_to show_cart_path do
+        %span= t("header.my_orders")
 
-  - Maybe(@current_community).menu_links.each do |menu_links|
-    - menu_links.each do |menu_link|
-      = link_to menu_link.url(I18n.locale), :target => "_blank" do
-        = icon_map_tag(icons, "redirect", ["icon-with-text"])
-        = menu_link.title(I18n.locale)
+    .item
+      = link_to '#' do
+        %span= t("header.wish_list")
+  .sub-section-mobile-menu
+    .item
+      - contact_us_setting = store_header.contact_us_setting || {}
+      - if @current_community.configuration.display_contact_menu?
+        = link_to contact_us_setting['link'] || new_user_feedback_path do
+          %span= t("header.contact_us")
 
-  - if @current_user && @current_community && @current_user.has_admin_rights?(@current_community)
-    = link_to admin_details_edit_path do
-      = icon_map_tag(icons, "admin", ["icon-with-text"])
-      = t("layouts.logged_in.admin")
+    .item
+      - faq_setting = store_header.faq_setting || {}
+      = link_to faq_setting['link'] || '/' do
+        %span= t("header.help_center")
 
-  .hidden-desktop
-    - if available_locales.size > 1
-      .toggle-menu-title
-        = t("layouts.global-header.select_language")
+    .item
+      - if @current_community.configuration.display_about_menu?
+        = link_to about_infos_path do
+          %span= t("header.about_us")
 
-      - locale_change_links.each do |locale_change_link|
-        %a{href: locale_change_link[:url]}
-          = locale_change_link[:title]
+    .item
+      = link_to '#' do
+        %span= t("header.store_location")
+
+    -# .item
+    -#   - if @current_community.configuration.display_invite_menu?
+    -#     - with_invite_link do
+    -#       = link_to new_invitation_path do
+    -#         = icon_map_tag(icons, "invite", ["icon-with-text"])
+    -#         %span= t("header.invite")
+
+    .item
+      - Maybe(@current_community).menu_links.each do |menu_links|
+        - menu_links.each do |menu_link|
+          = link_to menu_link.url(I18n.locale), :target => "_blank" do
+            = icon_map_tag(icons, "redirect", ["icon-with-text"])
+            %span= menu_link.title(I18n.locale)
+
+    .hidden-desktop
+      - if available_locales.size > 1
+        .toggle-menu-title
+          = t("layouts.global-header.select_language")
+
+        - locale_change_links.each do |locale_change_link|
+          %a{href: locale_change_link[:url]}
+            = locale_change_link[:title]

@@ -33,7 +33,6 @@ class ApplicationController < ActionController::Base
     :redirect_locale_param,
     :setup_seo_service,
     :fetch_community_admin_status,
-    :warn_about_missing_payment_info,
     :set_homepage_path,
     :maintenance_warning,
     :cannot_access_if_banned,
@@ -41,10 +40,10 @@ class ApplicationController < ActionController::Base
     :ensure_consent_given,
     :ensure_user_belongs_to_community,
     :set_display_expiration_notice,
-    :setup_intercom_user,
     :setup_custom_footer,
     :disarm_custom_head_script,
-    :update_booking_session
+    :update_booking_session,
+    :set_paper_trail_whodunnit
 
   # This updates translation files from WTI on every page load. Only useful in translation test servers.
   before_action :fetch_translations if APP_CONFIG.update_translations_on_every_page_load == "true"
@@ -54,9 +53,9 @@ class ApplicationController < ActionController::Base
   attr_reader :current_user
 
   def fetch_categories
-    @categories = @current_community.categories.includes(:children)
-    @main_categories = @categories.select { |c| c.parent_id == nil }
-    @category_display_names = category_display_names(@current_community, @main_categories, @categories)
+    @categories = @current_community.categories.includes([:children, :parent])
+    @main_categories = Category.category
+    # @category_display_names = category_display_names(@current_community, @main_categories, @categories)
   end
 
   CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME = 24.hours
@@ -68,7 +67,7 @@ class ApplicationController < ActionController::Base
                        main_categories],
                       expires_in: CATEGORY_DISPLAY_NAME_CACHE_EXPIRE_TIME) do
       cat_names = {}
-      categories.each do |cat|
+      categories.includes([:translations]).each do |cat|
         cat_names[cat.id] = cat.display_name(I18n.locale)
       end
       cat_names
@@ -478,6 +477,10 @@ class ApplicationController < ActionController::Base
   def get_next_day current_day
     next_day = Date.strptime(current_day, "%m/%d/%Y") + 1.day
     next_day.strftime("%m/%d/%Y")
+  end
+
+  def user_for_paper_trail
+    logged_in? ? @current_user.fullname : 'Online Store'
   end
 
   private

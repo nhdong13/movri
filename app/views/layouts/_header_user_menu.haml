@@ -28,14 +28,15 @@
 
     .account-actions.display-flex{class: "#{logged_in? ? 'account-actions-logged-in' : ''}"}
       .display-flex.account-wrap
-        = link_to (logged_in? ? person_path(@current_user) : '#'), class: "col-4 action-item display-flex" do
+        = link_to (logged_in? ? person_path(@current_user, view: "info") : '#'), class: "col-4 action-item display-flex" do
           = image_tag("mf_icons/icon-movri-account.svg", class: 'header-menu-icon icon-movri-account')
           %p
             = t('account_action.my_account')
         .col-4.action-item.display-flex
-          = image_tag("mf_icons/icon-movri-order.svg", class: 'header-menu-icon icon-movri-order')
-          %p
-            = t('account_action.my_order')
+          = link_to (logged_in? ? person_path(@current_user) : '#'), class: "col-4 action-item display-flex" do
+            = image_tag("mf_icons/icon-movri-order.svg", class: 'header-menu-icon icon-movri-order')
+            %p
+              = t('account_action.my_order')
         .col-4.action-item.display-flex
           = image_tag("mf_icons/icon-movri-wish-list.svg", class: 'header-menu-icon icon-movri-wish-list')
           %p

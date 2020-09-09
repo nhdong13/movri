@@ -1,8 +1,10 @@
 .desktop-display
-  - @store_sections_presenter.store_footers.each do |section|
-    = render "shares/contact", section: section.sectionable
-  - @store_sections_presenter.footer_helpful_links.each do |section|
-    = render "shares/helpful_links", helpful_section: section.sectionable
+  - @store_sections_presenter.footer_sections.order(order_number: :asc).each do |section|
+    - case section.name
+    - when "StoreFooter"
+      = render "shares/contact", section: section.sectionable
+    - when "HelpfulLink"
+      = render "shares/helpful_links", helpful_section: section.sectionable
   = render partial: "shares/benefit"
   = render partial: "shares/security_social_media", locals: {community: @current_community}
   = render partial: "shares/copyright"

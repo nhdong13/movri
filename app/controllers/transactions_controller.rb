@@ -4,18 +4,18 @@ class TransactionsController < ApplicationController
     controller.ensure_logged_in t("layouts.notifications.you_must_log_in_to_view_your_inbox")
   end
 
-  before_action only: [:new] do |controller|
-    fetch_data(params[:listing_id]).on_success do |listing_id, listing_model, _, process|
-      record_event(
-        flash,
-        "BuyButtonClicked",
-        { listing_id: listing_id,
-          listing_uuid: listing_model.uuid_object.to_s,
-          payment_process: process.process,
-          user_logged_in: @current_user.present?
-        })
-    end
-  end
+  # before_action only: [:new] do |controller|
+  #   fetch_data(params[:listing_id]).on_success do |listing_id, listing_model, _, process|
+  #     record_event(
+  #       flash,
+  #       "BuyButtonClicked",
+  #       { listing_id: listing_id,
+  #         listing_uuid: listing_model.uuid_object.to_s,
+  #         payment_process: process.process,
+  #         user_logged_in: @current_user.present?
+  #       })
+  #   end
+  # end
 
   before_action :find_transaction_by_uuid, only: [
     :update_promo_code,
@@ -56,32 +56,32 @@ class TransactionsController < ApplicationController
   before_action :ensure_can_countinue_transactions, only: [:checkout, :shipment, :payment]
 
   def new
-    Result.all(
-      -> {
-        fetch_data(params[:listing_id])
-      },
-      ->((listing_id, listing_model)) {
-        ensure_can_start_transactions(listing_model: listing_model, current_user: @current_user, current_community: @current_community)
-      }
-    ).on_success { |((listing_id, listing_model, author_model, process, gateway))|
-      transaction_params = HashUtils.symbolize_keys(
-        {listing_id: listing_model.id}
-        .merge(params.slice(:start_on, :end_on, :quantity, :delivery, :start_time, :end_time, :per_hour).permit!)
-      )
+    # Result.all(
+    #   -> {
+    #     fetch_data(params[:listing_id])
+    #   },
+    #   ->((listing_id, listing_model)) {
+    #     ensure_can_start_transactions(listing_model: listing_model, current_user: @current_user, current_community: @current_community)
+    #   }
+    # ).on_success { |((listing_id, listing_model, author_model, process, gateway))|
+    #   transaction_params = HashUtils.symbolize_keys(
+    #     {listing_id: listing_model.id}
+    #     .merge(params.slice(:start_on, :end_on, :quantity, :delivery, :start_time, :end_time, :per_hour).permit!)
+    #   )
 
-      case [process.process, gateway]
-      when matches([:none])
-        render_free(listing_model: listing_model, author_model: author_model, community: @current_community, params: transaction_params)
-      when matches([:preauthorize, :paypal]), matches([:preauthorize, :stripe]), matches([:preauthorize, [:paypal, :stripe]])
-        redirect_to initiate_order_path(transaction_params)
-      else
-        opts = "listing_id: #{listing_id}, payment_gateway: #{gateway}, payment_process: #{process}, booking: #{booking}"
-        raise ArgumentError.new("Cannot find new transaction path to #{opts}")
-      end
-    }.on_error { |error_msg, data|
-      flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
-      redirect_to(session[:return_to_content] || root)
-    }
+    #   case [process.process, gateway]
+    #   when matches([:none])
+    #     render_free(listing_model: listing_model, author_model: author_model, community: @current_community, params: transaction_params)
+    #   when matches([:preauthorize, :paypal]), matches([:preauthorize, :stripe]), matches([:preauthorize, [:paypal, :stripe]])
+    #     redirect_to initiate_order_path(transaction_params)
+    #   else
+    #     opts = "listing_id: #{listing_id}, payment_gateway: #{gateway}, payment_process: #{process}, booking: #{booking}"
+    #     raise ArgumentError.new("Cannot find new transaction path to #{opts}")
+    #   end
+    # }.on_error { |error_msg, data|
+    #   flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
+    #   redirect_to(session[:return_to_content] || root)
+    # }
   end
 
   def create
@@ -347,7 +347,8 @@ class TransactionsController < ApplicationController
         @shipping_address = create_shipping_address_without_current_user @transaction
       end
     end
-    add_padding_time_to_listing(@transaction.transaction_items.pluck(:listing_id), @transaction.booking, @current_community)
+    #TODO: fix this function
+    # add_padding_time_to_listing(@transaction.transaction_items.pluck(:listing_id), @transaction.booking, @current_community)
   end
 
   def add_padding_time_to_listing listing_ids, booking, community
@@ -512,10 +513,6 @@ class TransactionsController < ApplicationController
     end
     if @transaction.is_overweight?
       flash[:error] = "Please contact us for this. This package is overweight. We'd love to help you with completing the transaction."
-      return redirect_to show_cart_path
-    end
-    if @transaction.missing_listings?
-      flash[:error] = "Something went wrong with the number of your products. Please check it again."
       return redirect_to show_cart_path
     end
 
@@ -740,16 +737,16 @@ class TransactionsController < ApplicationController
         })
     }
 
-    render "transactions/new", locals: {
-             listing: listing,
-             author: author,
-             action_button_label: t(listing_model.action_button_tr_key),
-             m_price_break_down: m_price_break_down,
-             booking_start: booking_start,
-             booking_end: booking_end,
-             quantity: quantity,
-             form_action: person_transactions_path(person_id: @current_user, listing_id: listing_model.id)
-           }
+    # render "transactions/new", locals: {
+    #          listing: listing,
+    #          author: author,
+    #          action_button_label: t(listing_model.action_button_tr_key),
+    #          m_price_break_down: m_price_break_down,
+    #          booking_start: booking_start,
+    #          booking_end: booking_end,
+    #          quantity: quantity,
+    #          form_action: person_transactions_path(person_id: @current_user, listing_id: listing_model.id)
+    #        }
   end
 
   def date_selector?(listing)

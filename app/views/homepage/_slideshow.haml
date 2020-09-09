@@ -2,15 +2,17 @@
   .loading-carousel.text-center
     = image_tag("ajax-loader.gif")
   .homepage-carousel
-    - @slideshow.slide_items.each do |item|
+    - @slideshow.slide_items.order(order_number: :asc).each do |item|
       - style = "color:  #{item.text_color};"
       .content{style: style}
-        =image_tag(item.image.url)
-        .description
-          %p{style: style}= item.heading
-          %p{style: style}= item.sub_heading
-          = link_to item.button_link do
-            %button{style: style}= item.button_label
+        =link_to item.background_link, {target: 'blank'} do
+          =image_tag(item.image.url)
+        .description{style: "text-align: #{item.text_alignment}"}
+          .content
+            %p{style: style}= item.heading
+            %p{style: style}= item.sub_heading
+            - if item.button_link.present?
+              = link_to item.button_label || "Details", item.button_link, {target: 'blank', style: style, class: 'btn btn-link'}
     
   = content_for :extra_javascript do
     :javascript

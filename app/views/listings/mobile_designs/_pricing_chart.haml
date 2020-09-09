@@ -8,36 +8,52 @@
     .mobile-modal-body.clearfix
       .mobile-display.root-parent
         .mobile-descriptions
-          Movri offers rentals ranging from 1 to 90 days.
-          The shopping cart will automatically update the quoted price as
-          you adjust the length of your rental. Our most common rental periods
-          are shown below:
+          = @current_community.pricing_chart_content
         %br
         .mobile-group-options-coverage
           .row
             %form
-              %input{:checked => "checked", :name => "coverage", :type => "radio", :value => "no-coverage"}/
-              No Coverage
-              %br/
-              %input{:name => "coverage", :type => "radio", :value => "movri-coverage"}/
-              Movri Coverage
-              %br/
-              %input{:name => "coverage", :type => "radio", :value => "movri-plus-coverage"}/
-              Movri Plus Coverage
-    .mobile-modal-list-shipping
-      %table#mobile-pricing-charts-table
-        %tr
-          %th Rental Period
-          %th Rental Price
-          %th Price Per day (Approx)
-        - listing.pricing_charts.each do |elm|
+              %label
+                %input{:checked => "checked", :name => "coverage", :type => "radio", :value => "no-coverage"}/
+                No Coverage
+              %label
+                %input{:name => "coverage", :type => "radio", :value => "movri-coverage"}/
+                Movri Coverage
+
+    .rental-price-with-no-insurance
+      .mobile-modal-list-shipping
+        %table#mobile-pricing-charts-table
           %tr
-            %td.days
-              =elm.period
-              days
-            %td
-              $
-              =elm.price
-            %td
-              $
-              =(elm.price/elm.period).round(2)
+            %th Rental Period
+            %th Rental Price
+            %th Price Per day (Approx)
+          - listing.pricing_charts.each do |elm|
+            %tr
+              %td.days
+                =elm.period
+                days
+              %td
+                - number_price = Money.new(PriceCalculationService.calculate(listing, elm.period), 'USD')
+                = MoneyViewUtils.to_humanized(number_price)
+              %td
+                - average_price = (number_price/elm.period).round(2)
+                = MoneyViewUtils.to_humanized(average_price)
+    .rental-price-with-insurance.hidden
+      .mobile-modal-list-shipping
+        %table#mobile-pricing-charts-table
+          %tr
+            %th Rental Period
+            %th Rental Price
+            %th Price Per day (Approx)
+          - listing.pricing_charts.each do |elm|
+            %tr
+              %td.days
+                =elm.period
+                days
+              %td
+                - coverage = InsuranceCalculationService.call(listing, elm.period)
+                - number_price_with_coverage = Money.new(PriceCalculationService.calculate(listing, elm.period) + coverage, 'USD')
+                = MoneyViewUtils.to_humanized(number_price_with_coverage)
+              %td
+                - average_price = (number_price_with_coverage/elm.period).round(2)
+                = MoneyViewUtils.to_humanized(average_price)

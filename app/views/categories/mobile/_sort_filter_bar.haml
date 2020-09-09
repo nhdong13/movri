@@ -1,34 +1,68 @@
-.listing-header
-  %span.fa-fw
-    = link_to "Home", ""
+.listing-header.flex-items.padding-l-15
+  %span= link_to 'Home', homepage_with_locale_path
   %i.icon-angle-right.fa-fw
-  %span Camera
+  .current-category
 .sort-filter-bar.flex-items
-  #mobile-sort-by
-  #filter
-    Filter
+  .width-50
+    #mobile-sort-by
+  .width-50
+    #filter.width-100
+      %span Filter
 
 .mobile-listing-filter.common-box
   .filter-listing
     .group-filter
       %ul
         %li.flex-items.head
-          .width-30
-            .span Brand
-          .width-70.flex-items.group-btn-filter
+          .width-30.flex-items
+            %i.fa.fa-arrow-left.fa-fw.quick-filter-icon
+            .span Filters
+          .width-70.group-btn-filter.flex-items
             #clear-refinements.margin-r-15
             .quick-filter-btn
               %span Done
-        #mobile-refinement-list
-    .group-filter
-      %ul
-        %li.head Mount
-        #mobile-lens-mount
-    .group-filter
-      %ul
-        %li.head Lens Type
-        #mobile-lens-type
-    .group-filter
-      %ul
-        %li.head Compatibility
-        #mobile-lens-compatibility
+
+      #mobile_item_type
+      #mobile_brand_refinement
+      #mobile_lens_mount
+      #mobile_lens_type
+      #mobile_lens_compatibility
+      #mobile_camera_support_type_refinement
+      #mobile_camera_type_refinement
+      #mobile_camcorder_type_refinement
+      #mobile_sensor_size_refinement
+      #mobile_action_cam_compatibility_refinement
+      #mobile_lighting_type_refinement
+      #mobile_accessory_type_refinement
+      #mobile_capacity_refinement
+      #mobile_memory_type_refinement
+      #mobile_read_transfer_speed_refinement
+      #mobile_bus_speed_refinement
+      #mobile_power_compatibility_refinement
+      #mobile_power_type_refinement
+      #mobile_support_type_refinement
+      #mobile_head_type_refinement
+      #mobile_quick_release_system_refinement
+      #mobile_color_temperature_refinement
+      #mobile_filter_size_refinement
+      #mobile_filter_style_refinement
+      #mobile_filter_type_refinement
+      #mobile_audio_type_refinement
+      #mobile_monitoring_type_refinement
+      #mobile_camera_support_type_refinement
+      #mobile_cable_type_refinement
+  #search-within-results
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).on('click', '.refinementListMobile-header', function() {
+      list_refinement = $(this).parent().find(".list-refinement").first()
+      icon = $(this).parent().find(".fa")
+      if(list_refinement.is(":visible")){
+        list_refinement.slideUp("slow")
+        icon.removeClass("fa-minus").addClass("fa-plus")
+      }else{
+        list_refinement.slideDown("slow")
+        icon.removeClass("fa-plus").addClass("fa-minus")
+      }
+    });

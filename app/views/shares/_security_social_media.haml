@@ -1,56 +1,56 @@
 - preferences = community.community_customizations.where(locale: I18n.locale)&.first
 - accounts = preferences&.social_media_accounts || {}
-.security-social-media
-  .wrapper
-    .row
-      .col-12.display-flex.justify-content-center.align-items-center
-        .img
-          = image_tag("homepage_icons/mcafee.png")
-        .img
-          = image_tag("homepage_icons/norton.png")
-        .img
-          = image_tag("homepage_icons/bbb.png")
-        .img
-          = image_tag("homepage_icons/bhapp.png")
-        .img
-          = image_tag("homepage_icons/bhmobile.png")
-        - if accounts['youtube']
-          = link_to accounts['youtube'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/youtube.png")
-        - if accounts['pinterest']
-          = link_to accounts['pinterest'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/pinterest-social-icon-58.png")
-        - if accounts['instagram']
-          = link_to accounts['instagram'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/icon_instagram.png")
-        - if accounts['twitter']
-          = link_to accounts['twitter'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/twitter-social-icon-58.png")
-        - if accounts['facebook']
-          = link_to accounts['facebook'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/facebook-social-icon-58.png")
-        - if accounts['linkedin']
-          = link_to accounts['linkedin'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/LI-In-Bug.png")
-        - if accounts['email']
-          = link_to "mailto:#{accounts['email']}", {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/gmail.png")
-        - if accounts['google_plus']
-          = link_to accounts['google_plus'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/googleplus-social-icon-58.png")
-        - if accounts['tumblr']
-          = link_to accounts['tumblr'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/Tumblr_Blue.png")
-        - if accounts['vimeo']
-          = link_to accounts['vimeo'], {target: 'blank'} do
-            .img.icon-account
-              = image_tag("homepage_icons/vimeo_icon.png")
+-# .security-social-media
+  -# .wrapper
+  -#   .row
+  -#     .col-12.display-flex.justify-content-center.align-items-center
+        -# .img
+        -#   = image_tag("homepage_icons/mcafee.png")
+        -# .img
+        -#   = image_tag("homepage_icons/norton.png")
+        -# .img
+        -#   = image_tag("homepage_icons/bbb.png")
+        -# .img
+        -#   = image_tag("homepage_icons/bhapp.png")
+        -# .img
+        -#   = image_tag("homepage_icons/bhmobile.png")
+        -# - if accounts['youtube']
+        -#   = link_to accounts['youtube'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/youtube.png")
+        -# - if accounts['pinterest']
+        -#   = link_to accounts['pinterest'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/pinterest-social-icon-58.png")
+        -# - if accounts['instagram']
+        -#   = link_to accounts['instagram'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/icon_instagram.png")
+        -# - if accounts['twitter']
+        -#   = link_to accounts['twitter'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/twitter-social-icon-58.png")
+        -# - if accounts['facebook']
+        -#   = link_to accounts['facebook'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/facebook-social-icon-58.png")
+        -# - if accounts['linkedin']
+        -#   = link_to accounts['linkedin'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/LI-In-Bug.png")
+        -# - if accounts['email']
+        -#   = link_to "mailto:#{accounts['email']}", {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/gmail.png")
+        -# - if accounts['google_plus']
+        -#   = link_to accounts['google_plus'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/googleplus-social-icon-58.png")
+        -# - if accounts['tumblr']
+        -#   = link_to accounts['tumblr'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/Tumblr_Blue.png")
+        -# - if accounts['vimeo']
+        -#   = link_to accounts['vimeo'], {target: 'blank'} do
+        -#     .img.icon-account
+        -#       = image_tag("homepage_icons/vimeo_icon.png")

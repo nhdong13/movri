@@ -4,7 +4,11 @@ import axios from 'axios'
 import { previewUploadImageSrc } from '../../../utils/common'
 import { SketchPicker } from 'react-color'
 import SimpleCkeditor from '../../elements/SimpleCkeditor'
+import {
+  sortableHandle,
+} from 'react-sortable-hoc';
 
+const DragHandle = sortableHandle(() => <span className='font-size-16'>::</span>);
 class StoreGridItem extends Component {
   constructor(props) {
     super(props)
@@ -142,9 +146,14 @@ class StoreGridItem extends Component {
 
     return(
       <div className='collapsible store-category-item slideshow-item'>
-        <div className='row section-column-header-toggle' onClick={this.handleToggleItem}>
-          <i className={`icon-caret-right ${this.state.collapsed ? 'down' : ''}`}></i>
-          <div className='heading-title'>{this.state.item.heading || 'Promotional item'}</div>
+        <div className='row m-0 display-flex align-items-center section-column-header-toggle' onClick={this.handleToggleItem}>
+          <div className='col-11 p-0 display-flex align-items-center'>
+            <i className={`icon-caret-right ${this.state.collapsed ? 'down' : ''}`}></i>
+            <div className='heading-title'>{this.state.item.heading || 'Promotional item'}</div>
+          </div>
+          <div className='col-1 p-0'>
+            <DragHandle />
+          </div>
         </div>
         {
           this.state.collapsed && <div className='collapse-item'>

@@ -43,14 +43,6 @@ set :keep_releases, 2
 set :rvm_ruby_version, '2.6.2'
 set :rvm_custom_path, '/usr/share/rvm'
 
-namespace :deploy do
-  task :remove_linked_dirs do
-    remove :linked_dirs, "public/assets"
-  end
-end
-
-after 'deploy:set_linked_dirs', 'deploy:remove_linked_dirs'
-
 set :delayed_job_roles, [:app, :background]
 
 task :default do

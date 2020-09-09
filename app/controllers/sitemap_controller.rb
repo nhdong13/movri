@@ -171,7 +171,7 @@ class SitemapController < ActionController::Metal
       .order(sort_date: :desc)
       .pluck(:id, :title, :updated_at)
       .map { |(id, title, updated_at)|
-          {id: Listing.to_param(id, title), lastmod: updated_at}
+          {id: "#{id}-#{title.to_url}", lastmod: updated_at}
       }
   end
 

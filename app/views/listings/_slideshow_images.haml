@@ -1,9 +1,9 @@
 - with_image_frame(@listing) do |reason, listing_images|
   - if reason == :images_ok
-    .listing-image-carousel.right
+    .listing-image-carousel
       - if @listing_presenter.prev_image_id && @listing_presenter.next_image_id
         .display-flex
-          .width-15
+          .width-10.padding-0
             %ul#image-list
               - listing_images.each_with_index do |listing_image, index|
                 - if index < 4
@@ -21,12 +21,22 @@
                   .zoom-image-item
                     %i.icon-play-circle
 
-          .width-85#slideshow-main
+          .width-90#slideshow-main
             %ul#slideshow-list
               - listing_images.each do |listing_image|
                 %li.zoom-image-slide
                   .zoom-image-item
                     = image_tag(listing_image.image(:original))
+                  .flex-items
+    .flex-items
+      .width-10.padding-0
+      .width-90.listing-include.padding-0
+        - if @listing.key_features_tab.present? && @listing.key_features_tab.is_active
+          .listing-include-title
+            %span= @listing.key_features_tab.title
+          .listing-include-items
+            = @listing.key_features_tab.description.html_safe
+
 
     - content_for :extra_javascript do
       :javascript

@@ -34,12 +34,12 @@
         = render 'table_head'
         %tbody
           - @transactions_presenter.transactions.each do |transaction|
-            = render 'order', order: transaction
+            = render partial: 'order', locals: {order: transaction}
       %table#admin_manage_fulfilled_orders.mytabs
         = render 'table_head'
         %tbody
           - @transactions_presenter.transactions.map{|t| t if t.current_state == "fulfilled"}.reject(&:nil?).each do |transaction|
-            = render 'order', order: transaction
+            = render 'order', locals: {order: transaction}
       %table#admin_manage_unfulfilled_orders.mytabs
         = render 'table_head'
         %tbody
@@ -47,7 +47,7 @@
             = render 'order', order: transaction
   .row
     .col-12
-      = will_paginate @transactions_presenter.transactions
+      -# = will_paginate @transactions_presenter.transactions
 
 - content_for :extra_javascript do
   = js_t ["admin.communities.transactions.status_filter.all", "admin.communities.transactions.status_filter.selected_js"], true

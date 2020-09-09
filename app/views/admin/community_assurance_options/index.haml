@@ -24,12 +24,13 @@
         %thead
           %tr.row.p-0.m-0
             %th.col-1.p-3.pt-1
-            %th.col-7.p-3.pt-1
+            %th.col-5.p-3.pt-1
               = render partial: "layouts/sort_link", locals: { column: "title",
                 direction: sort_link_direction("title"),
                 title: "Title" }
-            %th.col-4.p-3.pt-1
+            %th.col-3.p-3.pt-1
               Date
+            %th.col-3.p-3.pt-1
         %tbody
           - @service.assurance_options.each do |option|
             = render 'option', option: option

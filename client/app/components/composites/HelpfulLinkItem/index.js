@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ContactInformation from './ContactInformation.jsx'
 import CustomerService from './CustomerService.jsx'
 import SocialAccount from './SocialAccount.jsx'
+import SignUp from './SignUp.jsx'
 import { SketchPicker } from 'react-color'
 import { PickColorstyles } from '../../../utils/common'
 import axios from 'axios'
@@ -122,6 +123,10 @@ class HelpfulLinkItem extends Component {
     return this.state.item.content_type === 'social_account'
   }
 
+  isSignUp() {
+    return this.state.item.content_type === 'sign_up'
+  }
+
   handleColorClose(target) {
     this.setState({
       [target]: false
@@ -145,7 +150,6 @@ class HelpfulLinkItem extends Component {
 
   renderContent() {
     let { item } = this.state
-    console.log(item)
     if (this.isFooterLink()) {
       return <CustomerService 
         item={item}
@@ -153,6 +157,11 @@ class HelpfulLinkItem extends Component {
       />
     } else if (this.isSocialAccount()) {
       return <SocialAccount 
+        item={item}
+        handleOnChange={this.handleOnChange}
+      />
+    } else if (this.isSignUp()) {
+      return <SignUp 
         item={item}
         handleOnChange={this.handleOnChange}
       />
@@ -209,6 +218,17 @@ class HelpfulLinkItem extends Component {
                       onChange={this.handleOnChange}
                     />
                     <label className='checkbox-label' htmlFor='social-account'>Social Account(Follow us)</label>
+                  </div>
+                  <div className='checkbox-control'>
+                    <input type='radio'
+                      name='content_type'
+                      value='sign_up'
+                      className='checkbox-input'
+                      id='sign-up'
+                      checked={this.isSignUp()}
+                      onChange={this.handleOnChange}
+                    />
+                    <label className='checkbox-label' htmlFor='sign-up'>Sign Up</label>
                   </div>
                 </div>
               </div>
