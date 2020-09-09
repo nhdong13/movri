@@ -1,15 +1,32 @@
 .searchbox-algolia{
+  width: calc(100% - 55px);
   input{
     font-size: 18px;
     padding: 15px;
-    width: 100%
+    width: 100%;
+    border-radius: 0px;
+    box-sizing: unset;
+    border: 1px solid #bdbdbd;
+    height: 23px;
   }
 }
 
 .mobile-display{
-  .searchbox-algolia input{display: none}
   .search-result-algolia{
-    width: 100%;
+    width: calc(100% - 46px);
+  }
+  .searchbox-algolia input {
+    font-size: 16px;
+    height: 31px;
+    padding: 5px;
+  }
+  .header-search-icon {
+    height: 43px;
+    width: 46px;
+    img {
+      height: 20px;
+      width: auto;
+    }
   }
 }
 

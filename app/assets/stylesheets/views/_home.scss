@@ -1166,6 +1166,20 @@ $home-list-avatar-padding: lines(0.25);
     span.section-heading {
       font-size: 22px;
     }
+    .how-it-work-item {
+      margin-top: 20px;
+      .description {
+        &::before {
+          content: "[";
+          color: #e1050a;
+        }
+  
+        &::after {
+          content: "]";
+          color: #e1050a;
+        }
+      }
+    }
   }
 
   .movri-different .col-6 .different-desc{
@@ -1375,7 +1389,7 @@ $home-list-avatar-padding: lines(0.25);
   padding-bottom: 15px;
 }
 .cart-icon-mobile{
-  width: 30px;
+  width: 24px;
 }
 
 .cart-icon-header{
