@@ -6,8 +6,6 @@
         .common-input-date-with-icon
           = text_field_tag :cart_deatail_arrival_date, (session[:booking] ? session[:booking][:start_date] : ''), class: "input-arrival-date"
           %i.fa.fa-calendar
-
-
       .return-date
         %p.center-title= t('transactions.label.return_date')
         .common-input-date-with-icon

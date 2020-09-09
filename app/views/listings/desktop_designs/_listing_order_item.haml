@@ -63,13 +63,11 @@
           .form-group
             %label{for: 'arrival-date'} Arrival Date
             %input.form-control.required.input-arrival-date{value: session[:booking] ? session[:booking][:start_date] : '',type: "arrival-date", :data => { :output => "booking-start-output" }, autocomplete: 'off'}
-            %input#booking-start-output{:type => 'hidden', :name => 'start_on'}
             = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
         .col-6.clearfix.return-date
           .form-group
             %label{for: "return-date"} Return Date
             %input.form-control.required.input-return-date{value: session[:booking] ? session[:booking][:end_date] : '', type: "return-date",  :data => { :output => "booking-end-output" }, autocomplete: 'off'}
-            %input#booking-end-output{:type => 'hidden', :name => 'end_on'}
             = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
       - @listing_presenter.blocked_dates_result.on_error do
         = t("listings.listing_actions.unable_load_availability")

@@ -168,6 +168,14 @@ window.ST = window.ST || {};
       $(this).parent().find('input').datepicker('show')
     })
 
+    $('.icon-return-date-calendar').click(function(){
+      $('.input-return-date-mobile').datepicker('show')
+    })
+
+    $('.icon-arrival-date-calendar').click(function(){
+      $('.input-arrival-date-mobile').datepicker('show')
+    })
+
     // picker.on('changeDate', function(e) {
     //   var newDate = e.dates[0];
     //   var outputElementId = $(e.target).data("output");
