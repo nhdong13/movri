@@ -427,6 +427,9 @@ Rails.application.routes.draw do
           collection do
             put :add_tax_rates
           end
+          member do
+            put :refresh_tax_rates
+          end
         end
         resource :preferences, controller: :community_preferences, only: [:edit, :update]
         resource :paypal_preferences, only: :index do

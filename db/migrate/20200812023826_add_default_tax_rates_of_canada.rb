@@ -7,7 +7,7 @@ class AddDefaultTaxRatesOfCanada < ActiveRecord::Migration[5.2]
       {province: 'new_brunswick', province_display: 'New Brunswick', tax_rates: {HST: 15}},
       {province: 'newfoundland_and_labrador', province_display: 'Newfoundland and Labrador', tax_rates: {HST: 15}},
       {province: 'northwest_territories', province_display: 'Northwest Territories', tax_rates: {GST: 5}},
-      {province: 'nova_scotia', province_display: 'Nova Scotia', tax_rates: {HST: 5}},
+      {province: 'nova_scotia', province_display: 'Nova Scotia', tax_rates: {HST: 15}},
       {province: 'nunavut', province_display: 'Nunavut', tax_rates: {GST: 5}},
       {province: 'ontario', province_display: 'Ontario', tax_rates: {HST: 13}},
       {province: 'prince_edward_island', province_display: 'Prince Edward Island', tax_rates: {HST: 15}},

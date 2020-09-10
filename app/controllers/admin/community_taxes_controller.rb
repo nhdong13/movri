@@ -14,6 +14,13 @@ class Admin::CommunityTaxesController < Admin::AdminBaseController
     redirect_to admin_community_taxes_path
   end
 
+  def refresh_tax_rates
+    tax = Tax.find_by(id: params[:id])
+    tax.update(tax_rates: {})
+
+    redirect_to admin_community_taxes_path
+  end
+
   private
 
   def set_selected_left_navi_link
