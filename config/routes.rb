@@ -328,6 +328,7 @@ Rails.application.routes.draw do
           get :analytics
           put :social_media, to: 'communities#update_social_media'
           put :analytics, to: 'communities#update_analytics'
+          put :tax_calculations, to: 'communities#update_tax_calculations'
           delete :delete_marketplace
 
           # DEPRECATED (2016-08-26)
@@ -422,6 +423,14 @@ Rails.application.routes.draw do
         resources :customers, controller: :community_customers, only: [:index, :new, :create]
         resources :customers, controller: :community_customers, param: :uuid, :only => :show
         resources :pages, controller: :community_pages
+        resources :taxes, controller: :community_taxes, only: [:index] do
+          collection do
+            put :add_tax_rates
+          end
+          member do
+            put :refresh_tax_rates
+          end
+        end
         resource :preferences, controller: :community_preferences, only: [:edit, :update]
         resource :paypal_preferences, only: :index do
 

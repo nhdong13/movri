@@ -1,0 +1,22 @@
+.modal#add-tax-rates-modal
+  .taxes-form-header
+    %h4.m-0.mb-3 Add tax rates
+    %label REGIONS
+  = form_tag add_tax_rates_admin_community_taxes_path, method: :put do
+    .taxes-form
+      - taxes.each do |tax|
+        = fields_for "taxes[]", tax do |f|
+          .tax-rate-section
+            %label
+              = tax.province_display
+            .row
+              .col-6
+                %label.font-weight-regular.m-0 Add Percentage
+                %input{type: 'number', value: 0, step: '0.001', name: "taxes[#{tax.id}][tax_rate]"}
+              .col-6
+                %label.font-weight-regular.m-0 Type of Tax
+                %select.w-100{name: "taxes[#{tax.id}][type_of_tax]"}
+                  - type_of_tax_options(tax.tax_rates).each do |option|
+                    %option{value: option}= option
+    .mt-2.text-right
+      = submit_tag 'Save', class: 'btn active'

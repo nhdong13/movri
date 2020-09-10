@@ -10,7 +10,6 @@ import CommunityPreferences from '../components/composites/CommunityPreferences/
 export default (props) => {
   const combinedReducer = combineReducers(reducers);
   const initialPreferencesState = {
-    preferences: props
   };
   const store = applyMiddleware(middleware)(createStore)(combinedReducer, initialPreferencesState);
 

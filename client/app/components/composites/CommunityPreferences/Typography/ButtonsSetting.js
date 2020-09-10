@@ -10,6 +10,13 @@ class ButtonsSetting extends Component {
     this.handleOnChangeLetterSpacing = this.handleOnChangeLetterSpacing.bind(this)
   }
 
+  componentDidMount() {
+    let button_font_settings = this.props.preferences.button_font_settings || {}
+    if(button_font_settings['font_family']) {
+      $('#font-picker-buttonsFont').css('font-family', button_font_settings['font_family'])
+    }
+  }
+
   handleChangeButtonsSetting(e) {
     let button_font_settings = this.props.preferences.button_font_settings || {}
     if(e.target.name == 'uppercase') {
@@ -30,6 +37,7 @@ class ButtonsSetting extends Component {
       ...this.props.preferences,
       button_font_settings: button_font_settings
     })
+    $('#font-picker-buttonsFont').css('font-family', e.family)
   }
 
   handleOnChangeLetterSpacing(value) {
@@ -50,7 +58,8 @@ class ButtonsSetting extends Component {
         <FontPicker
           apiKey="AIzaSyD3Th59sA9Qu2P8VUgzh1le91wfHUAnhdg" 
           activeFontFamily={button_font_settings['font_family']}
-          onChange={this.handleChangeFontFamily} />
+          onChange={this.handleChangeFontFamily}
+          pickerId='buttonsFont' />
         <div className='display-flex align-items-center mt-2'>
           <input type='checkbox' name='uppercase' className='mr-2' checked={button_font_settings['uppercase'] || false} onChange={this.handleChangeButtonsSetting}/>
           <label className='font-weight-regular m-0'>Uppercase</label>

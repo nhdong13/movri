@@ -110,6 +110,7 @@
 #  padding_time_before                        :float(24)        default(0.0)
 #  padding_time_after                         :float(24)        default(0.0)
 #  facebook_pixel_id                          :string(255)
+#  tax_accounts                               :json
 #  shipping_rates_content                     :text(65535)
 #  pricing_chart_content                      :text(65535)
 #
@@ -167,6 +168,7 @@ class Community < ApplicationRecord
   has_many :assurance_options, dependent: :destroy
   has_many :redirect_urls, dependent: :destroy
   has_many :pages, dependent: :destroy
+  has_many :taxes, dependent: :destroy
 
   has_many_attached :landing_page_assets
 
@@ -199,6 +201,7 @@ class Community < ApplicationRecord
   # locales: which locales are in use, the first one is the default
 
   serialize :settings, Hash
+  serialize :tax_accounts, Array
 
   has_attached_file :logo,
                     :styles => {

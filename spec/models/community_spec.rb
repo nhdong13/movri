@@ -110,6 +110,7 @@
 #  padding_time_before                        :float(24)        default(0.0)
 #  padding_time_after                         :float(24)        default(0.0)
 #  facebook_pixel_id                          :string(255)
+#  tax_accounts                               :json
 #  shipping_rates_content                     :text(65535)
 #  pricing_chart_content                      :text(65535)
 #

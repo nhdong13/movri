@@ -274,6 +274,17 @@ class Admin::CommunitiesController < Admin::AdminBaseController
 
   end
 
+  def update_tax_calculations
+    settings = @current_community.settings.merge(
+      {
+        show_price_with_tax: ActiveModel::Type::Boolean.new.cast(params[:settings][:show_price_with_tax]),
+        charge_tax_on_shipping_rates: ActiveModel::Type::Boolean.new.cast(params[:settings][:charge_tax_on_shipping_rates]),
+      }
+    )
+    @current_community.update(settings: settings)
+    redirect_to admin_community_taxes_path(@current_community)
+  end
+
   private
 
   def enqueue_status_sync!(address)
