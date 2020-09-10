@@ -28,7 +28,7 @@ module ManuallyBlockedDatesService
 
   def get_padding_time_blocked_dates(listing)
     padding_time = listing.padding_time
-    return [] unless padding_time.start_date
+    return [] unless padding_time && padding_time.start_date
     (padding_time.start_date.to_datetime..padding_time.end_date.to_datetime).to_a
   end
 
