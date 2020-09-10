@@ -26,6 +26,20 @@ module ManuallyBlockedDatesService
     return manually_blocked_dates
   end
 
+  def get_padding_time_blocked_dates(listing)
+    padding_time = listing.padding_time
+    return [] unless padding_time.start_date
+    (padding_time.start_date.to_datetime..padding_time.end_date.to_datetime).to_a
+  end
+
+  def get_all_blocked_dates community, listing, step = 1.day
+    blocked_dates = []
+    blocked_dates.concat(get_global_blocked_dates(community).to_a)
+    blocked_dates.concat(get_manually_blocked_dates(listing, step).to_a)
+    blocked_dates.concat(get_padding_time_blocked_dates(listing))
+    blocked_dates
+  end
+
   def datetime_sequence(str_dates, step)
     arr_dates = str_dates.split(",")
     start_date = DateTime.parse(arr_dates.first)

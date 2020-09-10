@@ -17,16 +17,14 @@
         Replacement Value :
       %span.amount.font-open-sans
         = money_to_humanized(@listing.replacement_cents_fee)
-  .row.listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
-    = form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do
+  = form_tag @listing_presenter.form_path, :method => :get, :id => "booking-dates" do
+    .row.listing-shipping-date.arrival-date#datepicker{:data => {:locale => I18n.locale, :dateformat => t("datepicker.format")}}
       - if @listing_presenter.quantity_per_day_or_night?
         - blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
         - if blocked_dates.any?
           -# Merge manually blocked dates (via admin) with blocked dates automatic (via website booking)
-          - global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
-          - blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
-          - manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
-          - blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
+          - all_blocked_dates = ManuallyBlockedDatesService.get_all_blocked_dates(@current_community, @listing, 1.day )
+          - blocked_dates.concat(all_blocked_dates)
           - content_for :extra_javascript do
             :javascript
               window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json}, #{raw session[:booking] ? session[:booking][:start_date].to_json : ''}, ".input-arrival-date-mobile", ".input-return-date-mobile");
@@ -42,21 +40,21 @@
               = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-return-date-calendar')
         - @listing_presenter.blocked_dates_result.on_error do
           = t("listings.listing_actions.unable_load_availability")
-      .row.listing-order-quantity
-        .col-6.row
-          .col-5.quantity
-            = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field', id: 'quantity-number-mobile'
-            %i.icon-caret-up#quantity-up-mobile
-            %i.icon-caret-down#quantity-down-mobile
-          .col-7.add-wish-list
-            %button.wish-list-btn
-              Wish List
-        .col-6.listing-shipping-info
-          .clearfix.shipping-rates.flex-items
-            %span.mobile-show-shipping-rates-modal{'data-toggle': 'modal', 'data-target': "#mobile-shipping-rates-realtime-modal"}
-              Shipping Rates
-            %span.mobile-show-pricing-chart-modal{'data-toggle': 'modal', 'data-target': "#mobile-pricing-chart-modal"}
-              Pricing Chart
+    .row.listing-order-quantity
+      .col-6.row
+        .col-5.quantity
+          = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field', id: 'quantity-number-mobile'
+          %i.icon-caret-up#quantity-up-mobile
+          %i.icon-caret-down#quantity-down-mobile
+        .col-7.add-wish-list
+          %button.wish-list-btn
+            Wish List
+      .col-6.listing-shipping-info
+        .clearfix.shipping-rates.flex-items
+          %span.mobile-show-shipping-rates-modal{'data-toggle': 'modal', 'data-target': "#mobile-shipping-rates-realtime-modal"}
+            Shipping Rates
+          %span.mobile-show-pricing-chart-modal{'data-toggle': 'modal', 'data-target': "#mobile-pricing-chart-modal"}
+            Pricing Chart
 
   .row
     .col-12.rent-container

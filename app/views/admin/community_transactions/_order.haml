@@ -19,3 +19,5 @@
     = "#{order.total_quantity} #{order.total_quantity > 1 ? 'items' : 'item'}"
   %td
     = order.delivery_method.capitalize
+  %td
+    = link_to "Edit", edit_admin_community_transaction_path(@current_community, order)

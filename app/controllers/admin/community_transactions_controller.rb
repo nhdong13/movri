@@ -48,4 +48,8 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       render json: {status: 'error'}
     end
   end
+
+  def edit
+    @order = Transaction.last
+  end
 end
