@@ -52,10 +52,8 @@
       - blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
       - if blocked_dates.any?
         -# Merge manually blocked dates (via admin) with blocked dates automatic (via website booking)
-        - global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
-        - blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
-        - manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
-        - blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
+        - all_blocked_dates = ManuallyBlockedDatesService.get_all_blocked_dates(@current_community, @listing, 1.day )
+        - blocked_dates.concat(all_blocked_dates)
         - content_for :extra_javascript do
           :javascript
             window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json}, #{raw session[:booking] ? session[:booking][:start_date].to_json : ''}, ".input-arrival-date", ".input-return-date");

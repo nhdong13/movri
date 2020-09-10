@@ -177,6 +177,7 @@ class Listing < ApplicationRecord
   has_one :redirect_url, as: :redirectable
   has_one :listing_accessory, dependent: :destroy
   has_many :listing_tabs, dependent: :destroy
+  has_one :padding_time, dependent: :destroy
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency
@@ -237,6 +238,17 @@ class Listing < ApplicationRecord
     self.updates_email_at ||= Time.now
   end
 
+  after_save :update_padding_time, if: :saved_change_to_available_quantity?
+
+  def update_padding_time
+    if available_quantity > 0
+      if padding_time
+        padding_time.update(start_date: nil, end_date: nil)
+      else
+        self.create_padding_time(start_date: nil, end_date: nil)
+      end
+    end
+  end
 
   def specs_tab
     listing_tabs.where(tab_type: "specs").last
