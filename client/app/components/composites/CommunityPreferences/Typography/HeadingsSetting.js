@@ -10,6 +10,13 @@ class HeadingsSetting extends Component {
     this.handleChangeHeadingsSetting = this.handleChangeHeadingsSetting.bind(this)
   }
 
+  componentDidMount() {
+    let heading_font_settings = this.props.preferences.heading_font_settings || {}
+    if(heading_font_settings['font_family']) {
+      $('#font-picker-headingsFont').css('font-family', heading_font_settings['font_family'])
+    }
+  }
+
   handleOnChangeHeadingsLetterSpacing(value) {
     let heading_font_settings = this.props.preferences.heading_font_settings || {}
     heading_font_settings['letter_spacing'] = value
@@ -39,6 +46,7 @@ class HeadingsSetting extends Component {
       ...this.props.preferences,
       heading_font_settings: heading_font_settings
     })
+    $('#font-picker-headingsFont').css('font-family', e.family)
   }
 
   render() {
@@ -50,7 +58,8 @@ class HeadingsSetting extends Component {
         <FontPicker
           apiKey="AIzaSyD3Th59sA9Qu2P8VUgzh1le91wfHUAnhdg"
           activeFontFamily={heading_font_settings['font_family']}
-          onChange={this.handleChangeHeadingsFont}/>
+          onChange={this.handleChangeHeadingsFont}
+          pickerId='headingsFont' />
         <label className='font-weight-regular'>Size</label>
         <select name='font_weight' value={heading_font_settings['font_weight'] || 'medium'} onChange={this.handleChangeHeadingsSetting}>
           <option value='small'>Small</option>
