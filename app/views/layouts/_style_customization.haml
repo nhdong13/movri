@@ -17,57 +17,64 @@
   @import url("//fonts.googleapis.com/css?family=#{body_text_font_settings['font_family']&.split(' ')&.join('+')}:400,600,700&subset=latin-ext");
 
   header {
-    background-color: #{ header_colors["background"] } !important;
-    color: #{ header_colors["text"] } !important;
+    background-color: #{ header_colors["background"] };
+    color: #{ header_colors["text"] };
   }
 
   header .header-wrapper, .header-nav {
-    color: #{ header_colors["text"] } !important;
-    background-color: #{ header_colors["background"] } !important;
+    color: #{ header_colors["text"] };
+    background-color: #{ header_colors["background"] };
   }
 
   header .header-menu-toggle-container {
     color: #{ header_colors["text"] };
-    background-color: #{ header_colors["background"] } !important;
+    background-color: #{ header_colors["background"] };
   }
 
   header .header-hover:hover {
-    background-color: #{ header_colors["background"] } !important;
+    background-color: #{ header_colors["background"] };
   }
 
-  .header.category-nav {
-    font-family: #{ main_menu_font_settings["font_family"] } !important;
-    text-transform: #{ main_menu_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" } !important;
+  .header.category-nav .topnav {
+    font-family: #{ main_menu_font_settings["font_family"] };
+    text-transform: #{ main_menu_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" };
+    letter-spacing: #{main_menu_font_settings['letter_spacing'].to_f / 100.to_f * 100}px;
   }
 
 
   .page-content {
-    color: #{ general_colors["text"] } !important;
+    color: #{ general_colors["text"] };
     font-family: #{ body_text_font_settings["font_family"] };
   }
 
   .page-content .filter-bar {
-    font-family: #{ main_menu_font_settings["font_family"] } !important;
-    text-transform: #{ main_menu_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" } !important;
+    font-family: #{ main_menu_font_settings["font_family"] };
+    text-transform: #{ main_menu_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" };
+    letter-spacing: #{main_menu_font_settings['letter_spacing'].to_f / 100.to_f * 100}px;
   }
 
   .page-content h1, h2, h3, h4, h5 {
-    color: #{ general_colors["headings"] } !important;
+    color: #{ general_colors["headings"] };
     font-family: #{ heading_font_settings["font_family"] } !important;
     text-transform: #{ heading_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" } !important;
-    font-size: #{ heading_font_settings['font_weight'] == 'small' ? 16 : heading_font_settings['font_weight'] == 'large' ? 32 : 22 }px !important;
+    font-size: #{ heading_font_settings['font_weight'] == 'small' ? 16 : heading_font_settings['font_weight'] == 'large' ? 32 : 22 }px;
+    letter-spacing: #{heading_font_settings['letter_spacing'].to_f / 100.to_f * 100}px;
   }
 
   .page-content .heading {
-    color: #{ general_colors["headings"] } !important;
-    font-family: #{ heading_font_settings["font_family"] } !important;
-    text-transform: #{ heading_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" } !important;
+    color: #{ general_colors["headings"] };
+    font-family: #{ heading_font_settings["font_family"] };
+    text-transform: #{ heading_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" };
+    font-size: #{ heading_font_settings['font_weight'] == 'small' ? 16 : heading_font_settings['font_weight'] == 'large' ? 32 : 22 }px;
+    letter-spacing: #{heading_font_settings['letter_spacing'].to_f / 100.to_f * 100}px;
   }
 
   .page-content .section-heading {
-    color: #{ general_colors["headings"] } !important;
-    font-family: #{ section_heading_font_settings["font_family"] } !important;
-    text-transform: #{ section_heading_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" } !important;
+    color: #{ general_colors["headings"] };
+    font-family: #{ heading_font_settings["font_family"] };
+    text-transform: #{ heading_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" };
+    font-size: #{ heading_font_settings['font_weight'] == 'small' ? 16 : heading_font_settings['font_weight'] == 'large' ? 32 : 22 }px;
+    letter-spacing: #{heading_font_settings['letter_spacing'].to_f / 100.to_f * 100}px;
   }
 
   .page-content a {
@@ -78,42 +85,44 @@
     color: #{ button_colors["text"] };
     background-color: #{ button_colors["background"] };
     font-family: #{ button_font_settings["font_family"] };
-    text-transform: #{ button_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" } !important;
+    text-transform: #{ button_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" };
+    letter-spacing: #{button_font_settings['letter_spacing'].to_f / 100.to_f * 100}px;
   }
 
   .page-content .btn-link a {
     color: #{ button_colors["text"] };
     background-color: #{ button_colors["background"] };
     font-family: #{ button_font_settings["font_family"] };
-    text-transform: #{ button_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" } !important;
+    text-transform: #{ button_font_settings["uppercase"].to_s == 'true' ? "uppercase" : "capitalize" };
+    letter-spacing: #{button_font_settings['letter_spacing'].to_f / 100.to_f * 100}px;
   }
 
 
 
   .desktop-display .other-information {
-    color: #{ footer_colors["text"] } !important;
+    color: #{ footer_colors["text"] };
     background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0.1) };
   }
 
   .desktop-display .other-information .row {
-    color: #{ footer_colors["text"] } !important;
+    color: #{ footer_colors["text"] };
     background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0) };
   }
 
   .desktop-display .security-social-media {
-    color: #{ footer_colors["text"] } !important;
+    color: #{ footer_colors["text"] };
     background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0.525) };
   }
   .desktop-display .security-social-media .row {
-    color: #{ footer_colors["text"] } !important;
+    color: #{ footer_colors["text"] };
     background-color: #{ to_rgb(hex: footer_colors["background"], avg: 0) };
   }
 
   .desktop-display .copyright {
-    background-color: #{ to_rgb(hex: footer_colors["background"], avg: 1) } !important;
-    color: #{ footer_colors["text"] } !important;
+    background-color: #{ to_rgb(hex: footer_colors["background"], avg: 1) };
+    color: #{ footer_colors["text"] };
   }
 
   body {
-    font-size: #{ preferences.base_font_size }px !important;
+    font-size: #{ preferences.base_font_size }px;
   }

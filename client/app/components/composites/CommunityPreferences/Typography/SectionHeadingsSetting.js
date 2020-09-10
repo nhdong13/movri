@@ -10,6 +10,13 @@ class SectionHeadingsSetting extends Component {
     this.handleOnChangeLetterSpacing = this.handleOnChangeLetterSpacing.bind(this)
   }
 
+  componentDidMount() {
+    let section_heading_font_settings = this.props.preferences.section_heading_font_settings || {}
+    if(section_heading_font_settings['font_family']) {
+      $('#font-picker-sectionHeadingsFont').css('font-family', section_heading_font_settings['font_family'])
+    }
+  }
+
   handleChangeSectionHeadingsSetting(e) {
     let section_heading_font_settings = this.props.preferences.section_heading_font_settings || {}
     if(e.target.name == 'uppercase') {
@@ -30,6 +37,7 @@ class SectionHeadingsSetting extends Component {
       ...this.props.preferences,
       section_heading_font_settings: section_heading_font_settings
     })
+    $('#font-picker-sectionHeadingsFont').css('font-family', e.family)
   }
 
   handleOnChangeLetterSpacing(value) {

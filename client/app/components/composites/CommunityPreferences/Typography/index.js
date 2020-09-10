@@ -15,6 +15,13 @@ class Typography extends Component {
     this.handleChangeBodyFontFamily = this.handleChangeBodyFontFamily.bind(this)
   }
 
+  componentDidMount() {
+    let body_text_font_settings = this.props.preferences.body_text_font_settings || {}
+    if(body_text_font_settings['font_family']) {
+      $('#font-picker-bodyTextFont').css('font-family', body_text_font_settings['font_family'])
+    }
+  }
+
   handleOnChangeBaseFontSize(value) {
     this.props.handleChangePreferences({
       ...this.props.preferences,
@@ -38,6 +45,7 @@ class Typography extends Component {
       ...this.props.preferences,
       body_text_font_settings: body_text_font_settings
     })
+    $('#font-picker-bodyTextFont').css('font-family', e.family)
   }
 
   render() {

@@ -10,6 +10,13 @@ class MainMenuSetting extends Component {
     this.handleOnChangeLetterSpacing = this.handleOnChangeLetterSpacing.bind(this)
   }
 
+  componentDidMount() {
+    let main_menu_font_settings = this.props.preferences.main_menu_font_settings || {}
+    if(main_menu_font_settings['font_family']) {
+      $('#font-picker-mainMenuFont').css('font-family', main_menu_font_settings['font_family'])
+    }
+  }
+
   handleChangeMainMenuSetting(e) {
     let main_menu_font_settings = this.props.preferences.main_menu_font_settings || {}
     if(e.target.name == 'uppercase') {
@@ -30,6 +37,7 @@ class MainMenuSetting extends Component {
       ...this.props.preferences,
       main_menu_font_settings: main_menu_font_settings
     })
+    $('#font-picker-mainMenuFont').css('font-family', e.family)
   }
 
   handleOnChangeLetterSpacing(value) {

@@ -10,6 +10,13 @@ class HeadingsSetting extends Component {
     this.handleChangeHeadingsSetting = this.handleChangeHeadingsSetting.bind(this)
   }
 
+  componentDidMount() {
+    let heading_font_settings = this.props.preferences.heading_font_settings || {}
+    if(heading_font_settings['font_family']) {
+      $('#font-picker-headingsFont').css('font-family', heading_font_settings['font_family'])
+    }
+  }
+
   handleOnChangeHeadingsLetterSpacing(value) {
     let heading_font_settings = this.props.preferences.heading_font_settings || {}
     heading_font_settings['letter_spacing'] = value
@@ -39,6 +46,7 @@ class HeadingsSetting extends Component {
       ...this.props.preferences,
       heading_font_settings: heading_font_settings
     })
+    $('#font-picker-headingsFont').css('font-family', e.family)
   }
 
   render() {
