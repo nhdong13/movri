@@ -11,7 +11,7 @@ class AddDefaultTaxRatesOfCanada < ActiveRecord::Migration[5.2]
       {province: 'nunavut', province_display: 'Nunavut', tax_rates: {GST: 5}},
       {province: 'ontario', province_display: 'Ontario', tax_rates: {HST: 13}},
       {province: 'prince_edward_island', province_display: 'Prince Edward Island', tax_rates: {HST: 15}},
-      {province: 'quebec', province_display: 'Quebec', tax_rates: {GST: 9.975, PST: 5}},
+      {province: 'quebec', province_display: 'Quebec', tax_rates: {QST: 9.975, GST: 5}},
       {province: 'saskatchewan', province_display: 'Saskatchewan', tax_rates: {GST: 6, PST: 5}},
       {province: 'yukon', province_display: 'Yukon', tax_rates: {GST: 5}},
     ]
