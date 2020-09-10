@@ -60,7 +60,7 @@
       %span.block Payments
       %span.block= link_to 'Checkout', admin_checkout_setting_path, class: "padding-0"
       %span.block Shipping and Delivery
-      %span.block Taxes
+      %span.block= link_to "Taxes", admin_community_taxes_path(@current_community), class: 'p-0'
       %span.block Permissions
       %span.block Files
       %span.block= link_to 'Custom App Style', edit_admin_custom_style_path, class: "padding-0"
