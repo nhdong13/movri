@@ -1,13 +1,13 @@
 .flex-items.icons
   .width-10
     %i.fa.fa-bars.mobile-menu-icon
-  .width-40
+  .width-50
     .header-logo-mobile
       = link_to landing_page_path do
         = image_tag(store_header.logo.url)
-  .width-50.display-flex.align-items-center.justify-content-between
-    .search-mobile-icon
-      = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
+  .width-40.display-flex.align-items-center.justify-content-between
+    -# .search-mobile-icon
+    -#   = image_tag("mf_icons/icon-movri-search.svg", class: 'header-menu-icon hidden-desktop')
     .toggle{data: {toggle: '#header-contact', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}
       = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
     #header-user-desktop-anchor.header-user-toggle.header-hover.toggle{data: {toggle: '#header-user-toggle-menu', 'toggle-anchor-position' => 'right', 'toggle-position' => 'absolute'}}

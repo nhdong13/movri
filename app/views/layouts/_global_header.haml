@@ -105,14 +105,13 @@
     .header-wrapper
       = render :partial => 'layouts/category_bar'
   -# Hide header in map view if mobile
-  .desktop-display
-    %header.header
-      - if store_header
-        - announcement_bar_setting = store_header.announcement_bar_setting || {}
-        - style = "color:  #{announcement_bar_setting['text_color'] || '#FFFFFF'} !important;"
-        - style += "background: #{announcement_bar_setting['background_color'] || '#EEEEEE'} !important;"
-        - style += "height: 50px;"
-        - if announcement_bar_setting['text'].present? && announcement_bar_setting['enabled']
-          .pl-5.pr-3{style: style}
-            = link_to announcement_bar_setting['link'],{style: "color: #{announcement_bar_setting['text_color'] || '#FFFFFF'} !important;line-height: 50px;"} do
-              = announcement_bar_setting['text']&.html_safe
+  %header.header
+    - if store_header
+      - announcement_bar_setting = store_header.announcement_bar_setting || {}
+      - style = "color:  #{announcement_bar_setting['text_color'] || '#FFFFFF'} !important;"
+      - style += "background: #{announcement_bar_setting['background_color'] || '#EEEEEE'} !important;"
+      - style += "height: 50px;"
+      - if announcement_bar_setting['text'].present? && announcement_bar_setting['enabled']
+        .pl-5.pr-3{style: style}
+          = link_to announcement_bar_setting['link'],{style: "color: #{announcement_bar_setting['text_color'] || '#FFFFFF'} !important;line-height: 50px;"} do
+            = announcement_bar_setting['text']&.html_safe
