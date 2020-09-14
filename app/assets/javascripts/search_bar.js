@@ -1051,8 +1051,7 @@ $(document).ready(function() {
     var search_result = $('.search-result-algolia');
     if (e.target == $('.searchbox-algolia input')[0] ||
       e.target == $('.searchbox-algolia input')[1] ||
-      $(e.target).parents('.search-result-algolia')[0] == $('.search-result-algolia')[0]||
-      $(e.target).parents('.search-mobile-icon')[0] == $('.search-mobile-icon')[0]) {
+      $(e.target).parents('.search-result-algolia')[0] == $('.search-result-algolia')[0]) {
       $(search_result).show();
     } else {
       $(search_result).hide();
