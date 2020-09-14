@@ -5,6 +5,8 @@ class TransactionMoneyCalculation
     @promo_code = @transaction.promo_code
     @state = @transaction.shipping_address ? @transaction.shipping_address.state_or_province : 'alberta'
     @shipping_fee = @transaction.shipper ? @transaction.shipper.amount_to_cents : 0
+
+    @duration = @transaction.booking.duration || @session[:booking][:total_days]
   end
 
   def get_discount_for_all_products_cart
@@ -38,13 +40,13 @@ class TransactionMoneyCalculation
 
   def calculate_price_cents listing, quantity
     return 0 unless quantity
-    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(@session)) * quantity
+    price_cents = PriceCalculationService.calculate(listing, @duration) * quantity
     price_with_promo_code(price_cents)
   end
 
   def calculate_price_cents_without_promo_code listing, quantity
     return 0 unless quantity
-    price_cents = PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(@session)) * quantity
+    price_cents = PriceCalculationService.calculate(listing, @duration) * quantity
   end
 
   def price_with_promo_code price
@@ -70,7 +72,7 @@ class TransactionMoneyCalculation
   end
 
   def total_coverage listing, quantity
-    InsuranceCalculationService.call(listing, @session[:booking][:total_days]) * quantity
+    InsuranceCalculationService.call(listing, @duration) * quantity
   end
 
   def get_tax_fee state=nil, shipping_fee=nil
@@ -85,5 +87,20 @@ class TransactionMoneyCalculation
     state = state ? state : @state
     tax_fee = get_tax_fee(state, shipping_fee)
     listings_subtotal - get_discount_for_all_products_cart + shipping_fee + tax_fee
+  end
+
+  def total_coverage_for_all_items_cart
+    total_coverage = 0
+    @transaction.transaction_items.each do|item|
+      listing = item.listing
+      coverage = InsuranceCalculationService.call(listing, @duration) * item.quantity
+      total_coverage += coverage
+    end
+    total_coverage
+  end
+
+  def calculate_tax_fee_base_on_percent percent
+    price = listings_subtotal
+    price.percent_of(percent)
   end
 end

@@ -1,10 +1,10 @@
 - if @listing.specs_tab.is_active
-  .tab-content.listing-specs#spec_tab
+  .tab-content.listing-specs#specs_tab
     .spec-content
       %span.font-open-sans.font-size-22
         = @listing.title
     .spec-category.row
-      = @listing.spec.html_safe?
+      = @listing.spec.html_safe
     .spec-view-all.clearfix
       %button
         View All Specs

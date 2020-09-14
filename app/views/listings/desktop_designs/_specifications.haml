@@ -5,11 +5,7 @@
         %li{class: tab.tab_type == 'specs' ? "active" : ""}
           %a.uppercase.tab-link{'data-tab' => "#{tab.tab_type}_tab"}= tab.title
       %li
-        %a.tab-link{'data-tab' => 'compare_tab'} QUICK COMPARE
-      %li
         %a.tab-link{'data-tab' => 'accessories_tab'} ACCESSORIES
-      %li
-        %a.tab-link{'data-tab' => 'compatibility_tab'} COMPATIBILITY
 
 .row
   .listing-specifications.col-9#specification-tabs
@@ -25,5 +21,3 @@
             = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
           %span.user-manual-title
             User Manual
-          %span.user-manual-file-size
-            15.6 MB

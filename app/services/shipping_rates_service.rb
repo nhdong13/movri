@@ -134,6 +134,7 @@ module ShippingRatesService
 
   def add_shipping_additional_fee total_charge
     amount = total_charge["amount"]
+    return unless amount
     additional_fee = ShippingAdditionalFee.last
     total_fee_percent = additional_fee.handling + additional_fee.insurance
     final_fee = amount + (amount * total_fee_percent / 100)

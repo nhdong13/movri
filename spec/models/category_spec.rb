@@ -11,6 +11,8 @@
 #  sort_priority :integer
 #  url           :string(255)
 #  category_type :integer          default("category")
+#  link          :string(255)
+#  display_title :string(255)
 #
 # Indexes
 #

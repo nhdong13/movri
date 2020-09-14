@@ -50,6 +50,11 @@ module PriceCalculationService
     price.percent_of(get_persent_of_canada_provinces(canada_provinces))
   end
 
+  def calculate_tax_fee_base_on_percent price
+    canada_provinces = 'alberta' unless canada_provinces
+    price.percent_of(get_persent_of_canada_provinces(canada_provinces))
+  end
+
   def to_cents value
      value * CONVERT_TO_CENT_VALUE
   end

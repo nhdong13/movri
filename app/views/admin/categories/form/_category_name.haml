@@ -1,10 +1,20 @@
 .row
   .col-12
-    %span.bold= "#{@category_type.split("_").join(" ").capitalize} title"
+    %span.bold= "#{@category_type.split("_").join(" ").capitalize} title(url)"
 - available_locales.each do |locale_name, locale_value|
   .row
     - if available_locales.size > 1
       .col-2
         = label_tag "category[translation_attributes][#{locale_value}][name]", locale_name + ": ", :class => "new-category-name-locale-label"
     .col-8
-      = text_field_tag "category[translation_attributes][#{locale_value}][name]", @category.display_name(locale_value), :class => "required"
+      = text_field_tag "category[url]", @category.url, :class => "required"
+  .row
+    .col-12
+      %span.bold Title on Navigation
+    .col-8
+      = text_field_tag "category[display_title]", @category.display_title, :class => "required"
+  .row
+    .col-12
+      %span.bold Link
+    .col-8
+      = text_field_tag "category[link]", @category.link

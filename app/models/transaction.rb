@@ -37,6 +37,8 @@
 #  billing_address_id                :integer
 #  shipping_address_id               :integer
 #  canceled_order_note               :string(255)
+#  tracking_number                   :string(255)
+#  shipping_carrier                  :string(255)
 #
 # Indexes
 #
@@ -374,7 +376,7 @@ class Transaction < ApplicationRecord
   end
 
   def fulfilled?
-    current_state == "fulfilled"
+    tracking_number.present?
   end
 
   def shipping_method_label
@@ -413,5 +415,4 @@ class Transaction < ApplicationRecord
   def stripe_charge_cents
     stripe_payments.last.sum_cents
   end
-
 end

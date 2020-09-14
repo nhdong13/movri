@@ -23,6 +23,15 @@ class Admin::CategoriesController < Admin::AdminBaseController
     @category = Category.new(category_params)
     @category.community = @current_community
     @category.parent_id = nil if params[:category][:parent_id].blank?
+    if @category.parent
+      if @category.parent.category_type == 'category'
+        @category_type = 'subcategory'
+      elsif @category.parent.category_type == 'subcategory'
+        @category_type = 'children_category'
+      else
+        @category_type = 'category'
+      end
+    end
     @category.sort_priority = Admin::SortingService.next_sort_priority(@current_community.categories)
     shapes = @current_community.shapes
     selected_shape_ids = shape_ids_from_params(params)
@@ -31,8 +40,9 @@ class Admin::CategoriesController < Admin::AdminBaseController
       update_category_listing_shapes(selected_shape_ids, @category)
       redirect_to admin_categories_path
     else
-      flash[:error] = "Category saving failed"
-      render :action => :new, locals: { shapes: shapes, selected_shape_ids: selected_shape_ids }
+      flash[:error] = @category.errors.full_messages[0]
+      redirect_to new_admin_category_path(category_type: @category_type)
+      # render :action => :new, locals: { shapes: shapes, selected_shape_ids: selected_shape_ids }
     end
   end
 
@@ -50,13 +60,14 @@ class Admin::CategoriesController < Admin::AdminBaseController
     @category = @current_community.categories.find_by_url_or_id(params[:id])
     shapes = @current_community.shapes
     selected_shape_ids = shape_ids_from_params(params)
-
+    @category_type = @category.category_type ? @category.category_type : 'category'
     if @category.update(category_params)
       update_category_listing_shapes(selected_shape_ids, @category)
       redirect_to admin_categories_path
     else
-      flash[:error] = "Category saving failed"
-      render :action => :edit, locals: { shapes: shapes, selected_shape_ids: selected_shape_ids }
+      flash[:error] = @category.errors.full_messages[0]
+      redirect_to edit_admin_category_path(id: @category.id)
+      # render :action => :edit, locals: { shapes: shapes, selected_shape_ids: selected_shape_ids }
     end
   end
 
@@ -138,7 +149,7 @@ class Admin::CategoriesController < Admin::AdminBaseController
   end
 
   def category_params
-    params.require(:category).slice(:parent_id, :translation_attributes, :sort_priority, :url, :basename).permit!
+    params.require(:category).slice(:parent_id, :translation_attributes, :sort_priority, :url, :basename, :display_title, :link).permit!
   end
 
 end

@@ -6,7 +6,7 @@
           %i.icon-eye-open
           %span
             OVERVIEW
-        %a.mobile-tab-link{'data-tab' => 'spec_tab'}
+        %a.mobile-tab-link{'data-tab' => 'specs_tab'}
           = image_tag("mf_icons/icon-movri-note-board.svg", class: 'header-menu-icon icon-movri-chat')
           %span
             SPECS
@@ -26,10 +26,6 @@
           %i.icon-question-sign
           %span
             Q&A
-        %a.mobile-tab-link{'data-tab' => 'review3_tab'}
-          = image_tag("mf_icons/icon-movri-chat-black.svg", class: 'header-menu-icon icon-movri-chat')
-          %span
-            REVIEW
 
 #specification-tab
   = render partial: 'listings/listing_details'
