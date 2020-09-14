@@ -1,7 +1,7 @@
 require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
-
+  before_action :find_transaction, only: [:edit, :update]
   def new; end
 
   def create; end
@@ -50,6 +50,32 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   end
 
   def edit
-    @order = Transaction.last
+    @tax = Tax.find_by(province: @order.shipping_address.state_or_province)
+    calculate_money_service(@order)
   end
+
+  def update
+    calculate_money_service(@order)
+    @order.update!(transaction_params)
+  end
+
+  private
+  def transaction_params
+    params
+    .require(:transaction)
+    .permit(
+      :tracking_number,
+      :shipping_carrier
+    )
+  end
+
+  def find_transaction
+    @order = Transaction.find(params[:id])
+  end
+
+  def calculate_money_service(order=nil)
+    transaction = order || @order
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session)
+  end
+
 end

@@ -30,7 +30,7 @@ $border-color: #E1E3E5;
 
 .common-label-btn{
   margin-right: 15px;
-  span{
+  span, input{
     cursor: pointer;
     color: #616161;
     display: inline-block;
@@ -38,8 +38,16 @@ $border-color: #E1E3E5;
     border-radius: 5px;
     padding: 10px 15px;
   }
-  span:hover{
+  span:hover, input:hover{
     opacity: 0.75;
+  }
+}
+
+.common-admin-btn{
+  span, input{
+    color: white;
+    background: #606fc6;
+    border: 1px solid #606fc6;
   }
 }
 
@@ -129,6 +137,7 @@ $border-color: #E1E3E5;
 .width-60{width: 60%; padding: 0 12px}
 .width-65{width: 65%; padding: 0 12px}
 .width-70{width: 70%; padding: 0 12px}
+.width-75{width: 75%; padding: 0 12px}
 .width-30{width: 30%; padding: 0 12px}
 .width-80{width: 80%; padding: 0 12px}
 .width-40{width: 40%; padding: 0 12px}
@@ -320,4 +329,9 @@ li{
 
 .el-disabled{
   opacity: 0.5;
+}
+
+.items-style{
+  font-size: 14px;
+  color: #627281;
 }

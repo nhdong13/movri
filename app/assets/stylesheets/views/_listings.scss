@@ -1375,14 +1375,6 @@ $listing-author-avatar-height: 108;
     color: #3c3c3c;
   }
 
-  .user-manual-file-size {
-    font-size: 12px;
-    color: #9a9a9a;
-    top: 36%;
-    left: 70%;
-    position: absolute;
-  }
-
   .user-manual-file-icon,
   .firmware-updates-file-icon {
     position: absolute;
@@ -1439,20 +1431,13 @@ $listing-author-avatar-height: 108;
       color: #757575;
     }
 
-    .user-manual-title,
-    .user-manual-file-size {
+    .user-manual-title{
       font-weight: normal;
       left: 5px;
       top: 0;
     }
 
-    .user-manual-file-size {
-      font-size: 16px;
-      color: #999999;
-    }
-
     .user-manual-title,
-    .user-manual-file-size,
     .user-manual-file-icon,
     .firmware-updates-file-icon {
       position: relative;

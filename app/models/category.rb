@@ -11,6 +11,8 @@
 #  sort_priority :integer
 #  url           :string(255)
 #  category_type :integer          default("category")
+#  link          :string(255)
+#  display_title :string(255)
 #
 # Indexes
 #
@@ -38,7 +40,8 @@ class Category < ApplicationRecord
 
   belongs_to :community
 
-  before_save :uniq_url
+  validates :url, uniqueness: true
+
   after_save :update_category_type
   before_destroy :can_be_destroyed?
 
@@ -66,25 +69,6 @@ class Category < ApplicationRecord
 
   def default_translation_without_cache
     (translations.find { |translation| translation.locale == community.default_locale } || translations.first)
-  end
-
-  # TODO this should be done on service layer
-  def uniq_url
-    current_url = Maybe(url_source).to_url.or_else("noname")
-
-    if new_record? || url != current_url
-      blacklist = ['new', 'all']
-      base_url = current_url
-      categories = Category.where(community_id: community_id)
-
-      i = 1
-      while blacklist.include?(current_url) || categories.find { |c| c.url == current_url && c.id != id }.present? do
-        current_url = "#{base_url}#{i}"
-        i += 1
-      end
-      self.url = current_url
-    end
-
   end
 
   def display_name(locale)
@@ -165,11 +149,11 @@ class Category < ApplicationRecord
   end
 
   def self.find_by_url_or_id(url_or_id)
-    self.find_by_url(url_or_id) || self.find_by_id(url_or_id)
+    self.find_by_id(url_or_id) || self.find_by_url(url_or_id)
   end
 
   def url_name
-    url.split('-').join(' ').capitalize
+    display_title.split('-').join(' ').capitalize
   end
 
   def update_category_type

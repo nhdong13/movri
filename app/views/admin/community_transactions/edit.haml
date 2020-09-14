@@ -4,6 +4,202 @@
     %p Orders
     = @order.order_number
     .flex-items
-      %span= Print
-      %span= Refund
-      %span= Cancel
+      %span Print
+      %span Refund
+      %span Cancel
+    .display-flex
+      .width-70
+        .setting-box.margin-bt-20
+          %span.order-fulfillment{class: (@order.fulfilled? ? "grey-span" : "unfulfilled-span")}
+            %i.icon-circle
+            %span.capitalize= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
+          - @order.transaction_items.each do |item|
+            .flex-items.br-bottom
+              .width-15.margin-0
+                = image_tag item.listing.main_image
+              .width-85
+                .flex-items
+                  .width-50
+                    %span= item.listing.title
+                  .width-25
+                    - price = PriceCalculationService.calculate(item.listing, @order.booking.duration) * 1
+                    %span.block= "#{money_to_humanized(price)} x #{item.quantity}"
+                  .width-25.align-right
+                    %span= "#{money_to_humanized(price*item.quantity)}"
+                .flex-items
+                  .width-50
+                    %span Movri Coverage
+                  .width-50
+                    %span=money_to_humanized(InsuranceCalculationService.call(item.listing, @order.booking.duration) * 1)
+          .booking-dates.padding-15.br-bottom
+            .flex-items
+              .width-35
+                %span Arrival Date:
+                %span= @order.booking.start_on
+              .width-35
+                %span Return Date:
+                %span= @order.booking.end_on
+              .width-30.align-right
+                %span Duration:
+                %span= "#{@order.booking.duration} days"
+          - unless @order.fulfilled?
+            .flex-items.padding-15.fulfilled-option
+              .width-50
+                %span Shipping not required
+              .width-50.align-right
+                .common-label-btn.common-admin-btn.margin-0.btn-mark-as-fulfilled
+                  %span Mark as Fulfilled
+
+          = form_for [:admin, @order], url: admin_community_transaction_path(@current_community, @order) do |f|
+            .fulfilled-section.padding-15{class: @order.fulfilled? ? "" : "hidden"}
+              .row
+                .col-12
+                  %span.uppercase.bold Tracking Information (Optional)
+              .row
+                .form-group
+                  .col-6
+                    %span Tracking Number
+                    = f.text_field :tracking_number
+                  .col-6
+                    %span Shipping Carrier
+                    = f.select :shipping_carrier, options_for_select({'None': 'none', 'FedEx': 'fedex', 'Ups': 'ups'}, selected: @order.shipping_carrier), {}, {class: 'width-100'}
+              .row.margin-0.padding-15.br-bottom
+                .col-12.center-items
+                  .common-label-btn.common-admin-btn.margin-0
+                    - if @order.fulfilled?
+                      = f.submit 'Update'
+                    - else
+                      = f.submit 'Fulfill items'
+              .notify.padding-15
+                .row
+                  .col-12
+                    %span.uppercase Notify customer of shipment
+                    %label
+                      = check_box_tag :sent_tracking_number_to_customer, nil, true
+                      %span Send shipment details to  your customer now
+
+        .setting-box
+          %i.fa.fa-check
+          %span Paid
+          .subtotal
+            .flex-items
+              .width-25
+                %span Subtotal
+              .width-25
+                %span.items-style= "#{@order.total_quantity} items"
+              .width-60.align-right
+                %span= money_to_humanized(@calculate_money.get_price_cents_for_all_products_cart)
+          .morvi_coverage
+            .flex-items
+              .width-25
+                %span Morvi Coverage
+              .width-25
+              .width-50.align-right
+                %span= money_to_humanized(@calculate_money.total_coverage_for_all_items_cart)
+          .morvi_coverage
+            .flex-items
+              .width-25
+                %span Tax
+              .width-75.padding-0
+                - @tax.tax_rates.each do |k, v|
+                  .flex-items
+                    .width-25.padding-0
+                      %span.block.items-style= "#{k} #{v}%"
+                    .width-75.align-right
+                      %span= money_to_humanized(@calculate_money.calculate_tax_fee_base_on_percent(v))
+          .total.br-bottom.padding-b-t-15
+            .flex-items
+              .width-25
+                %span Total
+              .width-25
+              .width-50.align-right
+                %span= money_to_humanized(@calculate_money.final_price)
+
+          .flex-items.padding-b-t-15
+            .width-50
+              %span Paid by customer
+            .width-50.align-right
+              %span= money_to_humanized(@calculate_money.final_price)
+
+      .width-30
+        .setting-box.padding-0
+          .customer.br-bottom.padding-15
+            .item.flex-items
+              .width-50.bold
+                %span Customer
+              .width-50.align-right
+                = image_tag PersonViewUtils.person_avatar(@current_user), height: 62, width: 62, class: 'header-menu-icon icon-movri-user icon-movri-user-popup'
+            .item.row
+              .col-12
+                - if @order.starter
+                  .span.block= @order.starter.fullname
+                  .span.block= "#{@order.starter.starter_transactions.count} orders"
+          .contact.br-bottom.padding-15
+            .item.flex-items
+              .width-80.bold
+                %span.uppercase.fz-12 Contact Information
+              .width-20.align-right
+                = link_to 'Edit', ""
+            .item.row
+              .col-12
+                - if @order.starter
+                  .span.block= @order.starter.get_email
+
+          .shipping-address.br-bottom.padding-15
+            .item.flex-items
+              .width-80.bold
+                %span.uppercase.fz-12 Shipping Address
+              .width-20.align-right
+                = link_to 'Edit', ""
+            .item.row
+              .col-12
+                - if @order.starter && @order.starter.shipping_address
+                  - shipping_address = @order.starter.shipping_address
+                  .font-size-14
+                    = "#{shipping_address&.first_name} #{shipping_address&.last_name}"
+                  .font-size-14
+                    = shipping_address&.street1
+                  .font-size-14
+                    = shipping_address&.apartment
+                  .font-size-14
+                    = shipping_address&.city
+                  .font-size-14
+                    = shipping_address&.country
+                  .font-size-14
+                    = shipping_address&.phone
+                - else
+                  .span.block No shipping address
+
+          .billing-address.br-bottom.padding-15
+            .item.flex-items
+              .width-80.bold
+                %span.uppercase.fz-12 Billing Address
+              .width-20.align-right
+                = link_to 'Edit', ""
+            .item.row
+              .col-12
+                - if @order.starter && @order.starter.billing_address
+                  - billing_address = @order.starter.billing_address
+                  .font-size-14
+                    = "#{billing_address&.first_name} #{billing_address&.last_name}"
+                  .font-size-14
+                    = billing_address&.street1
+                  .font-size-14
+                    = billing_address&.apartment
+                  .font-size-14
+                    = billing_address&.city
+                  .font-size-14
+                    = billing_address&.country
+                  .font-size-14
+                    = billing_address&.phone
+                - else
+                  .span.block No billing address
+
+- content_for :extra_javascript do
+  :javascript
+    $(".btn-mark-as-fulfilled").click(function(){
+      $(this).parents('.fulfilled-option').hide();
+      $('.fulfilled-section').slideDown("slow");
+    })
+
+
