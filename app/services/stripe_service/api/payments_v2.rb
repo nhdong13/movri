@@ -1,6 +1,7 @@
 module StripeService::API
   class PaymentsV2
     def initialize(transaction, session, current_user)
+      @community =  Community.last
       @session = session
       @transaction = transaction
       @current_user = current_user
@@ -45,8 +46,8 @@ module StripeService::API
 
     def update_available_quantity
       booking = @transaction.booking
-      padding_time_start = booking.start_on - 2
-      padding_time_end = booking.end_on + 2
+      padding_time_start = booking.start_on - @community.padding_time_before.to_i
+      padding_time_end = booking.end_on + @community.padding_time_after.to_i
       @transaction.transaction_items.each do |item|
         listing = item.listing
         listing_quantity = listing.available_quantity
