@@ -1,7 +1,7 @@
 - children.each do |item|
-  .sub-categories
+  .sub-categories{:data => {:id => item.sort_priority }}
     %span.bold.header-categories.subcategory-header.block= "Sub Categories - <span class='children-categories-color'>Child Categories(#{item.all_children_categories.count})</span>".html_safe
-    .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}", :data => {:id => item.sort_priority } }
+    .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}",  }
       .col-10.listed-category-col
         .subcategory-label
           %span= item.display_name(I18n.locale)
