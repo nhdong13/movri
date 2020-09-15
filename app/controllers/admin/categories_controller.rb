@@ -72,9 +72,14 @@ class Admin::CategoriesController < Admin::AdminBaseController
   end
 
   def order
-    new_sort_order = params[:order].map(&:to_i).each_with_index
-    order_categories!(new_sort_order)
-    render body: nil, status: :ok
+    category_1 = Category.find_by(sort_priority: params[:order1].to_i)
+    category_2 = Category.find_by(sort_priority: params[:order2].to_i)
+    category_1.update(sort_priority: params[:order2].to_i)
+    category_2.update(sort_priority: params[:order1].to_i)
+    respond_to do |format|
+      format.html
+      format.json { render json: {success: true} }
+    end
   end
 
   # Remove form

@@ -1,13 +1,14 @@
-- categories.each do |category|
-  .top-level-category-container{data: {id: category.id}}
+- categories.order(sort_priority: :asc).each do |category|
+  .top-level-category-container{data: {id: category.sort_priority}}
     %span.bold.block.header-categories.main-category-header= "Category - <span class='subcategory-color'>SubCategories(#{category.all_subcategories.count})</span>".html_safe
     .row.category-row.margin-0.padding-5
       .col-10.listed-category-col
         .main-categories-label
           %span= category.url_name
       .col-2.listed-category-col
-        = render :partial => "category_action_buttons", :locals => {category: category, category_count: category_count}
-    - if category.all_subcategories.any?
-      = render partial: "listed_subcategory", locals: {children: category.all_subcategories, category_count: category_count}
+        = render :partial => "category_action_buttons", :locals => {category: category, category_count: category_count, btn_sort: 'category-btn-sort'}
+    .list-all-subcategories
+      - if category.all_subcategories.any?
+        = render partial: "listed_subcategory", locals: {children: category.all_subcategories, category_count: category_count}
     .top-level-category-divider-wrapper
       .top-level-category-divider

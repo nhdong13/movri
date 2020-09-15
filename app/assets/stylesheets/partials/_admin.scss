@@ -1,7 +1,7 @@
 @import "mixins/all";
 @import "compass/css3/user-interface";
 
-.admin-sort-button {
+.admin-sort-button, .category-action-edit a, .category-action-remove a, .category-action-remove, .category-action-edit {
   display: inline-block;
   border: 1px solid #e0e4ef;
   border-radius: 5px;
@@ -12,6 +12,10 @@
   .fa{
     margin: 5px;
   }
+  cursor: pointer;
+}
+.category-action-remove, .category-action-edit{
+  padding: 2px 5px;
 }
 
 .admin-left-navi-link-group-title {

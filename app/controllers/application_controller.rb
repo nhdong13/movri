@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
 
   def fetch_categories
     @categories = @current_community.categories.includes([:children, :parent])
-    @main_categories = Category.category
+    @main_categories = Category.category.order(sort_priority: :asc)
     # @category_display_names = category_display_names(@current_community, @main_categories, @categories)
   end
 

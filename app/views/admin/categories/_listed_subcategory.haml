@@ -1,14 +1,15 @@
 - children.each do |item|
   .sub-categories
     %span.bold.header-categories.subcategory-header.block= "Sub Categories - <span class='children-categories-color'>Child Categories(#{item.all_children_categories.count})</span>".html_safe
-    .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}", :data => {:id => item.id } }
+    .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}", :data => {:id => item.sort_priority } }
       .col-10.listed-category-col
         .subcategory-label
           %span= item.display_name(I18n.locale)
       .col-2.listed-category-col
-        = render partial: "category_action_buttons", locals: {category: item, category_count: category_count}
+        = render partial: "category_action_buttons", locals: {category: item, category_count: category_count, btn_sort: "subcategory-btn-sort"}
     - if item.all_children_categories.any?
       .children-categories
         .header-children-categories
           %span.bold.block= "Child Categories(#{item.all_children_categories.count})"
-        = render partial: "children_categories", locals: {children: item.all_children_categories, category_count: category_count}
+        .list-all-children-cate
+          = render partial: "children_categories", locals: {children: item.all_children_categories, category_count: category_count}

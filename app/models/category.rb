@@ -25,7 +25,7 @@ class Category < ApplicationRecord
 
   attr_accessor :basename
 
-  has_many :subcategories, :class_name => "Category", :foreign_key => "parent_id", :dependent => :destroy, :inverse_of => :parent
+  has_many :subcategories,  :class_name => "Category", :foreign_key => "parent_id", :dependent => :destroy, :inverse_of => :parent
   # children is a more generic alias for sub categories, used in classification.rb
   has_many :children, :class_name => "Category", :foreign_key => "parent_id", :inverse_of => :parent
   belongs_to :parent, :class_name => "Category", touch: true
@@ -133,12 +133,12 @@ class Category < ApplicationRecord
 
   def all_subcategories
     return [] unless self.category?
-    subcategories.where(category_type: 1)
+    subcategories.where(category_type: 1).order(sort_priority: :asc)
   end
 
   def all_children_categories
     return [] unless self.subcategory?
-    children.where(category_type: 2)
+    children.where(category_type: 2).order(sort_priority: :asc)
   end
 
   def icon_name

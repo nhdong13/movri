@@ -1,21 +1,28 @@
-= link_to edit_admin_category_path(category, category_type: category.category_type), :class => "category-action-edit", :id => "edit_category_#{category.id}" do
-  = icon_tag("edit", ["icon-fix"])
-- remove_html_opts = { class: "category-action-remove", id: "remove_category_#{category.id}" }
+.flex-items
+  .item.category-action-edit
+    = link_to edit_admin_category_path(category, category_type: category.category_type), :id => "edit_category_#{category.id}" do
+      = icon_tag("edit", ["icon-fix"])
+  - remove_html_opts = { class: "category-action-remove", id: "remove_category_#{category.id}" }
 
-- if !category.can_destroy?
-  = icon_tag("cross", ["icon-fix disabled"])
-- elsif category.remove_needs_caution?
-  = link_to remove_admin_category_path(category), remove_html_opts do
-    = icon_tag("cross", ["icon-fix"])
-- else
-  = link_to admin_category_path(category), remove_html_opts.merge(:method => :delete, data: {:confirm => t("admin.categories.index.remove_category_confirmation", {category_name: category.display_name(I18n.locale)})}) do
-    = icon_tag("cross", ["icon-fix"])
-
-- sort_disabled_class = category_count == 1 ? "disabled" : ""
-.category-action-up.admin-sort-button{class: sort_disabled_class, :tabindex => "-1"}
-  %i.fa.fa-arrow-up
-.category-action-down.admin-sort-button{class: sort_disabled_class, :tabindex => "-1"}
-  %i.fa.fa-arrow-down
+  - if !category.can_destroy?
+    .item
+      = icon_tag("cross", ["icon-fix disabled"])
+  - elsif category.remove_needs_caution?
+    .item
+      = link_to remove_admin_category_path(category), remove_html_opts do
+        = icon_tag("cross", ["icon-fix"])
+  - else
+    .item.category-action-remove
+      = link_to admin_category_path(category), remove_html_opts.merge(:method => :delete, data: {:confirm => t("admin.categories.index.remove_category_confirmation", {category_name: category.display_name(I18n.locale)})}) do
+        = icon_tag("cross", ["icon-fix"])
+  .category-action-up.admin-sort-button{class: "#{btn_sort}-up"}
+    %i.fa.fa-arrow-up
+  .category-action-down.admin-sort-button{class: "#{btn_sort}-down"}
+    %i.fa.fa-arrow-down
+  .success-icon
+    %i.fa.fa-check
+  .error-icon
+    %i.fa.fa-times
 
 
 - content_for :extra_javascript do
