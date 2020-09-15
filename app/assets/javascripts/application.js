@@ -111,6 +111,7 @@
 //= require social-insurance-number
 //= require stripe_payment
 //= require search_bar
+//= require order_categories
 //= require slick.min.js
 //= require shipping_rates.js
 //= require pricing_chart.js

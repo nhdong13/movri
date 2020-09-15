@@ -10,6 +10,6 @@
             %i.fa.fa-pencil-square-o
         .width-15.padding-0.align-right
           = attr.select :is_active, options_for_select({On: 1, Off: 0}, selected: tab.is_active ? 1 : 0)
-      = attr.cktext_area :description, :maxlength => "5000"
+      = attr.cktext_area :description
 -# = form.label :key_feature, 'Key Features', :class => "input"
 -# = form.cktext_area(:key_feature, :maxlength => "5000", :class => "listing_key_features_textarea")

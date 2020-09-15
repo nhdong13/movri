@@ -4,10 +4,10 @@
     .row.category-row.margin-0.padding-5
       .col-10.listed-category-col
         .main-categories-label
-          %span= category.display_name(I18n.locale)
+          %span= category.url_name
       .col-2.listed-category-col
         = render :partial => "category_action_buttons", :locals => {category: category, category_count: category_count}
     - if category.all_subcategories.any?
       = render partial: "listed_subcategory", locals: {children: category.all_subcategories, category_count: category_count}
-  .top-level-category-divider-wrapper
-    .top-level-category-divider
+    .top-level-category-divider-wrapper
+      .top-level-category-divider

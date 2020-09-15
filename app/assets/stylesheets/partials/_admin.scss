@@ -2,7 +2,16 @@
 @import "compass/css3/user-interface";
 
 .admin-sort-button {
+  display: inline-block;
+  border: 1px solid #e0e4ef;
+  border-radius: 5px;
   outline: none;
+  background: #e0e4ef;
+  color: #374385 !important;
+  margin-right: 5px;
+  .fa{
+    margin: 5px;
+  }
 }
 
 .admin-left-navi-link-group-title {

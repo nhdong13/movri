@@ -12,7 +12,12 @@
     = icon_tag("cross", ["icon-fix"])
 
 - sort_disabled_class = category_count == 1 ? "disabled" : ""
-= link_to '#', :class => "category-action-up admin-sort-button #{sort_disabled_class}", :tabindex => "-1" do
-  = icon_tag("directup", ["icon-fix"])
-= link_to '#', :class => "category-action-down admin-sort-button #{sort_disabled_class}", :tabindex => "-1" do
-  = icon_tag("directdown", ["icon-fix"])
+.category-action-up.admin-sort-button{class: sort_disabled_class, :tabindex => "-1"}
+  %i.fa.fa-arrow-up
+.category-action-down.admin-sort-button{class: sort_disabled_class, :tabindex => "-1"}
+  %i.fa.fa-arrow-down
+
+
+- content_for :extra_javascript do
+  :javascript
+    OrderCategories.run()

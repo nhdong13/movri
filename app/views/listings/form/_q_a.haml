@@ -10,7 +10,7 @@
             %i.fa.fa-pencil-square-o
         .width-15.padding-0.align-right
           = attr.select :is_active, options_for_select({On: 1, Off: 0}, selected: tab.is_active ? 1 : 0)
-      = attr.cktext_area :description, :maxlength => "5000"
+      = attr.cktext_area :description
 -# = form.label :q_a, 'Q&A', :class => "input"
 -# = form.cktext_area(:q_a, :maxlength => "5000", :class => "listing_q_a_textarea")
 
@@ -27,7 +27,7 @@
               %i.fa.fa-pencil-square-o
           .width-15.padding-0.align-right
             = attr.select :is_active, options_for_select({On: 1, Off: 0}, selected: extra_tab.is_active ? 1 : 0)
-        = attr.cktext_area :description, :maxlength => "5000"
+        = attr.cktext_area :description
 
 - unless @listing.new_record?
   .align-right
