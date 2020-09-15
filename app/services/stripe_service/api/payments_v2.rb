@@ -55,7 +55,7 @@ module StripeService::API
         number_of_rent = listing.number_of_rent + item.quantity
         item.listing.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
         if listing.available_quantity == 0
-          session[:booking] = {}
+          @session[:booking] = {}
           if listing.padding_time
             listing.padding_time.update(start_date: padding_time_start, end_date: padding_time_end)
           else
