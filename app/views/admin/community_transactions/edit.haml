@@ -1,18 +1,35 @@
-.wrapper
+.wrapper.admin-background
   = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
   .left-navi-section#edit-order
-    %p Orders
-    = @order.order_number
-    .flex-items
-      %span Print
-      %span Refund
-      %span Cancel
+    .row
+      .col-12
+        %i.fa.fa-angle-left
+        %span= link_to 'Orders', admin_community_transactions_path
+    .row
+      .col-12
+        %span.fz-30.bold= "##{@order.order_number}"
+        %span= "#{@order.updated_at} from Online Store"
+        .state-label.paid-state-label
+          %i.fa.fa-circle
+          %span= @order.completed? ? 'Paid' : "Unpaid"
+        .state-label.unfulfilled-state-label
+          %i.fa.fa-circle-o
+          %span= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
+    .row
+      .col-12
+        %i.fa.fa-print
+        %span.fa-fw Print
+        %i.fa.fa-reply
+        %span.fa-fw Refund
+        %i.fa.fa-times
+        %span Cancel
     .display-flex
       .width-70
         .setting-box.margin-bt-20
-          %span.order-fulfillment{class: (@order.fulfilled? ? "grey-span" : "unfulfilled-span")}
-            %i.icon-circle
-            %span.capitalize= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
+          .flex-items
+            .unfulfilled-icon
+              .out-line
+            %span.capitalize.bold= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
           - @order.transaction_items.each do |item|
             .flex-items.br-bottom
               .width-15.margin-0
@@ -22,7 +39,7 @@
                   .width-50
                     %span= item.listing.title
                   .width-25
-                    - price = PriceCalculationService.calculate(item.listing, @order.booking.duration) * 1
+                    - price = PriceCalculationService.calculate(item.listing, @order.booking&.duration) * 1
                     %span.block= "#{money_to_humanized(price)} x #{item.quantity}"
                   .width-25.align-right
                     %span= "#{money_to_humanized(price*item.quantity)}"
@@ -30,18 +47,18 @@
                   .width-50
                     %span Movri Coverage
                   .width-50
-                    %span=money_to_humanized(InsuranceCalculationService.call(item.listing, @order.booking.duration) * 1)
+                    %span=money_to_humanized(InsuranceCalculationService.call(item.listing, @order.booking&.duration) * 1)
           .booking-dates.padding-15.br-bottom
             .flex-items
               .width-35
                 %span Arrival Date:
-                %span= @order.booking.start_on
+                %span= @order.booking&.start_on
               .width-35
                 %span Return Date:
-                %span= @order.booking.end_on
+                %span= @order.booking&.end_on
               .width-30.align-right
                 %span Duration:
-                %span= "#{@order.booking.duration} days"
+                %span= "#{@order.booking&.duration} days"
           - unless @order.fulfilled?
             .flex-items.padding-15.fulfilled-option
               .width-50
@@ -79,8 +96,11 @@
                       %span Send shipment details to  your customer now
 
         .setting-box
-          %i.fa.fa-check
-          %span Paid
+          .flex-items
+            .paid-icon
+              .out-line
+                %i.fa.fa-check
+            %span.bold= @order.completed? ? 'Paid' : "Unpaid"
           .subtotal
             .flex-items
               .width-25
@@ -119,7 +139,7 @@
             .width-50
               %span Paid by customer
             .width-50.align-right
-              %span= money_to_humanized(@calculate_money.final_price)
+              %span= @order.completed? ? money_to_humanized(@calculate_money.final_price) : "$0"
 
       .width-30
         .setting-box.padding-0

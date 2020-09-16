@@ -50,7 +50,11 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   end
 
   def edit
-    @tax = Tax.find_by(province: @order.shipping_address.state_or_province)
+    if @order.shipping_address
+      @tax = Tax.find_by(province: @order.shipping_address.state_or_province)
+    else
+      @tax = Tax.first
+    end
     calculate_money_service(@order)
   end
 

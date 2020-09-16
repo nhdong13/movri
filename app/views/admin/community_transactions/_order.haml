@@ -6,13 +6,14 @@
   %td
     = order.buyer&.given_name
   %td
-    %span.order-payment-process{class: (order.paid? ? "pending-span" : "grey-span")}
-      %i.icon-circle-blank
-      = order.payment_process.capitalize
+    .state-label.paid-state-label
+      %i.fa.fa-circle
+      %span= order.completed? ? "Paid": "Unpaid"
+
   %td
-    %span.order-fulfillment{class: (order.fulfilled? ? "grey-span" : "unfulfilled-span")}
-      %i.icon-circle
-      = order.status.capitalize
+    .state-label.unfulfilled-state-label
+      %i.fa.fa-circle-o
+      %span= order.fulfilled? ? 'Fulfilled' : "Unfulfilled"
   %td
     = money_to_humanized(order.item_total)
   %td

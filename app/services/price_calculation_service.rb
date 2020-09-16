@@ -19,6 +19,7 @@ module PriceCalculationService
   end
 
   def calculate(listing, days = 7)
+    days = 7 unless days
     a_day_price = listing.price.cents
     if days == 1
       a_day_price
