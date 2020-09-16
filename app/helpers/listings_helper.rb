@@ -36,14 +36,14 @@ module ListingsHelper
   def localized_category_label(category)
     return nil if category.nil?
 
-    return category.display_name(I18n.locale).capitalize
+    return category.url_name.capitalize
   end
 
   def localized_category_from_id(category_id)
     Maybe(category_id).map { |cat_id|
       Category.where(id: cat_id).first
     }.map { |category|
-      category.display_name(I18n.locale).capitalize
+      category.url_name.capitalize
     }.or_else(nil)
   end
 

@@ -4,9 +4,9 @@
     .row
       .col-12
         = form.label :parent_id, t(".category_parent")
-        = form.select :parent_id, options_for_select([[t(".no_parent"), nil]] + top_level_categories.collect { |c| [c.display_name(I18n.locale), c.id] }, @category.parent_id)
+        = form.select :parent_id, options_for_select([[t(".no_parent"), nil]] + top_level_categories.collect { |c| [c.url_name, c.id] }, @category.parent_id)
 - elsif category_type == 'children_category'
   .row
     .col-12
       = form.label :parent_id, 'SubCategory Parent'
-      = form.select :parent_id, options_for_select([[t(".no_parent"), nil]] + Category.subcategory.collect { |c| [c.display_name(I18n.locale), c.id] }, @category.parent_id)
+      = form.select :parent_id, options_for_select([[t(".no_parent"), nil]] + Category.subcategory.collect { |c| [c.url_name, c.id] }, @category.parent_id)

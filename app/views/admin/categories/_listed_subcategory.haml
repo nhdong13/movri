@@ -1,10 +1,10 @@
 - children.each do |item|
   .sub-categories{:data => {:id => item.sort_priority }}
     %span.bold.header-categories.subcategory-header.block= "Sub Categories - <span class='children-categories-color'>Child Categories(#{item.all_children_categories.count})</span>".html_safe
-    .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}",  }
+    .row.category-row.margin-0.padding-5.sub-category-row{:id => "subcategory-#{item.url_name.squish.downcase.tr(" ","_")}",  }
       .col-10.listed-category-col
         .subcategory-label
-          %span= item.display_name(I18n.locale)
+          %span= item.url_name
       .col-2.listed-category-col
         = render partial: "category_action_buttons", locals: {category: item, category_count: category_count, btn_sort: "subcategory-btn-sort"}
     - if item.all_children_categories.any?

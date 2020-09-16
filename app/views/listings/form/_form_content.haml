@@ -50,7 +50,7 @@
                 = form.select :product_type, options_for_select(["New", "Old"]), class: 'listing_product_type'
               .form-collections
                 = form.label 'COLLECTIONS', class: 'input'
-                = form.select :category_ids, options_for_select(Category.all.collect {|cat| [cat.display_name(I18n.locale), cat.id]}, @listing.categories.ids), {}, {class: 'listing_collection', multiple: true, value: @listing.category_listings.pluck(:category_id)}
+                = form.select :category_ids, options_for_select(Category.all.collect {|cat| [cat.url_name, cat.id]}, @listing.categories.ids), {}, {class: 'listing_collection', multiple: true, value: @listing.category_listings.pluck(:category_id)}
               -# .form-tags.margin-bt-20
               -#   = form.label 'TAGS', class: 'input'
               -#   = form.hidden_field :tags

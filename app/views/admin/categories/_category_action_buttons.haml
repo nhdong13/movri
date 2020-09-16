@@ -13,7 +13,7 @@
         = icon_tag("cross", ["icon-fix"])
   - else
     .item.category-action-remove
-      = link_to admin_category_path(category), remove_html_opts.merge(:method => :delete, data: {:confirm => t("admin.categories.index.remove_category_confirmation", {category_name: category.display_name(I18n.locale)})}) do
+      = link_to admin_category_path(category), remove_html_opts.merge(:method => :delete, data: {:confirm => t("admin.categories.index.remove_category_confirmation", {category_name: category.url_name})}) do
         = icon_tag("cross", ["icon-fix"])
   .category-action-up.admin-sort-button{class: "#{btn_sort}-up"}
     %i.fa.fa-arrow-up

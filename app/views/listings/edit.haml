@@ -24,19 +24,19 @@
             .selected-group{:name => "category"}
               - @listing_presenter.categories.each do |value|
                 %a.select.selected.hidden{:data => {:id => value.id}}
-                  .link-text= t("listings.new.selected_category", :category => value.display_name(I18n.locale))
+                  .link-text= t("listings.new.selected_category", :category => value.url_name)
 
           - if @listing_presenter.subcategories.size > 1
             .selected-group{:name => "subcategory"}
               - @listing_presenter.subcategories.each do |value|
                 %a.select.selected.hidden{:data => {:id => value.id}}
-                  .link-text= t("listings.new.selected_subcategory", :subcategory => value.display_name(I18n.locale))
+                  .link-text= t("listings.new.selected_subcategory", :subcategory => value.url_name)
 
           - if @listing_presenter.children_categories.size >= 1
             .selected-group{:name => "children_category"}
               - @listing_presenter.children_categories.each do |value|
                 %a.select.selected.hidden{:data => {:id => value.id}}
-                  .link-text= t("listings.new.selected_children_category", :children_category => value.display_name(I18n.locale))
+                  .link-text= t("listings.new.selected_children_category", :children_category => value.url_name)
 
           - if @listing_presenter.shapes.size > 1
             .selected-group{:name => "listing_shape"}
@@ -52,19 +52,19 @@
             .option-group{:name => "category"}
               - @listing_presenter.categories.each do |value|
                 %a.select.option.hidden{:data => {:id => value.id}}
-                  .link-text= value.display_name(I18n.locale)
+                  .link-text= value.url_name
 
           - if @listing_presenter.subcategories.size > 1
             .option-group{:name => "subcategory"}
               - @listing_presenter.subcategories.each do |value|
                 %a.select.option.hidden{:data => {:id => value.id}}
-                  .link-text= value.display_name(I18n.locale)
+                  .link-text= value.url_name
 
           - if @listing_presenter.children_categories.size >= 1
             .option-group{:name => "children_category"}
               - @listing_presenter.children_categories.each do |value|
                 %a.select.option.hidden{:data => {:id => value.id}}
-                  .link-text= value.display_name(I18n.locale)
+                  .link-text= value.url_name
 
           - if @listing_presenter.shapes.size > 1
             .option-group{:name => "listing_shape"}

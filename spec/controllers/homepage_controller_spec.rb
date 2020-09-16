@@ -54,7 +54,7 @@ describe HomepageController, type: :controller do
         @category.translation_attributes = {en: {name: "Test Category"}}
         @category.save
         get :index, params: {category: @category.url}
-        category_name = @category.display_name(I18n.locale)
+        category_name = @category.url_name
         expect(response.body).to match("<title>Search results for #{category_name}</title>")
         expect(response.body).to match("<meta content='Search results for category #{category_name}' name='description'>")
       end

@@ -15,11 +15,11 @@
     - if categories
       - categories.each do |category|
         - if category.category?
-          %span.main-categories-label= category.display_name(I18n.locale)
+          %span.main-categories-label= category.url_name
         - elsif category.subcategory?
-          %span.subcategory-label= category.display_name(I18n.locale)
+          %span.subcategory-label= category.url_name
         - else
-          %span.children-categories-label= category.display_name(I18n.locale)
+          %span.children-categories-label= category.url_name
   %td
     - status = t("admin.communities.listings.#{presenter.listing_status(listing)}")
     - if presenter.show_approval_link?(listing)

@@ -8,14 +8,14 @@
 
 .left-navi-section
   %h2
-    = t('.remove_category_name', category_name: @category.display_name(I18n.locale))
+    = t('.remove_category_name', category_name: @category.url_name)
 
   .alert-box-danger
     %p
       %span.alert-box-icon<>
         = icon_tag("alert", ["icon-fix"])
       %span<
-        = t('.warning_remove_effects', category_name: @category.display_name(I18n.locale))
+        = t('.warning_remove_effects', category_name: @category.url_name)
 
     %ul
       - prefix = @category.has_subcategories? ? '.warning_with_subcategories_' : '.warning_'
@@ -42,7 +42,7 @@
         = t('.select_new_category')
 
         %p
-          = select_tag "new_category", options_for_select(@possible_merge_targets.collect { |c| [c.display_name(I18n.locale), c.id] })
+          = select_tag "new_category", options_for_select(@possible_merge_targets.collect { |c| [c.url_name, c.id] })
 
     .inline-button-container
       = button_tag t(".buttons.remove"), :class => "delete-button"

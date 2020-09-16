@@ -1,7 +1,7 @@
 - children.each do |item|
-  .row.category-row.margin-0.padding-5.sub-category-row.children-category-row{:id => "subcategory-#{item.display_name(I18n.locale).squish.downcase.tr(" ","_")}", :data => {:id => item.sort_priority } }
+  .row.category-row.margin-0.padding-5.sub-category-row.children-category-row{:id => "subcategory-#{item.url_name.squish.downcase.tr(" ","_")}", :data => {:id => item.sort_priority } }
     .col-10.listed-category-col
       .children-categories-label
-        %span= item.display_name(I18n.locale)
+        %span= item.url_name
     .col-2.listed-category-col
       = render partial: "category_action_buttons", locals: {category: item, category_count: category_count, btn_sort: "children-btn-sort"}
