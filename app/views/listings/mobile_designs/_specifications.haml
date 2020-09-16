@@ -2,18 +2,11 @@
   .row.listing-specifications
     .col-md-12
       .scrollmenu
-        %a.mobile-tab-link.active{'data-tab' => 'overview_tab'}
-          %i.icon-eye-open
-          %span
-            OVERVIEW
-        %a.mobile-tab-link{'data-tab' => 'specs_tab'}
-          = image_tag("mf_icons/icon-movri-note-board.svg", class: 'header-menu-icon icon-movri-chat')
-          %span
-            SPECS
-        %a.mobile-tab-link{'data-tab' => 'in_the_box_tab'}
-          %i.icon-archive
-          %span
-            IN THE BOX
+        - @listing.listing_tabs.where.not(tab_type: ['not_in_the_box', 'key_features']).each do |tab|
+          - if tab.is_active
+            %a.mobile-tab-link{class: tab.tab_type == 'specs' ? "active" : "", 'data-tab' => "#{tab.tab_type}_tab"}
+              %i.fa{class: tab.get_icon}
+              %span.uppercase= tab.title
         %a.mobile-tab-link{'data-tab' => 'accessories_tab'}
           %i.icon-suitcase
           %span
@@ -22,10 +15,10 @@
           = image_tag("mf_icons/icon-movri-chat-black.svg", class: 'header-menu-icon icon-movri-chat')
           %span
             REVIEW
-        %a.mobile-tab-link{'data-tab' => 'question_tab'}
-          %i.icon-question-sign
-          %span
-            Q&A
+        -# %a.mobile-tab-link{'data-tab' => 'question_tab'}
+        -#   %i.icon-question-sign
+        -#   %span
+        -#     Q&A
 
 #specification-tab
   = render partial: 'listings/listing_details'

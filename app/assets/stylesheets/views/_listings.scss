@@ -1344,7 +1344,10 @@ $listing-author-avatar-height: 108;
       text-decoration: none;
       font-size: 10px;
 
-      &.active {
+      &.active{
+        .fa{
+          color: #ffffff;
+        }
         background-color: #757575;
         color: #ffffff;
 
