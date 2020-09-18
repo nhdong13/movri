@@ -1757,9 +1757,11 @@ $listing-author-avatar-height: 108;
       font-size: 20px;
     }
 
-    .slide-item {
-      border: 1px solid #616161;
-      background: #ffffff;
+    .slide-item .mobile-listing-box{
+      .main-image{
+        img{margin: 0 !important}
+      }
+      border: none;
     }
 
     .listing-price  .amount {
@@ -3363,11 +3365,6 @@ $listing-author-avatar-height: 108;
 
     .viewed-title {
       font-size: 20px;
-    }
-
-    .slide-item {
-      border: 1px solid #616161;
-      background: #ffffff;
     }
 
     .listing-price  .amount {

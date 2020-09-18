@@ -221,6 +221,11 @@ Rails.application.routes.draw do
       resource :custom_style, only: [:edit ,:create, :update]
       resource :support_info, only: [:edit ,:create, :update]
       resource :shipping_additional_fee, only: [:edit ,:create, :update]
+      resources :promo_codes do
+        collection do
+          get :generate_code
+        end
+      end
 
       get '' => "getting_started_guide#index"
 

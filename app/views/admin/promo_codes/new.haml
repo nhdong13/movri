@@ -1,0 +1,12 @@
+.wrapper.admin-background
+  = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+  .left-navi-section
+    .promo-codes-setting.center-items
+      .width-80
+        .items.margin-bt-20
+          %i.fa.fa-angle-left
+          %span= link_to 'Discount Codes',admin_promo_codes_path
+        .items.margin-bt-20
+          %span.fz-30.bold Create discount code
+        .items
+          = render partial: "form", locals: {promo_code: @promo_code}

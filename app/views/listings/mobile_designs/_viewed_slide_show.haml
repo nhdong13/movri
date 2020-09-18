@@ -1,0 +1,29 @@
+- show_remove_icon = el == 'recently-viewed' ? 'show' : 'hide'
+.row
+  .col-12.margin-l-12
+    %span.viewed-title.font-open-sans.text-gray-scale
+      = title
+.row
+  .col-md-12.heroSlider-fixed
+    .overlay
+    .slider.responsive{class: "#{el}-slick"}
+      - session[:recently_viewed].each do |listing_id|
+        - listing = Listing.find(listing_id)
+        .slide-item-container
+          .slide-item
+            -# %div{class: "#{show_remove_icon}"}
+            -#   %span.viewed-time
+            -#     2 hours ago
+              -# %i.icon-remove.recently-reviewed-remove-item.right{class: "#{show_remove_icon}"}
+            .mobile-display
+              .listing-box
+                .mobile-listing-box
+                  .main-image.center-items
+                    = image_tag listing.main_image, :class => "design-image-too-wide"
+                  .listing-information.center-items
+                    = listing.title
+                  .listing-price
+                    %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
+                    %span= "/ #{ListingViewUtils.get_time_rent(session)}"
+                  %div
+                    = link_to "Rent now", listing_path(listing), class: "rent-now-btn"

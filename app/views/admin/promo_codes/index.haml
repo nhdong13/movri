@@ -1,0 +1,24 @@
+.wrapper.admin-background
+  = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+  .left-navi-section
+    .flex-items.margin-bt-20
+      .width-50
+        %span.fz-30.bold Discounts
+      .width-50.align-right
+        .common-label-btn.common-admin-btn
+          = link_to  'Create discount', new_admin_promo_code_path
+    .row
+      .col-12
+        %p Discount Codes
+
+    .row
+      .col-12
+        .setting-box
+          %p All
+          .search-promo-codes
+          .search-results-promo-codes
+          .promo-codes-pagination.padding-15
+
+- content_for :extra_javascript do
+  :javascript
+    ST.PromoCodesSearch.initSearchPromoCodes();

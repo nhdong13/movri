@@ -1,0 +1,90 @@
+window.ST = window.ST || {};
+
+(function(module) {
+  var initSearchPromoCodes = function() {
+    const search = instantsearch({
+      indexName: 'movri_promo_codes',
+      searchClient: algoliasearch(
+        algolia_application_id,
+        algolia_search_only_api_key
+      ),
+    });
+
+  // ====================================================================================
+    const renderPromoCodesPage = ( { hits } ) => {
+      return `
+      ${hits
+        .map(
+          item =>`
+            <li>
+              <div class='flex-items br-bottom padding-15'>
+                <div class='width-30'>
+                  <span>${item.code}</span>
+                </div>
+                <div class='width-30 center-items'>
+                  <div class='common-label-btn common-admin-btn'>
+                    <a href="/en/admin/promo_codes/${item.id}/edit">Edit</a>
+                  </div>
+                  <div class='common-label-btn common-admin-delete-btn margin-0'>
+                    <span>Delete</span>
+                  </div>
+                </div>
+                <div class='width-10 center-items'>
+                  <span class='${item.active ? 'active' : 'expired'}-label'>${item.active ? 'Active' : 'Expired'}</span>
+                </div>
+                <div class='width-10 center-items'>
+                  <span class='items-style'>${item.number_of_uses} used</span>
+                </div>
+                <div class='width-20 center-items'>
+                  <span>${item.start_datetime} - ${item.end_datetime}</span>
+                </div>
+              </div>
+            </li>
+          `)
+        .join('')}
+      `;
+    };
+
+    const renderPromoCodesItems = (renderOptions, isFirstRender) => {
+      if (isFirstRender) {}
+      const { hits, widgetParams } = renderOptions;
+      widgetParams.container.innerHTML = renderPromoCodesPage({hits})
+    };
+
+    const searchPromoCodesResult = instantsearch.connectors.connectHits(renderPromoCodesItems)
+  // ====================================================================================
+
+    search.addWidgets([
+      instantsearch.widgets.searchBox({
+        container: '.search-promo-codes',
+        placeholder: 'Search for promo codes',
+        showSubmit: false,
+        showReset: false,
+      }),
+
+      searchPromoCodesResult({
+        container: document.querySelector('.search-results-promo-codes'),
+      }),
+
+      instantsearch.widgets.configure({
+        hitsPerPage: 10,
+        distinct: true,
+        clickAnalytics: true,
+      }),
+
+      instantsearch.widgets.pagination({
+        container: '.promo-codes-pagination',
+        scrollTo: false,
+        showFirst: false,
+        showLast: false,
+      }),
+    ]);
+
+    search.start();
+
+  };
+
+  module.PromoCodesSearch = {
+    initSearchPromoCodes: initSearchPromoCodes
+  };
+})(window.ST);

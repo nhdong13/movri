@@ -44,10 +44,25 @@ $border-color: #E1E3E5;
 }
 
 .common-admin-btn{
-  span, input{
-    color: white;
+  span, input, a{
+    color: white !important;
     background: #606fc6;
     border: 1px solid #606fc6;
+  }
+}
+.common-admin-btn, .common-admin-delete-btn{
+  span, input, a{
+    font-size: 12px;
+    border-radius: 2px;
+    padding: 2px 20px;
+  }
+}
+
+.common-admin-delete-btn{
+  span, input, a{
+    color: white !important;
+    background: #e13e3f;
+    border: 1px solid #e13e3f;
   }
 }
 
@@ -402,4 +417,43 @@ li{
 
 .admin-background{
   background: #f4f6f8;
+}
+
+.search-promo-codes{
+  input{
+    padding: 10px;
+    font-size: 12px;
+    border: 1px solid #d5dce2;
+    width: 100%;
+  }
+}
+
+label{
+  font-weight: 500 !important;
+}
+
+.expired-label{
+  background: #dee2eb;
+}
+
+.active-label{
+  background: #61bd4f;
+  color: white;
+}
+
+.expired-label, .active-label{
+  padding: 0px 15px;
+  font-size: 12px;
+  border-radius: 15px;
+}
+
+.common-cancel-btn{
+  display: inline-block;
+  a, span {
+    background: #fefefe;
+    color: black;
+    padding: 5px 15px;
+    border: 1px solid #c4cdd3;
+    border-radius: 1px;
+  }
 }

@@ -42,6 +42,7 @@
 //= require Sortable.min.js
 //= require selectize-standalone.js
 //= require datepicker/bootstrap-datepicker.js
+//= require timepicker/jquery.timepicker.min.js
 
 // Allow IE8-9 to post cross domain XHR (required for image upload)
 //= require jquery.iframe-transport.js
@@ -87,6 +88,8 @@
 //= require admin/orders.js
 //= require admin/draft_orders.js
 //= require admin/support_infos
+//= require promo_codes_search
+//= require promo_codes
 //= require payment_math
 //= require dropdown
 //= require jquery.nouislider

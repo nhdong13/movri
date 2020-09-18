@@ -64,7 +64,8 @@
 
 .selectize-dropdown{
   display: block;
-  position: static;
+  position: absolute;
+  margin-top: 2px;
 }
 
 .itemhover, .selected { background-color:#f0f0f0 !important; color:#232323 !important; }

@@ -1,0 +1,175 @@
+= form_for [:admin, promo_code] do |f|
+  .setting-box.margin-bt-20
+    .row
+      .col-7
+        %span.bold Discount Code
+      .col-5.align-right
+        .common-label-btn.common-admin-btn.margin-0
+          %span.generate-code-btn Generate Code
+    .row
+      .col-12
+        = f.text_field :code, placeholder: "e.g. SPRINGSALE"
+        %span.items-style Customers will enter this discount code at checkout.
+  .setting-box.margin-bt-20
+    .row
+      .col-12
+        %span.bold Types
+    .row
+      .col-12
+        %label
+          = f.radio_button :promo_type, 'percentage', checked: true
+          %span Percentage
+        .items
+          %label
+            = f.radio_button :promo_type, 'fixed_amount'
+            %span Fixed amount
+          .row.fixed-amount-field.promo-type-field{class: promo_code.fixed_amount? ? "" : "hidden"}
+            .col-4
+              %span.items-style Set amount
+              = f.text_field :fixed_amount_cents_value
+        %label
+          = f.radio_button :promo_type, 'free_shipping'
+          %span Free shipping
+        %label
+          = f.radio_button :promo_type, 'get_one_more'
+          %span Buy X get Y
+
+  .setting-box
+    .row
+      .col-12
+        %span.bold Value
+    .row
+      .col-4
+        %span Discount value (%)
+        = f.text_field :discount_value, placeholder: "%"
+  .setting-box.margin-bt-20
+    .row
+      .col-12
+        %span.bold.uppercase Applies to
+    .row
+      .col-12
+        %label
+          = f.radio_button :applies_to, 'all_order', checked: true
+          %span Entier order
+
+        .items
+          %label
+            = f.radio_button :applies_to, 'specific_collections'
+            %span Specific collections
+          .row.limit-collections-field.applies-to-field{class: promo_code.specific_collections? ? "" : "hidden"}
+            .col-8
+              %span.items-style Select collections
+              = f.select :limit_collection_ids, options_for_select(Category.all.collect {|cat| [cat.url_name, cat.id]}, promo_code.limit_collection_ids), {}, {class: 'limit_collections', multiple: true}
+
+        .items
+          %label
+            = f.radio_button :applies_to, 'specific_products'
+            %span Specific products
+          .row.limit-products-field.applies-to-field{class: promo_code.specific_products? ? "" : "hidden"}
+            .col-8
+              %span.items-style Select products
+              = f.select :limit_product_ids, options_for_select(Listing.all.collect {|listing| [listing.title, listing.id]}, promo_code.limit_product_ids), {}, {class: 'limit_products', multiple: true}
+
+  .setting-box.margin-bt-20
+    .row
+      .col-12
+        %span.bold Minimum requirements
+    .row
+      .col-12
+        %label
+          = f.radio_button :minimum_requirements, 'no_requirements', checked: true
+          %span None
+        %label
+          = f.radio_button :minimum_requirements, 'minimum_purchase_amount'
+          %span Minimum purchase amount (CA$)
+          .row.minimum-purchase-amount-field.requirements-field{class: promo_code.minimum_purchase_amount? ? "" : "hidden"}
+            .col-4
+              %span.items-style Set minimum purchase amount
+              = f.text_field :minimum_purchase_amount_cents_value
+        %label
+          = f.radio_button :minimum_requirements, 'minimum_quantity'
+          %span Minimum quantity of items
+          .row.minimum-quantity-field.requirements-field{class: promo_code.minimum_quantity? ? "" : "hidden"}
+            .col-4
+              %span.items-style Set minimum quantity
+              = f.text_field :minimum_quantity_value
+
+  .setting-box.margin-bt-20
+    .row
+      .col-12
+        %span.bold Customer eligibility
+    .row
+      .col-12
+        %label
+          = f.radio_button :customer_eligibility, 'everyone', checked: true
+          %span Everyone
+        %label
+          = f.radio_button :customer_eligibility, 'specific_groups'
+          %span Specific groups of customers
+        .items
+          %label
+            = f.radio_button :customer_eligibility, 'specific_customers'
+            %span Specific customers
+          .row.limit-person-field.customer-eligibility-field{class: promo_code.specific_customers? ? "" : "hidden"}
+            .col-8
+              %span.items-style Select customers
+              = f.select :limit_person_ids, options_for_select(Person.all.collect {|p| [p.fullname, p.id]}, promo_code.limit_person_ids), {}, {class: 'limit_person', multiple: true}
+
+
+  .setting-box.margin-bt-20
+    .row
+      .col-12
+        %span.bold Usage limits
+    .row
+      .col-12
+        %label
+          = f.check_box :is_usage_limit_number
+          %span Limit number of times this discount can be used in total
+        .row.limit-number-usage{class: promo_code.is_usage_limit_number? ? "" : "hidden"}
+          .col-4
+            %span.items-style Set the limit number
+            = f.text_field :usage_limit_number
+        %label
+          = check_box_tag :is_usage_limit_one_per_person
+          %span Limit to one use per customer
+
+  .setting-box.margin-bt-20
+    .row
+      .col-12
+        %span.bold Active dates
+    .row
+      .col-6
+        %span Start date
+        .common-input-date-with-icon
+          = text_field_tag 'promo_code[start_datetime]', promo_code.get_start_date,  placeholder: "yyyy/mm/dd",  class: "promo-code-date-picker"
+          %i.fa.fa-calendar
+      .col-6
+        %span Start time(PDT)
+        = text_field_tag 'promo_code[start_time]', promo_code.get_start_time, placeholder: "12:00 PM", class: "promo-code-time-picker"
+    .row{class: promo_code.end_datetime.present? ? "hidden" : ""}
+      .col-12
+        %label
+          = check_box_tag :set_end_date, 'set_end_date'
+          %span Set end date
+    .row.end-date-section{class: promo_code.end_datetime.present? ? "" : "hidden"}
+      .col-6
+        %span End date
+        .common-input-date-with-icon
+          = text_field_tag 'promo_code[end_datetime]', promo_code.get_end_date, placeholder: "yyyy/mm/dd", class: "promo-code-date-picker"
+          %i.fa.fa-calendar
+      .col-6
+        %span Start time(PDT)
+        = text_field_tag 'promo_code[end_time]', promo_code.get_end_time, placeholder: "12:00 PM", class: "promo-code-time-picker"
+
+  .margin-bt-20
+    .row
+      .col-6
+        .common-cancel-btn
+          = link_to "Cancel", admin_promo_codes_path
+      .col-6.align-right
+        .common-label-btn.common-admin-btn
+          %span.fz-16= f.submit 'Save discount code'
+
+- content_for :extra_javascript do
+  :javascript
+    PromoCodes.run();
