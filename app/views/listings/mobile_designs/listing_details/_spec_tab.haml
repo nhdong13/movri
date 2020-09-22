@@ -1,4 +1,4 @@
-- if @listing.specs_tab.is_active
+- if @listing.specs_tab.description.present? && @listing.specs_tab.is_active
   .tab-content.listing-specs#specs_tab
     .spec-content
       %span.font-open-sans.font-size-22
