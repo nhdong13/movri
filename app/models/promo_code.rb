@@ -19,7 +19,7 @@
 #  limit_product_ids                   :string(255)
 #  minimum_requirements                :integer          default("no_requirements")
 #  minimum_quantity_value              :integer          default(0)
-#  minimum_purchase_amount_cents_value :integer
+#  minimum_purchase_amount_cents_value :integer          default(0)
 #  customer_eligibility                :integer          default("everyone")
 #  limit_person_ids                    :string(255)
 #  is_usage_limit_number               :boolean          default(FALSE)
@@ -40,9 +40,14 @@ class PromoCode < ApplicationRecord
   serialize :limit_product_ids
   serialize :limit_collection_ids
 
+  validates_presence_of :start_datetime
+
   include AlgoliaSearch
   algoliasearch index_name: "movri_promo_codes" do
-    attribute :id, :code, :number_of_uses, :active
+    attribute :id, :code, :number_of_uses
+    attributes :active do
+      still_active? ? "Active" : 'Expired'
+    end
     attributes :start_datetime do
       get_start_date
     end
@@ -69,5 +74,37 @@ class PromoCode < ApplicationRecord
   def get_end_date
     return "--" unless end_datetime
     end_datetime.strftime("%Y-%m-%d")
+  end
+
+  def fixed_amount_cents_value=(fixed_amount_cents_value)
+    write_attribute(:fixed_amount_cents_value, fixed_amount_cents_value.to_i * 100)
+  end
+
+  def minimum_purchase_amount_cents_value=(minimum_purchase_amount_cents_value)
+    write_attribute(:minimum_purchase_amount_cents_value, minimum_purchase_amount_cents_value.to_i * 100)
+  end
+
+  def still_active?
+    is_active = false
+    current_datetime = DateTime.now
+    if end_datetime
+      if start_datetime < current_datetime && end_datetime > current_datetime
+        is_active = true
+      end
+    else
+      is_active = true if start_datetime < current_datetime
+    end
+  end
+
+  def unlimited_of_use?
+    if is_usage_limit_number
+      number_of_uses < usage_limit_number
+    else
+      true
+    end
+  end
+
+  def can_use?
+    still_active? || unlimited_of_use?
   end
 end

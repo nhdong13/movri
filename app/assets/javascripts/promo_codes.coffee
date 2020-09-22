@@ -78,6 +78,10 @@ loadSelectize = ->
     closeAfterSelect: false,
   });
 
+onSubmitPromocodeForm = ->
+  $('.btn-submit-promo-code').click (e) ->
+    e.preventDefault();
+
 window.PromoCodes =
   run: ->
     $(document).ready ->
@@ -91,3 +95,4 @@ window.PromoCodes =
       onSelectLimitCustomer()
       onSelectTypePromoCode()
       onClickGenerateCode()
+      # onSubmitPromocodeForm()

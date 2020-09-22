@@ -37,10 +37,10 @@ module PriceCalculationService
   def get_discount_from_promo_code(price, promo_code)
     return 0 unless promo_code
     case promo_code.promo_type
-    when 'discount_10_percent'
-      discount = price.percent_of(10)
-    when 'discount_20_percent'
-      discount = price.percent_of(20)
+    when 'percentage'
+      discount = price.percent_of(promo_code.discount_value)
+    when 'fixed_amount'
+      promo_code.fixed_amount_cents_value
     else
       0
     end

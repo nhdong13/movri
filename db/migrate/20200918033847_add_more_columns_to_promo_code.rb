@@ -7,7 +7,7 @@ class AddMoreColumnsToPromoCode < ActiveRecord::Migration[5.2]
     add_column :promo_codes, :limit_product_ids, :string
     add_column :promo_codes, :minimum_requirements, :integer, default: 0
     add_column :promo_codes, :minimum_quantity_value, :integer, default: 0
-    add_column :promo_codes, :minimum_purchase_amount_cents_value, :integer
+    add_column :promo_codes, :minimum_purchase_amount_cents_value, :integer, default: 0
     add_column :promo_codes, :customer_eligibility, :integer, default: 0
     add_column :promo_codes, :limit_person_ids, :string
     add_column :promo_codes, :is_usage_limit_number, :boolean, default: false

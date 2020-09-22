@@ -158,9 +158,11 @@ module ListingsHelper
   end
 
   def price_with_promo_code price, promo_code
-     return price unless promo_code
-     discount = PriceCalculationService.get_discount_from_promo_code(price, promo_code)
-     price - discount
+    return price unless promo_code
+    result = PromoCodeService.new(promo_code, session, @current_user).check_if_promo_code_can_use
+    return price unless result[:success]
+    discount = PriceCalculationService.get_discount_from_promo_code(price, promo_code)
+    price - discount
   end
 
   def get_today

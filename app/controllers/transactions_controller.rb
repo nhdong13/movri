@@ -462,8 +462,12 @@ class TransactionsController < ApplicationController
   def update_promo_code
     @promo_code = PromoCode.find_by(code: params[:promo_code])
     if @promo_code
+      promo_code_service(@promo_code)
+      @result = @promo_code_service.check_if_promo_code_can_use
       session[:promo_code] = {code: @promo_code.code}
       @transaction.update(promo_code_id: @promo_code.id)
+    else
+      @result = {success: false, message: 'This code is invalid or already used.'}
     end
     @state = @transaction.shipping_address.state_or_province
     @default_shipping_fee = @transaction.shipper.amount
@@ -779,7 +783,7 @@ class TransactionsController < ApplicationController
 
   def calculate_money_service(transaction=nil)
     transaction = transaction || @transaction
-    @calculate_money = TransactionMoneyCalculation.new(transaction, session)
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
   end
 
   def checkout_setting
@@ -796,5 +800,9 @@ class TransactionsController < ApplicationController
 
   def transaction_process_tokens
     TransactionService::API::Api.process_tokens
+  end
+
+  def promo_code_service(promo_code)
+    @promo_code_service ||= PromoCodeService.new(promo_code, session, @current_user)
   end
 end

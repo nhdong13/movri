@@ -8,7 +8,7 @@
           %span.generate-code-btn Generate Code
     .row
       .col-12
-        = f.text_field :code, placeholder: "e.g. SPRINGSALE"
+        = f.text_field :code, placeholder: "e.g. SPRINGSALE", required: true
         %span.items-style Customers will enter this discount code at checkout.
   .setting-box.margin-bt-20
     .row
@@ -25,8 +25,8 @@
             %span Fixed amount
           .row.fixed-amount-field.promo-type-field{class: promo_code.fixed_amount? ? "" : "hidden"}
             .col-4
-              %span.items-style Set amount
-              = f.text_field :fixed_amount_cents_value
+              %span.items-style Set amount ($)
+              = f.text_field :fixed_amount_cents_value, placeholder: '$', value: f.object.fixed_amount_cents_value/100
         %label
           = f.radio_button :promo_type, 'free_shipping'
           %span Free shipping
@@ -84,8 +84,8 @@
           %span Minimum purchase amount (CA$)
           .row.minimum-purchase-amount-field.requirements-field{class: promo_code.minimum_purchase_amount? ? "" : "hidden"}
             .col-4
-              %span.items-style Set minimum purchase amount
-              = f.text_field :minimum_purchase_amount_cents_value
+              %span.items-style Set minimum purchase amount($)
+              = f.text_field :minimum_purchase_amount_cents_value, value: f.object.minimum_purchase_amount_cents_value/100, placeholder: '$'
         %label
           = f.radio_button :minimum_requirements, 'minimum_quantity'
           %span Minimum quantity of items
@@ -141,7 +141,7 @@
       .col-6
         %span Start date
         .common-input-date-with-icon
-          = text_field_tag 'promo_code[start_datetime]', promo_code.get_start_date,  placeholder: "yyyy/mm/dd",  class: "promo-code-date-picker"
+          = text_field_tag 'promo_code[start_datetime]', promo_code.get_start_date, placeholder: "yyyy/mm/dd",  class: "promo-code-date-picker"
           %i.fa.fa-calendar
       .col-6
         %span Start time(PDT)
@@ -168,7 +168,7 @@
           = link_to "Cancel", admin_promo_codes_path
       .col-6.align-right
         .common-label-btn.common-admin-btn
-          %span.fz-16= f.submit 'Save discount code'
+          %span.fz-16= f.submit 'Save discount code', class: "btn-submit-promo-code"
 
 - content_for :extra_javascript do
   :javascript

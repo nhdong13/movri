@@ -12,11 +12,10 @@ class Admin::PromoCodesController < Admin::AdminBaseController
   end
 
   def update
-    byebug
     if @promo_code.update(promo_code_params)
       redirect_to admin_promo_codes_path
     else
-      flash[:error] = 'Something went wrong!'
+      flash[:error] = @promo_code.errors.full_messages[0]
       render :edit
     end
   end
@@ -27,11 +26,12 @@ class Admin::PromoCodesController < Admin::AdminBaseController
     if @promo_code.save
       redirect_to admin_promo_codes_path
     else
-      flash[:error] = 'Something went wrong!'
+      flash[:error] = @promo_code.errors.full_messages[0]
       render :new
     end
 
   end
+
   def generate_code
     ramdom_code = (0...8).map { (65 + rand(26)).chr }.join
     if PromoCode.find_by(code: ramdom_code)
@@ -41,6 +41,11 @@ class Admin::PromoCodesController < Admin::AdminBaseController
       format.html
       format.json { render json: {code: ramdom_code} }
     end
+  end
+
+  def destroy
+    @promo_code.destroy
+    redirect_to admin_promo_codes_path
   end
 
   private

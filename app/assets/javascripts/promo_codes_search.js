@@ -26,7 +26,7 @@ window.ST = window.ST || {};
                     <a href="/en/admin/promo_codes/${item.id}/edit">Edit</a>
                   </div>
                   <div class='common-label-btn common-admin-delete-btn margin-0'>
-                    <span>Delete</span>
+                    <a data-confirm="Are you sure?" data-method="delete" href="/en/admin/promo_codes/${item.id}/">Delete</a>
                   </div>
                 </div>
                 <div class='width-10 center-items'>

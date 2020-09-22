@@ -79,7 +79,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def calculate_money_service(order=nil)
     transaction = order || @order
-    @calculate_money = TransactionMoneyCalculation.new(transaction, session)
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
   end
 
 end

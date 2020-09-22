@@ -1,5 +1,5 @@
-<% unless @promo_code %>
-  $('.promo-code-error').html("This code is invalid or already used.").css('display', 'block');;
+<% unless @result[:success] %>
+  $('.promo-code-error').html('<%= @result[:message] %>').css('display', 'block');;
 <% end %>
 //desktop-display
 $(".show-cart-page .header-checkout").html("<%= j render(partial: 'listings/carts/header_checkout', locals: { promo_code: @promo_code, shipping_type: @shipping_type }) %>");

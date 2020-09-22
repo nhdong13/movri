@@ -1,6 +1,7 @@
 class TransactionMoneyCalculation
-  def initialize(transaction, session)
+  def initialize(transaction, session, current_user)
     @transaction = transaction
+    @current_user = current_user
     @session = session
     @promo_code = @transaction.promo_code
     @state = @transaction.shipping_address ? @transaction.shipping_address.state_or_province : 'alberta'
@@ -18,14 +19,13 @@ class TransactionMoneyCalculation
   def get_discount_from_promo_code(price)
     return 0 unless @promo_code
     case @promo_code.promo_type
-    when 'discount_10_percent'
-      discount = price.percent_of(10)
-    when 'discount_20_percent'
-      discount = price.percent_of(20)
+    when 'percentage'
+      discount = price.percent_of(@promo_code.discount_value)
+    when 'fixed_amount'
+      @promo_code.fixed_amount_cents_value
     else
       0
     end
-    discount
   end
 
   # this value is not including coverage
@@ -51,6 +51,8 @@ class TransactionMoneyCalculation
 
   def price_with_promo_code price
     return price unless @promo_code
+    result = PromoCodeService.new(@promo_code, @session, @current_user).check_if_promo_code_can_use
+    return price unless result[:success]
     discount = get_discount_from_promo_code(price)
     price - discount
   end

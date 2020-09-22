@@ -10,7 +10,7 @@
       = text_field_tag "category[url]", @category.url, :class => "required"
   .row
     .col-12
-      %span.bold Title on Navigation
+      %span.bold= "#{@category_type.split("_").join(" ").capitalize} name"
     .col-8
       = text_field_tag "category[display_title]", @category.display_title, :class => "required"
   .row
