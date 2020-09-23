@@ -6,7 +6,7 @@ module StripeService::API
       @transaction = transaction
       @current_user = current_user
       Stripe.api_key = APP_CONFIG.stripe_api_secret_key
-      @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session)
+      @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
       @amount = @calculate_money_service.final_price.to_i
     end
 
@@ -14,11 +14,12 @@ module StripeService::API
       begin
         ActiveRecord::Base.transaction(:requires_new => true) do
           update_available_quantity
-
+          customer = create_stripe_customer(payment_method_id)
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
             currency: 'usd',
             payment_method: payment_method_id,
+            customer: customer['id'],
             error_on_requires_action: true,
             confirm: true
           })
@@ -66,6 +67,26 @@ module StripeService::API
       end
     end
 
+    def create_stripe_customer stripe_payment_method_id
+      if @current_user
+        unless @current_user.stripe_customers.any?
+          customer = Stripe::Customer.create({
+            email: @current_user.get_email,
+            payment_method: stripe_payment_method_id
+          })
+          @current_user.stripe_customers.create(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
+        end
+      else
+        email = @transaction.shipping_address&.email,
+        customer = Stripe::Customer.create({
+          email: email,
+          payment_method: stripe_payment_method_id
+        })
+        @transaction.create_stripe_customer(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
+      end
+      customer
+    end
+
     def processing_billing_address_and_payment_intent params, transaction_address_params
       begin
         ActiveRecord::Base.transaction do
@@ -80,16 +101,55 @@ module StripeService::API
           @current_user.update(default_billing_address: @transaction_address.id) if @current_user && @current_user.billing_address.nil?
 
           update_available_quantity
-
+          customer = create_stripe_customer(params[:stripe_payment_method_id])
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
             currency: 'usd',
             payment_method: params[:stripe_payment_method_id],
             error_on_requires_action: true,
-            confirm: true
+            confirm: true,
+            customer: customer['id']
           })
           create_stripe_payment(intent) if intent
           return {success: true}
+        end
+      rescue StandardError => e
+        return {success: false, error: e.message}
+      end
+    end
+
+    def create_extra_fee_stripe_payment intent, stripe_payment_params
+      @transaction.stripe_payments.create!(
+        status: 'paid',
+        sum_cents: intent.amount,
+        commission_cents: 0,
+        payment_type: 1,
+        note: stripe_payment_params[:note],
+        fee_cents: intent.amount,
+        subtotal_cents: 0,
+        stripe_payment_intent_id: intent.id,
+        stripe_payment_intent_status: intent.status,
+        stripe_payment_intent_client_secret: intent.client_secret
+      )
+    end
+
+    def charge_extra_fee stripe_payment_params
+      if @transaction.starter
+        stripe_customer = @transaction.starter.stripe_customer.last
+      else
+        stripe_customer = @transaction.stripe_customer
+      end
+      begin
+        ActiveRecord::Base.transaction do
+          intent = Stripe::PaymentIntent.create({
+            amount: stripe_payment_params[:fee_cents].to_i * 100,
+            currency: 'usd',
+            error_on_requires_action: true,
+            confirm: true,
+            customer: stripe_customer.stripe_customer_id,
+            payment_method: stripe_customer.payment_method_id,
+          })
+          create_extra_fee_stripe_payment(intent, stripe_payment_params) if intent
         end
       rescue StandardError => e
         return {success: false, error: e.message}

@@ -1,7 +1,7 @@
 require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
-  before_action :find_transaction, only: [:edit, :update]
+  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee]
   def new; end
 
   def create; end
@@ -63,6 +63,16 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     @order.update!(transaction_params)
   end
 
+  def charge_extra_fee
+    result = stripe_api.charge_extra_fee(stripe_payment_params)
+    if result[:success]
+      redirect_to edit_admin_community_transaction_path(@current_community, @order)
+    else
+      flash[:error] = result[:error]
+      redirect_to edit_admin_community_transaction_path(@current_community, @order)
+    end
+  end
+
   private
   def transaction_params
     params
@@ -70,6 +80,15 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     .permit(
       :tracking_number,
       :shipping_carrier
+    )
+  end
+
+  def stripe_payment_params
+    params
+    .require(:stripe_payment)
+    .permit(
+      :fee_cents,
+      :note
     )
   end
 
@@ -82,4 +101,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
   end
 
+  def stripe_api
+    StripeService::API::Api.payments_v2.new(@order, session, @current_user)
+  end
 end
