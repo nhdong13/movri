@@ -391,7 +391,7 @@ class Transaction < ApplicationRecord
     weight = 0
     transaction_items.each do |item|
       packing_dimension = item.listing.packing_dimensions.first
-      return true unless packing_dimension.weight
+      return true unless packing_dimension
       weight += (packing_dimension.weight) * item.quantity
     end
     weight > LIMIT_WEIGHT_OF_FEDEX_SERVICE
