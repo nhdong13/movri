@@ -419,6 +419,6 @@ class Transaction < ApplicationRecord
   end
 
   def have_stripe_customer
-    stripe_customer.present? || starter.stripe_customers.any?
+    stripe_customer.present? || (starter && starter.stripe_customers.any?)
   end
 end
