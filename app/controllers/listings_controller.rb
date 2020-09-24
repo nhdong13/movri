@@ -187,7 +187,9 @@ class ListingsController < ApplicationController
       if @listing.save
         create_or_update_tabs(@listing, tabs)
         # create_or_update_accessories(result.data[:recommended_accessory_ids])
-        create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
+        subcategory_ids = params[:subcategory_ids] ? params[:subcategory_ids].uniq.reject(&:empty?) : []
+        childcategory_ids = params[:childcategory_ids] ? params[:childcategory_ids].uniq.reject(&:empty?) : []
+        create_or_update_category_listings([result.data[:category_ids]], subcategory_ids, childcategory_ids)
         create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
@@ -260,7 +262,9 @@ class ListingsController < ApplicationController
     if update_successful
       create_or_update_tabs(@listing, tabs)
       # create_or_update_accessories(result.data[:recommended_accessory_ids])
-      create_or_update_category_listings(result.data[:category_ids].uniq.reject(&:empty?))
+      subcategory_ids = params[:subcategory_ids] ? params[:subcategory_ids].uniq.reject(&:empty?) : []
+      childcategory_ids = params[:childcategory_ids] ? params[:childcategory_ids].uniq.reject(&:empty?) : []
+      create_or_update_category_listings([result.data[:category_ids]], subcategory_ids, childcategory_ids)
       create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
@@ -653,14 +657,9 @@ class ListingsController < ApplicationController
 
   private
 
-  def create_or_update_category_listings(category_ids)
-    ListingUpdateCategoryService.new(category_ids.reject(&:blank?), @listing)
+  def create_or_update_category_listings(category_ids, subcategory_ids, childcategory_ids)
+    ListingUpdateCategoryService.new(category_ids.concat(subcategory_ids).concat(childcategory_ids).uniq, @listing)
                                 .create_or_update_categories
-  end
-
-  def create_or_update_accessories(recommended_accessory_ids)
-    ListingUpdateAccessoryService.new(recommended_accessory_ids.split(','), @listing)
-                                 .add_recommended_accessories
   end
 
   def create_or_update_tabs listing, params

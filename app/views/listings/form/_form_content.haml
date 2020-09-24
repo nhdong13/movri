@@ -49,8 +49,14 @@
                 = form.label :product_type, 'Product Type'
                 = form.select :product_type, options_for_select(["New", "Old"]), class: 'listing_product_type'
               .form-collections
-                = form.label 'COLLECTIONS', class: 'input'
-                = form.select :category_ids, options_for_select(Category.all.collect {|cat| ["#{cat.url.capitalize} - #{cat.url_name}", cat.id]}, @listing.categories.ids), {}, {class: 'listing_collection', multiple: true, value: @listing.category_listings.pluck(:category_id)}
+                = form.label 'CATEGORY', class: 'input'
+                = form.select :category_ids, options_for_select(Category.category.collect {|cat| ["#{cat.url.capitalize} - #{cat.url_name}", cat.id]}, @listing.categories.category.ids), {}, {class: 'listing_collection', value: @listing.category_listings.pluck(:category_id)}
+
+                = form.label 'SUB-CATEGORY', class: 'input'
+                = select_tag 'subcategory_ids', options_for_select(Category.subcategory.collect {|cat| ["#{cat.url.capitalize} - #{cat.url_name}", cat.id]}, @listing.categories.subcategory.ids), {class: 'listing_collection', multiple: true}
+
+                = form.label 'CHILD-CATEGORY', class: 'input'
+                = select_tag 'childcategory_ids', options_for_select(Category.children_category.collect {|cat| ["#{cat.url.capitalize} - #{cat.url_name}", cat.id]}, @listing.categories.children_category.ids), {class: 'listing_collection', multiple: true}
               -# .form-tags.margin-bt-20
               -#   = form.label 'TAGS', class: 'input'
               -#   = form.hidden_field :tags
