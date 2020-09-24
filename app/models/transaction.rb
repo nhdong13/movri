@@ -417,4 +417,8 @@ class Transaction < ApplicationRecord
   def stripe_charge_cents
     stripe_payments.last.sum_cents
   end
+
+  def have_stripe_customer
+    stripe_customer.present? || starter.stripe_customers.any?
+  end
 end

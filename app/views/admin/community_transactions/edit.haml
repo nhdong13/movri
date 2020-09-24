@@ -141,7 +141,7 @@
             .width-50.align-right
               %span= @order.completed? ? money_to_humanized(@calculate_money.final_price) : "$0"
 
-        - if @order.completed? && @order.stripe_customer
+        - if @order.completed? && @order.have_stripe_customer
           .setting-box
             .flex-items
               .paid-icon
