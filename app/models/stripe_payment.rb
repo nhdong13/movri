@@ -24,6 +24,8 @@
 #  stripe_payment_intent_id            :string(255)
 #  stripe_payment_intent_status        :string(255)
 #  stripe_payment_intent_client_secret :string(255)
+#  payment_type                        :integer          default("standard")
+#  note                                :string(255)
 #
 
 class StripePayment < ApplicationRecord
@@ -37,6 +39,8 @@ class StripePayment < ApplicationRecord
   monetize :real_fee_cents,   with_model_currency: :currency, allow_nil: true
   monetize :subtotal_cents,   with_model_currency: :currency
   monetize :buyer_commission_cents, with_model_currency: :currency
+
+  enum payment_type: [:standard, :extra_fee]
 
   STATUSES = %w(pending paid canceled transfered)
   PAYMENT_INTENT_SUCCESS = 'success'.freeze

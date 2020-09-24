@@ -69,6 +69,7 @@ class Transaction < ApplicationRecord
   has_many :transaction_items, dependent: :destroy
   has_one :shipper, dependent: :destroy
   has_many :helping_requests
+  has_one :stripe_customer
 
   belongs_to :shipping_address, class_name: "TransactionAddress", foreign_key: "shipping_address_id"
   belongs_to :billing_address, class_name: "TransactionAddress", foreign_key: "billing_address_id"

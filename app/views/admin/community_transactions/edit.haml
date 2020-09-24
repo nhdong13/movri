@@ -95,7 +95,7 @@
                       = check_box_tag :sent_tracking_number_to_customer, nil, true
                       %span Send shipment details to  your customer now
 
-        .setting-box
+        .setting-box.margin-bt-20
           .flex-items
             .paid-icon
               .out-line
@@ -140,6 +140,51 @@
               %span Paid by customer
             .width-50.align-right
               %span= @order.completed? ? money_to_humanized(@calculate_money.final_price) : "$0"
+
+        - if @order.completed? && @order.stripe_customer
+          .setting-box
+            .flex-items
+              .paid-icon
+                .out-line
+                  %i.fa.fa-plus
+              %span.bold Charge an extra fee
+            = form_for [:admin, @order], url: charge_extra_fee_admin_community_transaction_path(@current_community, @order), method: :get do |f|
+              .row
+                .col-8
+                  %span Fee ($)
+                  = text_field_tag 'stripe_payment[fee_cents]', nil, placeholder: '$', required: true
+              .row
+                .col-8
+                  %span Reason
+                  = text_area_tag 'stripe_payment[note]', nil, placeholder: 'Note the reason for this fee', required: true
+                  %span This will sent an invoice to the customer.
+              .row
+                .col-8
+                  .common-label-btn.common-admin-btn.margin-0
+                    = f.submit 'Charge'
+          - if @order.stripe_payments.extra_fee.any?
+            .setting-box
+              %span.bold History
+              %table
+                %thead
+                  %tr
+                    %th
+                      Fee($)
+                    %th
+                      Reason
+                    %th
+                      Date Charge
+                %tbody
+                  - @order.stripe_payments.extra_fee.each do |payment|
+                    %tr
+                      %td
+                        = money_to_humanized(payment.fee_cents)
+                      %td
+                        = payment.note
+                      %td
+                        = payment.created_at
+
+
 
       .width-30
         .setting-box.padding-0
