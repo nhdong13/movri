@@ -71,6 +71,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       flash[:error] = result[:error]
       redirect_to edit_admin_community_transaction_path(@current_community, @order)
     end
+    # TODO: sent invoice to user
   end
 
   private
