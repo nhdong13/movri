@@ -498,6 +498,15 @@ class ListingsController < ApplicationController
     end
   end
 
+  def change_coverage_type
+    session[:coverage] ||= {}
+    session[:coverage][params[:id]] = params[:coverage_type]
+    respond_to do |format|
+      format.html
+      format.js {render layout: false}
+    end
+  end
+
   def load_cart
     unless session[:cart]
       render json: {
@@ -525,6 +534,8 @@ class ListingsController < ApplicationController
     @blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
     global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
     @blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
+    # reset session coverage
+    session[:coverage] = {}
     # manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
     # @blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
   end

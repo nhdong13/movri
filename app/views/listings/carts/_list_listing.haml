@@ -1,6 +1,7 @@
 - if session[:cart].present?
   - session[:cart].each do |key, value|
     - listing = Listing.find_by(id: key)
+    - coverage_type = (session[:coverage] && session[:coverage][key]) ? session[:coverage][key] : 'movri_coverage'
     .listing-info.unique-listing-sku{id: "listing-info-#{listing.id}", 'data-sku': "#{listing.id}"}
       .content
         .row
@@ -13,7 +14,7 @@
               %span SKU:
               %span= listing.sku.present? ? listing.sku.upcase : 'CAE5D3'
             .listing-coverage
-              = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS), class: 'custom-select-coverage'
+              = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS, selected: coverage_type), class: 'custom-select-coverage'
           .col-3
             .quantity-box
               %span= t('transactions.label.quantity')
@@ -26,7 +27,10 @@
               %span#price-item= readable_price
             .cart-item#coverage
               %span= "#{t('transactions.label.coverage')}:"
-              %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
+              - if coverage_type == "no_coverage"
+                %span $0
+              - else
+                %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
       .listing-action
         .row
           .col-8

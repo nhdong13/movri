@@ -105,6 +105,21 @@ window.ST = window.ST || {};
     }).done(function(response) {}).fail(function(error) {})
   });
 
+  $('body').on("change", "#select_coverage", function () {
+    var promoCode = getPromoCode();
+    var listingId = $(this).parents(".unique-listing-sku").data("sku")
+    var coverage_type = $(this).val()
+    var changeUrl = "/en/listings/" + listingId + "/change_coverage_type.js";
+    $.ajax({
+      url: changeUrl,
+      type: "PUT",
+      data: {
+        coverage_type: coverage_type,
+        promo_code: promoCode
+      }
+    }).done(function(response) {}).fail(function(error) {})
+  });
+
   $('.mobile-number-item-in-cart-detail, .cart-detail-item-quantity').keypress(function(event){
     if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
       event.preventDefault();

@@ -145,8 +145,13 @@ module ListingsHelper
   def total_coverage_for_all_items_cart
     total_coverage = 0
     session[:cart].each do|listing_id, quantity|
+      coverage_type = session[:coverage][listing_id]
       listing = Listing.find_by(id: listing_id)
-      coverage = InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
+      if coverage_type == "no_coverage"
+        coverage = 0
+      else
+        coverage = InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
+      end
       total_coverage += coverage
     end
     total_coverage

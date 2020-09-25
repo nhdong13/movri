@@ -1,5 +1,6 @@
 - session[:cart].each do |key, value|
   - listing = Listing.find_by(id: key)
+  - coverage_type = (session[:coverage] && session[:coverage][key]) ? session[:coverage][key] : 'movri_coverage'
   .row.mobile-listing-info.unique-listing-sku{id: "listing-info-#{listing.id}", 'data-sku': "#{listing.id}"}
     .display-flex
       .width-30.flex-items
@@ -17,7 +18,7 @@
             = select_tag element_id.to_sym, options_for_select((1..10).to_a.map(&:to_s), selected: value), class: 'custom-select-number mobile-number-item-in-cart-detail'
         .coverage.flex-items.margin-bt-10
           .coverage-selection.width-50.padding-0
-            = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS), class: 'custom-select'
+            = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS, selected: coverage_type), class: 'custom-select'
           .price-coverage.align-right.width-50.fz-12
             - price_cents = calculate_price_cents(listing, session[:cart][listing.id.to_s], promo_code)
             - readable_price = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
@@ -26,7 +27,10 @@
               %span= readable_price
             .coverage-price
               %span Coverage:
-              %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
+              - if coverage_type == "no_coverage"
+                %span $0
+              - else
+                %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
     .listting-action
       %i.icon-shopping-cart
       %span Move to wish list
