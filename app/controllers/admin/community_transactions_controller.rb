@@ -61,6 +61,11 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   def update
     calculate_money_service(@order)
     @order.update!(transaction_params)
+    if params[:sent_tracking_number_to_customer] == 'on'
+      SendgridMailer.send_order_fulfilled_mail(@order)
+    end
+    flash[:notice] = "Update successfully!"
+    redirect_to edit_admin_community_transaction_path(@current_community, @order)
   end
 
   def charge_extra_fee
