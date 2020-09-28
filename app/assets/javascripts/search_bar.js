@@ -14,6 +14,21 @@ $(document).ready(function() {
       .join(' ');
   }
 
+  var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+      }
+    }
+  };
+
   const search = instantsearch({
     indexName: 'movri_products',
     searchClient: algoliasearch(
@@ -213,6 +228,8 @@ $(document).ready(function() {
   }
 
   const renderCurrentCategory = ({hits}) => {
+    children_categories_value = getUrlParameter('children_categories')
+    subcategories_value = getUrlParameter('subcategories')
     hits = hits.slice(0, 1)
     return `
     ${hits
@@ -220,12 +237,10 @@ $(document).ready(function() {
         item =>
           {
             category = item.category;
-            subcategory = item.subcategory;
-            children_category = item.children_category;
-            if(children_category){
-              return`${children_category}`
+            if(children_categories_value){
+              return`${children_categories_value}`
             } else {
-              return`${subcategory}`
+              return`${subcategories_value}`
             }
           }
         )
@@ -234,6 +249,8 @@ $(document).ready(function() {
   }
 
   const renderBreadCrumbCategory = ({hits}) => {
+    children_categories_value = getUrlParameter('children_categories')
+    subcategories_value = getUrlParameter('subcategories')
     hits = hits.slice(0, 1)
     return `
     ${hits
@@ -241,23 +258,21 @@ $(document).ready(function() {
         item =>
           {
             category = item.category;
-            subcategory = item.subcategory;
-            children_category = item.children_category;
-            if(children_category){
+            if(children_categories_value){
               return`
                 <i class='fa fa-chevron-right'></i>
                 <span>${category}</span>
                 <i class='fa fa-chevron-right'></i>
-                <span>${subcategory}</span>
+                <span>${subcategories_value}</span>
                 <i class='fa fa-chevron-right'></i>
-                <span>${children_category}</span>
+                <span>${children_categories_value}</span>
               `
             }else{
               return`
                 <i class='fa fa-chevron-right'></i>
                 <span>${category}</span>
                 <i class='fa fa-chevron-right'></i>
-                <span>${subcategory}</span>
+                <span>${subcategories_value}</span>
               `
             }
           }

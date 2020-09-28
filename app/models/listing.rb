@@ -113,12 +113,15 @@ class Listing < ApplicationRecord
     attributes :category do
       category.url
     end
+
     attributes :subcategory do
-      subcategory&.url
+      categories.subcategory.pluck(:url)
     end
+
     attributes :children_category do
-      children_category&.url
+      categories.children_category.pluck(:url)
     end
+
     attributes :default_7_days_rental_price do
       price = Money.new(PriceCalculationService.calculate(self, 7), 'USD')
       MoneyViewUtils.to_humanized(price)

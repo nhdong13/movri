@@ -24,7 +24,7 @@
                       - subcategory.all_children_categories.each do |child|
                         %ul
                           %li
-                            = link_to child.url_name, categories_path(children_categories: child), class: "category-bar-label width-100"
+                            = link_to child.url_name, categories_path(subcategories: subcategory, children_categories: child), class: "category-bar-label width-100"
 
 - content_for :extra_javascript do
   :javascript
