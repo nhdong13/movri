@@ -87,10 +87,12 @@ $.getJSON("/admin/communities/1/listings", function(data) {
           $('.price').on('change', function(e){
             var total_price = $(e.target).val() * $(e.target).closest('tr').find('.quantity').val()
             $(e.target).closest('tr').find('.total-price').text(`$${total_price}`)
+            updateSubtotalAndTotal(total_price)
           })
 
           $('.quantity').on('change', function(e){
             $(e.target).closest('tr').find('.total-price').text(`$${$(e.target).val() * $(e.target).closest('tr').find('.price').val()}`)
+            updateSubtotalAndTotal($(e.target).val() * $(e.target).closest('tr').find('.price').val())
           })
 
           $('.icon-times').on('click', function(e){
@@ -150,3 +152,47 @@ $('.add-to-order-button').on('click', function(){
     }
   })
 })
+
+$('.add-tax').on('click', function() {
+  if($('#header-toggle-menu-tax #tax').prop('checked')) {
+    $('.total-info .total').text(function(i, oldText) {
+      total = parseInt(oldText)
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(total + total * 0.1)
+    })
+
+    $('.total-info .tax').text(function(i, oldText) {
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(parseInt($('.total-info .subtotal').text()) * 0.1)
+    })
+  } else {
+    $('.total-info .total').text(function(i, oldText) {
+      total = parseInt(oldText)
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(total - parseInt($('.tax').text()))
+    })
+
+    $('.total-info .tax').text(function(i, oldText) {
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(0)
+    })
+  }
+})
+
+// update subtotal and total
+function updateSubtotalAndTotal(total) {
+  $('.subtotal, .total').text(function(i, oldText) {
+    return new Intl.NumberFormat('en', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(parseInt(oldText) + total)
+  })
+}

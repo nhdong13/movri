@@ -13,22 +13,25 @@
       %th
         = "Subtotal"
       %td
-        = "$0.00"
+        = "$"
+        %span.subtotal= "0.00"
     %tr
       %th
-        %a= "Add shipping"
+        %a.add-shipping= "Add shipping"
       %td
         = "----"
     %tr
       %th
-        %a.add_taxes.toggle{data: {toggle: '#header-toggle-menu-tax', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}= "Taxes"
+        %a.add-taxes.toggle{data: {toggle: '#header-toggle-menu-tax', 'toggle-anchor-position' => 'right'}}= "Taxes"
       %td
-        = "$0.00"
+        = "$"
+        %span.tax= "0.00"
     %tr
       %th
         = "Total"
       %td
-        = "$0.00"
+        = "$"
+        %span.total= "0.00"
 
 .toggle-menu.header-toggle-menu-menu.hidden#header-toggle-menu-discount
   .col-12.br-bottom.padding-bt-15.margin-t-15
