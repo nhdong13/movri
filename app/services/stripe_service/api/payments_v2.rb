@@ -24,6 +24,7 @@ module StripeService::API
             confirm: true
           })
           create_stripe_payment(intent) if intent
+          SendgridMailer.send_order_confirmed_mail(@transaction)
           return {success: true}
         end
       rescue => e
@@ -74,7 +75,10 @@ module StripeService::API
             email: @current_user.get_email,
             payment_method: stripe_payment_method_id
           })
+
           @current_user.stripe_customers.create(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
+        else
+          customer = Stripe::Customer.retrieve(@current_user.stripe_customers.last.stripe_customer_id)
         end
       else
         email = @transaction.shipping_address&.email,
@@ -111,6 +115,7 @@ module StripeService::API
             customer: customer['id']
           })
           create_stripe_payment(intent) if intent
+          SendgridMailer.send_order_confirmed_mail(@transaction)
           return {success: true}
         end
       rescue StandardError => e

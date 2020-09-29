@@ -500,7 +500,7 @@ class TransactionsController < ApplicationController
     @shipping_address = @transaction.shipping_address
     @billing_address = @transaction.billing_address
     @state = @transaction.shipping_address.state_or_province
-    @default_shipping_fee = 0
+    @default_shipping_fee = @transaction.shipper.amount
     @helping_request = @transaction.helping_requests.build
   end
 
