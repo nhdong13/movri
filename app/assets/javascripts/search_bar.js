@@ -227,58 +227,37 @@ $(document).ready(function() {
     `;
   }
 
-  const renderCurrentCategory = ({hits}) => {
+  const renderCurrentCategory = () => {
     children_categories_value = getUrlParameter('children_categories')
     subcategories_value = getUrlParameter('subcategories')
-    hits = hits.slice(0, 1)
-    return `
-    ${hits
-      .map(
-        item =>
-          {
-            category = item.category;
-            if(children_categories_value){
-              return`${children_categories_value}`
-            } else {
-              return`${subcategories_value}`
-            }
-          }
-        )
-      .join('')}
-    `;
+    if(children_categories_value){
+      return`${children_categories_value}`
+    } else {
+      return`${subcategories_value}`
+    }
   }
 
-  const renderBreadCrumbCategory = ({hits}) => {
+  const renderBreadCrumbCategory = () => {
     children_categories_value = getUrlParameter('children_categories')
     subcategories_value = getUrlParameter('subcategories')
-    hits = hits.slice(0, 1)
-    return `
-    ${hits
-      .map(
-        item =>
-          {
-            category = item.category;
-            if(children_categories_value){
-              return`
-                <i class='fa fa-chevron-right'></i>
-                <span>${category}</span>
-                <i class='fa fa-chevron-right'></i>
-                <span>${subcategories_value}</span>
-                <i class='fa fa-chevron-right'></i>
-                <span>${children_categories_value}</span>
-              `
-            }else{
-              return`
-                <i class='fa fa-chevron-right'></i>
-                <span>${category}</span>
-                <i class='fa fa-chevron-right'></i>
-                <span>${subcategories_value}</span>
-              `
-            }
-          }
-        )
-      .join('')}
-    `;
+    category_value = getUrlParameter('category')
+    if(children_categories_value){
+      return`
+        <i class='fa fa-chevron-right'></i>
+        <span>${category_value}</span>
+        <i class='fa fa-chevron-right'></i>
+        <span>${subcategories_value}</span>
+        <i class='fa fa-chevron-right'></i>
+        <span>${children_categories_value}</span>
+      `
+    } else {
+      return`
+        <i class='fa fa-chevron-right'></i>
+        <span>${category_value}</span>
+        <i class='fa fa-chevron-right'></i>
+        <span>${subcategories_value}</span>
+      `
+    }
   }
 
 
@@ -418,14 +397,15 @@ $(document).ready(function() {
 //============================================================================
 
   const renderProductItems = (renderOptions, isFirstRender) => {
-    if (isFirstRender) {}
+    if (isFirstRender) {
+      $('.current-category').html(renderBreadCrumbCategory);
+      $('.current-collection--title').html(renderCurrentCategory);
+    }
     const container = document.querySelector('.search-result-algolia');
     const { indices } = renderOptions;
     if(indices[0]){
       $('.product-items').html([indices[0]].map(ProductItemsTemplate).join(''));
       $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
-      $('.current-category').html([indices[0]].map(renderBreadCrumbCategory).join(''));
-      $('.current-collection--title').html([indices[0]].map(renderCurrentCategory).join(''));
     }
   };
 

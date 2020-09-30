@@ -15,7 +15,7 @@
                         - if subcategory.all_children_categories.any?
                           .category-bar-label= subcategory.url_name
                         - else
-                          = link_to subcategory.url_name, categories_path(subcategories: subcategory), class: "category-bar-label"
+                          = link_to subcategory.url_name, categories_path(category: main_category.url_name, subcategories: subcategory.url_name), class: "category-bar-label"
                       .width-20.algin-right
                         - if subcategory.all_children_categories.any?
                           %i.fa.fa-chevron-right
@@ -24,7 +24,7 @@
                       - subcategory.all_children_categories.each do |child|
                         %ul
                           %li
-                            = link_to child.url_name, categories_path(subcategories: subcategory, children_categories: child), class: "category-bar-label width-100"
+                            = link_to child.url_name, categories_path(category: main_category.url_name, subcategories: subcategory.url_name, children_categories: child.url_name), class: "category-bar-label width-100"
 
 - content_for :extra_javascript do
   :javascript
