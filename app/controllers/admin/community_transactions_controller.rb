@@ -85,10 +85,14 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   end
 
   def get_amount_available
-    payment_intent = Stripe::PaymentIntent.retrieve(@order.stripe_payments.standard.last.stripe_payment_intent_id)
-    charge_data = payment_intent.charges.data[0]
-    charge_id = charge_data.id
-    @amount_available = charge_data.amount - charge_data.amount_refunded
+    if @order.stripe_payments.standard.any?
+      payment_intent = Stripe::PaymentIntent.retrieve(@order.stripe_payments.standard.last.stripe_payment_intent_id)
+      charge_data = payment_intent.charges.data[0]
+      charge_id = charge_data.id
+      @amount_available = charge_data.amount - charge_data.amount_refunded
+    else
+      @amount_available = 0
+    end
   end
 
   def charge_refund_fee

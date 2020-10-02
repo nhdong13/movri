@@ -190,7 +190,7 @@ module StripeService::API
           #     transaction_item.soft_delete
           #   end
           # end
-          refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id}) if intent
+          refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id})
           create_stripe_payment_for_extra_charge(refund, params[:reason_refund], 2) if refund
           if params[:sent_mail_refund_to_customer] == "on"
             SendgridMailer.send_refund_notification_mail(@transaction, to_CAD(amount_refund))
@@ -207,8 +207,10 @@ module StripeService::API
         amount_refund = to_cents(params[:refund_amount])
         intent = @transaction.stripe_payments.standard.last
         ActiveRecord::Base.transaction do
-          refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id}) if intent
-          create_stripe_payment_for_extra_charge(refund, params[:reason_for_canceling], 3) if refund
+          if amount_refund > 0
+            refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id}) if intent
+            create_stripe_payment_for_extra_charge(refund, params[:reason_for_canceling], 3) if refund
+          end
           @transaction.update(current_state: 'cancelled')
           # @transaction.transaction_items.each do |item|
           #   item_quantity = item.quantity
