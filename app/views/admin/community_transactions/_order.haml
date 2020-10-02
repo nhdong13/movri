@@ -1,6 +1,11 @@
 %tr
   %td
-    = "##{order.id}"
+    = order.id
+  %td
+    - if order.order_number.nil?
+      %span -
+    - else
+      = "##{order.order_number}"
   %td
     = order.created_at.to_formatted_s(:long)
   %td

@@ -33,12 +33,12 @@
       %table#admin_manage_orders.mytabs
         = render 'table_head'
         %tbody
-          - @transactions_presenter.transactions.each do |transaction|
+          - @transactions_presenter.transactions.order(id: :desc).each do |transaction|
             = render partial: 'order', locals: {order: transaction}
       %table#admin_manage_fulfilled_orders.mytabs
         = render 'table_head'
         %tbody
-          - @transactions_presenter.transactions.map{|t| t if t.current_state == "fulfilled"}.reject(&:nil?).each do |transaction|
+          - @transactions_presenter.transactions.order(id: :desc).map{|t| t if t.current_state == "fulfilled"}.reject(&:nil?).each do |transaction|
             = render 'order', locals: {order: transaction}
       %table#admin_manage_unfulfilled_orders.mytabs
         = render 'table_head'

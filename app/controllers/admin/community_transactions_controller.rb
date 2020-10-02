@@ -1,7 +1,7 @@
 require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
-  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee]
+  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy]
   def new; end
 
   def create; end
@@ -55,6 +55,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     else
       @tax = Tax.first
     end
+    get_amount_available
     calculate_money_service(@order)
   end
 
@@ -77,6 +78,38 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       redirect_to edit_admin_community_transaction_path(@current_community, @order)
     end
     # TODO: sent invoice to user
+  end
+
+  def refund_transaction
+    get_amount_available
+  end
+
+  def get_amount_available
+    payment_intent = Stripe::PaymentIntent.retrieve(@order.stripe_payments.standard.last.stripe_payment_intent_id)
+    charge_data = payment_intent.charges.data[0]
+    charge_id = charge_data.id
+    @amount_available = charge_data.amount - charge_data.amount_refunded
+  end
+
+  def charge_refund_fee
+    result = stripe_api.charge_refund_fee(params)
+    if result[:success]
+      flash[:notice] =  "Successfully!"
+      redirect_to edit_admin_community_transaction_path(@current_community, @order)
+    else
+      flash[:error] = result[:error]
+      redirect_to refund_transaction_admin_community_transaction_path(@current_community, @order)
+    end
+  end
+
+  def destroy
+    result = stripe_api.cancel_an_order(params)
+    if result[:success]
+      flash[:notice] =  "Successfully!"
+    else
+      flash[:error] = result[:error]
+    end
+    redirect_to edit_admin_community_transaction_path(@current_community, @order)
   end
 
   private

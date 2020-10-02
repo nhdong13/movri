@@ -1,0 +1,77 @@
+.wrapper.admin-background
+  = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+  .left-navi-section#edit-order
+    .row
+      .col-12
+        %i.fa.fa-angle-left
+        %span= link_to "##{@order.order_number}", edit_admin_community_transaction_path(@current_community, @order)
+    .width-80
+      .row
+        .col-6
+          %span.fz-30.bold Refund
+        .col-6.align-right
+          .common-cancel-btn
+            = link_to "Cancel", edit_admin_community_transaction_path(@current_community, @order)
+      = form_for [:admin , @order], url: charge_refund_fee_admin_community_transaction_path(@current_community, @order), method: :post do |f|
+        -# .display-flex
+          -# .width-70
+          -#   .setting-box.margin-bt-20
+          -#     .flex-items
+          -#       .unfulfilled-icon
+          -#         .out-line
+          -#       %span.capitalize.bold= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
+          -#     - @order.transaction_items.each do |item|
+          -#       .flex-items.margin-bt-10
+          -#         .width-15.margin-0
+          -#           = image_tag item.listing.main_image
+          -#         .width-85
+          -#           .flex-items
+          -#             .width-50
+          -#               .cut-text
+          -#                 %span.block= item.listing.title
+          -#                 %span.block.items-style= item.listing.sku
+          -#             .width-25
+          -#               .items.center-items.refund-quantity-field
+          -#                 .input-quantity-refund.center-items
+          -#                   = text_field_tag "refund_quantity[quantity_refund_item_id_#{item.id}]", 0, class: 'quantity-refund', type: "number", 'data-max-quantity': item.quantity
+          -#                   %span= "/ #{item.quantity}"
+          -#                 .change-quantity
+          -#                   .up
+          -#                     %i.fa.fa-sort-asc
+          -#                   .down
+          -#                     %i.fa.fa-caret-down
+          -#             .width-25.align-right
+          -#               - price = PriceCalculationService.calculate(item.listing, @order.booking&.duration) * 1
+          -#               %span= "CA#{money_to_humanized(price*item.quantity)}"
+          -#       %p.items-style Refunded items will be removed from the order.
+
+          -#   .setting-box.margin-bt-20
+          -#     %span.bold Refund Shipping
+          -#     .items
+          -#       %span Shipping rate:
+          -#       %span= @order.shipper.service_name
+          -#     .items
+          -#       %span Refund amount
+          -#     .items.width-50
+          -#       = text_field_tag :refund_amount, @order.shipper.amount
+        .setting-box.padding-0
+          .refund-amount.padding-15
+            .items
+              %span.bold Refund Amount
+              %span.block Stripe
+              = text_field_tag :refund_amount, nil
+              %span.items-style= "CA#{money_to_humanized(@amount_available)} available for refund"
+          .row.margin-0.padding-15
+            .margin-bt-20
+              %span.bold Reason for refund
+              .items
+                = text_field_tag :reason_refund
+              %p.items-style Only you and the other staff can see this reason.
+          .row.margin-0
+            .col-12.center-items
+              .common-label-btn.common-admin-btn.margin-0.width-100
+                = f.submit 'Refund', class: 'width-100'
+        .notify
+          %label
+            = check_box_tag :sent_mail_refund_to_customer, nil, true
+            %span.items-style Send a notification to the customer

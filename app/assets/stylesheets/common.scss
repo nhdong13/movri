@@ -461,3 +461,45 @@ label{
     border-radius: 1px;
   }
 }
+
+.input-quantity-refund{
+  span{
+    margin-left: 25px;
+    position: absolute;
+    color: #627281;
+  }
+  input{
+    border-radius: 0% !important;
+    padding-right: 40px !important;
+  }
+}
+
+.change-quantity{
+  text-align: center;
+  width: 65px ;
+  height: 42px;
+  border: 1px solid #9e9e9e;
+  cursor: pointer;
+  i{display: block;}
+  .up, .down{
+    padding: 2px;
+  }
+  .up{
+    border-bottom: 1px solid #9e9e9e;
+  }
+}
+
+.common-delete-label{
+  display: inline-block;
+  a, span, input {
+    background: #e03718;
+    color: white;
+    padding: 5px 15px;
+    border: 1px solid #e03718;
+    border-radius: 1px;
+  }
+}
+
+.pointer{
+  cursor: pointer;
+}

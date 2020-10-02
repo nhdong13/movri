@@ -40,7 +40,7 @@ class StripePayment < ApplicationRecord
   monetize :subtotal_cents,   with_model_currency: :currency
   monetize :buyer_commission_cents, with_model_currency: :currency
 
-  enum payment_type: [:standard, :extra_fee]
+  enum payment_type: [:standard, :extra_fee, :refund, :cancel]
 
   STATUSES = %w(pending paid canceled transfered)
   PAYMENT_INTENT_SUCCESS = 'success'.freeze

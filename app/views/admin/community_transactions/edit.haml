@@ -20,9 +20,9 @@
         %i.fa.fa-print
         %span.fa-fw Print
         %i.fa.fa-reply
-        %span.fa-fw Refund
+        %span.fa-fw= link_to "Refund", refund_transaction_admin_community_transaction_path(@current_community, @order)
         %i.fa.fa-times
-        %span Cancel
+        %span.cancel-order-btn.pointer Cancel
     .display-flex
       .width-70
         .setting-box.margin-bt-20
@@ -259,9 +259,11 @@
                     = billing_address&.phone
                 - else
                   .span.block No billing address
+    = render partial: "cancel_order", locals: {order: @order}
 
 - content_for :extra_javascript do
   :javascript
+    RefundSetting.run()
     $(".btn-mark-as-fulfilled").click(function(){
       $(this).parents('.fulfilled-option').hide();
       $('.fulfilled-section').slideDown("slow");

@@ -88,6 +88,7 @@
 //= require admin/orders.js
 //= require admin/draft_orders.js
 //= require admin/support_infos
+//= require admin/refund
 //= require promo_codes_search
 //= require promo_codes
 //= require payment_math

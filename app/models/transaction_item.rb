@@ -12,6 +12,9 @@
 #  price_cents          :integer
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  is_deleted           :boolean          default(FALSE)
+#  deleted_at           :datetime
+#  note                 :string(255)
 #
 
 class TransactionItem < ApplicationRecord
@@ -19,4 +22,16 @@ class TransactionItem < ApplicationRecord
   belongs_to :tx, class_name: 'Transaction', foreign_key: "transaction_id"
   validates :quantity, numericality: {only_integer: true, greater_than_or_equal_to: 1}, on: :create
   validates :listing_title, presence: true, on: :create
+
+  default_scope { where(is_deleted: false) }
+  scope :deleted, -> { unscope(:where).where(is_deleted: true) }
+
+  def soft_delete
+    update(is_deleted: true, deleted_at: DateTime.now)
+  end
+
+  def restore
+    update(is_deleted: false, deleted_at: nil)
+  end
+
 end

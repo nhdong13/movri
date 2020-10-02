@@ -384,13 +384,15 @@ Rails.application.routes.draw do
             get 'export_status'
           end
         end
-        resources :transactions, controller: :community_transactions, only: [:index, :create, :new, :edit, :update] do
+        resources :transactions, controller: :community_transactions do
           collection do
             get 'export'
             get 'export_status'
           end
           member do
             get :charge_extra_fee
+            get :refund_transaction
+            post :charge_refund_fee
           end
         end
         resources :transaction_addresses, controller: :community_transaction_addresses, only: [:update]

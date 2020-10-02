@@ -29,6 +29,7 @@ module StripeService::API
         end
       rescue => e
         # Display error on client
+        SendgridMailer.send_payment_error_mail(@transaction)
         return {success: false, error: e.message}
       end
     end
@@ -108,7 +109,7 @@ module StripeService::API
           customer = create_stripe_customer(params[:stripe_payment_method_id])
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
-            currency: 'usd',
+            currency: 'cad',
             payment_method: params[:stripe_payment_method_id],
             error_on_requires_action: true,
             confirm: true,
@@ -119,23 +120,27 @@ module StripeService::API
           return {success: true}
         end
       rescue StandardError => e
+        SendgridMailer.send_payment_error_mail(@transaction)
         return {success: false, error: e.message}
       end
     end
 
-    def create_extra_fee_stripe_payment intent, stripe_payment_params
-      @transaction.stripe_payments.create!(
+    def create_stripe_payment_for_extra_charge intent, note, payment_type
+      stripe_payment = @transaction.stripe_payments.create!(
         status: 'paid',
         sum_cents: intent.amount,
         commission_cents: 0,
-        payment_type: 1,
-        note: stripe_payment_params[:note],
+        payment_type: payment_type,
+        note: note,
         fee_cents: intent.amount,
         subtotal_cents: 0,
         stripe_payment_intent_id: intent.id,
         stripe_payment_intent_status: intent.status,
-        stripe_payment_intent_client_secret: intent.client_secret
+
       )
+      unless intent.object == "refund"
+        stripe_payment.update(stripe_payment_intent_client_secret: intent.client_secret)
+      end
     end
 
     def charge_extra_fee stripe_payment_params
@@ -148,13 +153,72 @@ module StripeService::API
         ActiveRecord::Base.transaction do
           intent = Stripe::PaymentIntent.create({
             amount: stripe_payment_params[:fee_cents].to_i * 100,
-            currency: 'usd',
+            currency: 'cad',
             error_on_requires_action: true,
             confirm: true,
             customer: stripe_customer.stripe_customer_id,
             payment_method: stripe_customer.payment_method_id,
           })
-          create_extra_fee_stripe_payment(intent, stripe_payment_params) if intent
+          create_stripe_payment_for_extra_charge(intent, stripe_payment_params[:note], 1) if intent
+        end
+      rescue StandardError => e
+        SendgridMailer.send_payment_error_mail(@transaction)
+        return {success: false, error: e.message}
+      end
+    end
+
+    def to_cents value
+      value = value.to_f * 100
+      value.to_i
+    end
+
+    def to_CAD value
+      value = value.to_f / 100
+    end
+
+    def charge_refund_fee params
+      begin
+        amount_refund = to_cents(params[:refund_amount])
+        intent = @transaction.stripe_payments.standard.last
+        ActiveRecord::Base.transaction do
+          # params[:refund_quantity].each do |key, quantity|
+          #   transaction_item_id = key.split("_").last
+          #   transaction_item = @transaction.transaction_items.find_by(id: transaction_item_id)
+          #   amount_refund += transaction_item.price_cents * quantity.to_i
+          #   transaction_item.update(quantity: transaction_item.quantity - quantity.to_i)
+          #   if transaction_item.quantity == 0
+          #     transaction_item.soft_delete
+          #   end
+          # end
+          refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id}) if intent
+          create_stripe_payment_for_extra_charge(refund, params[:reason_refund], 2) if refund
+          if params[:sent_mail_refund_to_customer] == "on"
+            SendgridMailer.send_refund_notification_mail(@transaction, to_CAD(amount_refund))
+          end
+          return {success: true}
+        end
+      rescue StandardError => e
+        return {success: false, error: e.message}
+      end
+    end
+
+    def cancel_an_order params
+      begin
+        amount_refund = to_cents(params[:refund_amount])
+        intent = @transaction.stripe_payments.standard.last
+        ActiveRecord::Base.transaction do
+          refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id}) if intent
+          create_stripe_payment_for_extra_charge(refund, params[:reason_for_canceling], 3) if refund
+          @transaction.update(current_state: 'cancelled')
+          # @transaction.transaction_items.each do |item|
+          #   item_quantity = item.quantity
+          #   item.listing.update(quantity:  item.listing.quantity + item_quantity)
+          # end
+          if params[:sent_mail_cancel_order_to_customer] == "on"
+            SendgridMailer.send_cancel_transaction_mail(@transaction)
+            SendgridMailer.send_refund_notification_mail(@transaction, to_CAD(amount_refund))
+          end
+          return {success: true}
         end
       rescue StandardError => e
         return {success: false, error: e.message}
