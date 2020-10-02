@@ -85,6 +85,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   end
 
   def get_amount_available
+    Stripe.api_key = APP_CONFIG.stripe_api_secret_key
     if @order.stripe_payments.standard.any?
       payment_intent = Stripe::PaymentIntent.retrieve(@order.stripe_payments.standard.last.stripe_payment_intent_id)
       charge_data = payment_intent.charges.data[0]
