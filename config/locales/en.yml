@@ -3277,7 +3277,7 @@ en:
       tax: Tax
       tbd: TBD
       total_with_tax: Total (including tax)
-      total_without_tax: Total (including tax)
+      total_without_tax: Total (excluding tax)
       order_date: Order Date
       arrival_date: Arrival Date
       return_date: Return Date

@@ -8,7 +8,7 @@
           .trade-in-your-gear-phone
             %a{href: "tel:#{@support_info.phone}"}
               %i.icon-phone
-              %span= @support_info.phone
+              %span= number_to_phone(@support_info.phone, delimiter: ".")
           .trade-in-your-gear-email
             %a{href: "mailto:#{@support_info.email}"}
               %i.icon-envelope-alt
