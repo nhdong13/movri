@@ -18,10 +18,11 @@ window.ST = window.ST || {};
           item =>`
             <li>
               <div class='flex-items br-bottom padding-15'>
-                <div class='width-30'>
-                  <span>${item.code}</span>
+                <div class='width-40'>
+                  <span class='block'>${item.code}</span>
+                  <span class='items-style'>${item.desc}</span>
                 </div>
-                <div class='width-30 center-items'>
+                <div class='width-20 center-items margin-0'>
                   <div class='common-label-btn common-admin-btn'>
                     <a href="/en/admin/promo_codes/${item.id}/edit">Edit</a>
                   </div>

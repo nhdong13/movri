@@ -7,7 +7,7 @@ window.Commons =
 
   formatPhone: ->
     $phoneInput = $('.phone-input ')
-    $phoneInput.inputmask({mask: "9 (999) 999-9999", placeholder: ""});
+    $phoneInput.inputmask({mask: "(999) 999-9999", placeholder: ""});
 
   CanadianZipCodeRule: ->
     jQuery.validator.addMethod 'cdnPostal', ((value, element) ->

@@ -1445,6 +1445,12 @@ $listing-author-avatar-height: 108;
     .firmware-updates-file-icon {
       position: relative;
     }
+
+  }
+  .heroSlider-fixed{
+    .slick-dots{
+      display: none !important;
+    }
   }
 }
 

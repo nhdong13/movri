@@ -9,6 +9,10 @@
       - total_coverage = total_coverage_for_all_items_cart
       %span.price#coverage-price= MoneyViewUtils.to_humanized(Money.new(total_coverage, 'USD'))
     .price-list
+      - if promo_code
+        %span= "Promo Code (#{promo_code.code})"
+        %span.price= "- #{money_to_humanized(get_discount_value(PriceCalculationService.calculate_total_price(session), promo_code))}"
+    .price-list
       %span= t('transactions.label.shipping')
       %span.price#shipping-fee
         - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)

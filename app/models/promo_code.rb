@@ -42,6 +42,10 @@ class PromoCode < ApplicationRecord
 
   validates_presence_of :start_datetime
 
+  has_many :tx, class_name: 'Transaction', :dependent => :destroy
+  has_and_belongs_to_many :people
+  validates_presence_of :start_datetime
+
   include AlgoliaSearch
   algoliasearch index_name: "movri_promo_codes" do
     attribute :id, :code, :number_of_uses
@@ -53,6 +57,26 @@ class PromoCode < ApplicationRecord
     end
     attributes :end_datetime do
       get_end_date
+    end
+    attributes :desc do
+      if percentage?
+        "#{discount_value}% off #{applies_to} - For #{get_people_limit_name}"
+      elsif fixed_amount?
+        "Discount CA$#{fixed_amount_cents_value} #{applies_to} - For #{get_people_limit_name}"
+      end
+    end
+  end
+
+  def get_people_limit_name
+    if specific_customers?
+      people = Person.where(id: limit_person_ids)
+      list_name = []
+      people.map {|p| list_name.push(p.fullname)}
+      list_name.join(", ")
+    elsif specific_groups?
+      "everyone"
+    else
+      "everyone"
     end
   end
 
@@ -85,6 +109,7 @@ class PromoCode < ApplicationRecord
   end
 
   def still_active?
+    return false if start_datetime.nil? || end_datetime.nil?
     is_active = false
     current_datetime = DateTime.now
     if end_datetime
