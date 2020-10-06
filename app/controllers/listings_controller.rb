@@ -113,22 +113,18 @@ class ListingsController < ApplicationController
       end
 
       manually_blocked_dates_arr.each do |range_date|
-        if start_date.nil?
-          session[:booking] = nil
-        else
+        if range_date.split(",").first.present? && range_date.split(",").last.present?
           if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
             session[:booking] = nil
             break
           end
-        end
 
-        if end_date.nil?
-          session[:booking] = nil
-        else
           if end_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
             session[:booking] = nil
             break
           end
+        else
+          session[:booking] = nil
         end
       end
     end
