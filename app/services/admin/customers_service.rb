@@ -18,6 +18,10 @@ class Admin::CustomersService
     customer.update(default_shipping_address: default_address.id)
   end
 
+  def update
+    resource_scope.update(customer_params[:person])
+  end
+
   private
 
   def customer_params

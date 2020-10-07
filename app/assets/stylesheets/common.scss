@@ -171,8 +171,9 @@ $border-color: #E1E3E5;
 .align-center{text-align: center;}
 .fake-link{color: #13588d; cursor: pointer;}
 .bold{font-weight: bold;}
-.dp-none{display: none;}
+.dp-none{display: none !important;}
 .dp-inline{display: inline !important}
+.dp-inline-flex{display: inline-flex;}
 .block{display: block}
 
 .alert-error{

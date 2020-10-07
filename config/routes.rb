@@ -393,7 +393,7 @@ Rails.application.routes.draw do
             get :charge_extra_fee
           end
         end
-        resources :transaction_addresses, controller: :community_transaction_addresses, only: [:update]
+        resources :transaction_addresses, controller: :community_transaction_addresses, only: [:update, :create, :edit]
         resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit, :update] do
           collection do
             get 'add_to_order'
@@ -429,7 +429,7 @@ Rails.application.routes.draw do
         resources :assurance_options, controller: :community_assurance_options, except: [:show]
         resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create, :edit, :update]
         resources :customers, controller: :community_customers, only: [:index, :new, :create]
-        resources :customers, controller: :community_customers, param: :uuid, :only => :show
+        resources :customers, controller: :community_customers, param: :uuid, :only => [:show, :update]
         resources :pages, controller: :community_pages
         resources :taxes, controller: :community_taxes, only: [:index] do
           collection do

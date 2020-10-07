@@ -6,9 +6,11 @@
   %table
     %tr
       %th
-        %a.add-discount.toggle{data: {toggle: '#header-toggle-menu-discount', 'toggle-position' => 'absolute', 'toggle-anchor-position' => 'right'}}= "Add discount"
+        %a.add-discount.toggle{data: {toggle: '#header-toggle-menu-discount'}}= "Add discount"
       %td
-        = "----"
+        = "$"
+        %span.discount= "0.00"
+        .reason
     %tr
       %th
         = "Subtotal"
@@ -17,12 +19,14 @@
         %span.subtotal= "0.00"
     %tr
       %th
-        %a.add-shipping= "Add shipping"
+        %a.add-discount.toggle{data: {toggle: '#header-toggle-menu-shipping'}}= "Add shipping"
       %td
-        = "----"
+        = "$"
+        %span.shipping= "0.00"
+        .shipping-service
     %tr
       %th
-        %a.add-taxes.toggle{data: {toggle: '#header-toggle-menu-tax', 'toggle-anchor-position' => 'right'}}= "Taxes"
+        %a.add-taxes.toggle{data: {toggle: '#header-toggle-menu-tax'}}= "Taxes"
       %td
         = "$"
         %span.tax= "0.00"
@@ -33,15 +37,19 @@
         = "$"
         %span.total= "0.00"
 
-.toggle-menu.header-toggle-menu-menu.hidden#header-toggle-menu-discount
+.header-toggle-menu-menu.hidden#header-toggle-menu-discount
   .col-12.br-bottom.padding-bt-15.margin-t-15
     %p= "Discount this order by"
-    = text_field_tag :discount_percent, params[:discount_percent], placeholder: "$", class: "margin-bt-15"
-    %p= "Reason"
+    #discount-section.width-100
+      %button.percent.margin-0= "%"
+      %button.price.margin-0= "$"
+      = number_field_tag :discount_percent, params[:discount_percent], placeholder: "$", step: 1
+    %p.margin-top-5= "Reason"
     = text_field_tag :reason, params[:reason], placeholder: "Damage item, loyalty discount"
   .col-12
-    %a.button.left= "Close"
-    %a.button.right.add-discount= "Apply"
+    %a.button.left.dp-none.remove= "Remove"
+    %a.button.left.close.toggle{data: {toggle: '#header-toggle-menu-discount'}}= "Close"
+    %a.button.right.add-discount-btn= "Apply"
 
 .toggle-menu.header-toggle-menu-menu.hidden#header-toggle-menu-tax
   .col-12.br-bottom.padding-bt-15.margin-t-15
@@ -51,3 +59,20 @@
   .col-12
     %a.button.left= "Close"
     %a.button.right.add-tax= "Apply"
+
+.toggle-menu.header-toggle-menu-menu.hidden.width-30#header-toggle-menu-shipping
+  .col-12.br-bottom.padding-bt-15.margin-t-15
+    .col-12
+      = radio_button_tag "shipping", true, true
+      %span= "Free shipping"
+    .col-12.margin-t-15
+      = radio_button_tag "shipping", false
+      %span= "Custom rates"
+    .col-8.margin-t-15
+      = text_field_tag :custom_rate_name, "", placeholder: "Custom rate name", disabled: true
+    .col-4.margin-t-15
+      = number_field_tag :shipping_price, "", placeholder: "$", disabled: true
+  .col-12 
+    %a.button.left.dp-none.remove= "Remove"
+    %a.button.left= "Close"
+    %a.button.right.add-shipping= "Apply"
