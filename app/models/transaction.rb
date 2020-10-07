@@ -153,6 +153,10 @@ class Transaction < ApplicationRecord
   before_create :add_current_state
   after_save :update_order_number
 
+  def is_cancelled?
+    self.current_state == 'cancelled'
+  end
+
   def add_current_state
     self.current_state = 'unfulfilled'
   end

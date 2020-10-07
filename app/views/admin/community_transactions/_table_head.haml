@@ -1,6 +1,8 @@
 %thead
   %tr
     %th
+      = render partial: "layouts/sort_link", locals: { column: "order", direction: sort_link_direction("order"), title: "ID"}
+    %th
       = render partial: "layouts/sort_link", locals: { column: "order", direction: sort_link_direction("order"), title: t('admin.communities.manage_orders.order')}
     %th
       = render partial: "layouts/sort_link", locals: { column: "date", direction: sort_link_direction("date"), title: t('admin.communities.manage_orders.date')}

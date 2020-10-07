@@ -113,14 +113,18 @@ class ListingsController < ApplicationController
       end
 
       manually_blocked_dates_arr.each do |range_date|
-        if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
-          session[:booking] = nil
-          break
-        end
+        if range_date.split(",").first.present? && range_date.split(",").last.present?
+          if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
+            session[:booking] = nil
+            break
+          end
 
-        if end_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
+          if end_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
+            session[:booking] = nil
+            break
+          end
+        else
           session[:booking] = nil
-          break
         end
       end
     end
@@ -501,6 +505,7 @@ class ListingsController < ApplicationController
   def change_coverage_type
     session[:coverage] ||= {}
     session[:coverage][params[:id]] = params[:coverage_type]
+    @promo_code = PromoCode.find_by(code: params[:promo_code])
     respond_to do |format|
       format.html
       format.js {render layout: false}

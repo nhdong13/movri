@@ -14,7 +14,7 @@
               =@support_info.sub_heading
           .trade-in-your-gear-phone
             %a{href: "tel:#{@support_info.phone}"}
-              = @support_info.phone
+              = number_to_phone(@support_info.phone, delimiter: ".")
           .trade-in-your-gear-email
             %a{href: "mailto:#{@support_info.email}"}
               Email

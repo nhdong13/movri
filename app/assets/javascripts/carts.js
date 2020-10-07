@@ -36,7 +36,6 @@ window.ST = window.ST || {};
   }
 
   function handleChangeInput() {
-    $('#price-item').html("...")
     $('.promo-code-error').hide();
   }
 

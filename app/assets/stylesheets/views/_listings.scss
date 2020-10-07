@@ -1445,6 +1445,12 @@ $listing-author-avatar-height: 108;
     .firmware-updates-file-icon {
       position: relative;
     }
+
+  }
+  .heroSlider-fixed{
+    .slick-dots{
+      display: none !important;
+    }
   }
 }
 
@@ -2951,7 +2957,7 @@ $listing-author-avatar-height: 108;
   }
 }
 
-#pricing-chart-modal {
+#pricing-chart-modal, #cancel-order-modal {
   display: none;
   position: fixed;
   z-index: 1001;

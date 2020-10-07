@@ -182,6 +182,20 @@ module ListingsHelper
     date.to_date.to_formatted_s(:long)
   end
 
+  def get_discount_value price, promo_code
+    return 0 unless promo_code
+    case promo_code.promo_type
+    when 'percentage'
+      discount = price.percent_of(promo_code.discount_value)
+    when 'fixed_amount'
+      promo_code.fixed_amount_cents_value
+    else
+      0
+    end
+
+  end
+
+
   def get_invertory_history_data version
     changeset = version.changeset
     available_quantity_changeset = changeset[:available_quantity]

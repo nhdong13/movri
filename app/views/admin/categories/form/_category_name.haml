@@ -7,7 +7,8 @@
       .col-2
         = label_tag "category[translation_attributes][#{locale_value}][name]", locale_name + ": ", :class => "new-category-name-locale-label"
     .col-8
-      = text_field_tag "category[url]", @category.url, :class => "required"
+      = text_field_tag "category[url]", @category.url, :class => "required lowercase"
+      %p.items-style This field should not contain any special characters, symbols or spaces.
   .row
     .col-12
       %span.bold= "#{@category_type.split("_").join(" ").capitalize} name"
@@ -18,3 +19,13 @@
       %span.bold Link
     .col-8
       = text_field_tag "category[link]", @category.link
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function() {
+      $('#category_url').keyup(function() {
+        var textValue = $(this).val();
+        textValue =textValue.replace(/ /g,"-");
+        $(this).val(textValue);
+      });
+    });

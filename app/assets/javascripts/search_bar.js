@@ -14,6 +14,21 @@ $(document).ready(function() {
       .join(' ');
   }
 
+  var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+      }
+    }
+  };
+
   const search = instantsearch({
     indexName: 'movri_products',
     searchClient: algoliasearch(
@@ -212,58 +227,37 @@ $(document).ready(function() {
     `;
   }
 
-  const renderCurrentCategory = ({hits}) => {
-    hits = hits.slice(0, 1)
-    return `
-    ${hits
-      .map(
-        item =>
-          {
-            category = item.category;
-            subcategory = item.subcategory;
-            children_category = item.children_category;
-            if(children_category){
-              return`${children_category}`
-            } else {
-              return`${subcategory}`
-            }
-          }
-        )
-      .join('')}
-    `;
+  const renderCurrentCategory = () => {
+    children_categories_value = getUrlParameter('children_categories')
+    subcategories_value = getUrlParameter('subcategories')
+    if(children_categories_value){
+      return`${children_categories_value}`
+    } else {
+      return`${subcategories_value}`
+    }
   }
 
-  const renderBreadCrumbCategory = ({hits}) => {
-    hits = hits.slice(0, 1)
-    return `
-    ${hits
-      .map(
-        item =>
-          {
-            category = item.category;
-            subcategory = item.subcategory;
-            children_category = item.children_category;
-            if(children_category){
-              return`
-                <i class='fa fa-chevron-right'></i>
-                <span>${category}</span>
-                <i class='fa fa-chevron-right'></i>
-                <span>${subcategory}</span>
-                <i class='fa fa-chevron-right'></i>
-                <span>${children_category}</span>
-              `
-            }else{
-              return`
-                <i class='fa fa-chevron-right'></i>
-                <span>${category}</span>
-                <i class='fa fa-chevron-right'></i>
-                <span>${subcategory}</span>
-              `
-            }
-          }
-        )
-      .join('')}
-    `;
+  const renderBreadCrumbCategory = () => {
+    children_categories_value = getUrlParameter('children_categories')
+    subcategories_value = getUrlParameter('subcategories')
+    category_value = getUrlParameter('category')
+    if(children_categories_value){
+      return`
+        <i class='fa fa-chevron-right'></i>
+        <span>${category_value}</span>
+        <i class='fa fa-chevron-right'></i>
+        <span>${subcategories_value}</span>
+        <i class='fa fa-chevron-right'></i>
+        <span>${children_categories_value}</span>
+      `
+    } else {
+      return`
+        <i class='fa fa-chevron-right'></i>
+        <span>${category_value}</span>
+        <i class='fa fa-chevron-right'></i>
+        <span>${subcategories_value}</span>
+      `
+    }
   }
 
 
@@ -403,14 +397,15 @@ $(document).ready(function() {
 //============================================================================
 
   const renderProductItems = (renderOptions, isFirstRender) => {
-    if (isFirstRender) {}
+    if (isFirstRender) {
+      $('.current-category').html(renderBreadCrumbCategory);
+      $('.current-collection--title').html(renderCurrentCategory);
+    }
     const container = document.querySelector('.search-result-algolia');
     const { indices } = renderOptions;
     if(indices[0]){
       $('.product-items').html([indices[0]].map(ProductItemsTemplate).join(''));
       $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
-      $('.current-category').html([indices[0]].map(renderBreadCrumbCategory).join(''));
-      $('.current-collection--title').html([indices[0]].map(renderCurrentCategory).join(''));
     }
   };
 
