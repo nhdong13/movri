@@ -1,0 +1,32 @@
+.modal#edit-shipping-address
+  = form_for address, url: admin_community_transaction_address_path(community_id: @current_community.id, id: address.id) do |f|
+    = f.hidden_field :person_id
+    .row.title.m-0
+      = "Add new address"
+    .row
+      .col-6
+        = f.label :first_name
+        = f.text_field :first_name, class: 'form-control'
+      .col-6
+        = f.label :last_name
+        = f.text_field :last_name, class: "form-control"
+      .col-12
+        = f.label :company
+        = f.text_field :company, class: "form-control"
+      .col-12
+        = f.label :address
+        = f.text_field :street1, class: "form-control"
+      .col-12
+        %label Apartment, suite, etc.
+        = f.text_field :apartment, class: "form-control"
+      .col-12
+        = f.label :city
+        = f.text_field :city, class: "form-control"
+      .col-6
+      .col-6
+      .col-12
+        = f.label :phone
+        = f.text_field :phone, class: "form-control"
+    .row.footer
+      %button.button.right.margin-l-5= "Save"
+      %a.button.right{rel: "modal:close"}= "Cancel"

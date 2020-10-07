@@ -66,6 +66,8 @@
           .font-size-14
             No exemptions
 
+#edit-address
+
 .modal#edit-customer-overview
   = form_for @customer, url: admin_community_customer_path(community_id: @current_community.id, uuid: @customer.id), method: :put do |f|
     = f.hidden_field :id, value: @customer.id

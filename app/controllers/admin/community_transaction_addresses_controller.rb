@@ -1,9 +1,16 @@
 class Admin::CommunityTransactionAddressesController < Admin::AdminBaseController
   before_action :set_transaction_address, only: :update
-  
+
+  def edit
+    @address = TransactionAddress.find(params[:id])
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
   def update
     if @transaction_address.update_attributes(transaction_address_params)
-      redirect_to edit_admin_community_draft_order_path(params[:community_id], params[:transaction_id])
+      redirect_to admin_community_customer_path(@current_community, transaction_address_params[:person_id])
     end
   end
 

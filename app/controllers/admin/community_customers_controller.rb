@@ -21,6 +21,8 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
     redirect_to admin_community_customers_path(@current_community)
   end
 
+  def edit; end
+
   def update
     begin
       ActiveRecord::Base.transaction do
