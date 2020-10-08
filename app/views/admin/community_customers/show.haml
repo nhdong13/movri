@@ -16,7 +16,7 @@
             .font-weight-bold
               = @customer.fullname
             .font-size-14
-              = "#{@customer.shipping_address&.company}, #{@customer.shipping_address&.city}, #{@customer.shipping_address&.country}" 
+              = "#{@customer.shipping_address&.company}, #{@customer.shipping_address&.city}, #{@customer.shipping_address&.country}"
         %label.mt-4.font-weight-regular
           = "Customer Note"
         .font-size-14
@@ -27,28 +27,138 @@
           The customer hasn't placed any order yet.
     .col-4.row.p-0.m-0
       .col-12.section-wrapper
-        %label.m-0 Cusomter overview
-        .mt-1
-          = @customer.email
-        .mb-1
-          = @customer.username.present? ? @customer.username : "No account"
-        .border-top
-          %label.mb-2 Default Address
-          .font-size-14
-            = "#{@customer.shipping_address&.first_name} #{@customer.shipping_address&.last_name}"
-          .font-size-14
-            = @customer.shipping_address&.street1
-          .font-size-14
-            = @customer.shipping_address&.apartment
-          .font-size-14
-            = @customer.shipping_address&.city
-          .font-size-14
-            = @customer.shipping_address&.country
-          .font-size-14
-            = @customer.shipping_address&.phone
-        .border-top
-          %label.mb-2 Tax Settings
+        .customer-overview.col-12.p-0.mb-2
+          .col-12.dp-inline-flex.p-0.mb-2
+            %label.m-0.float-left Cusomter overview
+            %a.float-right#edit-customer{href: "#edit-customer-overview", rel: "modal:open"}= "Edit"
+          .mt-1
+            = @customer.email
+          .mb-1
+            = @customer.username.present? ? @customer.username : "No account"
+        .manage-address.col-12.border-top.p-0.mb-2
+          - if @customer.shipping_addresses.size > 0
+            .col-12.dp-inline-flex.p-0.mb-2
+              %label.float-left.m-0 Default Address
+              %a.float-right#manage-address{href: "#edit-manage-address", rel: "modal:open"}= "Manage"
+            .font-size-14
+              = "#{@customer.shipping_address&.first_name} #{@customer.shipping_address&.last_name}"
+            .font-size-14
+              = @customer.shipping_address&.street1
+            .font-size-14
+              = @customer.shipping_address&.apartment
+            .font-size-14
+              = @customer.shipping_address&.city
+            .font-size-14
+              = @customer.shipping_address&.country
+            .font-size-14
+              = @customer.shipping_address&.phone
+            %a#manage-address{href: "#add-shipping-address", rel: "modal:open"}= "Add new address"
+          - else
+            .col-12.dp-inline-flex.p-0.mb-2
+              %label.left.m-0 Default Address
+              %a.float-right#manage-address{href: "#add-shipping-address", rel: "modal:open"}= "Add"
+            .font-size-14
+              = "No address provided"
+        .tax-settings.col-12.border-top.p-0.mb-2
+          .col-12.dp-inline-flex.p-0.mb-2
+            %label.float-left.m-0 Tax Settings
+            %a.float-right#edit-tax{href: "#edit-tax-settings", rel: "modal:open"} Manage
           .font-size-14
             No exemptions
 
-        
+#edit-address
+
+.modal#edit-customer-overview
+  = form_for @customer, url: admin_community_customer_path(community_id: @current_community.id, uuid: @customer.id), method: :put do |f|
+    = f.hidden_field :id, value: @customer.id
+    .row.title.mb-0
+      = "Edit Customer"
+    .row
+      .col-6
+        %label First Name
+        = f.text_field :given_name
+      .col-6
+        %label Last Name
+        = f.text_field :family_name
+      .col-12
+        %label Email
+        = f.text_field :email
+      .col-12
+        %label Phone number
+        = f.text_field :phone_number
+    .row.footer
+      %button.button.right.margin-l-5= "Save"
+      %a.button.right{rel: "modal:close"}= "Cancel"
+
+.modal#edit-manage-address
+  .row.title.mb-0
+    = "Manage Addresses"
+  .row
+    - if @customer.shipping_addresses.size > 0
+      - @customer.shipping_addresses.each_with_index do |shipping_address, index|
+        .col-12.pb-2
+          .font-size-14.font-weight-bold
+            = "Default Address" if shipping_address.id == @customer.default_shipping_address
+          .font-size-14
+            = "#{shipping_address&.first_name} #{shipping_address&.last_name}"
+          .font-size-14
+            = shipping_address&.street1
+          .font-size-14
+            = shipping_address&.apartment
+          .font-size-14
+            = shipping_address&.city
+          .font-size-14
+            = shipping_address&.country
+          .font-size-14
+            = shipping_address&.phone
+          = link_to 'Edit address', edit_admin_community_transaction_address_path(community_id: @current_community.id,id: shipping_address.id), remote: true
+    - else
+      .col-12
+        %a.left{rel: "modal:close"}= "Add new address"
+  .row.footer
+    %button.button.right.margin-l-5= "Save"
+    %a.button.right{rel: "modal:close"}= "Cancel"
+
+.modal#add-shipping-address
+  = form_with url: admin_community_transaction_addresses_path(community_id: @current_community.id) do |f|
+    = f.hidden_field 'transaction_address[person_id]', value: @customer.id
+    .row.title.m-0
+      = "Add new address"
+    .row
+      .col-6
+        = f.label :first_name
+        = f.text_field 'transaction_address[first_name]', class: 'form-control'
+      .col-6
+        = f.label :last_name
+        = f.text_field 'transaction_address[last_name]', class: "form-control"
+      .col-12
+        = f.label :company
+        = f.text_field 'transaction_address[company]', class: "form-control"
+      .col-12
+        = f.label :address
+        = f.text_field 'transaction_address[street1]', class: "form-control"
+      .col-12
+        %label Apartment, suite, etc.
+        = f.text_field 'transaction_address[apartment]', class: "form-control"
+      .col-12
+        = f.label :city
+        = f.text_field 'transaction_address[city]', class: "form-control"
+      .col-6
+      .col-6
+      .col-12
+        = f.label :phone
+        = f.text_field 'transaction_address[phone]', class: "form-control"
+    .row.footer
+      %button.button.right.margin-l-5= "Save"
+      %a.button.right{rel: "modal:close"}= "Cancel"
+
+.modal#edit-tax-settings
+  .row.title.mb-0
+    = "Edit tax exemption"
+  .row
+    .col-12
+      = check_box_tag :collect_tax
+      %span Collect tax
+  .row.footer
+    %button.button.right.margin-l-5= "Save"
+    %a.button.right{rel: "modal:close"}= "Cancel"

@@ -87,10 +87,12 @@ $.getJSON("/admin/communities/1/listings", function(data) {
           $('.price').on('change', function(e){
             var total_price = $(e.target).val() * $(e.target).closest('tr').find('.quantity').val()
             $(e.target).closest('tr').find('.total-price').text(`$${total_price}`)
+            updateSubtotalAndTotal(total_price, "plus")
           })
 
           $('.quantity').on('change', function(e){
             $(e.target).closest('tr').find('.total-price').text(`$${$(e.target).val() * $(e.target).closest('tr').find('.price').val()}`)
+            updateSubtotalAndTotal($(e.target).val() * $(e.target).closest('tr').find('.price').val(), "plus")
           })
 
           $('.icon-times').on('click', function(e){
@@ -149,4 +151,104 @@ $('.add-to-order-button').on('click', function(){
       })
     }
   })
+})
+
+$('.add-tax').on('click', function() {
+  if($('#header-toggle-menu-tax #tax').prop('checked')) {
+    $('.total-info .total').text(function(i, oldText) {
+      total = parseInt(oldText)
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(total + total * 0.1)
+    })
+
+    $('.total-info .tax').text(function(i, oldText) {
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(parseInt($('.total-info .subtotal').text()) * 0.1)
+    })
+  } else {
+    $('.total-info .total').text(function(i, oldText) {
+      total = parseInt(oldText)
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(total - parseInt($('.tax').text()))
+    })
+
+    $('.total-info .tax').text(function(i, oldText) {
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(0)
+    })
+  }
+})
+
+// update subtotal and total
+function updateSubtotalAndTotal(total, method) {
+  if (method == "plus") {
+    $('.subtotal, .total').text(function(i, oldText) {
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(parseInt(oldText) + parseInt(total))
+    })
+  } else if (method == "minus") {
+    $('.subtotal, .total').text(function(i, oldText) {
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(parseInt(oldText) - parseInt(total))
+    })
+  }
+}
+
+// add discount to draft order
+$('.add-discount-btn').on('click', function() {
+  var discount_percent = $('#discount_percent').val()
+  var reason = $('#reason').val()
+  total = parseInt($('.subtotal').text()) * (discount_percent / 100)
+
+  $('.discount').text(function() {
+    return new Intl.NumberFormat('en', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(total)
+  })
+
+  updateSubtotalAndTotal(total, 'minus')
+  $('.reason').text(reason)
+
+  $('.remove').removeClass('dp-none')
+  $('.close').addClass('dp-none')
+})
+
+
+$('#shipping_false').on('click' , function(){
+  $('#custom_rate_name').removeAttr('disabled')
+  $('#shipping_price').removeAttr('disabled')
+})
+
+$('#shipping_true').on('click', function(){
+  $('#custom_rate_name').attr({disabled: true})
+  $('#shipping_price').attr({disabled: true})
+})
+
+$('.add-shipping').on('click', function(){
+  if ($('#shipping_false').is(':checked')) {
+    custom_rate_name = $('#custom_rate_name').val()
+    shipping_price = $('#shipping_price').val()
+
+    $('.shipping-service').text(custom_rate_name)
+    $('.shipping').text(function(){
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(shipping_price)
+    })
+    updateSubtotalAndTotal(shipping_price, 'plus')
+  }
 })

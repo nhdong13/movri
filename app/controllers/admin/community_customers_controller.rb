@@ -21,6 +21,21 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
     redirect_to admin_community_customers_path(@current_community)
   end
 
+  def edit; end
+
+  def update
+    begin
+      ActiveRecord::Base.transaction do
+        @service.update
+      end
+    rescue => exception
+      logger.error("Errors in updating customer.")
+      flash[:error] = t("layouts.notifications.add_new_customer_failed")
+    end
+
+    redirect_to admin_community_customer_path(@current_community, params[:person][:id])
+  end
+
   def show
     @customer = Person.find_by(id: params[:uuid])
     render_not_found! unless @customer
