@@ -45,6 +45,7 @@ class TransactionAddressesController < ApplicationController
 
     # refesh session
     session[:cart] = {}
+    session[:promo_code] = {}
     respond_to do |format|
       format.html
       format.json { render json: { redirect_url: thank_you_transaction_path(@transaction.uuid_object) } }

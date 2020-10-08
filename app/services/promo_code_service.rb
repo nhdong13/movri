@@ -11,6 +11,7 @@ class PromoCodeService
     return promo_code_can_use_in_which_products? unless promo_code_can_use_in_which_products?[:success]
     return promo_code_can_use_in_which_conditions? unless promo_code_can_use_in_which_conditions?[:success]
     return check_customer_eligibility unless check_customer_eligibility[:success]
+    return limit_the_number_of_used_each_user unless limit_the_number_of_used_each_user[:success]
     {success: true}
   end
 
@@ -33,6 +34,18 @@ class PromoCodeService
       end
     else
       {success: true, message: ''}
+    end
+  end
+
+  def limit_the_number_of_used_each_user
+    if @promo_code.is_usage_limit_one_per_person
+      if @current_user.promo_codes_used.include?(@promo_code)
+        return {success: false, message: "The discount code is already used."}
+      else
+        return {success: true, message: ""}
+      end
+    else
+      return {success: true, message: ""}
     end
   end
 
@@ -60,8 +73,12 @@ class PromoCodeService
   def check_customer_eligibility
     case @promo_code.customer_eligibility
     when 'specific_customers'
-      if is_included(@promo_code.limit_person_ids, [@current_user.id])
-        return {success: true, message: ""}
+      if @current_user
+        if is_included(@promo_code.limit_person_ids, [@current_user.id])
+          return {success: true, message: ""}
+        else
+          return {success: false, message: "You can't use this discount code."}
+        end
       else
         return {success: false, message: "You can't use this discount code."}
       end
