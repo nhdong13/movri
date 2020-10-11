@@ -130,7 +130,7 @@
             %span.items-style Set the limit number
             = f.text_field :usage_limit_number
         %label
-          = check_box_tag :is_usage_limit_one_per_person
+          = f.check_box :is_usage_limit_one_per_person
           %span Limit to one use per customer
 
   .setting-box.margin-bt-20

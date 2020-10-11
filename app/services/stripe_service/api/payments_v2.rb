@@ -23,6 +23,7 @@ module StripeService::API
             error_on_requires_action: true,
             confirm: true
           })
+          increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
           SendgridMailer.send_order_confirmed_mail(@transaction)
           return {success: true}
@@ -66,6 +67,17 @@ module StripeService::API
             listing.create_padding_time(start_date: padding_time_start, end_date: padding_time_end)
           end
         end
+      end
+    end
+
+    def increase_total_of_used_discount_code
+      promo_code = @transaction.promo_code
+      if promo_code
+        promo_code.update(number_of_uses: promo_code.number_of_uses + 1 )
+      end
+
+      if @current_user
+        @current_user.promo_codes_used << promo_code
       end
     end
 
@@ -115,6 +127,7 @@ module StripeService::API
             confirm: true,
             customer: customer['id']
           })
+          increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
           SendgridMailer.send_order_confirmed_mail(@transaction)
           return {success: true}

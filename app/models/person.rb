@@ -133,6 +133,7 @@ class Person < ApplicationRecord
   has_many :receiver_stripe_payments, :class_name => "StripePayment", :foreign_key => "receiver_id", :dependent => :destroy, :inverse_of => :receiver
   has_many :transaction_addresses, :dependent => :destroy
   has_many :stripe_customers, :dependent => :destroy
+  has_and_belongs_to_many :promo_codes_used, class_name: 'PromoCode', :dependent => :destroy
   accepts_nested_attributes_for :transaction_addresses
 
   deprecate communities: "Use accepted_community instead.",
