@@ -18,6 +18,8 @@ validateShippingAddressForm = ->
         required: true
         minlength: 6
         cdnPostal: true
+      'term':
+        required: true
 
 validateBillingAddressForm = ->
   $(".desktop-payment-form").validate

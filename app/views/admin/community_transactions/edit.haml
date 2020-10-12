@@ -208,6 +208,16 @@
 
 
       .width-30
+        .setting-box.padding-0.margin-bt-20
+          .br-bottom.padding-15
+            .item.flex-items
+              .width-50.bold
+                %span Note
+              .width-50.align-right
+                = link_to 'Edit', ""
+            .item.row
+              .col-12
+                .span.block= @order.starter.note.present? ? @order.starter.note : 'No notes'
         .setting-box.padding-0
           .customer.br-bottom.padding-15
             .item.flex-items
