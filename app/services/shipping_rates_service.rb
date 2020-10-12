@@ -41,7 +41,7 @@ module ShippingRatesService
     hash_body = {
       async: false,
       shipper_accounts:[
-        # {id: APP_CONFIG.fedex_shipper_id},
+        {id: APP_CONFIG.fedex_shipper_id},
         {id: APP_CONFIG.ups_shipper_id}
       ],
       is_document:false,
@@ -123,6 +123,7 @@ module ShippingRatesService
     rates.each do |rate|
       shipping_selection.push(
         {
+          'shipper_slug' => rate['shipper_account']['slug'],
           'service_name' => rate['service_name'],
           'total_charge' => add_shipping_additional_fee(rate['total_charge']),
           'service_type' => rate['service_type']

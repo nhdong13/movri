@@ -19,4 +19,12 @@ class Shipper < ApplicationRecord
   def amount_to_cents
     amount * CONVERT_TO_CENT_VALUE
   end
+
+  def fedex?
+    service_delivery == "fedex"
+  end
+
+  def ups?
+    service_delivery == "ups"
+  end
 end

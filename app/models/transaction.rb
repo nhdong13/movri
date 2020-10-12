@@ -153,6 +153,15 @@ class Transaction < ApplicationRecord
   before_create :add_current_state
   after_save :update_order_number
 
+
+  def get_shipping_address
+    (starter && starter.shipping_address) ? starter.shipping_address : shipping_address
+  end
+
+  def get_billing_address
+    (starter && starter.billing_address) ? starter.billing_address : billing_address
+  end
+
   def is_cancelled?
     self.current_state == 'cancelled'
   end

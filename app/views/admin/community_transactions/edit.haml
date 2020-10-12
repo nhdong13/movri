@@ -109,6 +109,15 @@
                 %span.items-style= "#{@order.total_quantity} items"
               .width-60.align-right
                 %span= money_to_humanized(@calculate_money.get_price_cents_for_all_products_cart)
+          .discount-code
+            - if @order.promo_code
+              .flex-items
+                .width-25
+                  %span Discount
+                .width-25
+                  %span= @order.promo_code.code
+                .width-50.align-right
+                  %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
           .morvi_coverage
             .flex-items
               .width-25
@@ -116,7 +125,7 @@
               .width-25
               .width-50.align-right
                 %span= money_to_humanized(@calculate_money.total_coverage_for_all_items_cart)
-          .morvi_coverage
+          .tax
             .flex-items
               .width-25
                 %span Tax
@@ -127,6 +136,18 @@
                       %span.block.items-style= "#{k} #{v}%"
                     .width-75.align-right
                       %span= money_to_humanized(@calculate_money.calculate_tax_fee_base_on_percent(v))
+          .shipping-fee
+            .flex-items
+              .width-25
+                %span Shipping
+              .width-25.padding-0
+                - unless @order.will_pickup?
+                  %span.items-style= @order.shipper.service_name
+              .width-50.align-right
+                - if @order.will_pickup?
+                  %span Free
+                -else
+                  %span= "$#{@order.shipper.amount}"
           .total.br-bottom.padding-b-t-15
             .flex-items
               .width-25
@@ -218,8 +239,8 @@
                 = link_to 'Edit', ""
             .item.row
               .col-12
-                - if @order.starter && @order.starter.shipping_address
-                  - shipping_address = @order.starter.shipping_address
+                - if @order.get_shipping_address
+                  - shipping_address = @order.get_shipping_address
                   .font-size-14
                     = "#{shipping_address&.first_name} #{shipping_address&.last_name}"
                   .font-size-14
@@ -243,8 +264,8 @@
                 = link_to 'Edit', ""
             .item.row
               .col-12
-                - if @order.starter && @order.starter.billing_address
-                  - billing_address = @order.starter.billing_address
+                - if @order.get_billing_address
+                  - billing_address = @order.get_billing_address
                   .font-size-14
                     = "#{billing_address&.first_name} #{billing_address&.last_name}"
                   .font-size-14
