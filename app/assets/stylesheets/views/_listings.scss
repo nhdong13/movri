@@ -3227,7 +3227,6 @@ $listing-author-avatar-height: 108;
           padding: 5px 15px;
           background: #4eb857;
           color: #ffffff;
-          border-radius: 20px;
         }
       }
     }
@@ -3566,6 +3565,17 @@ $listing-author-avatar-height: 108;
         img{
           margin-left: 0px;
         }
+      }
+    }
+  }
+}
+
+.mobile-display{
+  #accessories_tab{
+    .slide-item-container{
+      background: white;
+      .slide-item{
+        width: 340px;
       }
     }
   }

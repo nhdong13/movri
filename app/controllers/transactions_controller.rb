@@ -445,6 +445,7 @@ class TransactionsController < ApplicationController
     @state = @transaction.shipping_address.state_or_province
     @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
     shipper_params = {
+      service_delivery: @shipping_selection.first['shipper_slug'],
       service_type: @shipping_selection.first['service_type'],
       service_name: @shipping_selection.first['service_name'],
       amount: @shipping_selection.first['total_charge']['amount'],

@@ -35,7 +35,8 @@ EMPTY_SHIPPING_ADDRESS = {
 }
 
 DEFAULT_ADMIN_EMAIL = 'admin-movri@yopmail.com'
-TRACKING_PACKAGE_WEB = 'https://www.fedex.com/en-ca/home.html'
+FEDEX_TRACKING_PACKAGE_WEB = 'https://www.fedex.com/en-ca/home.html'
+UPS_TRACKING_PACKAGE_WEB = 'https://www.ups.com/track?loc=en_CA&requester=ST/'
 
 BRAND = [
   'Canon',

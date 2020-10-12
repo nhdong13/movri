@@ -3,7 +3,7 @@
     .recommended-accessories-title
       Accessories
     .recommended-accessories-list.clearfix
-      - @listing.listing_accessories.order(:position).each do |listing_accessory|
+      - @listing.listing_accessories.order(:position).limit(8).each do |listing_accessory|
         .row.col-3.recommended-accessories-item
           .mobile-recommended-accessories
             .mobile-accessory-wrap
@@ -24,5 +24,9 @@
                     \/
                     = ListingViewUtils.get_time_rent(session)
                     -# = MoneyViewUtils.to_humanized(listing_accessory.price)
-                %button.recommended-accessories-add-to-cart.add-item-to-cart{:id => "accessories-mobile-#{listing_accessory.id}"}
+                %button.recommended-accessories-add-to-cart.add-item-to-cart{:id => "recommend-mobile-#{listing_accessory.id}"}
                   Rent Now
+    .mobile-recommended-accessories-view-all.col-12
+      View All Accessories
+      %i.icon-angle-right
+

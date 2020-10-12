@@ -10,7 +10,6 @@
             .col-3
               %span.block.fz-22= @transaction.created_at.to_date.to_formatted_s(:long)
               %p= t('transactions.order_details.order_number', number: @transaction.order_number)
-              %span Order Status: Shipped
               %span.block= t('transactions.order_details.total_quantity', quantity: @transaction.total_quantity).html_safe
               %span.block= t('transactions.order_details.arrival_date', date: @transaction.booking.start_on).html_safe
               %span.block= t('transactions.order_details.return_date', date: @transaction.booking.end_on).html_safe
@@ -39,9 +38,9 @@
                     %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
               .flex-items
                 .width-50
-                  %span Shipping:
+                  %span= "Shipping (#{@transaction.shipper.service_delivery.upcase}):"
                 .width-50.align-right
-                  %span= @transaction.shipper.service_delivery.capitalize
+                  %span= "$#{@transaction.shipper.amount}"
               .flex-items
                 .width-50
                   %span Sales Tax:
@@ -58,10 +57,12 @@
                 .width-50.align-right
                   %span.bold= money_to_humanized(@transaction.stripe_payments.last.sum_cents)
             .col-3
-              %span.block Shipped
               %span= "<strong>#{@transaction.total_quantity} products</strong> in this order".html_safe
               .btn-link
-                = link_to "Track Package", TRACKING_PACKAGE_WEB, target: :_blank
+                - if @transaction.shipper.ups?
+                  = link_to "Track Package", UPS_TRACKING_PACKAGE_WEB, target: :_blank
+                - else
+                  = link_to "Track Package", FEDEX_TRACKING_PACKAGE_WEB, target: :_blank
         .account-list-orders
           .white-background
             .row.margin-bt-20
@@ -101,7 +102,6 @@
               .width-50.padding-0
                 %span.block.fz-22= @transaction.created_at.to_date.to_formatted_s(:long)
                 %p= t('transactions.order_details.order_number', number: @transaction.order_number)
-                %span Order Status: Shipped
                 %span= "Total Items: #{@transaction.total_quantity}"
                 %span.block= t('transactions.order_details.arrival_date', date: @transaction.booking.start_on).html_safe
                 %span.block= t('transactions.order_details.return_date', date: @transaction.booking.end_on).html_safe
@@ -131,9 +131,9 @@
                     %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
               .flex-items
                 .width-50
-                  %span Shipping:
+                  %span= "Shipping (#{@transaction.shipper.service_delivery.upcase}):"
                 .width-50.align-right
-                  %span= @transaction.shipper.service_delivery.capitalize
+                  %span= "$#{@transaction.shipper.amount}"
               .flex-items
                 .width-50
                   %span Sales Tax:
@@ -151,10 +151,12 @@
                   %span.bold= money_to_humanized(@transaction.stripe_payments.last.sum_cents)
           .row
             .col-3
-              %span.block Shipped
               %span= "<strong>#{@transaction.total_quantity} products</strong> in this order".html_safe
               .btn-link
-                = link_to "Track Package", TRACKING_PACKAGE_WEB, target: :_blank
+                - if @transaction.shipper.ups?
+                  = link_to "Track Package", UPS_TRACKING_PACKAGE_WEB, target: :_blank
+                - else
+                  = link_to "Track Package", FEDEX_TRACKING_PACKAGE_WEB, target: :_blank
         .account-list-orders
           .white-background
             .row.margin-bt-20

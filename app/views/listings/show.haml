@@ -239,10 +239,8 @@
   :javascript
 
     $(".tab-link, .mobile-tab-link").on('click', function(){
-      $('html, body').animate({
-        scrollTop: $("#specification-tabs").offset().top},
-        'slow');
       $(".tab-link").parent().removeClass("active");
+      $(this).parent().addClass("active");
       $(".tab-content").hide();
       $("#"+$(this).data('tab')).show();
       return false;

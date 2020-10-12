@@ -6,14 +6,12 @@
           .order-summary
             .flex-items
               .width-70.padding-15.white-background
-                %p Shipped UPS #1Z10618933721147756323
+                %p= "Shipped #{transaction.shipper.service_delivery.upcase} ##{transaction.tracking_number}"
                 .flex-items.data-header.padding-5
                   .width-10
                   .width-60
-                  .width-15.center-items
+                  .width-30.center-items
                     %span QTY
-                  .width-15.center-items
-                    %span STATUS
                 - transaction.transaction_items.each do |item|
                   - listing = item.listing
                   .account-listing-item.br-bottom
@@ -23,11 +21,8 @@
                       .width-60
                         %p.margin-0.title= listing.title
                         %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"
-                      .width-15.center-items
+                      .width-30.center-items
                         %p= item.quantity
-                      .width-15.center-items
-                        %p.status.fz-14 Shipping
-
 
               .width-30.padding-20
                 %span= date_to_humanized(transaction.updated_at)
@@ -44,14 +39,12 @@
         .col-12
           .order-summary
             .padding-5.white-background
-              %p Shipped UPS #1Z10618933721147756323
+              %p= "Shipped #{transaction.shipper.service_delivery.upcase} ##{transaction.tracking_number}"
               .flex-items.data-header.padding-5
                 .width-20
                 .width-40
-                .width-20.center-items
+                .width-40.center-items
                   %span QTY
-                .width-20.center-items
-                  %span STATUS
               - transaction.transaction_items.each do |item|
                 - listing = item.listing
                 .account-listing-item.br-bottom
@@ -61,10 +54,8 @@
                     .width-40
                       %p.margin-0.title.cut-text= listing.title
                       %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"
-                    .width-20.center-items
+                    .width-40.center-items
                       %p= item.quantity
-                    .width-20.center-items
-                      %p.status.fz-14 Shipping
 
             .padding-20
               .flex-items
