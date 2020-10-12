@@ -147,7 +147,7 @@
                 - if @order.will_pickup?
                   %span Free
                 -else
-                  %span= "$#{@order.shipper.amount}"
+                  %span= "$#{@order.shipper ? @order.shipper.amount : 0}"
           .total.br-bottom.padding-b-t-15
             .flex-items
               .width-25
@@ -217,7 +217,7 @@
                 = link_to 'Edit', ""
             .item.row
               .col-12
-                .span.block= @order.starter.note.present? ? @order.starter.note : 'No notes'
+                .span.block= @order.instructions_from_seller.present? ? @order.instructions_from_seller : 'No notes'
         .setting-box.padding-0
           .customer.br-bottom.padding-15
             .item.flex-items
