@@ -6,7 +6,7 @@
           .order-summary
             .flex-items
               .width-70.padding-15.white-background
-                %p= "Shipped #{transaction.shipper.service_delivery.upcase} ##{transaction.tracking_number}"
+                %p= "Shipped #{transaction.shipping_carrier ? transaction.shipping_carrier.upcase : ""} ##{transaction.tracking_number}"
                 .flex-items.data-header.padding-5
                   .width-10
                   .width-60
@@ -39,7 +39,7 @@
         .col-12
           .order-summary
             .padding-5.white-background
-              %p= "Shipped #{transaction.shipper.service_delivery.upcase} ##{transaction.tracking_number}"
+              %p= "Shipped #{transaction.shipping_carrier ? transaction.shipping_carrier.upcase : ""} ##{transaction.tracking_number}"
               .flex-items.data-header.padding-5
                 .width-20
                 .width-40

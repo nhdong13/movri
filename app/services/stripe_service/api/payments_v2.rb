@@ -224,7 +224,7 @@ module StripeService::API
             refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id}) if intent
             create_stripe_payment_for_extra_charge(refund, params[:reason_for_canceling], 3) if refund
           end
-          @transaction.update(current_state: 'cancelled')
+          @transaction.update(current_state: 'cancelled', reason_for_cancelling: params[:reason_for_canceling])
           # @transaction.transaction_items.each do |item|
           #   item_quantity = item.quantity
           #   item.listing.update(quantity:  item.listing.quantity + item_quantity)

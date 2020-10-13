@@ -216,7 +216,7 @@ class Person < ApplicationRecord
   validates_length_of :family_name, :within => 1..30, :allow_nil => true, :allow_blank => true
   validates_length_of :display_name, :within => 1..30, :allow_nil => true, :allow_blank => true
 
-  validates :email, :uniqueness => :true
+  validates :email, :uniqueness => :true, :allow_nil => true
 
   validates_format_of :username,
                        :with => /\A[A-Z0-9_]*\z/i
