@@ -155,7 +155,7 @@ module StripeService::API
 
     def charge_extra_fee stripe_payment_params
       if @transaction.starter
-        stripe_customer = @transaction.starter.stripe_customer.last
+        stripe_customer = @transaction.starter.stripe_customers.last
       else
         stripe_customer = @transaction.stripe_customer
       end
@@ -170,6 +170,7 @@ module StripeService::API
             payment_method: stripe_customer.payment_method_id,
           })
           create_stripe_payment_for_extra_charge(intent, stripe_payment_params[:note], 1) if intent
+          return {success: true}
         end
       rescue StandardError => e
         SendgridMailer.send_payment_error_mail(@transaction)
@@ -221,7 +222,7 @@ module StripeService::API
             refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id}) if intent
             create_stripe_payment_for_extra_charge(refund, params[:reason_for_canceling], 3) if refund
           end
-          @transaction.update(current_state: 'cancelled')
+          @transaction.update(current_state: 'cancelled', reason_for_cancelling: params[:reason_for_canceling])
           # @transaction.transaction_items.each do |item|
           #   item_quantity = item.quantity
           #   item.listing.update(quantity:  item.listing.quantity + item_quantity)

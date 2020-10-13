@@ -72,11 +72,9 @@
                   .width-40
                   .width-10.center-items
                     %span QTY
-                  .width-15.center-items
-                    %span STATUS
-                  .width-10.center-items
+                  .width-20.center-items
                     %span Price
-                  .width-15.center-items
+                  .width-20.center-items
                     %span MOVRI COVERAGE
                 - @transaction.transaction_items.each do |item|
                   - listing = item.listing
@@ -89,11 +87,9 @@
                         %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"
                       .width-10.center-items
                         %p= item.quantity
-                      .width-15.center-items
-                        %p.status.fz-14 Shipping
-                      .width-10.center-items
+                      .width-20.center-items
                         = money_to_humanized(item.price_cents)
-                      .width-15.center-items
+                      .width-20.center-items
                         = money_to_humanized(item.coverage_price_cents)
       .mobile-display.fz-14
         #order-details.margin-bt-20
@@ -164,11 +160,9 @@
                 .flex-items.data-header.padding-5.brown-background
                   .width-15
                   .width-40
-                  .width-10.center-items
-                    %span QTY
-                  .width-15.center-items
-                    %span STATUS
                   .width-20.center-items
+                    %span QTY
+                  .width-25.center-items
                     %span Price
                 - @transaction.transaction_items.each do |item|
                   - listing = item.listing
@@ -179,11 +173,9 @@
                       .width-40
                         %p.margin-0.title.cut-text= listing.title
                         %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"
-                      .width-10.center-items
-                        %span= item.quantity
-                      .width-15.center-items
-                        %span.status.fz-14 Shipping
                       .width-20.center-items
+                        %span= item.quantity
+                      .width-25.center-items
                         %span= money_to_humanized(item.price_cents)
                     .align-right
                       %span= t('transactions.order_details.coverage', coverage: money_to_humanized(item.coverage_price_cents))

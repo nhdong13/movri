@@ -156,11 +156,39 @@
               .width-50.align-right
                 %span= money_to_humanized(@calculate_money.final_price)
 
-          .flex-items.padding-b-t-15
+          .flex-items.padding-b-t-15.br-bottom
             .width-50
               %span Paid by customer
             .width-50.align-right
               %span= @order.completed? ? money_to_humanized(@calculate_money.final_price) : "$0"
+
+          - if @order.stripe_payments.refund.any?
+            .list-refunds.padding-b-t-15.br-bottom
+              - @order.stripe_payments.refund.each do |payment|
+                .flex-items
+                  .width-20.margin-0
+                    %span Refunded
+                  .width-30
+                    %span.items-style= "Reason: #{payment.note}"
+                  .width-50.align-right
+                    %span= "-#{money_to_humanized(payment.sum_cents)}"
+          - if @order.is_cancelled?
+            .cancel-payment.padding-b-t-15
+              - if @order.stripe_payments.cancel.any?
+                - @order.stripe_payments.cancel.each do |payment|
+                  .flex-items
+                    .width-20.margin-0
+                      %span Cancelled
+                    .width-30
+                      %span.items-style= "Reason: #{payment.note}"
+                    .width-50.align-right
+                      %span= "-#{money_to_humanized(payment.sum_cents)}"
+              - else
+                .flex-items
+                  .width-20.margin-0
+                    %span Cancelled
+                  .width-30
+                    %span.items-style= "Reason: #{@order.reason_for_cancelling}"
 
         - if @order.completed? && @order.have_stripe_customer
           .setting-box

@@ -10,13 +10,17 @@
         .sub-cat
           .subcategory
             .flex-items
-              .width-70.padding-0
-                %span.block= subcategory.url_name
+              .width-70.padding-0.toggle-subcategory
+                - if subcategory.all_children_categories.any?
+                  %span.block= subcategory.url_name
+                - else
+                  = link_to categories_path(category: main_category, subcategories: subcategory) do
+                    %span.block= subcategory.url_name
               .width-30.align-right.padding-0
                 - if subcategory.all_children_categories.any?
-                  %i.icon-chevron-down.toggle-subcategory
+                  %i.icon-chevron-down
             .child-categories.hidden
               - subcategory.all_children_categories.each do |child|
                 .sub-cat
-                  = link_to categories_path(children_categories: child), class: 'sub-cat' do
+                  = link_to categories_path(category: main_category, subcategories: subcategory, children_categories: child), class: 'sub-cat' do
                     = child.url_name

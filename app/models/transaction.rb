@@ -39,6 +39,7 @@
 #  canceled_order_note               :string(255)
 #  tracking_number                   :string(255)
 #  shipping_carrier                  :string(255)
+#  reason_for_cancelling             :string(255)
 #
 # Indexes
 #
