@@ -155,7 +155,7 @@ module StripeService::API
 
     def charge_extra_fee stripe_payment_params
       if @transaction.starter
-        stripe_customer = @transaction.starter.stripe_customer.last
+        stripe_customer = @transaction.starter.stripe_customers.last
       else
         stripe_customer = @transaction.stripe_customer
       end
@@ -170,6 +170,7 @@ module StripeService::API
             payment_method: stripe_customer.payment_method_id,
           })
           create_stripe_payment_for_extra_charge(intent, stripe_payment_params[:note], 1) if intent
+          return {success: true}
         end
       rescue StandardError => e
         SendgridMailer.send_payment_error_mail(@transaction)
