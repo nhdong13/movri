@@ -67,8 +67,7 @@ window.Commons =
 
   handleToggleChildCategories: ->
     $('.toggle-subcategory').click (e) ->
-      e.preventDefault();
-      icon = $(this)
+      icon = $(this).parents('.subcategory').find("i")
       childcategories = $(this).parents('.subcategory').find(".child-categories");
       if childcategories.is(":visible")
         childcategories.slideUp("slow");
