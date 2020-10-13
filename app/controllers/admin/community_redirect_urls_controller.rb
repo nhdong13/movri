@@ -12,7 +12,10 @@ class Admin::CommunityRedirectUrlsController < Admin::AdminBaseController
   def edit; end
 
   def create
-    if @current_community.redirect_urls.create(redirect_url_params)
+    if redirect_url_params[:from] == redirect_url_params[:to]
+      redirect_to new_admin_community_redirect_url_path()
+      flash[:error] = t("layouts.notifications.duplicate_from_to_url")
+    elsif @current_community.redirect_urls.create(redirect_url_params) 
       redirect_to admin_community_redirect_urls_path(@current_community)
     else
       flash[:error] = t("layouts.notifications.create_url_redirect_failed")
@@ -20,7 +23,10 @@ class Admin::CommunityRedirectUrlsController < Admin::AdminBaseController
   end
 
   def update
-    if @redirect_url.update(redirect_url_params)
+    if redirect_url_params[:from] == redirect_url_params[:to]
+      redirect_to edit_admin_community_redirect_url_path
+      flash[:error] = t("layouts.notifications.duplicate_from_to_url")
+    elsif @redirect_url.update(redirect_url_params)
       redirect_to admin_community_redirect_urls_path(@current_community)
     else
       flash[:error] = t("layouts.notifications.update_url_redirect_failed")

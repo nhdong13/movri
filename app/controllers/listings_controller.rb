@@ -85,59 +85,64 @@ class ListingsController < ApplicationController
   end
 
   def show
-    @selected_tribe_navi_tab = "home"
-    make_onboarding_popup
+    redirectUrl = RedirectUrl.where(from: params[:id]).first
+    if Listing.find(params[:id]).deleted? || redirectUrl.present?
+      redirect_to listing_path(id: redirectUrl.to)
+    else
+      @selected_tribe_navi_tab = "home"
+      make_onboarding_popup
 
-    make_listing_presenter
-    @listing_presenter.form_path = new_transaction_path(listing_id: @listing.id)
-    @seo_service.listing = @listing
-    @support_info = SupportInfo.last
+      make_listing_presenter
+      @listing_presenter.form_path = new_transaction_path(listing_id: @listing.id)
+      @seo_service.listing = @listing
+      @support_info = SupportInfo.last
 
-    # Remove session booking dates if it in blocked dates
-    if @listing.manually_blocked_dates && session[:booking]
-      manually_blocked_dates_arr = @listing.manually_blocked_dates.split("&")
+      # Remove session booking dates if it in blocked dates
+      if @listing.manually_blocked_dates && session[:booking]
+        manually_blocked_dates_arr = @listing.manually_blocked_dates.split("&")
 
-      # convert session[:booking][:start_date]: mm/dd/yyy => dd/mm/yyy
-      arr_start_date = session[:booking][:start_date].split("/")
-      arr_start_date[0], arr_start_date[1] = arr_start_date[1], arr_start_date[0]
-      start_date = arr_start_date.join("/")
+        # convert session[:booking][:start_date]: mm/dd/yyy => dd/mm/yyy
+        arr_start_date = session[:booking][:start_date].split("/")
+        arr_start_date[0], arr_start_date[1] = arr_start_date[1], arr_start_date[0]
+        start_date = arr_start_date.join("/")
 
-      # convert session[:booking][:end_date]: mm/dd/yyy => dd/mm/yyy
-      arr_end_date = session[:booking][:end_date].split("/")
-      arr_end_date[0], arr_end_date[1] = arr_end_date[1], arr_end_date[0]
-      end_date = arr_end_date.join("/")
+        # convert session[:booking][:end_date]: mm/dd/yyy => dd/mm/yyy
+        arr_end_date = session[:booking][:end_date].split("/")
+        arr_end_date[0], arr_end_date[1] = arr_end_date[1], arr_end_date[0]
+        end_date = arr_end_date.join("/")
 
-      # Reset session[:booking] if user choose the end date before start date
-      if start_date.to_datetime > end_date.to_datetime
-        session[:booking] = nil
-      end
-
-      manually_blocked_dates_arr.each do |range_date|
-        if range_date.split(",").first.present? && range_date.split(",").last.present?
-          if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
-            session[:booking] = nil
-            break
-          end
-
-          if end_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
-            session[:booking] = nil
-            break
-          end
-        else
+        # Reset session[:booking] if user choose the end date before start date
+        if start_date.to_datetime > end_date.to_datetime
           session[:booking] = nil
         end
+
+        manually_blocked_dates_arr.each do |range_date|
+          if range_date.split(",").first.present? && range_date.split(",").last.present?
+            if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
+              session[:booking] = nil
+              break
+            end
+
+            if end_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
+              session[:booking] = nil
+              break
+            end
+          else
+            session[:booking] = nil
+          end
+        end
       end
+
+      session[:recently_viewed] ||= []
+      session[:recently_viewed] = session[:recently_viewed].unshift(@listing.id).uniq
+
+      record_event(
+        flash.now,
+        "ListingViewed",
+        { listing_id: @listing.id,
+          listing_uuid: @listing.uuid_object.to_s,
+          payment_process: @listing_presenter.process })
     end
-
-    session[:recently_viewed] ||= []
-    session[:recently_viewed] = session[:recently_viewed].unshift(@listing.id).uniq
-
-    record_event(
-      flash.now,
-      "ListingViewed",
-      { listing_id: @listing.id,
-        listing_uuid: @listing.uuid_object.to_s,
-        payment_process: @listing_presenter.process })
   end
 
   def new

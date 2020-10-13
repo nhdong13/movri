@@ -2154,6 +2154,7 @@ en:
       create_assurance_option_failed: 'Assurance option has been created failed.'
       update_assurance_option_failed: 'Assurance option has been updated failed.'
       create_url_redirect_failed: 'URL Redirect has been created failed.'
+      duplicate_from_to_url: "Please not redirect to the same URL"
       update_url_redirect_failed: 'URL Redirect has been updated failed.'
       add_new_customer_failed: 'New customer has been created failed.'
     settings:
