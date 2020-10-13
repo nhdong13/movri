@@ -214,7 +214,7 @@
               .width-50.bold
                 %span Note
               .width-50.align-right
-                = link_to 'Edit', ""
+                %a.float-right#edit-customer{href: "#edit-customer-note", rel: "modal:open"}= "Edit"
             .item.row
               .col-12
                 .span.block= @order.instructions_from_seller.present? ? @order.instructions_from_seller : 'No notes'
@@ -291,6 +291,18 @@
                 - else
                   .span.block No billing address
     = render partial: "cancel_order", locals: {order: @order}
+
+.modal#edit-customer-note
+  = form_for @order, url: admin_community_transaction_path(community_id: @current_community, id: @order), method: :put do |f|
+    .row.title.mb-0
+      = "Edit Customer Note"
+    .row
+      .col-12
+        %label Note
+        = f.text_field :instructions_from_seller
+    .row.footer
+      %button.button.right.margin-l-5= "Save"
+      %a.button.right{rel: "modal:close"}= "Cancel"
 
 - content_for :extra_javascript do
   :javascript
