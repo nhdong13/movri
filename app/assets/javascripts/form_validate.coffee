@@ -61,6 +61,8 @@ validateMobileShippingAddressForm = ->
         required: true
         minlength: 6
         cdnPostal: true
+      'term':
+        required: true
 
 onInputRequiredShippingFormField = ->
   $('.transaction-address-req-field').change ->

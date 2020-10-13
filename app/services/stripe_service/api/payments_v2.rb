@@ -74,10 +74,7 @@ module StripeService::API
       promo_code = @transaction.promo_code
       if promo_code
         promo_code.update(number_of_uses: promo_code.number_of_uses + 1 )
-      end
-
-      if @current_user
-        @current_user.promo_codes_used << promo_code
+        @current_user.promo_codes_used << promo_code if @current_user
       end
     end
 

@@ -123,7 +123,8 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     .require(:transaction)
     .permit(
       :tracking_number,
-      :shipping_carrier
+      :shipping_carrier,
+      :instructions_from_seller
     )
   end
 
