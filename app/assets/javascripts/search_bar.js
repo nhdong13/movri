@@ -29,6 +29,15 @@ $(document).ready(function() {
     }
   };
 
+  var getListCategoriesFromLocation = function getListCategoriesFromLocation() {
+    var pathnameMatches = window.location.pathname.match(/rent\/(.*?)\/?$/);
+    const list_categories = pathnameMatches[1].split("/");
+    const category = list_categories[0]
+    const subcategory = list_categories[1]
+    const children_category = list_categories[2]
+    return {category: category, subcategory: subcategory, children_category: children_category}
+  };
+
   const search = instantsearch({
     indexName: 'movri_products',
     searchClient: algoliasearch(
@@ -49,11 +58,12 @@ $(document).ready(function() {
         },
 
         createURL({ qsModule, routeState, location }) {
-          const urlParts = location.href.match(/^(.*?)\/categories/);
+          const urlParts = location.href.match(/^(.*?)\/rent/);
           const baseUrl = `${urlParts ? urlParts[1] : ''}/`;
-          const categoryPath = routeState.category
-            ? `${getCategorySlug(routeState.category)}/`
-            : '';
+          const listCategories = getListCategoriesFromLocation()
+          const categoryPath = listCategories.category
+          const subcategoryPath = listCategories.subcategory
+
           const queryParameters = {};
 
           if (routeState.query) {
@@ -71,15 +81,18 @@ $(document).ready(function() {
             arrayFormat: 'repeat'
           });
 
-          return `${baseUrl}categories${categoryPath}${queryString}`;
+          return `${baseUrl}rent/${categoryPath}/${subcategoryPath}`;
         },
 
         parseURL({ qsModule, location }) {
-          const pathnameMatches = location.pathname.match(/categories\/(.*?)\/?$/);
-          const category = getCategoryName(
-            (pathnameMatches && pathnameMatches[1]) || ''
-          );
-          const { query = '', page, brands, mounts, lens_types, categories, subcategories, children_categories = [] } = qsModule.parse(
+          const pathnameMatches = location.pathname.match(/rent\/(.*?)\/?$/);
+          const list_categories = pathnameMatches ? pathnameMatches[1].split("/") : [];
+
+          const categories = list_categories[0]
+          const subcategories = list_categories[1]
+          const children_categories = list_categories[2]
+
+          const { query = '', page, brands, mounts, lens_types = [] } = qsModule.parse(
             location.search.slice(1)
           );
           // `qs` does not return an array when there's a single value.
@@ -185,7 +198,7 @@ $(document).ready(function() {
       .map(
         item =>`
           <li>
-            <a href= ${'/listings/'+ item.id}>
+            <a href= ${'/rent/'+ item.url}>
               <div class='flex-items'>
                 <div class='width-10 center-items'>
                   <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
@@ -228,8 +241,9 @@ $(document).ready(function() {
   }
 
   const renderCurrentCategory = () => {
-    children_categories_value = getUrlParameter('children_categories')
-    subcategories_value = getUrlParameter('subcategories')
+    list_categories = getListCategoriesFromLocation()
+    children_categories_value = list_categories.children_category
+    subcategories_value = list_categories.subcategory
     if(children_categories_value){
       return`${children_categories_value}`
     } else {
@@ -238,9 +252,10 @@ $(document).ready(function() {
   }
 
   const renderBreadCrumbCategory = () => {
-    children_categories_value = getUrlParameter('children_categories')
-    subcategories_value = getUrlParameter('subcategories')
-    category_value = getUrlParameter('category')
+    list_categories = getListCategoriesFromLocation()
+    children_categories_value = list_categories.children_category
+    subcategories_value = list_categories.subcategory
+    category_value = list_categories.category
     if(children_categories_value){
       return`
         <i class='fa fa-chevron-right'></i>
@@ -268,7 +283,7 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<a href= ${'/listings/'+ item.id}>
+                `<a href= ${'/rent/'+ item.url}>
                   <div class="col-3">
                     <div class="listing-box">
                       <div class='main-image'>
@@ -282,7 +297,7 @@ $(document).ready(function() {
                         <span> /7 day</span>
                       </div>
                       <div>
-                        <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent Now</a>
+                        <a href= ${'/rent/'+ item.url} class='rent-now-btn'>Rent Now</a>
                       </div>
                     </div>
                   </div>
@@ -301,7 +316,7 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<a href= ${'/listings/'+ item.id}>
+                `<a href= ${'/rent/'+ item.url}>
                   <div class="col-12">
                     <div class="listing-box-mobile">
                       <div class='main-image'>
@@ -316,7 +331,7 @@ $(document).ready(function() {
                           <span> /7 day</span>
                         </div>
                         <div class='listing-rent-now'>
-                          <a href= ${'/listings/'+ item.id} class='rent-now-btn'>Rent Now</a>
+                          <a href= ${'/rent/'+ item.url} class='rent-now-btn'>Rent Now</a>
                         </div>
                       </div>
                     </div>

@@ -538,7 +538,7 @@ class ListingsController < ApplicationController
     }
   end
 
-  def show_cart
+  def cart
     @have_blocked_dates = Listing.where(id: session[:cart].keys).pluck(:manually_blocked_dates).present?
     make_listing_presenter
     @blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
@@ -787,7 +787,7 @@ class ListingsController < ApplicationController
     # If listing is not found (in this community) the find method
     # will throw ActiveRecord::NotFound exception, which is handled
     # correctly in production environment (404 page)
-    @listing = Listing.find_by_id(params[:id])
+    @listing = Listing.find_by_url(params[:url]) || Listing.find_by_id(params[:url])
 
     raise ListingDeleted if @listing.deleted?
 

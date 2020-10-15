@@ -93,7 +93,7 @@ $(function() {
     }).done(function(response) {
       if (response.success === true) {
         // User in cart detail page
-        if (window.location.pathname.includes("show_cart")) {
+        if (window.location.pathname.includes("cart")) {
           location.reload(true);
         }
 
@@ -123,7 +123,7 @@ $(function() {
     }).done(function(response) {
       if (response.success === true) {
         // User in cart detail page
-        if (window.location.pathname.includes("show_cart")) {
+        if (window.location.pathname.includes("cart")) {
           location.reload(true);
         }
 
@@ -156,7 +156,7 @@ $(function() {
     }).done(function(response) {
       if (response.success === true) {
         // User in cart detail page
-        if (window.location.pathname.includes("show_cart")) {
+        if (window.location.pathname.includes("cart")) {
           location.reload(true);
         }
 

@@ -76,6 +76,7 @@
 #  mount                           :string(255)
 #  lens_type                       :string(255)
 #  compatibility                   :string(255)
+#  url                             :string(255)
 #
 # Indexes
 #
@@ -103,7 +104,7 @@ class Listing < ApplicationRecord
   )
 
   algoliasearch index_name: "movri_products" do
-    attribute :id, :title, :price_cents, :number_of_rent, :sku
+    attribute :id, :title, :price_cents, :number_of_rent, :sku, :url
     attributes :main_image do
       main_image
     end
@@ -188,6 +189,8 @@ class Listing < ApplicationRecord
 
   before_validation :set_valid_until_time
 
+  validates :url, uniqueness: true
+
   validates_presence_of :author_id
   validates_length_of :title, :in => 2..255, :allow_nil => false
   validates_length_of :spec, :in => 0..29999, :allow_nil => true
@@ -230,6 +233,11 @@ class Listing < ApplicationRecord
     APPROVAL_REJECTED = 'approval_rejected'.freeze => 'rejected'.freeze
   }
   enum state: APPROVALS
+
+  before_save :update_url
+  def update_url
+    self.url = self.title.to_url
+  end
 
   before_create :set_sort_date_to_now
   def set_sort_date_to_now
