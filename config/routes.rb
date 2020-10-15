@@ -120,7 +120,7 @@ Rails.application.routes.draw do
 
   # Adds locale to every url right after the root path
   scope "(/:locale)", :constraints => { :locale => locale_matcher } do
-    get '/show_cart', to: 'listings#show_cart'
+    get '/cart', to: 'listings#cart'
 
     put '/mercury_update' => "mercury_update#update", :as => :mercury_update
 
@@ -186,7 +186,15 @@ Rails.application.routes.draw do
       end
     end
 
+    get "/categories", :to => redirect { |params, request|
+      "/#{params[:locale]}/rent/#{request[:category]}/#{request[:subcategories]}/#{request[:children_categories]}"
+    }
+
+    get "rent/:category_name/:subcategory_name", to: "categories#index"
+    get "rent/:category_name/:subcategory_name/:childcategory_name", to: "categories#index"
+
     resources :categories, only: [:index]
+
     resources :promo_codes, only: [] do
       collection do
         get 'check_code'
@@ -518,6 +526,12 @@ Rails.application.routes.draw do
     post 'change_booking_days', to: 'listings#change_booking_days'
     put 'change_cart_detail_booking_days', to: 'carts#change_cart_detail_booking_days'
     get 'change_cart_select_shipping', to: 'carts#change_cart_select_shipping'
+
+    get "/listings/:id", :to => redirect { |params, request|
+      "rent/#{params[:id].split("-")[1..].join("-")}"
+    }
+
+    get 'rent/:url', to: 'listings#show', param: :url
 
     resources :listings do
       member do

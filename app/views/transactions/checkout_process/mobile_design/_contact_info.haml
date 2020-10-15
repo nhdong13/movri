@@ -72,14 +72,14 @@
               = check_box_tag :term, nil, false, class: "term"
               = "I have read, understood and agreed with your "
               %a= "Rental Agreement."
-              = "I understand that a signature will be required upon delivery of my gear."              
+              = "I understand that a signature will be required upon delivery of my gear."
         .form-group
           .row
             .col-12.center-items
               = form.submit t('transactions.btn_label.continue_to_shipping'), class:"btn btn-submit"
             .col-12.center-items.back-to-cart
               = fa_icon "angle-left"
-              = link_to t('transactions.btn_label.return_to_cart'), show_cart_path
+              = link_to t('transactions.btn_label.return_to_cart'), cart_path
         .row
           .col-12.br-top.copy-right
             %span= t('common.copy_right')

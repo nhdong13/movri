@@ -76,6 +76,7 @@
 #  mount                           :string(255)
 #  lens_type                       :string(255)
 #  compatibility                   :string(255)
+#  url                             :string(255)
 #
 # Indexes
 #
