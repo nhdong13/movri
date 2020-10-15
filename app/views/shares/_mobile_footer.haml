@@ -1,26 +1,34 @@
--# .mobile-footer.d-none
--#   .recently-viewed
--#     .d-flex
--#       = image_tag("homepage_icons/recently_icon.svg")
--#       %span= "Recently Viewed Items"
--#       %i.icon-ellipsis-vertical
--#     .d-flex
--#       %i.icon-plus
--#   .mobile-infomation.text-center
--#     .col-12
--#       %select
--#         %option= "US Dollar"
--#     .col-12
--#       %p= "2000-2020 B&H Foto & Electronics Corp."
--#   .mobile-contact-us.d-flex.col-12
--#     .d-flex
--#       %p= "808.894.9703"
--#     .d-flex
--#       %a= "Contact Us"
--#     .d-flex
--#       .helpful-link-mobile-btn
--#         %span= t("footer.helpful_link_mobile_btn")
--#         %i.icon-chevron-down
--#   - footer_helpful_links.each do |section|
--#     - helpful_section = section.sectionable
--#     = render "homepage/more_helpful_links", helpful_section: helpful_section
+.mobile-footer.d-none
+  .mobile-infomation
+    .col-12.contact-information.br-bottom.padding-bt-12
+      %h3= "Contact Infomation"
+      %p= "Unit 210-19365, 22nd Avenue, Surrey, BC V3Z3S6, Canada"
+      .col-12
+        %p
+          = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
+          = "+1-778-554-1018"
+        %p
+          = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
+          = "+1-604-385-0370"
+        %p
+          .icon-envelope.left-navi-link-icon
+          = "sales@movri.ca"
+    .col-12.information.br-bottom.padding-bt-12
+      %span.bold.fz-16= "Information"
+      .icon-chevron-down.float-right
+    .col-12.customer-service.br-bottom.padding-bt-12
+      %span.bold.fz-16= "Customer Service"
+      .icon-chevron-down.float-right
+    .col-12.subscribe.br-bottom.padding-bt-12
+      %h3= "Subscribe"
+      %p= "Sign Up to receive product updates and special offers"
+      = text_field_tag :email, '', placeholder: "Email address", class: "width-70"
+      .button.width-20.dp-inline= "Submit"
+    .col-12.follow-us.padding-bt-12
+      .col-6
+        %h3= "Follow us"
+        .icon-facebook-sign.margin-r-5
+        .icon-instagram.margin-r-5
+        .icon-envelope
+      .col-6
+        %span= "Copyright © 2020 MOVRI"
