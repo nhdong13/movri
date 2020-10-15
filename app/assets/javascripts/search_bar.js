@@ -31,7 +31,7 @@ $(document).ready(function() {
 
   var getListCategoriesFromLocation = function getListCategoriesFromLocation() {
     var pathnameMatches = window.location.pathname.match(/rent\/(.*?)\/?$/);
-    const list_categories = pathnameMatches[1].split("/");
+    const list_categories = pathnameMatches ? pathnameMatches[1].split("/") : [];
     const category = list_categories[0]
     const subcategory = list_categories[1]
     const children_category = list_categories[2]
@@ -80,8 +80,11 @@ $(document).ready(function() {
             addQueryPrefix: true,
             arrayFormat: 'repeat'
           });
-
-          return `${baseUrl}rent/${categoryPath}/${subcategoryPath}`;
+          if((categoryPath && subcategoryPath)){
+            return `${baseUrl}rent/${categoryPath}/${subcategoryPath}`;
+          } else {
+            return location;
+          }
         },
 
         parseURL({ qsModule, location }) {

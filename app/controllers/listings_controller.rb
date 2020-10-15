@@ -86,7 +86,8 @@ class ListingsController < ApplicationController
 
   def show
     redirectUrl = RedirectUrl.where(from: params[:id]).first
-    if Listing.find(params[:id]).deleted? || redirectUrl.present?
+    listing = Listing.find_by_id(params[:url]) ||  Listing.find_by_url(params[:url])
+    if listing.deleted? || redirectUrl.present?
       redirect_to listing_path(id: redirectUrl.to)
     else
       @selected_tribe_navi_tab = "home"
