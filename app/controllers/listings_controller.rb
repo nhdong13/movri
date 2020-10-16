@@ -85,10 +85,9 @@ class ListingsController < ApplicationController
   end
 
   def show
-    redirectUrl = RedirectUrl.where(from: params[:id]).first
-    listing = Listing.find_by_id(params[:url]) ||  Listing.find_by_url(params[:url])
-    if listing.deleted? || redirectUrl.present?
-      redirect_to listing_path(id: redirectUrl.to)
+    redirectUrl = RedirectUrl.where(from: params[:url]).first
+    if redirectUrl.present? && redirectUrl.to != redirectUrl.from
+      redirect_to redirectUrl.to
     else
       @selected_tribe_navi_tab = "home"
       make_onboarding_popup
