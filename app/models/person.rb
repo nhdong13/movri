@@ -651,7 +651,14 @@ class Person < ApplicationRecord
   end
 
   def total_spent
-    completed_orders.pluck(:total_price_cents).sum
+    total = 0
+    completed_orders.each do |transaction|
+      payment = transaction.stripe_payments
+      if payment && payment.standard
+        total += payment.standard.last.sum_cents
+      end
+    end
+    total
   end
 
   private
