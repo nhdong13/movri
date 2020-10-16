@@ -158,6 +158,7 @@ window.ST = window.ST || {};
           data: {
              start_date: start_date,
              end_date: end_date,
+             today: today
           }
         })
         $(input_return_date_el).datepicker('hide')
