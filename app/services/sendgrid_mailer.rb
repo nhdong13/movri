@@ -11,6 +11,17 @@ class SendgridMailer
   ORDER_CANCELLED_EMAIL_TEMPLATE_ID = 'd-28c1411907e64eb88fade388ca33b696'
   SERVICE_EMAIL = 'sales@movri.ca'
 
+  def initialize(transaction, session, current_user)
+    @session = session
+    @transaction = transaction
+    @current_user = current_user
+    @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
+  end
+
+  def to_CAD value
+    value = value.to_f / 100
+  end
+
   def self.send_new_order_mail(to, subsitutions)
     subsitutions = {header: 'Test email', first_name: 'Admin', last_name: 'Movri'}
     data = {
@@ -38,14 +49,14 @@ class SendgridMailer
     end
   end
 
-  def self.send_order_fulfilled_mail transaction
-    shipping_address = transaction.shipping_address
+  def self.send_order_fulfilled_mail
+    shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
     subsitutions = {
-      ORDER_NUMBER: transaction.order_number,
+      ORDER_NUMBER: @transaction.order_number,
       first_name: shipping_address.first_name,
       last_name: shipping_address.last_name,
-      tracking_number: transaction.tracking_number,
+      tracking_number: @transaction.tracking_number,
       shop_email: SERVICE_EMAIL,
     }
 
@@ -74,8 +85,8 @@ class SendgridMailer
     end
   end
 
-  def self.send_payment_error_mail transaction
-    shipping_address = transaction.shipping_address
+  def self.send_payment_error_mail
+    shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
     subsitutions = {
       shop_email: SERVICE_EMAIL,
@@ -106,14 +117,43 @@ class SendgridMailer
     end
   end
 
-  def self.send_refund_notification_mail transaction, amount
-    shipping_address = transaction.shipping_address
-    email_to = shipping_address.email
-    subsitutions = {
-      order_number: transaction.order_number,
-      shop_email: SERVICE_EMAIL,
-      amount: amount
+
+  def get_items_from_transaction
+    list_products = []
+    @transaction.transaction_items.each do |item|
+      list_products.push({
+        title: item.listing.title,
+        product_image_url: item.listing.main_image,
+        amount: item.price_cents_to_CAD,
+        quantity: item.quantity,
+      })
+    end
+    list_products
+  end
+
+  def get_data_from_transaction
+    promo_code = @transaction.promo_code ? @transaction.promo_code.code : ""
+    {
+      discount_code: promo_code,
+      discount_value: to_CAD(@calculate_money_service.get_discount_for_all_products_cart),
+      subtotal: to_CAD(@calculate_money_service.listings_subtotal),
+      total_value: to_CAD(@transaction.stripe_payments.standard.last.sum_cents),
+      shipping_value: @transaction.will_pickup? ? 0 : @transaction.shipper.amount
     }
+  end
+
+  def send_refund_notification_mail refund_value
+    shipping_address = @transaction.shipping_address
+    email_to = shipping_address.email
+
+    subsitutions = {
+      order_number: @transaction.order_number,
+      shop_email: SERVICE_EMAIL,
+      refund_value: refund_value,
+      item: {
+        products: get_items_from_transaction()
+      },
+    }.merge(get_data_from_transaction())
 
     data = {
       "personalizations": [
@@ -140,11 +180,11 @@ class SendgridMailer
     end
   end
 
-  def self.send_cancel_transaction_mail transaction
-    shipping_address = transaction.shipping_address
+  def self.send_cancel_transaction_mail
+    shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
     subsitutions = {
-      order_number: transaction.order_number,
+      order_number: @transaction.order_number,
       shop_email: SERVICE_EMAIL,
     }
 
@@ -173,12 +213,12 @@ class SendgridMailer
     end
   end
 
-  def self.send_order_confirmed_mail transaction
-    shipping_address = transaction.shipping_address
-    billing_address = transaction.billing_address
+  def self.send_order_confirmed_mail
+    shipping_address = @transaction.shipping_address
+    billing_address = @transaction.billing_address
     email_to = shipping_address.email
     subsitutions = {
-      'order-number': transaction.order_number,
+      'order-number': @transaction.order_number,
       first_name: shipping_address.first_name,
       last_name: shipping_address.last_name,
       shipping_address_line_1: shipping_address.street1,

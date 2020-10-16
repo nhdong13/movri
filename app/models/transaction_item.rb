@@ -34,4 +34,7 @@ class TransactionItem < ApplicationRecord
     update(is_deleted: false, deleted_at: nil)
   end
 
+  def price_cents_to_CAD
+    price_cents.to_f / 100
+  end
 end

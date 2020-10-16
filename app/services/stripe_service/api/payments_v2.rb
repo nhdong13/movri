@@ -25,12 +25,12 @@ module StripeService::API
           })
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
-          SendgridMailer.send_order_confirmed_mail(@transaction)
+          sendgridmailer.send_order_confirmed_mail
           return {success: true}
         end
       rescue => e
         # Display error on client
-        SendgridMailer.send_payment_error_mail(@transaction)
+        sendgridmailer.send_payment_error_mail
         return {success: false, error: e.message}
       end
     end
@@ -126,13 +126,17 @@ module StripeService::API
           })
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
-          SendgridMailer.send_order_confirmed_mail(@transaction)
+          sendgridmailer.send_order_confirmed_mail
           return {success: true}
         end
       rescue StandardError => e
-        SendgridMailer.send_payment_error_mail(@transaction)
+        sendgridmailer.send_payment_error_mail
         return {success: false, error: e.message}
       end
+    end
+
+    def sendgridmailer
+      SendgridMailer.new(@transaction, @session, @current_user)
     end
 
     def create_stripe_payment_for_extra_charge intent, note, payment_type
@@ -173,7 +177,7 @@ module StripeService::API
           return {success: true}
         end
       rescue StandardError => e
-        SendgridMailer.send_payment_error_mail(@transaction)
+        sendgridmailer.send_payment_error_mail
         return {success: false, error: e.message}
       end
     end
@@ -204,7 +208,7 @@ module StripeService::API
           refund = Stripe::Refund.create({ amount: amount_refund, payment_intent: intent.stripe_payment_intent_id})
           create_stripe_payment_for_extra_charge(refund, params[:reason_refund], 2) if refund
           if params[:sent_mail_refund_to_customer] == "on"
-            SendgridMailer.send_refund_notification_mail(@transaction, to_CAD(amount_refund))
+            sendgridmailer.send_refund_notification_mail(to_CAD(amount_refund))
           end
           return {success: true}
         end
@@ -228,8 +232,8 @@ module StripeService::API
           #   item.listing.update(quantity:  item.listing.quantity + item_quantity)
           # end
           if params[:sent_mail_cancel_order_to_customer] == "on"
-            SendgridMailer.send_cancel_transaction_mail(@transaction)
-            SendgridMailer.send_refund_notification_mail(@transaction, to_CAD(amount_refund))
+            sendgridmailer.send_cancel_transaction_mail
+            sendgridmailer.send_refund_notification_mail(to_CAD(amount_refund))
           end
           return {success: true}
         end

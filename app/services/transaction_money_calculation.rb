@@ -16,11 +16,15 @@ class TransactionMoneyCalculation
     )
   end
 
+  def percent_of(value, percent)
+    value.to_f * percent.to_f / 100.0
+  end
+
   def get_discount_from_promo_code(price)
     return 0 unless @promo_code
     case @promo_code.promo_type
     when 'percentage'
-      discount = price.percent_of(@promo_code.discount_value)
+      discount = percent_of(price, @promo_code.discount_value)
     when 'fixed_amount'
       @promo_code.fixed_amount_cents_value
     else
@@ -103,6 +107,6 @@ class TransactionMoneyCalculation
 
   def calculate_tax_fee_base_on_percent percent
     price = listings_subtotal
-    price.percent_of(percent)
+    percent_of(price, percent)
   end
 end

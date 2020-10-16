@@ -38,7 +38,7 @@ module PriceCalculationService
     return 0 unless promo_code
     case promo_code.promo_type
     when 'percentage'
-      discount = price.percent_of(promo_code.discount_value)
+      discount = percent_of(price, promo_code.discount_value)
     when 'fixed_amount'
       promo_code.fixed_amount_cents_value
     else
@@ -46,14 +46,18 @@ module PriceCalculationService
     end
   end
 
+  def percent_of(value, percent)
+    value.to_f * percent.to_f / 100.0
+  end
+
   def calculate_tax_fee price, canada_provinces=nil
     canada_provinces = 'alberta' unless canada_provinces
-    price.percent_of(get_persent_of_canada_provinces(canada_provinces))
+    percent_of(price, get_persent_of_canada_provinces(canada_provinces))
   end
 
   def calculate_tax_fee_base_on_percent price
     canada_provinces = 'alberta' unless canada_provinces
-    price.percent_of(get_persent_of_canada_provinces(canada_provinces))
+    percent_of(price, get_persent_of_canada_provinces(canada_provinces))
   end
 
   def to_cents value

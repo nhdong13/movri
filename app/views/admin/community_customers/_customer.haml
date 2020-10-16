@@ -4,4 +4,4 @@
   %td.col-1.p-3.pt-1
     = "#{customer.completed_orders.count} #{customer.completed_orders.count == 1 ? "order" : "orders"}"
   %td.col-3.p-3.pt-1.text-right
-    = "#{number_to_currency(customer.total_spent)} spent"
+    = "#{number_to_currency(customer ? customer.total_spent : 0)} spent"
