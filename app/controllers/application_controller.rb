@@ -43,7 +43,8 @@ class ApplicationController < ActionController::Base
     :setup_custom_footer,
     :disarm_custom_head_script,
     :update_booking_session,
-    :set_paper_trail_whodunnit
+    :set_paper_trail_whodunnit,
+    :check_redirect_URLs
 
   # This updates translation files from WTI on every page load. Only useful in translation test servers.
   before_action :fetch_translations if APP_CONFIG.update_translations_on_every_page_load == "true"
@@ -71,6 +72,14 @@ class ApplicationController < ActionController::Base
         cat_names[cat.id] = cat.display_name(I18n.locale)
       end
       cat_names
+    end
+  end
+
+  def check_redirect_URLs
+    from_path = request.path
+    redirectUrl = RedirectUrl.find_by(from: from_path)
+    if redirectUrl.present? && redirectUrl.to != redirectUrl.from
+      return redirect_to redirectUrl.to
     end
   end
 

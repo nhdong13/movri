@@ -782,11 +782,6 @@ class ListingsController < ApplicationController
     # If listing is not found (in this community) the find method
     # will throw ActiveRecord::NotFound exception, which is handled
     # correctly in production environment (404 page)
-    redirectUrl = RedirectUrl.where(from: params[:url]).first
-
-    if redirectUrl.present? && redirectUrl.to != redirectUrl.from
-      redirect_to redirectUrl.to and return
-    end
     @listing = Listing.find_by_url(params[:url]) || Listing.find_by_id(params[:url])
 
     raise ListingDeleted if @listing.deleted?

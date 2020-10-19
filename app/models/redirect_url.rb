@@ -22,6 +22,7 @@ class RedirectUrl < ApplicationRecord
   belongs_to :redirectable, polymorphic: true, optional: true
 
   before_save :set_default_url
+  validates :from, uniqueness: true
 
   private
 
