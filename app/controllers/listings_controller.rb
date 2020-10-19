@@ -782,7 +782,7 @@ class ListingsController < ApplicationController
     # If listing is not found (in this community) the find method
     # will throw ActiveRecord::NotFound exception, which is handled
     # correctly in production environment (404 page)
-    @listing = Listing.find_by_url(params[:url]) || Listing.find_by_id(params[:url])
+    @listing = Listing.find_by_url(params[:id]) || Listing.find_by_id(params[:id])
 
     raise ListingDeleted if @listing.deleted?
 

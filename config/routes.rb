@@ -527,11 +527,19 @@ Rails.application.routes.draw do
     put 'change_cart_detail_booking_days', to: 'carts#change_cart_detail_booking_days'
     get 'change_cart_select_shipping', to: 'carts#change_cart_select_shipping'
 
-    get "/listings/:id", :to => redirect { |params, request|
-      "rent/#{params[:id].split("-")[1..].join("-")}"
-    }
+    # get "/listings/:id", :to => redirect { |params, request|
+    #   if params[:id] == 'new'
+    #     '/products/new'
+    #   elsif params[:id] == 'new_form_content'
+    #     '/products/new_form_content'
+    #   else
+    #     "rent/#{params[:id].split("-")[1..].join("-")}"
+    #   end
+    # }
 
-    get 'rent/:url', to: 'listings#show', param: :url
+    # get 'rent/:url', to: 'listings#show', param: :url
+    # get '/products/new', to: 'listings#new', as: :new_listing
+    # get '/products/new_form_content', to: 'listings#new_form_content'
 
     resources :listings do
       member do
