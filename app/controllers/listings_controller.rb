@@ -58,7 +58,7 @@ class ListingsController < ApplicationController
 
   def listing_bubble
     if params[:id]
-      @listing = Listing.find(params[:id])
+      @listing = Listing.find_by_url(params[:id]) || Listing.find_by_id(params[:id])
       if Policy::ListingPolicy.new(@listing, @current_community, @current_user).visible?
         render :partial => "homepage/listing_bubble", :locals => { :listing => @listing }
       else
@@ -335,7 +335,7 @@ class ListingsController < ApplicationController
   end
 
   def ensure_current_user_is_listing_author(error_message)
-    @listing = Listing.find(params[:id])
+    @listing = Listing.find_by_url(params[:id]) || Listing.find_by_id(params[:id])
     return if current_user?(@listing.author) || @current_user.has_admin_rights?(@current_community)
 
     flash[:error] = error_message

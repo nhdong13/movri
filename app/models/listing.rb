@@ -333,7 +333,7 @@ class Listing < ApplicationRecord
 
   # Overrides the to_param method to implement clean URLs
   def to_param
-    "#{id}-#{title.to_url}"
+    title.to_url
     # self.class.to_param(id, title)
   end
 

@@ -201,7 +201,7 @@ $(document).ready(function() {
       .map(
         item =>`
           <li>
-            <a href= ${'/rent/'+ item.url}>
+            <a href= ${'/listings/'+ item.url}>
               <div class='flex-items'>
                 <div class='width-10 center-items'>
                   <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
@@ -286,7 +286,7 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<a href= ${'/rent/'+ item.url}>
+                `<a href= ${'/listings/'+ item.url}>
                   <div class="col-3">
                     <div class="listing-box">
                       <div class='main-image'>
@@ -300,7 +300,7 @@ $(document).ready(function() {
                         <span> /7 day</span>
                       </div>
                       <div>
-                        <a href= ${'/rent/'+ item.url} class='rent-now-btn'>Rent Now</a>
+                        <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
                       </div>
                     </div>
                   </div>
@@ -319,7 +319,7 @@ $(document).ready(function() {
           ${hits
             .map(
               item =>
-                `<a href= ${'/rent/'+ item.url}>
+                `<a href= ${'/listings/'+ item.url}>
                   <div class="col-12">
                     <div class="listing-box-mobile">
                       <div class='main-image'>
@@ -334,7 +334,7 @@ $(document).ready(function() {
                           <span> /7 day</span>
                         </div>
                         <div class='listing-rent-now'>
-                          <a href= ${'/rent/'+ item.url} class='rent-now-btn'>Rent Now</a>
+                          <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
                         </div>
                       </div>
                     </div>
