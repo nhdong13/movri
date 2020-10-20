@@ -22,7 +22,7 @@ class SendgridMailer
     value = value.to_f / 100
   end
 
-  def self.send_new_order_mail(to, subsitutions)
+  def send_new_order_mail(to, subsitutions)
     subsitutions = {header: 'Test email', first_name: 'Admin', last_name: 'Movri'}
     data = {
       "personalizations": [
@@ -49,7 +49,7 @@ class SendgridMailer
     end
   end
 
-  def self.send_order_fulfilled_mail
+  def send_order_fulfilled_mail
     shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
     subsitutions = {
@@ -58,7 +58,9 @@ class SendgridMailer
       last_name: shipping_address.last_name,
       tracking_number: @transaction.tracking_number,
       shop_email: SERVICE_EMAIL,
-    }
+      shop_url: APP_CONFIG.smtp_email_domain,
+      order_status_url: ""
+    }.merge(get_data_from_transaction())
 
     data = {
       "personalizations": [
@@ -85,7 +87,7 @@ class SendgridMailer
     end
   end
 
-  def self.send_payment_error_mail
+  def send_payment_error_mail
     shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
     subsitutions = {
@@ -180,7 +182,7 @@ class SendgridMailer
     end
   end
 
-  def self.send_cancel_transaction_mail
+  def send_cancel_transaction_mail
     shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
     subsitutions = {
@@ -213,7 +215,7 @@ class SendgridMailer
     end
   end
 
-  def self.send_order_confirmed_mail
+  def send_order_confirmed_mail
     shipping_address = @transaction.shipping_address
     billing_address = @transaction.billing_address
     email_to = shipping_address.email
@@ -264,7 +266,7 @@ class SendgridMailer
   end
 
 
-  def self.send_invoice_mail(to, subsitutions)
+  def send_invoice_mail(to, subsitutions)
     subsitutions = {order_number: 1, custom_message: 'Admin', total: '50', shipping: '6', taxes: '1', address: '46A Le trung nghia', city: 'Ho Chi Minh', state_province_region: 'Ho Chi Minh', postal_code: '700000', country: "Viet Nam"}
     data = {
       "personalizations": [
