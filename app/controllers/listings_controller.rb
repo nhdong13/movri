@@ -325,12 +325,13 @@ class ListingsController < ApplicationController
   end
 
   def delete
-    if @listing.update(deleted: true)
+    if @listing.update_columns(deleted: true, url: "#{@listing.id}-deleted")
+      @listing.remove_from_index!
       flash[:notice] = t("layouts.notifications.listing_deleted")
-      redirect_to listings_person_settings_path(@current_user.username)
+      redirect_to admin_community_listings_path(@current_community)
     else
       flash[:error] = @listing.errors.full_messages.join(', ')
-      redirect_to @listing
+      redirect_to admin_community_listings_path(@current_community)
     end
   end
 

@@ -9,15 +9,16 @@
       .overlay
       .slider.responsive{class: "#{el}-slick"}
         - session[:recently_viewed].first(36).each do |listing_id|
-          - listing = Listing.find(listing_id)
-          .slide-item-container
-            .slide-item
-              .listing-box
-                .main-image.center-items
-                  = image_tag listing.main_image, :class => "design-image-too-wide"
-                .listing-price
-                  %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
-                  %span /1 day
-                .listing-information
-                  = listing.title
-                = link_to "Rent now", listing_path(listing), class: "rent-now-btn"
+          - listing = Listing.find_by_id(listing_id)
+          - if listing
+            .slide-item-container
+              .slide-item
+                .listing-box
+                  .main-image.center-items
+                    = image_tag listing.main_image, :class => "design-image-too-wide"
+                  .listing-price
+                    %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
+                    %span /1 day
+                  .listing-information
+                    = listing.title
+                  = link_to "Rent now", listing_path(listing), class: "rent-now-btn"

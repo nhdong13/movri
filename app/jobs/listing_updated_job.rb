@@ -11,7 +11,7 @@ class ListingUpdatedJob < Struct.new(:listing_id, :community_id)
   end
 
   def perform
-    listing = Listing.find(listing_id)
+    listing = Listing.find_by_id(listing_id)
     community = Community.find(community_id)
     listing.notify_followers(community, listing.author, true)
   end

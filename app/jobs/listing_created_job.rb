@@ -11,7 +11,7 @@ class ListingCreatedJob < Struct.new(:listing_id, :community_id)
   end
 
   def perform
-    listing = Listing.find(listing_id)
+    listing = Listing.find_by_id(listing_id)
     community = Community.find(community_id)
     # Send reminder about missing payment information
     if send_payment_settings_reminder?(listing_id, community)
@@ -20,7 +20,7 @@ class ListingCreatedJob < Struct.new(:listing_id, :community_id)
   end
 
   def send_payment_settings_reminder?(listing_id, community)
-    listing = Listing.find(listing_id)
+    listing = Listing.find_by_id(listing_id)
     payment_type = community.active_payment_types
 
     query_info = {

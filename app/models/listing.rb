@@ -199,6 +199,7 @@ class Listing < ApplicationRecord
 
   validates :available_quantity, numericality: { greater_than_or_equal_to: 0 }
 
+  default_scope { where(deleted: false) }
   scope :exist, -> { where(deleted: false) }
 
   scope :search_title_author_category, ->(pattern) do
@@ -211,7 +212,6 @@ class Listing < ApplicationRecord
         pattern: "%#{pattern}%")
   end
 
-  # default_scope { includes(:listing_images) }
 
   HOMEPAGE_INDEX = "listings_homepage_query"
   # Use this scope before any query part to give DB server an index hint
