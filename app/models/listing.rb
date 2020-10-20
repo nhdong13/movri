@@ -189,7 +189,7 @@ class Listing < ApplicationRecord
 
   before_validation :set_valid_until_time
 
-  validates :url, uniqueness: true
+  validates :url, uniqueness: true, allow_nil: false
 
   validates_presence_of :author_id
   validates_length_of :title, :in => 2..255, :allow_nil => false
