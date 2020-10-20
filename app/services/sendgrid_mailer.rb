@@ -9,7 +9,9 @@ class SendgridMailer
   ORDER_INVOICE_EMAIL_TEMPLATE_ID = 'd-d18795129226483ca509919fa8e53099'
   REFUND_NOTIFICATION_EMAIL_TEMPLATE_ID = 'd-3c4452e2cf4b4d49a05fc40a478d3688'
   ORDER_CANCELLED_EMAIL_TEMPLATE_ID = 'd-28c1411907e64eb88fade388ca33b696'
+  ORDER_DELIVERED_TEMPLATE_ID = 'd-ecf7fd441f6b467d81c1c758a5bff3c8'
   SERVICE_EMAIL = 'sales@movri.ca'
+  CART_URL = "#{APP_CONFIG.smtp_email_domain}/cart"
 
   def initialize(transaction, session, current_user)
     @session = session
@@ -20,6 +22,7 @@ class SendgridMailer
 
   def to_CAD value
     value = value.to_f / 100
+    value.round(2)
   end
 
   def send_new_order_mail(to, subsitutions)
@@ -49,18 +52,59 @@ class SendgridMailer
     end
   end
 
+  def send_order_delivered_mail tracking_number
+    shipping_address = @transaction.shipping_address
+    email_to = shipping_address.email
+    subsitutions = {
+      carrier_method: @transaction.shipping_carrier.upcase,
+      tracking_number: tracking_number,
+      shop_email: SERVICE_EMAIL,
+      item: {
+        products: get_items_from_transaction()
+      },
+    }.merge(get_data_from_transaction())
+
+    data = {
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": email_to
+            }
+          ],
+          "dynamic_template_data": subsitutions
+        }
+      ],
+      "from": {
+        "email": SERVICE_EMAIL
+      },
+      "template_id": ORDER_DELIVERED_TEMPLATE_ID
+    }
+    sg = SendGrid::API.new(api_key: APP_CONFIG.SENDGRID_API_KEY)
+    begin
+      response = sg.client.mail._("send").post(request_body: data)
+      return response.status_code
+    rescue Exception => e
+      puts e.message
+    end
+
+  end
+
   def send_order_fulfilled_mail
     shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
     subsitutions = {
-      ORDER_NUMBER: @transaction.order_number,
+      order_number: @transaction.order_number,
       first_name: shipping_address.first_name,
       last_name: shipping_address.last_name,
       tracking_number: @transaction.tracking_number,
       shop_email: SERVICE_EMAIL,
       shop_url: APP_CONFIG.smtp_email_domain,
-      order_status_url: ""
-    }.merge(get_data_from_transaction())
+      order_status_url: "",
+      item: {
+        products: get_items_from_transaction()
+      },
+    }
 
     data = {
       "personalizations": [
@@ -92,6 +136,8 @@ class SendgridMailer
     email_to = shipping_address.email
     subsitutions = {
       shop_email: SERVICE_EMAIL,
+      url: CART_URL,
+      shop_url: APP_CONFIG.smtp_email_domain,
     }
 
     data = {
@@ -135,12 +181,17 @@ class SendgridMailer
 
   def get_data_from_transaction
     promo_code = @transaction.promo_code ? @transaction.promo_code.code : ""
+    booking = @transaction.booking
     {
+      insurance_coverage: to_CAD(@calculate_money_service.total_coverage_for_all_items_cart),
       discount_code: promo_code,
       discount_value: to_CAD(@calculate_money_service.get_discount_for_all_products_cart),
       subtotal: to_CAD(@calculate_money_service.listings_subtotal),
       total_value: to_CAD(@transaction.stripe_payments.standard.last.sum_cents),
-      shipping_value: @transaction.will_pickup? ? 0 : @transaction.shipper.amount
+      shipping_value: @transaction.will_pickup? ? 0 : @transaction.shipper.amount,
+      arrival_date: booking.start_on.strftime("%m/%d/%Y"),
+      return_date: booking.end_on.strftime("%m/%d/%Y"),
+      duration:booking.duration
     }
   end
 
@@ -188,7 +239,10 @@ class SendgridMailer
     subsitutions = {
       order_number: @transaction.order_number,
       shop_email: SERVICE_EMAIL,
-    }
+      item: {
+        products: get_items_from_transaction()
+      },
+    }.merge(get_data_from_transaction())
 
     data = {
       "personalizations": [
@@ -220,7 +274,7 @@ class SendgridMailer
     billing_address = @transaction.billing_address
     email_to = shipping_address.email
     subsitutions = {
-      'order-number': @transaction.order_number,
+      order_number: @transaction.order_number,
       first_name: shipping_address.first_name,
       last_name: shipping_address.last_name,
       shipping_address_line_1: shipping_address.street1,
@@ -238,7 +292,10 @@ class SendgridMailer
       Sender_State: CANADA_PROVINCES.key(OFFICE_ADDRESS[:state_or_province]),
       Sender_City: OFFICE_ADDRESS[:city],
       Sender_Zip: OFFICE_ADDRESS[:postal_code],
-    }
+      item: {
+        products: get_items_from_transaction()
+      },
+    }.merge(get_data_from_transaction())
 
     data = {
       "personalizations": [

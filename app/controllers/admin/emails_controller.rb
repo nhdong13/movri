@@ -56,7 +56,7 @@ class Admin::EmailsController < Admin::AdminBaseController
       billing_country: person.billing_address.country
     }
 
-    SendgridMailer.send_invoice_mail(params[:to], subtitution)
+    SendgridMailer.new(nil, nil, nil).send_invoice_mail(params[:to], subtitution)
   end
 
   protected
