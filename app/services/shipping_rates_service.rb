@@ -42,7 +42,7 @@ module ShippingRatesService
       async: false,
       shipper_accounts:[
         {id: APP_CONFIG.fedex_shipper_id},
-        {id: APP_CONFIG.ups_shipper_id}
+        # {id: APP_CONFIG.ups_shipper_id}
       ],
       is_document:false,
       shipment: {
