@@ -72,7 +72,7 @@ class TransactionMoneyCalculation
   end
 
   def listing_subtotal listing, quantity
-    price_cents = calculate_price_cents(listing, quantity)
+    price_cents = calculate_price_cents_without_promo_code(listing, quantity)
     total_coverage = total_coverage(listing, quantity)
     price_cents + total_coverage
   end
@@ -106,7 +106,9 @@ class TransactionMoneyCalculation
   end
 
   def calculate_tax_fee_base_on_percent percent
-    price = listings_subtotal
-    percent_of(price, percent)
+    shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
+    state = state ? state : @state
+    all_fee = listings_subtotal - get_discount_for_all_products_cart + shipping_fee
+    percent_of(all_fee, percent)
   end
 end
