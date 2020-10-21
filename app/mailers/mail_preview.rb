@@ -83,7 +83,7 @@ class MailPreview < MailView
   end
 
   def welcome_email
-    PersonMailer.welcome_email(member, community)
+    SendgridMailer.new().send_welcome_mail(member)
   end
 
   def transaction_preauthorized

@@ -167,7 +167,8 @@ class Admin::CommunitiesController < Admin::AdminBaseController
   end
 
   def test_welcome_email
-    MailCarrier.deliver_later(PersonMailer.welcome_email(@current_user, @current_community, true, true))
+    # MailCarrier.deliver_later(PersonMailer.welcome_email(@current_user, @current_community, true, true))
+    MailCarrier.deliver_later(SendgridMailer.new().send_welcome_mail(@current_user))
     flash[:notice] = t("layouts.notifications.test_welcome_email_delivered_to", :email => @current_user.confirmed_notification_email_to)
     redirect_to edit_welcome_email_admin_community_path(@current_community)
   end

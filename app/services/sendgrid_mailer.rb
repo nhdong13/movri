@@ -10,19 +10,96 @@ class SendgridMailer
   REFUND_NOTIFICATION_EMAIL_TEMPLATE_ID = 'd-3c4452e2cf4b4d49a05fc40a478d3688'
   ORDER_CANCELLED_EMAIL_TEMPLATE_ID = 'd-28c1411907e64eb88fade388ca33b696'
   ORDER_DELIVERED_TEMPLATE_ID = 'd-ecf7fd441f6b467d81c1c758a5bff3c8'
+  CONFIRMATION_EMAIL_TEMPLATE_ID = 'd-034b300e1e50486ea68c39f821d26865'
+  WELCOME_EMAIL_TEMPLATE_ID = 'd-2f165bb3f7ce4595ad235928c4dd7d55'
   SERVICE_EMAIL = 'sales@movri.ca'
   CART_URL = "#{APP_CONFIG.smtp_email_domain}/cart"
+  ROUTES_URL = APP_CONFIG.smtp_email_domain
 
-  def initialize(transaction, session, current_user)
+  def initialize(transaction=nil, session={}, current_user=nil)
     @session = session
     @transaction = transaction
     @current_user = current_user
-    @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
+    if @transaction
+      @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
+    end
   end
 
   def to_CAD value
     value = value.to_f / 100
     value.round(2)
+  end
+
+
+  def send_confirmation_mail email, community
+    @current_community = community
+    @resource = email.person
+    @confirmation_token = email.confirmation_token
+    @host = community.full_domain
+    email.update_attribute(:confirmation_sent_at, Time.now)
+    confirm_email_url = "#{ROUTES_URL}/en/people/confirmation?confirmation_token=#{@confirmation_token}"
+    subsitutions = {
+      confirm_email_url: confirm_email_url,
+      first_name: @resource.given_name,
+      shop_email: SERVICE_EMAIL,
+    }
+
+    data = {
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": email.address
+            }
+          ],
+          "dynamic_template_data": subsitutions
+        }
+      ],
+      "from": {
+        "email": SERVICE_EMAIL
+      },
+      "template_id": CONFIRMATION_EMAIL_TEMPLATE_ID
+    }
+    sg = SendGrid::API.new(api_key: APP_CONFIG.SENDGRID_API_KEY)
+    begin
+      response = sg.client.mail._("send").post(request_body: data)
+      return response.status_code
+    rescue Exception => e
+      puts e.message
+    end
+  end
+
+  def send_welcome_mail person
+    subsitutions = {
+      shop_email: SERVICE_EMAIL,
+      shop: {
+        url: ROUTES_URL
+      }
+    }
+
+    data = {
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": person.confirmed_notification_emails_to
+            }
+          ],
+          "dynamic_template_data": subsitutions
+        }
+      ],
+      "from": {
+        "email": SERVICE_EMAIL
+      },
+      "template_id": WELCOME_EMAIL_TEMPLATE_ID
+    }
+    sg = SendGrid::API.new(api_key: APP_CONFIG.SENDGRID_API_KEY)
+    begin
+      response = sg.client.mail._("send").post(request_body: data)
+      return response.status_code
+    rescue Exception => e
+      puts e.message
+    end
   end
 
   def send_new_order_mail(to, subsitutions)

@@ -105,8 +105,7 @@ class PeopleController < Devise::RegistrationsController
 
       redirect_to search_path
     else
-      Email.send_confirmation(email, @current_community)
-
+      SendgridMailer.new().send_confirmation_mail(email, @current_community)
       flash[:notice] = t("layouts.notifications.account_creation_succesful_you_still_need_to_confirm_your_email")
       redirect_to confirmation_pending_path
     end

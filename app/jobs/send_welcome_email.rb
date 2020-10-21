@@ -7,7 +7,7 @@ class SendWelcomeEmail < Struct.new(:person_id, :community_id)
     person = Person.find(person_id)
     community = Community.find(community_id)
     unless person.has_admin_rights?(community)
-      MailCarrier.deliver_now(PersonMailer.welcome_email(person, community))
+      MailCarrier.deliver_now(SendgridMailer.new().send_welcome_mail(person))
     end
   end
 
