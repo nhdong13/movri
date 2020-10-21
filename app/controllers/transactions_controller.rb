@@ -514,16 +514,16 @@ class TransactionsController < ApplicationController
   def ensure_can_countinue_transactions
     if @transaction.completed?
       flash[:error] = "The transaction is already completed."
-      return redirect_to show_cart_path
+      return redirect_to cart_path
     end
     if @transaction.is_overweight?
       flash[:error] = "Please contact us for this. This package is overweight. We'd love to help you with completing the transaction."
-      return redirect_to show_cart_path
+      return redirect_to cart_path
     end
 
     if checkout_setting.only_guest? && @current_user
       flash[:error] = "Only guest can continue with transaction."
-      return redirect_to show_cart_path
+      return redirect_to cart_path
     end
     if checkout_setting.only_accounts? && !@current_user
       flash[:error] = t("layouts.notifications.you_must_log_in_to_do_a_transaction")
