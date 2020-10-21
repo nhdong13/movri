@@ -55,15 +55,16 @@ class SessionsController < ApplicationController
     login_successful = t("layouts.notifications.login_successful", person_name: view_context.link_to(PersonViewUtils.person_display_name_for_type(@current_user, "first_name_only"), person_path(@current_user)))
     visit_admin = t('layouts.notifications.visit_admin', link: view_context.link_to(t('layouts.notifications.visit_admin_link'), admin_details_edit_path))
     flash[:notice] = "#{login_successful}#{@current_user.has_admin_rights?(@current_community) ? " #{visit_admin}" : ''}".html_safe
-    if session[:return_to]
-      redirect_to session[:return_to]
-      session[:return_to] = nil
-    elsif session[:return_to_content]
-      redirect_to session[:return_to_content]
-      session[:return_to_content] = nil
-    else
-      redirect_to search_path
-    end
+    # if session[:return_to]
+    #   redirect_to session[:return_to]
+    #   session[:return_to] = nil
+    # elsif session[:return_to_content]
+    #   redirect_to session[:return_to_content]
+    #   session[:return_to_content] = nil
+    # else
+    #   redirect_to search_path
+    # end
+    redirect_to homepage_with_locale_path
   end
 
   def destroy
