@@ -234,11 +234,6 @@ class Listing < ApplicationRecord
   }
   enum state: APPROVALS
 
-  before_save :update_url
-  def update_url
-    self.url = self.title.to_url
-  end
-
   before_create :set_sort_date_to_now
   def set_sort_date_to_now
     self.sort_date ||= Time.now

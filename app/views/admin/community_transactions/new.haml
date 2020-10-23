@@ -3,8 +3,9 @@
 .left-navi-section#create-draft-order
   .row
     .col-12
-      %h2.margin-bt-0="Create order"
+      %h2.margin-bt-0 Create order
   .row
+    #draft_order_id{'data-id': @transaction.id}
     .col-12
       .row
         .col-9.order-details
@@ -15,8 +16,9 @@
             .row.search-product
               = text_field_tag :product_name, params[:product_name], placeholder: 'Search products'
               %a.button#browse-products{href: "#browse-product-modal", rel: "modal:open"}= "Browse products"
-            .row.payment-info
-              = render 'payment_info'
+            #craft-order-product-list
+            .row.payment-info#draft-payment-info
+              = render partial: 'payment_info', locals: {transaction: @transaction}
           .col-12.email-invoice
             .col-6
               %i.icon-file-text-alt.left

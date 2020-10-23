@@ -1,0 +1,2 @@
+$('.close-custome-listing-modal').trigger("click");
+$("#draft-payment-info").html("<%= j render(partial: 'admin/community_transactions/payment_info', locals: {transaction: @transaction}) %>");

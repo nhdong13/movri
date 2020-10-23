@@ -2,9 +2,14 @@ require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
   before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy]
-  def new; end
+  def new
+    @transaction = Transaction.create(transaction_type: 1)
+  end
 
   def create; end
+
+  def show
+  end
 
   def index
     @selected_left_navi_link = "transactions"

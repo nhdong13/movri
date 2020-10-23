@@ -1,4 +1,6 @@
-.product-list
+- @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
+#craft-order-product-list
+  = render partial: 'admin/community_draft_orders/listings', locals: {transaction: transaction}
 .col-6.add-note
   = "Notes"
   = text_field_tag :note, params[:note], placeholder: 'Add a note...'
@@ -6,17 +8,18 @@
   %table
     %tr
       %th
-        %a.add-discount.toggle{data: {toggle: '#header-toggle-menu-discount'}}= "Add discount"
+        %a.open-discount-modal.toggle{data: {toggle: '#header-toggle-menu-discount'}}= "Add discount"
       %td
-        = "$"
-        %span.discount= "0.00"
-        .reason
+        - if transaction.draft_order_discount_code
+          %span.discount= money_to_humanized(@calculate_money.get_discount_for_draft_order(transaction.draft_order_discount_code.discount_percent))
+          .reason
+        - else
+          %span.discount= "$ 0.0"
     %tr
       %th
         = "Subtotal"
       %td
-        = "$"
-        %span.subtotal= "0.00"
+        %span.subtotal= money_to_humanized((@calculate_money.get_price_cents_for_all_products_cart))
     %tr
       %th
         %a.add-discount.toggle{data: {toggle: '#header-toggle-menu-shipping'}}= "Add shipping"
@@ -26,10 +29,13 @@
         .shipping-service
     %tr
       %th
-        %a.add-taxes.toggle{data: {toggle: '#header-toggle-menu-tax'}}= "Taxes"
+        %a.open-draft-taxes-modal Taxes
       %td
-        = "$"
-        %span.tax= "0.00"
+        - if transaction.tax_cents.nil?
+          = "$"
+          %span.tax= "0.00"
+        - else
+          %span.tax= money_to_humanized(transaction.tax_cents)
     %tr
       %th
         = "Total"
@@ -48,17 +54,19 @@
     = text_field_tag :reason, params[:reason], placeholder: "Damage item, loyalty discount"
   .col-12
     %a.button.left.dp-none.remove= "Remove"
-    %a.button.left.close.toggle{data: {toggle: '#header-toggle-menu-discount'}}= "Close"
+    %a.button.left.close-draft-discount-modal Close
     %a.button.right.add-discount-btn= "Apply"
 
 .toggle-menu.header-toggle-menu-menu.hidden#header-toggle-menu-tax
   .col-12.br-bottom.padding-bt-15.margin-t-15
+    %p= "Taxes percent"
+    = text_field_tag :tax_percent, nil , placeholder: "%"
     %p= "Taxes are automatically calculated."
     = check_box_tag "tax"
     %span= "Charge taxes"
   .col-12
-    %a.button.left= "Close"
-    %a.button.right.add-tax= "Apply"
+    %a.button.left.close-draft-taxes-modal.toggle Close
+    %a.button.right.add-tax Apply
 
 .toggle-menu.header-toggle-menu-menu.hidden.width-30#header-toggle-menu-shipping
   .col-12.br-bottom.padding-bt-15.margin-t-15
@@ -72,7 +80,7 @@
       = text_field_tag :custom_rate_name, "", placeholder: "Custom rate name", disabled: true
     .col-4.margin-t-15
       = number_field_tag :shipping_price, "", placeholder: "$", disabled: true
-  .col-12 
+  .col-12
     %a.button.left.dp-none.remove= "Remove"
     %a.button.left= "Close"
     %a.button.right.add-shipping= "Apply"

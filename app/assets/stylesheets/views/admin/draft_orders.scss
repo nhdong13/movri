@@ -161,7 +161,7 @@ $border-color: #E1E3E5;
       }
     }
 
-    .product-list {
+    #craft-order-product-list {
       tbody tr:nth-child(odd) {
         background-color: transparent;
       }
@@ -332,7 +332,7 @@ $border-color: #E1E3E5;
       border-top-right-radius: 0px;
     }
 
-    .price { 
+    .price {
       border-radius: 0px;
     }
 

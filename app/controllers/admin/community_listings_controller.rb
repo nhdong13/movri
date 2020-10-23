@@ -45,11 +45,70 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
     end
   end
 
-  def get_listings
+  def add_listing_to_draft_order
+    @transaction = Transaction.find(params[:transaction_id])
     @listings = @service.public_list.where(id: params[:ids])
+    @listings.each do |listing|
+      @transaction.create_transaction_item(listing)
+    end
     respond_to do |format|
       format.js { render layout: false }
       format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def add_discount_to_draft_order
+    @transaction = Transaction.find(params[:transaction_id])
+    discount_percent = params[:discount_percent].to_i
+    custom_params = {
+      name: 'discount_code',
+      price_cents: params[:price].to_i * 100,
+      note: params[:reason],
+      discount_percent: discount_percent,
+      custom_item_type: 1,
+    }
+    if @transaction.draft_order_discount_code
+      @transaction.draft_order_discount_code.update(custom_params)
+    else
+      @transaction.custom_items.create(custom_params)
+    end
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def create_new_custom_item
+    @transaction = Transaction.find(params[:transaction_id])
+    @transaction.custom_items.create(
+      name: params[:title],
+      price_cents: params[:price].to_i * 100,
+      quantity: params[:quantity],
+    )
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listing, each_serializer: ListingSerializer }
+    end
+  end
+
+  def calculate_taxes
+    @transaction = Transaction.find(params[:transaction_id])
+    if params[:will_charge_taxes] == 'true'
+      tax_percent = params[:tax_percent].to_i
+      tax_cents = calculate_money_service(@transaction).get_tax_fee_for_draft_order(tax_percent)
+      @transaction.update(
+        tax_percent: tax_percent,
+        tax_cents: tax_cents
+      )
+    else
+      @transaction.update(
+        tax_percent: 0,
+        tax_cents: 0
+      )
+    end
+    respond_to do |format|
+      format.js { render partial: 'update_draft_price_info' }
+      format.json { render json: listing, each_serializer: ListingSerializer }
     end
   end
 
@@ -57,6 +116,10 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
 
   def set_selected_left_navi_link
     @selected_left_navi_link = 'listings'
+  end
+
+  def calculate_money_service(transaction)
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
   end
 
   def set_service

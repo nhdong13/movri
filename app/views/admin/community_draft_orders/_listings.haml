@@ -11,7 +11,8 @@
       %th
       %th
   %tbody
-  - listings.each do |listing|
+  - transaction.transaction_items.each do |item|
+    - listing = item.listing
     %tr
       %td.w-5.padding-0
         = hidden_field_tag "id", listing.id, class: "ids"
@@ -19,12 +20,28 @@
       %td.w-45.padding-0
         = listing.title
       %td
-        = text_field_tag 'price', listing.price, class: "price"
+        = text_field_tag 'price', listing.price, class: 'craft-order-price'
       %td
         = "x"
       %td
-        = text_field_tag 'quantity', 1, class: "quantity"
+        = text_field_tag 'quantity', 1, class: 'craft-order-quantity'
       %td.total-price
         = humanized_money_with_symbol(listing.price)
+      %td
+        %i.icon-times
+  - transaction.custom_items.is_listing.each do |item|
+    %tr
+      %td.w-5.padding-0
+        = hidden_field_tag "id", item.id, class: "ids"
+      %td.w-45.padding-0
+        = item.name
+      %td
+        = text_field_tag 'price', item.price_cents/100, class: 'craft-order-price'
+      %td
+        = "x"
+      %td
+        = text_field_tag 'quantity', item.quantity, class: 'craft-order-quantity'
+      %td.total-price
+        = money_to_humanized(item.price_cents * item.quantity)
       %td
         %i.icon-times

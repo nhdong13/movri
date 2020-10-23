@@ -45,8 +45,8 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
             id: ui.item.id
           },
           complete: function(){
-            $('.product-list .icon-times').on('click', function(e){
-              $(e.target).parents('.product-list').remove()
+            $('#craft-order-product-list .icon-times').on('click', function(e){
+              $(e.target).parents('#craft-order-product-list').remove()
             })
           }
         })
@@ -58,8 +58,8 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
 // Listing autocomplete
 $.getJSON("/admin/communities/1/listings", function(data) {
   source = []
-  data.forEach(function(item){ 
-    source.push({ 
+  data.forEach(function(item){
+    source.push({
       value: item.title,
       lable: item.title,
       id: item.id
@@ -74,35 +74,43 @@ $.getJSON("/admin/communities/1/listings", function(data) {
       results: function() { return '' }
     },
     select: function(event, ui){
-      var ids = $(".ids").map(function(){return $(this).val();}).get();
-      ids.push(ui.item.id)
-
+      var id = ui.item.id
+      var transaction_id = $('#draft_order_id').data("id");
       $.ajax({
-        url: "/admin/communities/1/listings/get_listings.js",
+        url: "/admin/communities/1/listings/add_listing_to_draft_order.js",
         method: "GET",
         data: {
-          ids: ids
+          transaction_id: transaction_id,
+          ids: [id]
         },
         complete: function() {
-          $('.price').on('change', function(e){
-            var total_price = $(e.target).val() * $(e.target).closest('tr').find('.quantity').val()
-            $(e.target).closest('tr').find('.total-price').text(`$${total_price}`)
-            updateSubtotalAndTotal(total_price, "plus")
+          updateSubtotalAndTotal()
+          $('.craft-order-price').on('change', function(e){
+            updateTotalPriceForOneItem($(this))
+            updateSubtotalAndTotal()
           })
 
-          $('.quantity').on('change', function(e){
-            $(e.target).closest('tr').find('.total-price').text(`$${$(e.target).val() * $(e.target).closest('tr').find('.price').val()}`)
-            updateSubtotalAndTotal($(e.target).val() * $(e.target).closest('tr').find('.price').val(), "plus")
+          $('.craft-order-quantity').on('change', function(e){
+            updateTotalPriceForOneItem($(this))
+            updateSubtotalAndTotal()
           })
 
           $('.icon-times').on('click', function(e){
             $(e.target).closest('tr').remove()
+            updateSubtotalAndTotal()
           })
         }
       })
     }
   }).autocomplete('widget').addClass('product-name-list')
 })
+
+function updateTotalPriceForOneItem($el){
+  price = parseInt($el.parents("tr").find(".craft-order-price").val());
+  quantity = parseInt($el.parents("tr").find(".craft-order-quantity").val());
+  total = price * quantity
+  quantity = parseInt($el.parents("tr").find(".total-price").text(`$${total}`));
+}
 
 $('#review-email').on('click', function(){
   var data = {
@@ -130,102 +138,152 @@ $('#send-notification').on('click', function(){
   })
 })
 
+var transaction_id = $('#draft_order_id').data("id");
+$('.save-line-item-btn').on('click', function(){
+  var data = {
+    title: $('.new-custome-listing-title').val(),
+    price: $('.new-custome-listing-price').val(),
+    quantity: $('.new-custome-listing-quantity').val(),
+    transaction_id: transaction_id
+  }
+
+  $.ajax({
+    url: "/admin/communities/1/listings/create_new_custom_item",
+    data: data,
+    complete: function(){
+      updateSubtotalAndTotal();
+      $('.craft-order-price').on('change', function(e){
+        updateTotalPriceForOneItem($(this))
+        updateSubtotalAndTotal()
+      });
+
+      $('.craft-order-quantity').on('change', function(e){
+        updateTotalPriceForOneItem($(this))
+        updateSubtotalAndTotal()
+      });
+
+      $('.icon-times').on('click', function(e){
+        $(e.target).closest('tr').remove()
+        updateSubtotalAndTotal()
+      });
+    }
+  })
+})
+
 $('.add-to-order-button').on('click', function(){
+
   var ids = []
 
   $('.products input:checked').map(function(i, el){
     ids.push($(el).val())
   });
 
-  $('.product-list .ids').map(function(i, el){
+  $('#craft-order-product-list .ids').map(function(i, el){
     ids.push($(el).val())
   })
-
+  var transaction_id = $('#draft_order_id').data("id");
   $.ajax({
-    url: "/admin/communities/1/listings/get_listings.js",
+    url: "/admin/communities/1/listings/add_listing_to_draft_order.js",
     method: "GET",
-    data: { ids: ids },
+    data: {
+      ids: ids,
+      transaction_id:  transaction_id
+    },
     complete: function(){
-      $('.product-list .icon-times').on('click', function(e){
-        $(e.target).parents('.product-list').remove()
-      })
+      updateSubtotalAndTotal();
+      $('.craft-order-price').on('change', function(e){
+        updateTotalPriceForOneItem($(this))
+        updateSubtotalAndTotal()
+      });
+
+      $('.craft-order-quantity').on('change', function(e){
+        updateTotalPriceForOneItem($(this))
+        updateSubtotalAndTotal()
+      });
+
+      $('.icon-times').on('click', function(e){
+        $(e.target).closest('tr').remove()
+        updateSubtotalAndTotal()
+      });
     }
   })
 })
 
 $('.add-tax').on('click', function() {
   if($('#header-toggle-menu-tax #tax').prop('checked')) {
-    $('.total-info .total').text(function(i, oldText) {
-      total = parseInt(oldText)
-      return new Intl.NumberFormat('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(total + total * 0.1)
-    })
-
-    $('.total-info .tax').text(function(i, oldText) {
-      return new Intl.NumberFormat('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(parseInt($('.total-info .subtotal').text()) * 0.1)
-    })
+    will_charge_taxes = true
   } else {
-    $('.total-info .total').text(function(i, oldText) {
-      total = parseInt(oldText)
-      return new Intl.NumberFormat('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(total - parseInt($('.tax').text()))
-    })
-
-    $('.total-info .tax').text(function(i, oldText) {
-      return new Intl.NumberFormat('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(0)
-    })
+    will_charge_taxes = false
   }
+  var transaction_id = $('#draft_order_id').data("id");
+  tax_percent = $('#tax_percent').val()
+  $.ajax({
+    url: "/admin/communities/1/listings/calculate_taxes.js",
+    method: "GET",
+    data: {
+      transaction_id:  transaction_id,
+      will_charge_taxes: will_charge_taxes,
+      tax_percent: tax_percent
+    },
+    complete: function(){
+    }
+  })
 })
 
 // update subtotal and total
 function updateSubtotalAndTotal(total, method) {
-  if (method == "plus") {
-    $('.subtotal, .total').text(function(i, oldText) {
-      return new Intl.NumberFormat('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(parseInt(oldText) + parseInt(total))
-    })
-  } else if (method == "minus") {
-    $('.subtotal, .total').text(function(i, oldText) {
-      return new Intl.NumberFormat('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(parseInt(oldText) - parseInt(total))
-    })
-  }
+  subtotal_all_items = 0
+  _.map($('.craft-order-price'), function(i){
+    price = parseInt($(i).val());
+    quantity = parseInt($(i).parents("tr").find(".craft-order-quantity").val());
+    subtotal = price * quantity
+    subtotal_all_items += subtotal
+  })
+
+  $('.subtotal').text(subtotal_all_items)
 }
 
 // add discount to draft order
-$('.add-discount-btn').on('click', function() {
+$("body").on('click', '.add-discount-btn', function() {
   var discount_percent = $('#discount_percent').val()
   var reason = $('#reason').val()
-  total = parseInt($('.subtotal').text()) * (discount_percent / 100)
-
-  $('.discount').text(function() {
-    return new Intl.NumberFormat('en', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(total)
+  var transaction_id = $('#draft_order_id').data("id");
+  $.ajax({
+    url: "/admin/communities/1/listings/add_discount_to_draft_order.js",
+    method: "GET",
+    data: {
+      discount_percent: discount_percent,
+      reason: reason,
+      transaction_id:  transaction_id
+    },
+    complete: function(){
+    }
   })
-
-  updateSubtotalAndTotal(total, 'minus')
-  $('.reason').text(reason)
 
   $('.remove').removeClass('dp-none')
   $('.close').addClass('dp-none')
 })
 
+$("body").on('click', '.open-discount-modal', function() {
+  $("#header-toggle-menu-discount").toggle("show");
+})
+
+
+$("body").on('click', '.close-draft-discount-modal', function() {
+  $("#header-toggle-menu-discount").toggle("hide");
+})
+
+$("body").on('click', '.open-draft-taxes-modal', function() {
+  $("#header-toggle-menu-tax").toggle("show");
+})
+
+$("body").on('click', '.close-draft-taxes-modal', function() {
+  $("#header-toggle-menu-tax").toggle("hide");
+})
+
+$("body").on('click', '.close-draft-taxes-modal', function() {
+  $("#header-toggle-menu-tax").toggle("hide");
+})
 
 $('#shipping_false').on('click' , function(){
   $('#custom_rate_name').removeAttr('disabled')

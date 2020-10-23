@@ -390,9 +390,14 @@ Rails.application.routes.draw do
             get :reject
           end
           collection do
-            get 'get_listings'
+            get 'add_listing_to_draft_order'
             get 'export'
             get 'export_status'
+            get :create_new_custom_item
+            get :add_discount_to_draft_order
+            get :add_shipping_to_draft_order
+            get :remove_listing_out_draft_order
+            get :calculate_taxes
           end
         end
         resources :transactions, controller: :community_transactions do
