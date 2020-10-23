@@ -445,7 +445,11 @@ class Transaction < ApplicationRecord
   end
 
   def draft_order_discount_code
-    discount_code = custom_items.where(name: 'discount_code').last
+    discount_code = custom_items.is_discount.last
+  end
+
+  def draft_order_shipping_fee
+    discount_code = custom_items.is_shipping_fee.last
   end
 
   def discount_value_for_draft_order

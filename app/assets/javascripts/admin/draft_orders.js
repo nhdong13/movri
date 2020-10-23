@@ -170,6 +170,24 @@ $('.save-line-item-btn').on('click', function(){
   })
 })
 
+$('body').on('change', '.craft-order-price, craft-order-quantity', function(e){
+  $parent = $(this).parents("tr")
+  price = $parent.find(".craft-order-price").val();
+  quantity = $parent.find(".craft-order-quantity").val();
+  id = $parent.data("id")
+  transaction_id = $('#draft_order_id').data("id");
+  $.ajax({
+    url: "/admin/communities/1/listings/update_draft_order_items.js",
+    method: "GET",
+    data: {
+      transaction_id: transaction_id,
+      price: price,
+      quantity: quantity,
+      transaction_item_id: id
+    },
+  })
+});
+
 $('.add-to-order-button').on('click', function(){
 
   var ids = []
@@ -209,7 +227,7 @@ $('.add-to-order-button').on('click', function(){
   })
 })
 
-$('.add-tax').on('click', function() {
+$("body").on('click', '.add-tax', function() {
   if($('#header-toggle-menu-tax #tax').prop('checked')) {
     will_charge_taxes = true
   } else {
@@ -225,8 +243,17 @@ $('.add-tax').on('click', function() {
       will_charge_taxes: will_charge_taxes,
       tax_percent: tax_percent
     },
-    complete: function(){
-    }
+  })
+})
+
+$("body").on('click', '.remove-draft-order-discount', function() {
+  var transaction_id = $('#draft_order_id').data("id");
+  $.ajax({
+    url: "/admin/communities/1/listings/remove_draft_order_discount.js",
+    method: "GET",
+    data: {
+      transaction_id: transaction_id,
+    },
   })
 })
 
@@ -256,8 +283,6 @@ $("body").on('click', '.add-discount-btn', function() {
       reason: reason,
       transaction_id:  transaction_id
     },
-    complete: function(){
-    }
   })
 
   $('.remove').removeClass('dp-none')
@@ -268,9 +293,16 @@ $("body").on('click', '.open-discount-modal', function() {
   $("#header-toggle-menu-discount").toggle("show");
 })
 
-
 $("body").on('click', '.close-draft-discount-modal', function() {
   $("#header-toggle-menu-discount").toggle("hide");
+})
+
+$("body").on('click', '.open-draft-shipping-modal', function() {
+  $("#header-toggle-menu-shipping").toggle("show");
+})
+
+$("body").on('click', '.close-draft-shipping-modal', function() {
+  $("#header-toggle-menu-shipping").toggle("hide");
 })
 
 $("body").on('click', '.open-draft-taxes-modal', function() {
@@ -281,32 +313,33 @@ $("body").on('click', '.close-draft-taxes-modal', function() {
   $("#header-toggle-menu-tax").toggle("hide");
 })
 
-$("body").on('click', '.close-draft-taxes-modal', function() {
-  $("#header-toggle-menu-tax").toggle("hide");
-})
-
-$('#shipping_false').on('click' , function(){
+$('body').on('click', '#shipping_false', function(){
   $('#custom_rate_name').removeAttr('disabled')
   $('#shipping_price').removeAttr('disabled')
 })
 
-$('#shipping_true').on('click', function(){
-  $('#custom_rate_name').attr({disabled: true})
+$('body').on('click', '#shipping_true', function(){
+   $('#custom_rate_name').attr({disabled: true})
   $('#shipping_price').attr({disabled: true})
 })
 
-$('.add-shipping').on('click', function(){
+$('body').on('click', '.add-shipping', function(){
   if ($('#shipping_false').is(':checked')) {
-    custom_rate_name = $('#custom_rate_name').val()
-    shipping_price = $('#shipping_price').val()
-
-    $('.shipping-service').text(custom_rate_name)
-    $('.shipping').text(function(){
-      return new Intl.NumberFormat('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(shipping_price)
-    })
-    updateSubtotalAndTotal(shipping_price, 'plus')
+    free_shipping = false
+  } else {
+    free_shipping = true
   }
+  var transaction_id = $('#draft_order_id').data("id");
+  custom_rate_name = $('#custom_rate_name').val()
+  shipping_price = $('#shipping_price').val()
+  $.ajax({
+    url: "/admin/communities/1/listings/add_shipping_fee_to_draft_order.js",
+    method: "GET",
+    data: {
+      free_shipping: free_shipping,
+      custom_rate_name: custom_rate_name,
+      shipping_price:  shipping_price,
+      transaction_id: transaction_id
+    },
+  })
 })

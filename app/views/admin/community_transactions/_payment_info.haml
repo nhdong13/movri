@@ -8,7 +8,7 @@
   %table
     %tr
       %th
-        %a.open-discount-modal.toggle{data: {toggle: '#header-toggle-menu-discount'}}= "Add discount"
+        %a.open-discount-modal Add discount
       %td
         - if transaction.draft_order_discount_code
           %span.discount= money_to_humanized(@calculate_money.get_discount_for_draft_order(transaction.draft_order_discount_code.discount_percent))
@@ -22,26 +22,19 @@
         %span.subtotal= money_to_humanized((@calculate_money.get_price_cents_for_all_products_cart))
     %tr
       %th
-        %a.add-discount.toggle{data: {toggle: '#header-toggle-menu-shipping'}}= "Add shipping"
+        %a.open-draft-shipping-modal Add shipping
       %td
-        = "$"
-        %span.shipping= "0.00"
-        .shipping-service
+        %span.tax= money_to_humanized(transaction.draft_order_shipping_fee&.price_cents)
     %tr
       %th
         %a.open-draft-taxes-modal Taxes
       %td
-        - if transaction.tax_cents.nil?
-          = "$"
-          %span.tax= "0.00"
-        - else
-          %span.tax= money_to_humanized(transaction.tax_cents)
+        %span.tax= money_to_humanized(transaction.tax_cents)
     %tr
       %th
         = "Total"
       %td
-        = "$"
-        %span.total= "0.00"
+        %span.total= money_to_humanized((@calculate_money.get_final_price_for_draft_order))
 
 .header-toggle-menu-menu.hidden#header-toggle-menu-discount
   .col-12.br-bottom.padding-bt-15.margin-t-15
@@ -49,38 +42,51 @@
     #discount-section.width-100
       %button.percent.margin-0= "%"
       %button.price.margin-0= "$"
-      = number_field_tag :discount_percent, params[:discount_percent], placeholder: "$", step: 1
+      = number_field_tag :discount_percent, transaction.draft_order_discount_code&.discount_percent, placeholder: "$", step: 1
     %p.margin-top-5= "Reason"
-    = text_field_tag :reason, params[:reason], placeholder: "Damage item, loyalty discount"
+    = text_field_tag :reason, transaction.draft_order_discount_code&.note, placeholder: "Damage item, loyalty discount"
   .col-12
-    %a.button.left.dp-none.remove= "Remove"
+    - if transaction.draft_order_discount_code
+      %a.button.left.remove-draft-order-discount Remove
     %a.button.left.close-draft-discount-modal Close
     %a.button.right.add-discount-btn= "Apply"
 
 .toggle-menu.header-toggle-menu-menu.hidden#header-toggle-menu-tax
   .col-12.br-bottom.padding-bt-15.margin-t-15
     %p= "Taxes percent"
-    = text_field_tag :tax_percent, nil , placeholder: "%"
+    = text_field_tag :tax_percent, transaction.tax_percent , placeholder: "%"
     %p= "Taxes are automatically calculated."
     = check_box_tag "tax"
     %span= "Charge taxes"
   .col-12
-    %a.button.left.close-draft-taxes-modal.toggle Close
+    %a.button.left.close-draft-taxes-modal Close
     %a.button.right.add-tax Apply
 
 .toggle-menu.header-toggle-menu-menu.hidden.width-30#header-toggle-menu-shipping
   .col-12.br-bottom.padding-bt-15.margin-t-15
-    .col-12
-      = radio_button_tag "shipping", true, true
-      %span= "Free shipping"
-    .col-12.margin-t-15
-      = radio_button_tag "shipping", false
-      %span= "Custom rates"
-    .col-8.margin-t-15
-      = text_field_tag :custom_rate_name, "", placeholder: "Custom rate name", disabled: true
-    .col-4.margin-t-15
-      = number_field_tag :shipping_price, "", placeholder: "$", disabled: true
+    - if transaction.draft_order_shipping_fee
+      .col-12
+        = radio_button_tag "shipping", true
+        %span= "Free shipping"
+      .col-12.margin-t-15
+        = radio_button_tag "shipping", false, "checked"
+        %span= "Custom rates"
+      .col-8.margin-t-15
+        = text_field_tag :custom_rate_name, transaction.draft_order_shipping_fee.name, placeholder: "Custom rate name"
+      .col-4.margin-t-15
+        = number_field_tag :shipping_price, transaction.draft_order_shipping_fee.price_cents/100, placeholder: "$"
+    - else
+      .col-12
+        = radio_button_tag "shipping", true, "checked"
+        %span= "Free shipping"
+      .col-12.margin-t-15
+        = radio_button_tag "shipping", false
+        %span= "Custom rates"
+      .col-8.margin-t-15
+        = text_field_tag :custom_rate_name, nil, placeholder: "Custom rate name", disabled: true
+      .col-4.margin-t-15
+        = number_field_tag :shipping_price, 0, placeholder: "$", disabled: true
   .col-12
     %a.button.left.dp-none.remove= "Remove"
-    %a.button.left= "Close"
+    %a.button.left.close-draft-shipping-modal Close
     %a.button.right.add-shipping= "Apply"

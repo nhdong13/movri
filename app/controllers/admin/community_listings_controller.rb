@@ -72,6 +72,49 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
     else
       @transaction.custom_items.create(custom_params)
     end
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def update_draft_order_items
+    @transaction = Transaction.find(params[:transaction_id])
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def add_shipping_fee_to_draft_order
+    @transaction = Transaction.find(params[:transaction_id])
+    if params[:free_shipping] == 'true'
+      @transaction.draft_order_shipping_fee.delete if @transaction.draft_order_shipping_fee
+    else
+      shipping_fee = params[:shipping_price].to_i
+      custom_params = {
+        name: params[:custom_rate_name],
+        price_cents: shipping_fee * 100,
+        custom_item_type: 2,
+      }
+      if @transaction.draft_order_shipping_fee
+        @transaction.draft_order_shipping_fee.update(custom_params)
+      else
+        @transaction.custom_items.create(custom_params)
+      end
+    end
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def remove_draft_order_discount
+    @transaction = Transaction.find(params[:transaction_id])
+    @transaction.draft_order_discount_code.delete
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
     respond_to do |format|
       format.js { render layout: false }
       format.json { render json: listings, each_serializer: ListingSerializer }
@@ -107,7 +150,7 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
       )
     end
     respond_to do |format|
-      format.js { render partial: 'update_draft_price_info' }
+      format.js { render layout: false }
       format.json { render json: listing, each_serializer: ListingSerializer }
     end
   end

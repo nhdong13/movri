@@ -398,6 +398,10 @@ Rails.application.routes.draw do
             get :add_shipping_to_draft_order
             get :remove_listing_out_draft_order
             get :calculate_taxes
+            get :remove_draft_order_discount
+            get :add_shipping_fee_to_draft_order
+            get :update_draft_order_items
+            get :update_draft_order_custom_items
           end
         end
         resources :transactions, controller: :community_transactions do
