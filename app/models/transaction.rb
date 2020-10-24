@@ -83,7 +83,7 @@ class Transaction < ApplicationRecord
 
   accepts_nested_attributes_for :booking
 
-  enum transaction_type: [:normal, :craft_order]
+  enum transaction_type: [:normal, :draft_order]
 
   # validates :payment_gateway, presence: true, on: :create
   # validates :community_uuid, presence: true, on: :create

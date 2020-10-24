@@ -1,12 +1,30 @@
 require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
-  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy]
+  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy, :update_draft_order]
+  before_action :set_service
+  before_action :find_draft_transaction, only: [
+    :add_listing_to_draft_order,
+    :add_discount_to_draft_order,
+    :update_draft_order_items,
+    :update_draft_order_custom_items,
+    :remove_draft_order_items,
+    :remove_draft_order_custom_items,
+    :add_shipping_fee_to_draft_order,
+    :remove_draft_order_discount,
+    :create_new_custom_item,
+    :calculate_taxes
+  ]
+
   def new
     @transaction = Transaction.create(transaction_type: 1)
   end
 
-  def create; end
+  def create
+  end
+
+  def update_draft_order
+  end
 
   def show
   end
@@ -122,7 +140,151 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     redirect_to edit_admin_community_transaction_path(@current_community, @order)
   end
 
+  def add_listing_to_draft_order
+    @listings = @service.public_list.where(id: params[:ids])
+    @listings.each do |listing|
+      @transaction.create_transaction_item(listing)
+    end
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def add_discount_to_draft_order
+    discount_percent = params[:discount_percent].to_i
+    custom_params = {
+      name: 'discount_code',
+      price_cents: params[:price].to_i * 100,
+      note: params[:reason],
+      discount_percent: discount_percent,
+      custom_item_type: 1,
+    }
+    if @transaction.draft_order_discount_code
+      @transaction.draft_order_discount_code.update(custom_params)
+    else
+      @transaction.custom_items.create(custom_params)
+    end
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def update_draft_order_items
+    items = @transaction.transaction_items.find(params[:transaction_item_id])
+    items.update(price_cents: to_price_cents(params[:price].to_i), quantity: params[:quantity])
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def update_draft_order_custom_items
+    items = @transaction.custom_items.find(params[:custom_item_id])
+    items.update(price_cents: to_price_cents(params[:price].to_i), quantity: params[:quantity])
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def remove_draft_order_items
+    items = @transaction.transaction_items.find(params[:transaction_item_id]).delete
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def remove_draft_order_custom_items
+    items = @transaction.custom_items.find(params[:custom_item_id]).delete
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def add_shipping_fee_to_draft_order
+    if params[:free_shipping] == 'true'
+      @transaction.draft_order_shipping_fee.delete if @transaction.draft_order_shipping_fee
+    else
+      shipping_fee = params[:shipping_price].to_i
+      custom_params = {
+        name: params[:custom_rate_name],
+        price_cents: shipping_fee * 100,
+        custom_item_type: 2,
+      }
+      if @transaction.draft_order_shipping_fee
+        @transaction.draft_order_shipping_fee.update(custom_params)
+      else
+        @transaction.custom_items.create(custom_params)
+      end
+    end
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def remove_draft_order_discount
+    @transaction.draft_order_discount_code.delete
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listings, each_serializer: ListingSerializer }
+    end
+  end
+
+  def create_new_custom_item
+    @transaction.custom_items.create(
+      name: params[:title],
+      price_cents: params[:price].to_i * 100,
+      quantity: params[:quantity],
+    )
+    calculate_money_service(@transaction).update_tax_cents_for_craft_order
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listing, each_serializer: ListingSerializer }
+    end
+  end
+
+  def calculate_taxes
+    if params[:will_charge_taxes] == 'true'
+      tax_percent = params[:tax_percent].to_i
+      tax_cents = calculate_money_service(@transaction).get_tax_fee_for_draft_order(tax_percent)
+      @transaction.update(
+        tax_percent: tax_percent,
+        tax_cents: tax_cents
+      )
+    else
+      @transaction.update(
+        tax_percent: 0,
+        tax_cents: 0
+      )
+    end
+    respond_to do |format|
+      format.js { render layout: false }
+      format.json { render json: listing, each_serializer: ListingSerializer }
+    end
+  end
+
   private
+  def find_draft_transaction
+    @transaction = Transaction.find(params[:transaction_id])
+  end
+
+  def calculate_money_service(transaction)
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
+  end
+
   def transaction_params
     params
     .require(:transaction)
@@ -141,7 +303,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       :note
     )
   end
-
+  
   def find_transaction
     @order = Transaction.find(params[:id])
   end
@@ -153,5 +315,12 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def stripe_api
     StripeService::API::Api.payments_v2.new(@order, session, @current_user)
+  end
+
+  def set_service
+    @service = Admin::ListingsService.new(
+      community: @current_community,
+      params: params)
+    @presenter = Listing::ListPresenter.new(@current_community, @current_user, params, true)
   end
 end

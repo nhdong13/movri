@@ -40,7 +40,7 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
       } else {
         $.ajax({
           url: "/admin/user_fields/person_information.js",
-          method: "GET",
+          method: "POST",
           data: {
             id: ui.item.id
           },
@@ -77,40 +77,16 @@ $.getJSON("/admin/communities/1/listings", function(data) {
       var id = ui.item.id
       var transaction_id = $('#draft_order_id').data("id");
       $.ajax({
-        url: "/admin/communities/1/listings/add_listing_to_draft_order.js",
-        method: "GET",
+        url: "/admin/communities/1/transactions/add_listing_to_draft_order.js",
+        method: "POST",
         data: {
           transaction_id: transaction_id,
           ids: [id]
         },
-        complete: function() {
-          updateSubtotalAndTotal()
-          $('.craft-order-price').on('change', function(e){
-            updateTotalPriceForOneItem($(this))
-            updateSubtotalAndTotal()
-          })
-
-          $('.craft-order-quantity').on('change', function(e){
-            updateTotalPriceForOneItem($(this))
-            updateSubtotalAndTotal()
-          })
-
-          $('.icon-times').on('click', function(e){
-            $(e.target).closest('tr').remove()
-            updateSubtotalAndTotal()
-          })
-        }
       })
     }
   }).autocomplete('widget').addClass('product-name-list')
 })
-
-function updateTotalPriceForOneItem($el){
-  price = parseInt($el.parents("tr").find(".craft-order-price").val());
-  quantity = parseInt($el.parents("tr").find(".craft-order-quantity").val());
-  total = price * quantity
-  quantity = parseInt($el.parents("tr").find(".total-price").text(`$${total}`));
-}
 
 $('#review-email').on('click', function(){
   var data = {
@@ -148,42 +124,72 @@ $('.save-line-item-btn').on('click', function(){
   }
 
   $.ajax({
-    url: "/admin/communities/1/listings/create_new_custom_item",
+    url: "/admin/communities/1/transactions/create_new_custom_item",
+    method: "POST",
     data: data,
-    complete: function(){
-      updateSubtotalAndTotal();
-      $('.craft-order-price').on('change', function(e){
-        updateTotalPriceForOneItem($(this))
-        updateSubtotalAndTotal()
-      });
-
-      $('.craft-order-quantity').on('change', function(e){
-        updateTotalPriceForOneItem($(this))
-        updateSubtotalAndTotal()
-      });
-
-      $('.icon-times').on('click', function(e){
-        $(e.target).closest('tr').remove()
-        updateSubtotalAndTotal()
-      });
-    }
   })
 })
 
-$('body').on('change', '.craft-order-price, craft-order-quantity', function(e){
+$('body').on('change', '.craft-order-price, .craft-order-quantity', function(e){
   $parent = $(this).parents("tr")
   price = $parent.find(".craft-order-price").val();
   quantity = $parent.find(".craft-order-quantity").val();
   id = $parent.data("id")
   transaction_id = $('#draft_order_id').data("id");
   $.ajax({
-    url: "/admin/communities/1/listings/update_draft_order_items.js",
-    method: "GET",
+    url: "/admin/communities/1/transactions/update_draft_order_items.js",
+    method: "POST",
     data: {
       transaction_id: transaction_id,
       price: price,
       quantity: quantity,
       transaction_item_id: id
+    },
+  })
+});
+
+$('body').on('change', '.draft-custom-item-price, .draft-custom-item-quantity', function(e){
+  $parent = $(this).parents("tr")
+  price = $parent.find(".draft-custom-item-price").val();
+  quantity = $parent.find(".draft-custom-item-quantity").val();
+  id = $parent.data("id")
+  transaction_id = $('#draft_order_id').data("id");
+  $.ajax({
+    url: "/admin/communities/1/transactions/update_draft_order_custom_items.js",
+    method: "POST",
+    data: {
+      transaction_id: transaction_id,
+      price: price,
+      quantity: quantity,
+      custom_item_id: id
+    },
+  })
+});
+
+$('body').on('click', '.remove-draft-listing-item', function(e){
+  $parent = $(this).parents("tr")
+  id = $parent.data("id")
+  transaction_id = $('#draft_order_id').data("id");
+  $.ajax({
+    url: "/admin/communities/1/transactions/remove_draft_order_items.js",
+    method: "POST",
+    data: {
+      transaction_id: transaction_id,
+      transaction_item_id: id
+    },
+  })
+});
+
+$('body').on('click', '.remove-draft-custom-item', function(e){
+  $parent = $(this).parents("tr")
+  id = $parent.data("id")
+  transaction_id = $('#draft_order_id').data("id");
+  $.ajax({
+    url: "/admin/communities/1/transactions/remove_draft_order_custom_items.js",
+    method: "POST",
+    data: {
+      transaction_id: transaction_id,
+      custom_item_id: id
     },
   })
 });
@@ -201,29 +207,12 @@ $('.add-to-order-button').on('click', function(){
   })
   var transaction_id = $('#draft_order_id').data("id");
   $.ajax({
-    url: "/admin/communities/1/listings/add_listing_to_draft_order.js",
-    method: "GET",
+    url: "/admin/communities/1/transactions/add_listing_to_draft_order.js",
+    method: "POST",
     data: {
       ids: ids,
       transaction_id:  transaction_id
     },
-    complete: function(){
-      updateSubtotalAndTotal();
-      $('.craft-order-price').on('change', function(e){
-        updateTotalPriceForOneItem($(this))
-        updateSubtotalAndTotal()
-      });
-
-      $('.craft-order-quantity').on('change', function(e){
-        updateTotalPriceForOneItem($(this))
-        updateSubtotalAndTotal()
-      });
-
-      $('.icon-times').on('click', function(e){
-        $(e.target).closest('tr').remove()
-        updateSubtotalAndTotal()
-      });
-    }
   })
 })
 
@@ -236,8 +225,8 @@ $("body").on('click', '.add-tax', function() {
   var transaction_id = $('#draft_order_id').data("id");
   tax_percent = $('#tax_percent').val()
   $.ajax({
-    url: "/admin/communities/1/listings/calculate_taxes.js",
-    method: "GET",
+    url: "/admin/communities/1/transactions/calculate_taxes.js",
+    method: "POST",
     data: {
       transaction_id:  transaction_id,
       will_charge_taxes: will_charge_taxes,
@@ -249,26 +238,13 @@ $("body").on('click', '.add-tax', function() {
 $("body").on('click', '.remove-draft-order-discount', function() {
   var transaction_id = $('#draft_order_id').data("id");
   $.ajax({
-    url: "/admin/communities/1/listings/remove_draft_order_discount.js",
-    method: "GET",
+    url: "/admin/communities/1/transactions/remove_draft_order_discount.js",
+    method: "POST",
     data: {
       transaction_id: transaction_id,
     },
   })
 })
-
-// update subtotal and total
-function updateSubtotalAndTotal(total, method) {
-  subtotal_all_items = 0
-  _.map($('.craft-order-price'), function(i){
-    price = parseInt($(i).val());
-    quantity = parseInt($(i).parents("tr").find(".craft-order-quantity").val());
-    subtotal = price * quantity
-    subtotal_all_items += subtotal
-  })
-
-  $('.subtotal').text(subtotal_all_items)
-}
 
 // add discount to draft order
 $("body").on('click', '.add-discount-btn', function() {
@@ -276,8 +252,8 @@ $("body").on('click', '.add-discount-btn', function() {
   var reason = $('#reason').val()
   var transaction_id = $('#draft_order_id').data("id");
   $.ajax({
-    url: "/admin/communities/1/listings/add_discount_to_draft_order.js",
-    method: "GET",
+    url: "/admin/communities/1/transactions/add_discount_to_draft_order.js",
+    method: "POST",
     data: {
       discount_percent: discount_percent,
       reason: reason,
@@ -333,8 +309,8 @@ $('body').on('click', '.add-shipping', function(){
   custom_rate_name = $('#custom_rate_name').val()
   shipping_price = $('#shipping_price').val()
   $.ajax({
-    url: "/admin/communities/1/listings/add_shipping_fee_to_draft_order.js",
-    method: "GET",
+    url: "/admin/communities/1/transactions/add_shipping_fee_to_draft_order.js",
+    method: "POST",
     data: {
       free_shipping: free_shipping,
       custom_rate_name: custom_rate_name,

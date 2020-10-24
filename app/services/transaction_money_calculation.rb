@@ -27,7 +27,7 @@ class TransactionMoneyCalculation
 
   def update_tax_cents_for_craft_order
     if @transaction.tax_percent > 0
-      @transaction.update(tax_cents: get_tax_fee_for_draft_order(transaction.tax_percent))
+      @transaction.update(tax_cents: get_tax_fee_for_draft_order(@transaction.tax_percent))
     end
   end
 
@@ -73,8 +73,7 @@ class TransactionMoneyCalculation
   def get_price_cents_for_all_products_cart
     price_cents = 0
     @transaction.transaction_items.each do |item|
-      listing = Listing.find_by(id: item.listing_id)
-      price_cents += calculate_price_cents_without_promo_code(listing, item.quantity)
+      price_cents += calculate_price_cents_without_promo_code(item, item.quantity)
     end
     #this for draft item
     @transaction.custom_items.is_listing.each do |item|

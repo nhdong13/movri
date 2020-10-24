@@ -1,46 +1,49 @@
+= javascript_include_tag "#{STRIPE_JS_HOST}/v3/"
 = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
 
 .left-navi-section#create-draft-order
   .row
     .col-12
       %h2.margin-bt-0 Create order
-  .row
-    #draft_order_id{'data-id': @transaction.id}
-    .col-12
-      .row
-        .col-9.order-details
-          .col-12
-            %h3.left= "Order details"
-            %a.right{href: "#custom-item-modal", rel: "modal:open"}= "Add custom item"
-          .col-12
-            .row.search-product
-              = text_field_tag :product_name, params[:product_name], placeholder: 'Search products'
-              %a.button#browse-products{href: "#browse-product-modal", rel: "modal:open"}= "Browse products"
-            #craft-order-product-list
-            .row.payment-info#draft-payment-info
-              = render partial: 'payment_info', locals: {transaction: @transaction}
-          .col-12.email-invoice
-            .col-6
-              %i.icon-file-text-alt.left
-              %span.left= "EMAIL INVOICE"
-            .col-6
-              %a.button.right#send-invoice-email{href: "#send-invoice-email-modal", rel: "modal:open"}= "Email Invoice"
-          .col-12
-            .paid-type
-              %a.button.right{href: "#payment-with-credit-card-modal", rel: "modal:open"}= "Pay with credit card"
-              %button.button.right= "Mark as pending"
-              %button.button.right= "Mark as paid"
-              %p.right= "ACCEPT PAYMENT"
-              %i.icon-money.right
-        .col-3.find-create-customer
-          .find-customer
-            .row
-              %h3= "Find or create a customer"
-            = text_field_tag :customer_name, params[:customer_name], placeholder: 'Search products'
-          .customer-info.margin-t-15
-    .row
+  = form_for [:admin, @transaction], url: update_draft_order_admin_community_transaction_path(@current_community, @transaction), method: :post do |f|
+    .row 
+      #draft_order_id{'data-id': @transaction.id}
+      = hidden_field_tag :person_id
       .col-12
-        %a.button.right= "Save Draft Order"
+        .row
+          .col-9.order-details
+            .col-12
+              %h3.left= "Order details"
+              %a.right{href: "#custom-item-modal", rel: "modal:open"}= "Add custom item"
+            .col-12
+              .row.search-product
+                = text_field_tag :product_name, params[:product_name], placeholder: 'Search products'
+                %a.button#browse-products{href: "#browse-product-modal", rel: "modal:open"}= "Browse products"
+              #craft-order-product-list
+              .row.payment-info#draft-payment-info
+                = render partial: 'payment_info', locals: {transaction: @transaction}
+            .col-12.email-invoice
+              .col-6
+                %i.icon-file-text-alt.left
+                %span.left= "EMAIL INVOICE"
+              .col-6
+                %a.button.right#send-invoice-email{href: "#send-invoice-email-modal", rel: "modal:open"}= "Email Invoice"
+            .col-12
+              .paid-type
+                %a.button.right{href: "#payment-with-credit-card-modal", rel: "modal:open"}= "Pay with credit card"
+                %button.button.right= "Mark as pending"
+                %button.button.right= "Mark as paid"
+                %p.right= "ACCEPT PAYMENT"
+                %i.icon-money.right
+          .col-3.find-create-customer
+            .find-customer
+              .row
+                %h3= "Find or create a customer"
+              = text_field_tag :customer_name, params[:customer_name], placeholder: 'Search products'
+            .customer-info.margin-t-15
+      .row
+        .col-12
+          = f.submit 'Save Draft Order', class: 'button right'
 
 = render 'browse_product_modal', listings: @current_community.listings
 = render 'add_custom_item_modal'
@@ -48,3 +51,10 @@
 = render 'send_invoice_email_modal'
 = render 'review_email'
 = render 'payment_with_credit_card'
+
+- content_for :extra_javascript do
+  :javascript
+    window.ST.StripePayment.initIntent({
+      publishable_key: '#{APP_CONFIG.stripe_api_publishable_key}'
+    });
+    Shipment.run();

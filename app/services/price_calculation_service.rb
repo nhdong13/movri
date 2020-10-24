@@ -18,9 +18,9 @@ module PriceCalculationService
     total_price
   end
 
-  def calculate(listing, days = 7)
+  def calculate(item, days = 7)
     days = 7 unless days
-    a_day_price = listing.price.cents
+    a_day_price = item.price_cents
     if days == 1
       a_day_price
     else
