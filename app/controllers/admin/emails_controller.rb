@@ -41,19 +41,19 @@ class Admin::EmailsController < Admin::AdminBaseController
   end
 
   def sent_invoice_email
-    person = Person.find(params[:person_id])
+    person = Person.find('aokD9h_YdT_raIZhhzPbYw')
 
     subtitution = {
-      shipping_address: person.shipping_address.street1,
-      shipping_city: person.shipping_address.city,
-      shipping_state_province_region: person.shipping_address.state_or_province,
-      shipping_postal_code: person.shipping_address.postal_code,
-      shipping_country: person.shipping_address.country,
-      billing_address: person.billing_address.street1,
-      billing_city: person.billing_address.city,
-      billing_state_province_region: person.billing_address.state_or_province,
-      billing_postal_code: person.billing_address.postal_code,
-      billing_country: person.billing_address.country
+      shipping_address: person.shipping_address&.street1,
+      shipping_city: person.shipping_address&.city,
+      shipping_state_province_region: person.shipping_address&.state_or_province,
+      shipping_postal_code: person.shipping_address&.postal_code,
+      shipping_country: person.shipping_address&.country,
+      billing_address: person.billing_address&.street1,
+      billing_city: person.billing_address&.city,
+      billing_state_province_region: person.billing_address&.state_or_province,
+      billing_postal_code: person.billing_address&.postal_code,
+      billing_country: person.billing_address&.country
     }
 
     SendgridMailer.new(nil, nil, nil).send_invoice_mail(params[:to], subtitution)

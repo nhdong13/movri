@@ -5,6 +5,10 @@ class Admin::CommunityDraftOrdersController < Admin::AdminBaseController
 
   def index; end
 
+  def new
+    @transaction = Transaction.new
+  end
+
   def edit
     rate_type = PriceCalculationService.get_rate_type_of_canada_provinces(@order.shipping_address&.state_or_province)
 
@@ -18,13 +22,6 @@ class Admin::CommunityDraftOrdersController < Admin::AdminBaseController
   def update
     if @order.update_attributes(transaction_params)
       redirect_to action: 'edit', id: @order.id
-    end
-  end
-
-  def add_to_order
-    @listings = Listing.where(id: [1,2,3])
-    respond_to do | format |
-      format.js { render :layout => false }
     end
   end
 

@@ -407,11 +407,7 @@ Rails.application.routes.draw do
           end
         end
         resources :transaction_addresses, controller: :community_transaction_addresses, only: [:update, :create, :edit]
-        resources :draft_orders, controller: :community_draft_orders, only: [:index, :edit, :update] do
-          collection do
-            get 'add_to_order'
-          end
-        end
+        resources :draft_orders, controller: :community_draft_orders, only: [:new, :index, :edit, :update]
         resources :people
         resources :conversations, controller: :community_conversations, only: [:index, :show]
         resources :testimonials, controller: :community_testimonials, only: [:index, :edit, :update, :new, :create] do

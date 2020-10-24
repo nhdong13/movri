@@ -47,8 +47,8 @@ class Admin::PersonCustomFieldsController < Admin::AdminBaseController
 
     @person_information = {
       person: person,
-      shipping_address: person.shipping_address,
-      billing_address: person.billing_address
+      shipping_address: person&.shipping_address,
+      billing_address: person&.billing_address
     }
 
     respond_to do |format|
