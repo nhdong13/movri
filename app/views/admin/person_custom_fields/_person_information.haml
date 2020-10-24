@@ -1,3 +1,4 @@
+
 .col-12.customer-information#customer-information
   .col-12.customer.padding-b-t-15.br-bottom
     .col-12.header-section
@@ -11,26 +12,37 @@
     .col-10
       %a.left= person_information[:person]&.given_name
       %br
-      %a.left= person_information[:person]&.email
+      %a.email.left= person_information[:person]&.email
     .col-2
       %a.right#edit-customer-email{href: "#edit-customer-email-modal", rel: "modal:open"}= "Edit"
   .col-12.shipping-address.padding-b-t-15.br-bottom
-    .col-12.header-section
+    .col-10.header-section
       %h3.left= "SHIPPING ADDRESS"
-      %a.right#edit-shipping-address{href: "#edit-customer-shipping-address-modal", rel: "modal:open"}= "Edit"
+    .col-2
+      - if person_information[:shipping_address].present?
+        %a.right#edit-shipping-address{href: "#edit-customer-shipping-address-modal", rel: "modal:open"}= "Edit"
+      - else
+        %a.right#create-billing-address{href: "#create-customer-address-modal", rel: "modal:open"}="Add"
     .col-12.content
-      %p= "#{person_information[:shipping_address]&.first_name} #{person_information[:shipping_address]&.last_name}"
-      %p= person_information[:shipping_address]&.company.present? ? person_information[:shipping_address].company : ''
-      %p= person_information[:shipping_address]&.street1
-      %p= person_information[:shipping_address]&.country
-      %p= person_information[:shipping_address]&.phone
+      - if person_information[:shipping_address].present?
+        %p= "#{person_information[:shipping_address]&.first_name} #{person_information[:shipping_address]&.last_name}"
+        %p= person_information[:shipping_address]&.company.present? ? person_information[:shipping_address].company : ''
+        %p= person_information[:shipping_address]&.street1
+        %p= person_information[:shipping_address]&.country
+        %p= person_information[:shipping_address]&.phone
+      - else
+        = "Shipping address not create yet"
   .col-12.billing-address.padding-b-t-15
-    .col-12.header-section
+    .col-10.header-section
       %h3.left= "BILLING ADDRESS"
-      %a.right#edit-billing-address{href: "#edit-customer-billing-address-modal", rel: "modal:open"}= "Edit"
+    .col-2
+      - if person_information[:billing_address].present?
+        %a.right#edit-billing-address{href: "#edit-customer-billing-address-modal", rel: "modal:open"}= "Edit"
+      - else
+        %a.right#create-billing-address{href: "#create-customer-address-modal", rel: "modal:open"}="Add"
     .col-12.content
       - if person_information[:shipping_address] && person_information[:billing_address]
-        - if person_information[:shipping_address].id == person_information[:billing_address].id
+        - if person_information[:person].default_shipping_address == person_information[:person].default_billing_address
           %p= "Same as shipping address"
         - else
           %p= "#{person_information[:billing_address]&.first_name person_information[:billing_address]&.last_name}"
@@ -38,10 +50,9 @@
           %p= person_information[:billing_address]&.street1
           %p= person_information[:billing_address]&.country
           %p= person_information[:billing_address]&.phone
+      - else
+        = "Billing address not create yet."
 
-
-  = render 'admin/shared/edit_customer_email', email: person_information[:person].emails.last
-- if person_information[:shipping_address].present?
-  = render 'admin/shared/edit_customer_shipping_address', shipping_address: person_information[:shipping_address]
-- if person_information[:billing_address].present?
-  = render 'admin/shared/edit_customer_billing_address', billing_address: person_information[:billing_address]
+= render 'admin/shared/edit_customer_email', person: person_information[:person]
+= render 'admin/shared/edit_customer_shipping_address', shipping_address: person_information[:shipping_address]
+-# = render 'admin/shared/edit_customer_billing_address', billing_address: person_information[:billing_address]

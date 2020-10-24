@@ -1,12 +1,12 @@
 .modal#edit-customer-email-modal
-  = form_for admin_community_email_path(@current_community, email), method: :put do |form|
+  = form_for person, url: admin_community_customer_path(@current_community, person.id), method: :put, remote: true do |form|
     .row.title
       = "Edit email"
     .row
       %p.margin-bt-15= "Notification emails will be send to this address"
       %span= "Email"
-      = hidden_field_tag 'transaction_id', @order&.id
-      = form.text_field 'email[address]', placeholder: 'Update customer email'
+      = hidden_field_tag 'id', person.id
+      = form.text_field :email, placeholder: 'Update customer email'
     .row.footer
-      = form.submit "Save", class: "button right margin-l-5"
+      = form.submit "Save", class: "button right margin-l-5", id: 'update-customer-email'
       %a.button.right{rel: "modal:close"}= "Cancel"

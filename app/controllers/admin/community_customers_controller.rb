@@ -26,14 +26,18 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
   def update
     begin
       ActiveRecord::Base.transaction do
-        @service.update
+        if @service.update
+          @email = params[:person][:email]
+        end
       end
     rescue => exception
       logger.error("Errors in updating customer.")
       flash[:error] = t("layouts.notifications.add_new_customer_failed")
     end
-
-    redirect_to admin_community_customer_path(@current_community, params[:person][:id])
+    respond_to do |format|
+      format.html { redirect_to admin_community_customer_path(@current_community, params[:person][:id]) }
+      format.js { render layout: false }
+    end
   end
 
   def show

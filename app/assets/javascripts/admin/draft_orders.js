@@ -40,7 +40,7 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
       } else {
         $.ajax({
           url: "/admin/user_fields/person_information.js",
-          method: "POST",
+          method: "GET",
           data: {
             id: ui.item.id
           },
@@ -48,6 +48,8 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
             $('#craft-order-product-list .icon-times').on('click', function(e){
               $(e.target).parents('#craft-order-product-list').remove()
             })
+
+            $('#draft_order_person_id').val(ui.item.id)
           }
         })
       }

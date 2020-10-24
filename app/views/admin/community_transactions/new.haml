@@ -8,7 +8,7 @@
   = form_for [:admin, @transaction], url: update_draft_order_admin_community_transaction_path(@current_community, @transaction), method: :post do |f|
     .row 
       #draft_order_id{'data-id': @transaction.id}
-      = hidden_field_tag :person_id
+      = hidden_field_tag :draft_order_person_id
       .col-12
         .row
           .col-9.order-details
