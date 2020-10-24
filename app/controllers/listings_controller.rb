@@ -23,7 +23,7 @@ class ListingsController < ApplicationController
     controller.ensure_current_user_is_listing_author t("layouts.notifications.only_listing_author_can_edit_a_listing")
   end
 
-  before_action :ensure_is_admin, :only => [:move_to_top, :show_in_updates_email]
+  # before_action :ensure_is_admin, :only => [:move_to_top, :show_in_updates_email]
 
   before_action :is_authorized_to_post, :only => [:new, :create]
   before_action :set_sessions
@@ -171,10 +171,10 @@ class ListingsController < ApplicationController
     listing_uuid = UUIDUtils.create
 
     # TODO: comment this until find the way to re-connect Harmany
-    unless create_booking(shape, listing_uuid)
-      flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
-      return redirect_to new_listing_path
-    end
+    # unless create_booking(shape, listing_uuid)
+    #   flash[:error] = t("listings.error.create_failed_to_connect_to_booking_service")
+    #   return redirect_to new_listing_path
+    # end
 
     tabs = params.to_unsafe_hash[:listing][:tabs]
     result = ListingFormViewUtils.build_listing_params(shape, listing_uuid, params, @current_community)
@@ -184,6 +184,7 @@ class ListingsController < ApplicationController
       return
     end
     @listing = Listing.new(result.data)
+    @listing.url = @listing.title.to_url
     service = Admin::ListingsService.new(community: @current_community, params: params, person: @current_user)
     ActiveRecord::Base.transaction do
       @listing.author = new_listing_author

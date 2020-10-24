@@ -332,6 +332,7 @@ class TransactionsController < ApplicationController
   end
 
   def checkout
+    update_transaction_items(@transaction)
     check_booking_date_session_was_change(@transaction)
     @default_shipping_fee = 0
     if @current_user
@@ -394,7 +395,6 @@ class TransactionsController < ApplicationController
     return unless @transaction.transaction_items.any?
     listing_ids = @transaction.transaction_items.pluck(:listing_id)
     listings = Listing.where(id: listing_ids)
-
     zipcode = @transaction.shipping_address.postal_code
     return unless zipcode
 
@@ -510,6 +510,28 @@ class TransactionsController < ApplicationController
   end
 
   private
+
+  def update_transaction_items transaction
+    keys_id = session[:cart].keys
+    session[:cart].each do |listing_id, quantity|
+      item = transaction.transaction_items.find_by(listing_id: listing_id)
+      if item
+        item.update(quantity: quantity)
+      else
+        listing = Listing.find_by(id: listing_id)
+        @transaction.transaction_items.create(
+          listing_id: listing.id,
+          listing_uuid: listing.uuid,
+          listing_title: listing.title,
+          quantity: 1,
+          coverage_price_cents: InsuranceCalculationService.call(listing, transaction.booking.duration),
+          price_cents: listing.price_cents
+        )
+      end
+    end
+    # remove item not in cart
+    transaction.transaction_items.where.not(listing_id: keys_id).delete_all
+  end
 
   def ensure_can_countinue_transactions
     if @transaction.completed?

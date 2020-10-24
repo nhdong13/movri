@@ -12,11 +12,11 @@ class Admin::CommunityDraftOrdersController < Admin::AdminBaseController
   def edit
     rate_type = PriceCalculationService.get_rate_type_of_canada_provinces(@order.shipping_address&.state_or_province)
 
-    @payment_info = {
-      GST: rate_type[:GST],
-      PST: rate_type.key?(:pst) ? rate_type[:PST] : 0,
-      total: rate_type.key?(:pst) ? @order.total_price_cents + (@order.total_price_cents * rate_type[:GST] / 100) + (@order.total_price_cents * rate_type[:PST] / 100) : @order.total_price_cents + (@order.total_price_cents * rate_type[:GST] / 100)
-    }
+    # @payment_info = {
+    #   GST: rate_type[:GST],
+    #   PST: rate_type.key?(:pst) ? rate_type[:PST] : 0,
+    #   total: rate_type.key?(:pst) ? @order.total_price_cents + (@order.total_price_cents * rate_type[:GST] / 100) + (@order.total_price_cents * rate_type[:PST] / 100) : @order.total_price_cents + (@order.total_price_cents * rate_type[:GST] / 100)
+    # }
   end
 
   def update

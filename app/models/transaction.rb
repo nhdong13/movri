@@ -40,6 +40,8 @@
 #  tracking_number                   :string(255)
 #  shipping_carrier                  :string(255)
 #  reason_for_cancelling             :string(255)
+#  transaction_type                  :integer          default("normal")
+#  tax_percent                       :integer          default(0)
 #
 # Indexes
 #
@@ -68,6 +70,7 @@ class Transaction < ApplicationRecord
   belongs_to :listing_author, class_name: 'Person'
   has_many :stripe_payments, dependent: :destroy
   has_many :transaction_items, dependent: :destroy
+  has_many :custom_items, dependent: :destroy
   has_one :shipper, dependent: :destroy
   has_many :helping_requests
   has_one :stripe_customer
@@ -79,6 +82,8 @@ class Transaction < ApplicationRecord
   delegate :title, to: :listing, prefix: true
 
   accepts_nested_attributes_for :booking
+
+  enum transaction_type: [:normal, :draft_order]
 
   # validates :payment_gateway, presence: true, on: :create
   # validates :community_uuid, presence: true, on: :create
@@ -173,6 +178,17 @@ class Transaction < ApplicationRecord
 
   def will_pickup?
     delivery_method == "pickup"
+  end
+
+  def create_transaction_item listing, duration=1
+    self.transaction_items.create(
+      listing_id: listing.id,
+      listing_uuid: listing.uuid,
+      listing_title: listing.title,
+      quantity: 1,
+      coverage_price_cents: InsuranceCalculationService.call(listing, duration),
+      price_cents: listing.price_cents
+    )
   end
 
   def will_shipping?
@@ -426,6 +442,18 @@ class Transaction < ApplicationRecord
         end
       end
     end
+  end
+
+  def draft_order_discount_code
+    discount_code = custom_items.is_discount.last
+  end
+
+  def draft_order_shipping_fee
+    discount_code = custom_items.is_shipping_fee.last
+  end
+
+  def discount_value_for_draft_order
+    draft_order_discount_code ? draft_order_discount_code.discount_value : 0
   end
 
   def stripe_charge_cents

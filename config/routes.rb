@@ -390,7 +390,6 @@ Rails.application.routes.draw do
             get :reject
           end
           collection do
-            get 'get_listings'
             get 'export'
             get 'export_status'
           end
@@ -399,8 +398,21 @@ Rails.application.routes.draw do
           collection do
             get 'export'
             get 'export_status'
+            post :create_new_custom_item
+            post :add_discount_to_draft_order
+            post :add_shipping_to_draft_order
+            post :remove_listing_out_draft_order
+            post :calculate_taxes
+            post :remove_draft_order_discount
+            post :add_shipping_fee_to_draft_order
+            post :update_draft_order_items
+            post :update_draft_order_custom_items
+            post :remove_draft_order_items
+            post :remove_draft_order_custom_items
+            post :add_listing_to_draft_order
           end
           member do
+            post :update_draft_order
             get :charge_extra_fee
             get :refund_transaction
             post :charge_refund_fee

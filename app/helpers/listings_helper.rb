@@ -178,6 +178,11 @@ module ListingsHelper
     MoneyViewUtils.to_humanized(Money.new(value, 'USD'))
   end
 
+  def to_CAD value
+    value = value.to_f / 100
+    value.round(2)
+  end
+
   def date_to_humanized date
     date.to_date.to_formatted_s(:long)
   end

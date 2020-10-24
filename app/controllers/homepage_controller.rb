@@ -70,69 +70,69 @@ class HomepageController < ApplicationController
     current_page = Maybe(params)[:page].to_i.map { |n| n > 0 ? n : 1 }.or_else(1)
     relevant_search_fields = parse_relevant_search_fields(params, relevant_filters)
 
-    search_result = find_listings(params: params,
-                                  current_page: current_page,
-                                  listings_per_page: per_page,
-                                  filter_params: compact_filter_params,
-                                  includes: includes.to_set,
-                                  location_search_in_use: location_in_use,
-                                  keyword_search_in_use: keyword_in_use,
-                                  relevant_search_fields: relevant_search_fields)
+    # search_result = find_listings(params: params,
+    #                               current_page: current_page,
+    #                               listings_per_page: per_page,
+    #                               filter_params: compact_filter_params,
+    #                               includes: includes.to_set,
+    #                               location_search_in_use: location_in_use,
+    #                               keyword_search_in_use: keyword_in_use,
+    #                               relevant_search_fields: relevant_search_fields)
 
     if @view_type == 'map'
       viewport = viewport_geometry(params[:boundingbox], params[:lc], @current_community.location)
     end
 
-    if FeatureFlagHelper.feature_enabled?(:searchpage_v1)
-      search_result.on_success { |listings|
-        render layout: "layouts/react_page.haml", template: "search_page/search_page", locals: { props: searchpage_props(listings, current_page, per_page) }
-      }.on_error {
-        flash[:error] = t("homepage.errors.search_engine_not_responding")
-        render layout: "layouts/react_page.haml", template: "search_page/search_page", locals: { props: searchpage_props(nil, current_page, per_page) }
-      }
-    elsif request.xhr? # checks if AJAX request
-      search_result.on_success { |listings|
-        @listings = listings # TODO Remove
+    # if FeatureFlagHelper.feature_enabled?(:searchpage_v1)
+    #   search_result.on_success { |listings|
+    #     render layout: "layouts/react_page.haml", template: "search_page/search_page", locals: { props: searchpage_props(listings, current_page, per_page) }
+    #   }.on_error {
+    #     flash[:error] = t("homepage.errors.search_engine_not_responding")
+    #     render layout: "layouts/react_page.haml", template: "search_page/search_page", locals: { props: searchpage_props(nil, current_page, per_page) }
+    #   }
+    # elsif request.xhr? # checks if AJAX request
+    #   search_result.on_success { |listings|
+    #     @listings = listings # TODO Remove
 
-        if @view_type == "grid" then
-          render partial: "grid_item", collection: @listings, as: :listing, locals: { show_distance: location_in_use }
-        elsif location_in_use
-          render partial: "list_item_with_distance", collection: @listings, as: :listing, locals: { shape_name_map: shape_name_map, show_distance: location_in_use }
-        else
-          render partial: "list_item", collection: @listings, as: :listing, locals: { shape_name_map: shape_name_map }
-        end
-      }.on_error {
-        render body: nil, status: :internal_server_error
-      }
-    else
-      locals = {
-        shapes: all_shapes,
-        filters: relevant_filters,
-        show_price_filter: show_price_filter,
-        selected_category: selected_category,
-        selected_shape: selected_shape,
-        shape_name_map: shape_name_map,
-        listing_shape_menu_enabled: listing_shape_menu_enabled,
-        main_search: main_search,
-        location_search_in_use: location_in_use,
-        current_page: current_page,
-        current_search_path_without_page: search_path(params.except(:page)),
-        viewport: viewport,
-        search_params: CustomFieldSearchParams.remove_irrelevant_search_params(params, relevant_search_fields)
-      }
+    #     if @view_type == "grid" then
+    #       render partial: "grid_item", collection: @listings, as: :listing, locals: { show_distance: location_in_use }
+    #     elsif location_in_use
+    #       render partial: "list_item_with_distance", collection: @listings, as: :listing, locals: { shape_name_map: shape_name_map, show_distance: location_in_use }
+    #     else
+    #       render partial: "list_item", collection: @listings, as: :listing, locals: { shape_name_map: shape_name_map }
+    #     end
+    #   }.on_error {
+    #     render body: nil, status: :internal_server_error
+    #   }
+    # else
+    #   locals = {
+    #     shapes: all_shapes,
+    #     filters: relevant_filters,
+    #     show_price_filter: show_price_filter,
+    #     selected_category: selected_category,
+    #     selected_shape: selected_shape,
+    #     shape_name_map: shape_name_map,
+    #     listing_shape_menu_enabled: listing_shape_menu_enabled,
+    #     main_search: main_search,
+    #     location_search_in_use: location_in_use,
+    #     current_page: current_page,
+    #     current_search_path_without_page: search_path(params.except(:page)),
+    #     viewport: viewport,
+    #     search_params: CustomFieldSearchParams.remove_irrelevant_search_params(params, relevant_search_fields)
+    #   }
 
-      search_result.on_success { |listings|
-        @listings = listings
-        render locals: locals.merge(
-                 seo_pagination_links: seo_pagination_links(params, @listings.current_page, @listings.total_pages))
-      }.on_error { |e|
-        flash[:error] = t("homepage.errors.search_engine_not_responding")
-        @listings = Listing.none.paginate(:per_page => 1, :page => 1)
-        render status: :internal_server_error,
-               locals: locals.merge(
-                 seo_pagination_links: seo_pagination_links(params, @listings.current_page, @listings.total_pages))
-      }
-    end
+    #   search_result.on_success { |listings|
+    #     @listings = listings
+    #     render locals: locals.merge(
+    #              seo_pagination_links: seo_pagination_links(params, @listings.current_page, @listings.total_pages))
+    #   }.on_error { |e|
+    #     flash[:error] = t("homepage.errors.search_engine_not_responding")
+    #     @listings = Listing.none.paginate(:per_page => 1, :page => 1)
+    #     render status: :internal_server_error,
+    #            locals: locals.merge(
+    #              seo_pagination_links: seo_pagination_links(params, @listings.current_page, @listings.total_pages))
+    #   }
+    # end
   end
   # rubocop:enable AbcSize
   # rubocop:enable MethodLength

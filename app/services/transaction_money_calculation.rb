@@ -6,14 +6,51 @@ class TransactionMoneyCalculation
     @promo_code = @transaction.promo_code
     @state = @transaction.shipping_address ? @transaction.shipping_address.state_or_province : 'alberta'
     @shipping_fee = @transaction.shipper ? @transaction.shipper.amount_to_cents : 0
-
-    @duration = @transaction.booking&.duration || @session[:booking][:total_days]
+    @duration = @transaction.booking&.duration || @session[:booking][:total_days] || 1
   end
 
   def get_discount_for_all_products_cart
     get_discount_from_promo_code(
       get_price_cents_for_all_products_cart
     )
+  end
+
+  def get_final_price_for_draft_order
+    tax_cents = @transaction.tax_cents ? @transaction.tax_cents : 0
+    get_draft_order_price_cents_with_discount_code + get_shipping_fee_for_draft_order + tax_cents
+  end
+
+  def get_tax_fee_for_draft_order(percent=0)
+    total_price = get_draft_order_price_cents_with_discount_code + get_shipping_fee_for_draft_order
+    percent_of(total_price, percent)
+  end
+
+  def update_tax_cents_for_craft_order
+    if @transaction.tax_percent > 0
+      @transaction.update(tax_cents: get_tax_fee_for_draft_order(@transaction.tax_percent))
+    end
+  end
+
+  def get_shipping_fee_for_draft_order
+    shipping_fee = @transaction.custom_items.is_shipping_fee.last
+    shipping_fee ? shipping_fee.price_cents : 0
+  end
+
+  def get_draft_order_price_cents_with_discount_code
+    if @transaction.draft_order_discount_code
+      get_price_cents_for_all_products_cart - get_discount_for_draft_order(@transaction.draft_order_discount_code.discount_percent)
+    else
+      get_price_cents_for_all_products_cart
+    end
+  end
+
+  def get_draft_order_price_cents_without_discount_code
+    get_price_cents_for_all_products_cart
+  end
+
+  def get_discount_for_draft_order(percent)
+    total_price = get_price_cents_for_all_products_cart
+    percent_of(total_price, percent)
   end
 
   def percent_of(value, percent)
@@ -36,8 +73,11 @@ class TransactionMoneyCalculation
   def get_price_cents_for_all_products_cart
     price_cents = 0
     @transaction.transaction_items.each do |item|
-      listing = Listing.find_by(id: item.listing_id)
-      price_cents += calculate_price_cents_without_promo_code(listing, item.quantity)
+      price_cents += calculate_price_cents_without_promo_code(item, item.quantity)
+    end
+    #this for draft item
+    @transaction.custom_items.is_listing.each do |item|
+      price_cents +=  item.price_cents * item.quantity
     end
     price_cents
   end

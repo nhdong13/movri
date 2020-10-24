@@ -11,8 +11,8 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  content_type    :integer          default("normal")
-#  languages       :text(4294967295)
-#  currency        :text(4294967295)
+#  languages       :json
+#  currency        :json
 #
 # Indexes
 #

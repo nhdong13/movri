@@ -11,20 +11,37 @@
       %th
       %th
   %tbody
-  - listings.each do |listing|
-    %tr
+  - transaction.transaction_items.each do |item|
+    - listing = item.listing
+    %tr{'data-id': item.id}
       %td.w-5.padding-0
         = hidden_field_tag "id", listing.id, class: "ids"
         = image_tag(listing.main_image)
       %td.w-45.padding-0
         = listing.title
       %td
-        = text_field_tag 'price', listing.price, class: "price"
+        = text_field_tag 'price', to_CAD(item.price_cents), class: 'craft-order-price'
       %td
         = "x"
       %td
-        = text_field_tag 'quantity', 1, class: "quantity"
+        = text_field_tag 'quantity', item.quantity, class: 'craft-order-quantity'
       %td.total-price
-        = humanized_money_with_symbol(listing.price)
+        = money_to_humanized(item.price_cents * item.quantity)
       %td
-        %i.icon-times
+        %i.icon-times.remove-draft-listing-item
+  - transaction.custom_items.is_listing.each do |item|
+    %tr{'data-id': item.id}
+      %td.w-5.padding-0
+        = hidden_field_tag "id", item.id, class: "ids"
+      %td.w-45.padding-0
+        = item.name
+      %td
+        = text_field_tag 'price', item.price_cents/100, class: 'draft-custom-item-price'
+      %td
+        = "x"
+      %td
+        = text_field_tag 'quantity', item.quantity, class: 'draft-custom-item-quantity'
+      %td.total-price
+        = money_to_humanized(item.price_cents * item.quantity)
+      %td
+        %i.icon-times.remove-draft-custom-item

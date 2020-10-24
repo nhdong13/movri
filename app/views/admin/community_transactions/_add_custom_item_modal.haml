@@ -4,20 +4,21 @@
   .row.product-info
     .col-6.margin-bt-15
       %p= "Line item name"
-      = text_field_tag :name, params[:name]
+      = text_field_tag :name, params[:name], class: "new-custome-listing-title"
     .col-3
       %p= "Price per item"
-      = text_field_tag :price, params[:price], placeholder: "$"
+      = text_field_tag :price, params[:price], placeholder: "$", class: "new-custome-listing-price"
     .col-3
       %p= "Quantity"
-      = number_field_tag :quantity, params[:quantity], value: '1'
+      = number_field_tag :quantity, params[:quantity], value: '1', class: "new-custome-listing-quantity"
     .col-12.margin-bt-15
       = check_box_tag :tax
       %span= "Item is taxable"
     .col-12.margin-bt-15
       = check_box_tag :shipping
       %span= "Item requires shipping"
+  %p.alert-warning.hidden
   .row.footer
     .col-12
       %button.button.right.margin-l-5.save-line-item-btn= "Save line item"
-      %a.button.right{rel: "modal:close"}= "Cancel"
+      %a.button.right.close-custome-listing-modal{rel: "modal:close"}= "Cancel"

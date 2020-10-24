@@ -5,7 +5,7 @@ module EnsureAdmin
 
   def ensure_is_admin
     unless @is_current_community_admin
-      flash[:error] = t("layouts.notifications.only_kassi_administrators_can_access_this_area")
+      # flash[:error] = t("layouts.notifications.only_kassi_administrators_can_access_this_area")
       if logged_in?
         redirect_to search_path and return
       else

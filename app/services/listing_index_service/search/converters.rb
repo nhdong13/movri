@@ -37,19 +37,20 @@ module ListingIndexService::Search::Converters
 
   def author_hash(l, includes)
       if includes.include?(:num_of_reviews) || includes.include?(:author)
-        {
-          author: {
-            id: l.author_id,
-            username: l.author.username,
-            first_name: l.author.given_name,
-            last_name: l.author.family_name,
-            display_name: l.author.display_name,
-            avatar: {
-              thumb: l.author.image.present? ? l.author.image.url(:thumb) : nil
-            },
-            is_deleted: l.author.deleted?
-          }.merge(num_of_reviews_hash(l, includes))
-        }
+        {}
+        # {
+        #   author: {
+        #     id: l.author_id,
+        #     username: l.author.username,
+        #     first_name: l.author.given_name,
+        #     last_name: l.author.family_name,
+        #     display_name: l.author.display_name,
+        #     avatar: {
+        #       thumb: l.author.image.present? ? l.author.image.url(:thumb) : nil
+        #     },
+        #     is_deleted: l.author.deleted?
+        #   }.merge(num_of_reviews_hash(l, includes))
+        # }
       else
         {}
       end

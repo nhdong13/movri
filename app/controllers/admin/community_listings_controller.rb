@@ -45,14 +45,6 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
     end
   end
 
-  def get_listings
-    @listings = @service.public_list.where(id: params[:ids])
-    respond_to do |format|
-      format.js { render layout: false }
-      format.json { render json: listings, each_serializer: ListingSerializer }
-    end
-  end
-
   private
 
   def set_selected_left_navi_link
