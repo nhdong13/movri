@@ -1,0 +1,16 @@
+.col-10.header-section
+  %h3.left= "#{address_type.upcase.remove("_ADDRESS")} ADDRESS"
+.col-2
+  - if address.present?
+    %a.right#edit-address{href: "#edit-customer-#{address_type.remove("_address")}-address-modal", rel: "modal:open", "data-attribute": "#{address_type}"}= "Edit"
+  - else
+    %a.right#create-address{href: "#create-customer-address-modal", rel: "modal:open"}="Add"
+.col-12.content
+  - if address.present?
+    %p= "#{address&.first_name} #{address&.last_name}"
+    %p= address&.company.present? ? address.company : ''
+    %p= address&.street1
+    %p= address&.country
+    %p= address&.phone
+  - else
+    = "Shipping address not create yet"

@@ -50,6 +50,15 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
             })
 
             $('#draft_order_person_id').val(ui.item.id)
+
+            $('.create-address').on('click', function(e){
+              address_type = $(e.currentTarget).attr('data-attribute')
+              $('#create-customer-address-modal').on($.modal.OPEN, function(){
+                $('#create-customer-address-modal #transaction_address_address_type').attr("value", address_type)
+              })
+            })
+
+
           }
         })
       }

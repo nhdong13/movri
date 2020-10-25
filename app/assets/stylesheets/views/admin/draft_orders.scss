@@ -229,7 +229,8 @@ $border-color: #E1E3E5;
 #edit-billing-address,
 #edit-shipping-address,
 #edit-contact-information,
-#edit-customer-note {
+#edit-customer-note,
+#create-customer-address-modal {
   max-width: 100%;
   width: 40%;
 
@@ -248,6 +249,12 @@ $border-color: #E1E3E5;
     .title {
       border-bottom: 1px solid $border-color;
       font-size: 24px;
+    }
+
+    .shipping-address-state,
+    .address-state {
+      display: block;
+      width: 100%;
     }
   }
 }

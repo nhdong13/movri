@@ -1,10 +1,11 @@
 .modal#edit-customer-billing-address-modal
-  = form_for billing_address, url: admin_community_transaction_address_path(@current_community, billing_address), method: :put do |form|
+  = form_for billing_address, url: admin_community_transaction_address_path(@current_community.id, billing_address.id), method: :put, remote: true do |form|
     .row.title
       = "Edit billing address"
     .row.address
       .col-12
       .col-6
+        = hidden_field_tag 'transaction_address[address_type]'
         = hidden_field_tag 'transaction_id', @order&.id
         = "First name"
         = form.text_field :first_name, placeholder: 'First name', class: 'margin-bt-15'

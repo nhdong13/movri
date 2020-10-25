@@ -1,11 +1,11 @@
 .modal#edit-customer-shipping-address-modal
-  - byebug
-  = form_for shipping_address, url: admin_community_transaction_address_path(@current_community.id, shipping_address.id), method: :put do |form|
+  = form_for shipping_address, url: admin_community_transaction_address_path(@current_community.id, shipping_address.id), method: :put, remote: true do |form|
     .row.title
       = "Edit shipping address"
     .row.address
       .col-12
       .col-6
+        = hidden_field_tag 'transaction_address[address_type]'
         = hidden_field_tag 'transaction_id', @order&.id
         = "First name"
         = form.text_field :first_name, placeholder: 'First name', class: 'margin-bt-15'

@@ -7,7 +7,7 @@
   .col-10
     %h5= "CONTACT INFOMATION"
   .col-2
-    %a{href: "#edit-customer-email-modal", rel: "modal:open"}= "Edit"
+    %a.right#edit-customer-email{href: "#edit-customer-email-modal", rel: "modal:open"}= "Edit"
   .col-12
     %p= order.buyer.get_email.present? ? order.buyer.get_email : "No email address"
 .row.shipping-address

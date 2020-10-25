@@ -1,0 +1,6 @@
+$.modal.close()
+<% if @address_type == "default_shipping_address" %>
+  $(".customer-info .shipping-address").html("<%= j render(partial: 'address', locals: {address: @transaction_address, address_type: @transaction_address&.address_type}) %>");
+<% else %>
+  $(".customer-info .billing-address").html("<%= j render(partial: 'address', locals: {address: @transaction_address, address_type: @transaction_address&.address_type}) %>");
+<% end %>

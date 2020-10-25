@@ -20,11 +20,11 @@
       %h3.left= "SHIPPING ADDRESS"
     .col-2
       - if person_information[:shipping_address].present?
-        %a.right#edit-shipping-address{href: "#edit-customer-shipping-address-modal", rel: "modal:open"}= "Edit"
+        %a.right#edit-shipping-address{href: "#edit-customer-shipping-address-modal", rel: "modal:open", "data-attribute": "shipping_address"}= "Edit"
       - else
-        %a.right#create-billing-address{href: "#create-customer-address-modal", rel: "modal:open"}="Add"
+        %a.right#create-address.create-address{href: "#create-customer-address-modal", rel: "modal:open", "data-attribute": "shipping_address"}="Add"
     .col-12.content
-      - if person_information[:shipping_address].present?
+      - if person_information[:shipping_address_address].present?
         %p= "#{person_information[:shipping_address]&.first_name} #{person_information[:shipping_address]&.last_name}"
         %p= person_information[:shipping_address]&.company.present? ? person_information[:shipping_address].company : ''
         %p= person_information[:shipping_address]&.street1
@@ -37,15 +37,15 @@
       %h3.left= "BILLING ADDRESS"
     .col-2
       - if person_information[:billing_address].present?
-        %a.right#edit-billing-address{href: "#edit-customer-billing-address-modal", rel: "modal:open"}= "Edit"
+        %a.right#edit-billing-address{href: "#edit-customer-billing-address-modal", rel: "modal:open", "data-attribute": "billing_address"}= "Edit"
       - else
-        %a.right#create-billing-address{href: "#create-customer-address-modal", rel: "modal:open"}="Add"
+        %a.right#create-address.create-address{href: "#create-customer-address-modal", rel: "modal:open", "data-attribute": "billing_address"}="Add"
     .col-12.content
-      - if person_information[:shipping_address] && person_information[:billing_address]
-        - if person_information[:person].default_shipping_address == person_information[:person].default_billing_address
+      - if person_information[:billing_address]
+        - if person_information[:person]&.default_shipping_address == person_information[:person]&.default_billing_address
           %p= "Same as shipping address"
         - else
-          %p= "#{person_information[:billing_address]&.first_name person_information[:billing_address]&.last_name}"
+          %p= "#{person_information[:billing_address]&.first_name} #{person_information[:billing_address]&.last_name}"
           %p= person_information[:billing_address]&.company.present? ? person_information[:billing_address]&.company : ''
           %p= person_information[:billing_address]&.street1
           %p= person_information[:billing_address]&.country
@@ -54,5 +54,42 @@
         = "Billing address not create yet."
 
 = render 'admin/shared/edit_customer_email', person: person_information[:person]
-= render 'admin/shared/edit_customer_shipping_address', shipping_address: person_information[:shipping_address]
--# = render 'admin/shared/edit_customer_billing_address', billing_address: person_information[:billing_address]
+- if person_information[:shipping_address].present?
+  = render 'admin/shared/edit_customer_shipping_address', shipping_address: person_information[:shipping_address]
+- if person_information[:billing_address].present?
+  = render 'admin/shared/edit_customer_billing_address', billing_address: person_information[:billing_address]
+
+.modal#create-customer-address-modal
+  = form_for TransactionAddress.new, url: admin_community_transaction_addresses_path(@current_community.id), method: :post, remote: true do |form|
+    .row.title
+      = "Create address"
+    .row.address
+      .col-12
+      .col-6
+        = hidden_field_tag 'transaction_address[person_id]', person_information[:person]&.id
+        = hidden_field_tag 'transaction_id', @order&.id
+        = hidden_field_tag 'transaction_address[address_type]'
+        = "First name"
+        = form.text_field :first_name, placeholder: 'First name', class: 'margin-bt-15'
+        = "Company"
+        = form.text_field :company, placeholder: 'Company', class: 'margin-bt-15'
+        = "Address"
+        = form.text_field :street1, placeholder: 'Address', class: 'margin-bt-15'
+        = "City"
+        = form.text_field :city, placeholder: 'City', class: 'margin-bt-15'
+        = "Province"
+        = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {}, class: "shipping-address-state"
+      .col-6
+        = "Last name"
+        = form.text_field :last_name, placeholder: 'Last name', class: 'margin-bt-15'
+        = "Phone number"
+        = form.text_field :phone, placeholder: 'Phone number', class: 'margin-bt-15'
+        = "Apartment, suite, etc. (optional)"
+        = form.text_field :apartment, placeholder: 'Apartment, suite', class: 'margin-bt-15'
+        = "Country/Region"
+        = form.select :country,raw("<option>Canada</option>"), {}, class: 'margin-bt-15 width-100'
+        = "ZIP/Postal code"
+        = form.text_field :postal_code, placeholder: 'Zip', class: 'margin-bt-15'
+    .row.footer
+      = form.submit "Save", class: "button right margin-l-5"
+      %a.button.right{rel: "modal:close"}= "Cancel"
