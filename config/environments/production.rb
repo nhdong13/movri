@@ -16,7 +16,6 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
-  config.force_ssl = true
 
   # The default should be false, but is not for some reason (some gem sets it to
   # true?), so force it back. Origin checks are problematic because we force no
