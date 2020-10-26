@@ -1,13 +1,13 @@
 %tr
   %td
-    %a{href: edit_admin_community_draft_order_path(order.community.id, order.id)}= "#D#{order.id}"
+    %a{href: edit_admin_community_draft_order_path(@current_community, order)}= "#D#{order.id}"
   %td
     = order.created_at.to_formatted_s(:long)
   %td
-    = order.starter.given_name
+    = order.starter ? order.starter.given_name : "-"
   %td
     %span.order-fulfillment{class: (order.fulfilled? ? "grey-span" : "unfulfilled-span")}
       %i.icon-circle
       = order.status.capitalize
   %td
-    = number_to_currency(order.total_price_cents)
+    = money_to_humanized((TransactionMoneyCalculation.new(order, session, @current_user).get_final_price_for_draft_order))

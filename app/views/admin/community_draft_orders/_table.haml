@@ -12,5 +12,5 @@
       %th
         = render partial: "layouts/sort_link", locals: { column: "date", direction: sort_link_direction("date"), title: t("admin.communities.manage_draft_orders.total")}
   %tbody
-    - @service.orders.each do |order|
+    - @draft_orders.each do |order|
       = render 'order', order: order

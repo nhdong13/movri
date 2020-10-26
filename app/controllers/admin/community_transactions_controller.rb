@@ -24,6 +24,16 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   end
 
   def update_draft_order
+    person = Person.find_by(id: params[:draft_order_person_id])
+    draft_order_params = {
+      instructions_from_seller: params[:draft_oder_note], starter: person
+    }
+    if params[:draft_order_status].present?
+      draft_order_params = draft_order_params.merge(current_state: params[:draft_order_status])
+    end
+    @order.update(draft_order_params)
+    flash[:notice] = 'Create draft order successfully!'
+    redirect_to admin_community_draft_orders_path
   end
 
   def show
@@ -303,7 +313,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       :note
     )
   end
-  
+
   def find_transaction
     @order = Transaction.find(params[:id])
   end

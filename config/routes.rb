@@ -413,6 +413,7 @@ Rails.application.routes.draw do
           end
           member do
             post :update_draft_order
+            put :update_draft_order
             get :charge_extra_fee
             get :refund_transaction
             post :charge_refund_fee

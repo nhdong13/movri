@@ -6,7 +6,7 @@
     .col-12
       %h2.margin-bt-0 Create order
   = form_for [:admin, @transaction], url: update_draft_order_admin_community_transaction_path(@current_community, @transaction), method: :post do |f|
-    .row 
+    .row
       #draft_order_id{'data-id': @transaction.id}
       = hidden_field_tag :draft_order_person_id
       .col-12
@@ -31,8 +31,8 @@
             .col-12
               .paid-type
                 %a.button.right{href: "#payment-with-credit-card-modal", rel: "modal:open"}= "Pay with credit card"
-                %button.button.right= "Mark as pending"
-                %button.button.right= "Mark as paid"
+                = f.button 'Mark as pending', name: "draft_order_status", value: "pending", class: 'button right'
+                = f.button 'Mark as paid', name: "draft_order_status", value: "paid", class: 'button right'
                 %p.right= "ACCEPT PAYMENT"
                 %i.icon-money.right
           .col-3.find-create-customer

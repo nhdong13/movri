@@ -3,7 +3,7 @@
   = render partial: 'admin/community_draft_orders/listings', locals: {transaction: transaction}
 .col-6.add-note
   = "Notes"
-  = text_field_tag :note, params[:note], placeholder: 'Add a note...'
+  = text_field_tag :draft_oder_note, nil, placeholder: 'Add a note...'
 .col-6.total-info
   %table
     %tr

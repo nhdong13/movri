@@ -265,7 +265,7 @@ class Transaction < ApplicationRecord
   end
 
   def status
-    current_state
+    current_state.nil? ? "" : current_state
   end
 
   def has_feedback_from?(person)

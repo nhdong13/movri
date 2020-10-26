@@ -3,7 +3,9 @@ class Admin::CommunityDraftOrdersController < Admin::AdminBaseController
   before_action :set_service, only: :index
   before_action :set_order, only: [:edit, :update]
 
-  def index; end
+  def index
+    @draft_orders =  Transaction.all.draft_order
+  end
 
   def new
     @transaction = Transaction.new
