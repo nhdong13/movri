@@ -11,5 +11,5 @@
 
 <% else %>
   $('.zipcode-error').html('<%= @message %>').css('display', 'block').delay(5000).slideUp("slow");
-  $('#message').html('<%= @message %>').css('display', 'block').delay(5000).slideUp("slow");
+  $('#message').html('<%= @message %>').css('display', 'block');
 <% end %>

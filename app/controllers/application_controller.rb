@@ -471,13 +471,13 @@ class ApplicationController < ActionController::Base
   def update_booking_session
     if session[:booking] && session[:booking][:start_date]
       session[:booking][:start_date] = get_today if session[:booking][:start_date] < get_today
-      session[:booking][:end_date] = get_next_day(session[:booking][:start_date])if session[:booking][:end_date] <= session[:booking][:start_date]
+      session[:booking][:end_date] = get_next_7_days(session[:booking][:start_date])if session[:booking][:end_date] <= session[:booking][:start_date]
       data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
       session[:booking][:total_days] = data[:total_days]
     else
       session[:booking] = {}
       session[:booking][:start_date] = get_today
-      session[:booking][:end_date] = get_next_day(session[:booking][:start_date])
+      session[:booking][:end_date] = get_next_7_days(session[:booking][:start_date])
       data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
       session[:booking][:total_days] = data[:total_days]
     end
@@ -490,6 +490,11 @@ class ApplicationController < ActionController::Base
   def get_next_day current_day
     next_day = Date.strptime(current_day, "%m/%d/%Y") + 1.day
     next_day.strftime("%m/%d/%Y")
+  end
+
+  def get_next_7_days current_day
+    next_7_days = Date.strptime(current_day, "%m/%d/%Y") + 7.day
+    next_7_days.strftime("%m/%d/%Y")
   end
 
   def user_for_paper_trail
