@@ -681,6 +681,16 @@ class ListingsController < ApplicationController
     redirect_to edit_listing_path(@listing)
   end
 
+  def get_price_base_on_duration
+    listing = Listing.find_by(id:params[:id])
+    quantity = params[:quantity].to_i
+    number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
+    price_with_quantity = number_price * quantity
+    render json: {
+      price: MoneyViewUtils.to_humanized(price_with_quantity)
+    }
+  end
+
   private
 
   def create_or_update_category_listings(category_ids, subcategory_ids, childcategory_ids)

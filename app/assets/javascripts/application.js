@@ -111,6 +111,7 @@
 //= require radio_buttons
 //= require new_layout
 //= require stripe_form2
+//= require listing_details
 //= require analytics
 //= require social-insurance-number
 //= require stripe_payment

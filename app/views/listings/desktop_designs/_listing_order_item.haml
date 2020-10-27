@@ -1,6 +1,6 @@
 .row.listing-price
   .col-12.clearfix.padding-0
-    %span.amount.font-open-sans.font-size-25
+    %span.amount.font-open-sans.font-size-25.main-listing-price
       - number_price = Money.new(PriceCalculationService.calculate(@listing, ListingViewUtils.get_booking_days(session)), 'USD')
       = MoneyViewUtils.to_humanized(number_price)
     %span.time-rent.font-open-sans.font-size-25
@@ -103,18 +103,8 @@
 = render partial: "listings/desktop_designs/pricing_chart", locals: { listing: @listing }
 = render partial: "listings/desktop_designs/view_cart", locals: { listing: @listing }
 
-- content_for :extra_javascript do
-  :javascript
-    $('#quantity-up').on('click', function() {
-      var currentVal = parseInt($('input#quantity-number').val()) || 0
-      $("input#quantity-number").val(currentVal+1)
-    })
-    $('#quantity-down').on('click', function() {
-      var currentVal = parseInt($('input#quantity-number').val()) || 1
-      if(currentVal !== 0) {
-        $('input#quantity-number').val(currentVal-1)
-      }
-    })
+-# - content_for :extra_javascript do
+-#   :javascript
 -#     ST.ListingTags.initTagsForEditListing();
 -#     ST.BlockedDates.addBlockedDates();
 -#     $(document).ready(function(){

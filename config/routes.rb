@@ -570,6 +570,7 @@ Rails.application.routes.draw do
         put :remove_accessory
         put :add_tab
         put :change_coverage_type
+        get :get_price_base_on_duration
       end
       collection do
         get :new_form_content
