@@ -31,16 +31,6 @@ class CartsController < ApplicationController
     return unless params[:start_date] && params[:end_date]
     # pass same value for start and end date
     @success = true
-    if params[:start_date] == params[:today].to_date.strftime('%m/%d/%Y')
-      @success = false
-      @message = "Shipping Not Available. Please Pickup Locally. Note: For next day delivery, order should be placed before 10:00 AM PST."
-    elsif params[:start_date] == params[:today].to_date.tomorrow.strftime('%m/%d/%Y')
-      @success = false
-      @message = "NOTE: For next business day delivery, order must be received and verified before 12PM PST."
-    elsif params[:start_date] == params[:end_date]
-      @success = false
-      @message = "You cannot choose Arrival Date and Return Date the same"
-    end
     # pass same value in session
     if session[:booking] && params[:start_date] == session[:booking][:start_date] && params[:end_date] == session[:booking][:end_date]
       @success = false

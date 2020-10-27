@@ -536,6 +536,14 @@ class ListingsController < ApplicationController
   end
 
   def cart
+    if  session[:booking][:start_date] == get_today
+      @message_for_booking_day = "Shipping Not Available. Please Pickup Locally. Note: For next day delivery, order should be placed before 10:00 AM PST."
+    elsif session[:booking][:start_date] == get_next_day(get_today)
+      @message_for_booking_day = "NOTE: For next business day delivery, order must be received and verified before 12PM PST."
+    elsif session[:booking][:start_date] == session[:booking][:end_date]
+      @message_for_booking_day = "You cannot choose Arrival Date and Return Date the same"
+    end
+
     @have_blocked_dates = Listing.where(id: session[:cart].keys).pluck(:manually_blocked_dates).present?
     make_listing_presenter
     @blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
