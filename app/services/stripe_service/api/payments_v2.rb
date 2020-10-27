@@ -17,7 +17,7 @@ module StripeService::API
           customer = create_stripe_customer(payment_method_id)
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
-            currency: 'usd',
+            currency: 'cad',
             payment_method: payment_method_id,
             customer: customer['id'],
             error_on_requires_action: true,
