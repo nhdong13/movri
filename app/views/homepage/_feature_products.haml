@@ -7,6 +7,7 @@
 
       - featured_product.listings.each do |listing|
         = link_to listing_path(listing) do
+          - number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
           .desktop-display
             .col-3
               .listing-box
@@ -15,7 +16,7 @@
                 .listing-information.center-items
                   = listing.title
                 .listing-price
-                  %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
+                  %span= money_to_humanized(number_price)
                   %span= "/ #{ListingViewUtils.get_time_rent(session)}"
                 %div
                   = link_to "Rent Now", listing_path(listing), class: "rent-now-btn"
@@ -27,7 +28,7 @@
                 .listing-information.center-items
                   = listing.title
                 .listing-price
-                  %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
+                  %span= money_to_humanized(number_price)
                   %span= "/ #{ListingViewUtils.get_time_rent(session)}"
                 %div
                   = link_to "Rent Now", listing_path(listing), class: "rent-now-btn"
