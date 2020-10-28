@@ -27,6 +27,5 @@
             %th.col-5
             %th.col-1
         %tbody
-          - @service.redirect_urls.each do |redirect_url|
+          - @redirect_urls.order(created_at: :desc).each do |redirect_url|
             = render 'item', redirect_url: redirect_url
-         

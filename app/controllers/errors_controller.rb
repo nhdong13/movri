@@ -11,6 +11,11 @@ class ErrorsController < ActionController::Base
   end
 
   def not_found
+    from_path = "/#{params[:path]}"
+    redirectUrl = RedirectUrl.find_by(from: from_path)
+    if redirectUrl.present? && redirectUrl.to != redirectUrl.from
+      return redirect_to redirectUrl.to
+    end
     respond_to do |format|
       format.html {render "status_404", status: :not_found, locals: { status: 404, title: title(404) }}
       format.all { render body: nil, status: :not_found }
