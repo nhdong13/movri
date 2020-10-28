@@ -115,7 +115,7 @@ module TransactionService::Transaction
 
     session[:cart].each do |key, value|
       listing = Listing.find_by(id: key)
-      @transaction.create_transaction_item listing, session[:booking][:total_days]
+      transaction.create_transaction_item listing, session[:booking][:total_days]
     end
     transaction.create_booking(
       start_on: DatetimeService.convert_date(session[:booking][:start_date]),

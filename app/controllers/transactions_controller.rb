@@ -519,7 +519,7 @@ class TransactionsController < ApplicationController
         item.update(quantity: quantity)
       else
         listing = Listing.find_by(id: listing_id)
-        @transaction.create_transaction_item listing, transaction.booking.duration
+        transaction.create_transaction_item listing, transaction.booking.duration
       end
     end
     # remove item not in cart
