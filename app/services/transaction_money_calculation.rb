@@ -6,7 +6,11 @@ class TransactionMoneyCalculation
     @promo_code = @transaction.promo_code
     @state = @transaction.shipping_address ? @transaction.shipping_address.state_or_province : 'alberta'
     @shipping_fee = @transaction.shipper ? @transaction.shipper.amount_to_cents : 0
-    @duration = @transaction.booking&.duration || @session[:booking][:total_days] || 1
+    if @transaction.booking
+     @duration = @transaction.booking.duration
+    else
+      @duration = @session[:booking] ? @session[:booking][:total_days] : 1
+    end
   end
 
   def get_discount_for_all_products_cart

@@ -26,6 +26,7 @@ module StripeService::API
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
           sendgridmailer.send_order_confirmed_mail
+          sendgridmailer.send_notification_to_admin
           return {success: true}
         end
       rescue => e
@@ -127,6 +128,7 @@ module StripeService::API
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
           sendgridmailer.send_order_confirmed_mail
+          sendgridmailer.send_notification_to_admin
           return {success: true}
         end
       rescue StandardError => e
