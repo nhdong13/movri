@@ -105,8 +105,7 @@ class TransactionMoneyCalculation
   def listings_subtotal
     listings_subtotal = 0
     @transaction.transaction_items.each do |item|
-      listing = Listing.find_by(id: item.listing_id)
-      listings_subtotal += listing_subtotal(listing, item.quantity)
+      listings_subtotal += listing_subtotal(item, item.quantity)
     end
     listings_subtotal
   end
@@ -132,7 +131,7 @@ class TransactionMoneyCalculation
     shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
     state = state ? state : @state
     tax_fee = get_tax_fee(state, shipping_fee)
-    listings_subtotal - get_discount_for_all_products_cart + shipping_fee + tax_fee
+    (listings_subtotal - get_discount_for_all_products_cart + shipping_fee + tax_fee).round(0)
   end
 
   def total_coverage_for_all_items_cart

@@ -519,14 +519,7 @@ class TransactionsController < ApplicationController
         item.update(quantity: quantity)
       else
         listing = Listing.find_by(id: listing_id)
-        @transaction.transaction_items.create(
-          listing_id: listing.id,
-          listing_uuid: listing.uuid,
-          listing_title: listing.title,
-          quantity: 1,
-          coverage_price_cents: InsuranceCalculationService.call(listing, transaction.booking.duration),
-          price_cents: listing.price_cents
-        )
+        @transaction.create_transaction_item listing, transaction.booking.duration
       end
     end
     # remove item not in cart

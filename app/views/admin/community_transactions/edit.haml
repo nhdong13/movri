@@ -141,7 +141,7 @@
               .width-25
                 %span Shipping
               .width-25.padding-0
-                - unless @order.will_pickup?
+                - if !@order.will_pickup? && @order.shipper
                   %span.items-style= @order.shipper.service_name
               .width-50.align-right
                 - if @order.will_pickup?

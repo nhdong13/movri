@@ -115,14 +115,7 @@ module TransactionService::Transaction
 
     session[:cart].each do |key, value|
       listing = Listing.find_by(id: key)
-      transaction.transaction_items.create(
-        listing_id: listing.id,
-        listing_uuid: listing.uuid,
-        listing_title: listing.title,
-        quantity: value,
-        coverage_price_cents: InsuranceCalculationService.call(listing, session[:booking][:total_days]),
-        price_cents: listing.price_cents
-      )
+      @transaction.create_transaction_item listing, session[:booking][:total_days]
     end
     transaction.create_booking(
       start_on: DatetimeService.convert_date(session[:booking][:start_date]),

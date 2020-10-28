@@ -2,19 +2,20 @@
 #
 # Table name: transaction_items
 #
-#  id                   :bigint           not null, primary key
-#  transaction_id       :integer
-#  listing_id           :integer
-#  listing_uuid         :binary(16)
-#  listing_title        :integer
-#  quantity             :integer
-#  coverage_price_cents :integer
-#  price_cents          :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  is_deleted           :boolean          default(FALSE)
-#  deleted_at           :datetime
-#  note                 :string(255)
+#  id                    :bigint           not null, primary key
+#  transaction_id        :integer
+#  listing_id            :integer
+#  listing_uuid          :binary(16)
+#  listing_title         :integer
+#  quantity              :integer
+#  coverage_price_cents  :integer
+#  price_cents           :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  is_deleted            :boolean          default(FALSE)
+#  deleted_at            :datetime
+#  note                  :string(255)
+#  replacement_cents_fee :integer          default(0)
 #
 
 class TransactionItem < ApplicationRecord

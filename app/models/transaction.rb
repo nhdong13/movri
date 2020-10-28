@@ -187,7 +187,8 @@ class Transaction < ApplicationRecord
       listing_title: listing.title,
       quantity: 1,
       coverage_price_cents: InsuranceCalculationService.call(listing, duration),
-      price_cents: listing.price_cents
+      price_cents: listing.price_cents,
+      replacement_cents_fee: listing.replacement_cents_fee
     )
   end
 

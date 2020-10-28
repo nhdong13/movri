@@ -20,7 +20,7 @@
       %i.fa.fa-circle-o
       %span= order.fulfilled? ? 'Fulfilled' : "Unfulfilled"
   %td
-    = money_to_humanized(order.item_total)
+    = money_to_humanized(TransactionMoneyCalculation.new(order, session, @current_user).final_price)
   %td
     = "#{order.total_quantity} #{order.total_quantity > 1 ? 'items' : 'item'}"
   %td
