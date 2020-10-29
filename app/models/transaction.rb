@@ -180,15 +180,16 @@ class Transaction < ApplicationRecord
     delivery_method == "pickup"
   end
 
-  def create_transaction_item listing, duration=1
+  def create_transaction_item listing, quantity=1, duration=1, coverage_type="movri_coverage"
     self.transaction_items.create(
       listing_id: listing.id,
       listing_uuid: listing.uuid,
       listing_title: listing.title,
-      quantity: 1,
+      quantity: quantity,
       coverage_price_cents: InsuranceCalculationService.call(listing, duration),
       price_cents: listing.price_cents,
-      replacement_cents_fee: listing.replacement_cents_fee
+      replacement_cents_fee: listing.replacement_cents_fee,
+      coverage_type: coverage_type
     )
   end
 

@@ -16,6 +16,7 @@
 #  deleted_at            :datetime
 #  note                  :string(255)
 #  replacement_cents_fee :integer          default(0)
+#  coverage_type         :integer          default(0)
 #
 
 class TransactionItem < ApplicationRecord
@@ -24,6 +25,7 @@ class TransactionItem < ApplicationRecord
   validates :quantity, numericality: {only_integer: true, greater_than_or_equal_to: 1}, on: :create
   validates :listing_title, presence: true, on: :create
 
+  enum coverage_type: [:movri_coverage, :no_coverage]
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscope(:where).where(is_deleted: true) }
 

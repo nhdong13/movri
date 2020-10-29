@@ -145,6 +145,7 @@ module ListingsHelper
   def total_coverage_for_all_items_cart
     total_coverage = 0
     session[:cart].each do|listing_id, quantity|
+      session[:coverage] ||= {}
       coverage_type = session[:coverage][listing_id]
       listing = Listing.find_by(id: listing_id)
       if coverage_type == "no_coverage"

@@ -116,7 +116,7 @@ class TransactionMoneyCalculation
 
   def listing_subtotal listing, quantity
     price_cents = calculate_price_cents_without_promo_code(listing, quantity)
-    total_coverage = total_coverage(listing, quantity)
+    total_coverage = listing.no_coverage? ? 0 : total_coverage(listing, quantity)
     price_cents + total_coverage
   end
 

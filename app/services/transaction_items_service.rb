@@ -37,7 +37,8 @@ class TransactionItemsService
       item.update(quantity: item.quantity + 1)
     else
       listing = Listing.find_by(id: listing_id)
-      @transaction.create_transaction_item listing, @session[:booking][:total_days]
+      coverage_type = "movri_coverage"
+      @transaction.create_transaction_item listing, 1, @session[:booking][:total_days], coverage_type
     end
   end
 end

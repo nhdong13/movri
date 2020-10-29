@@ -515,11 +515,12 @@ class TransactionsController < ApplicationController
     keys_id = session[:cart].keys
     session[:cart].each do |listing_id, quantity|
       item = transaction.transaction_items.find_by(listing_id: listing_id)
+      coverage_type = (session[:coverage] && session[:coverage][listing_id.to_s]) ? session[:coverage][listing_id.to_s] : "movri_coverage"
       if item
-        item.update(quantity: quantity)
+        item.update(quantity: quantity, coverage_type: coverage_type)
       else
         listing = Listing.find_by(id: listing_id)
-        transaction.create_transaction_item listing, transaction.booking.duration
+        transaction.create_transaction_item listing, quantity, transaction.booking.duration, coverage_type
       end
     end
     # remove item not in cart

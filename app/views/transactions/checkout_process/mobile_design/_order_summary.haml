@@ -25,7 +25,7 @@
               .price
                 %span.number-price
                   -# with coverage fee
-                  - listing_subtotal = @calculate_money.listing_subtotal(listing, item.quantity)
+                  - listing_subtotal = @calculate_money.listing_subtotal(item, item.quantity)
                   = money_to_humanized(listing_subtotal)
                 %span.day-rent
                   \/

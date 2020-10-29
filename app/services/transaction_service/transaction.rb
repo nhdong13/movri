@@ -115,7 +115,8 @@ module TransactionService::Transaction
 
     session[:cart].each do |key, value|
       listing = Listing.find_by(id: key)
-      transaction.create_transaction_item listing, session[:booking][:total_days]
+      coverage_type = (session[:coverage] && session[:coverage][listing.id.to_s]) ? session[:coverage][listing.id.to_s] : "movri_coverage"
+      transaction.create_transaction_item listing, value, session[:booking][:total_days], coverage_type
     end
     transaction.create_booking(
       start_on: DatetimeService.convert_date(session[:booking][:start_date]),

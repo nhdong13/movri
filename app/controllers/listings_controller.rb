@@ -507,6 +507,21 @@ class ListingsController < ApplicationController
   def change_coverage_type
     session[:coverage] ||= {}
     session[:coverage][params[:id]] = params[:coverage_type]
+    if @current_user
+      if @current_user.has_a_pending_transaction?
+        transaction = @current_user.pending_transaction
+        item = transaction.transaction_items.find_by(listing_id: params[:id])
+        item.update(coverage_type: params[:coverage_type])
+      end
+    else
+      if session[:transaction] && session[:transaction][:transaction_id]
+        @transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
+        if @transaction && !@transaction.completed?
+          item = transaction.transaction_items.find_by(listing_id: params[:id])
+          item.update(coverage_type: params[:coverage_type])
+        end
+      end
+    end
     @promo_code = PromoCode.find_by(code: params[:promo_code])
     respond_to do |format|
       format.html
