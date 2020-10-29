@@ -17,7 +17,7 @@
               .coverage
                 .coverage-selection
                   %span= "#{t('transactions.label.coverage')}:"
-                  %span Movri Coverage
+                  %span= item.coverage_type.split("_").join(" ")
               .sku-quantity
                 .quantity
                   %span= "#{t('transactions.label.quantity')}:"

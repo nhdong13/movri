@@ -47,7 +47,7 @@
                   .width-50
                     %span Movri Coverage
                   .width-50
-                    %span=money_to_humanized(InsuranceCalculationService.call(item.listing, @order.booking&.duration) * 1)
+                    %span=money_to_humanized(@calculate_money.total_coverage(item, item.quantity))
           .booking-dates.padding-15.br-bottom
             .flex-items
               .width-35

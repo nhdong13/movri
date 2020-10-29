@@ -121,7 +121,7 @@ class TransactionMoneyCalculation
   end
 
   def total_coverage listing, quantity
-    InsuranceCalculationService.call(listing, @duration) * quantity
+    listing.no_coverage? ? 0 : InsuranceCalculationService.call(listing, @duration) * quantity
   end
 
   def get_tax_fee state=nil, shipping_fee=nil
@@ -141,8 +141,7 @@ class TransactionMoneyCalculation
   def total_coverage_for_all_items_cart
     total_coverage = 0
     @transaction.transaction_items.each do|item|
-      listing = item.listing
-      coverage = InsuranceCalculationService.call(listing, @duration) * item.quantity
+      coverage = item.no_coverage? ? 0 : InsuranceCalculationService.call(item, @duration) * item.quantity
       total_coverage += coverage
     end
     total_coverage
