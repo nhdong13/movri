@@ -16,4 +16,4 @@
           = row.split(",").last
         %td.delete-blocked-dates
           %i.icon-remove{:style => "cursor: pointer;"}
-= form.hidden_field :manually_blocked_dates, value: ""
+= form.hidden_field :manually_blocked_dates, value: @listing.manually_blocked_dates
