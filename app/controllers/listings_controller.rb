@@ -96,32 +96,44 @@ class ListingsController < ApplicationController
     # Remove session booking dates if it in blocked dates
     if @listing.manually_blocked_dates && session[:booking]
       manually_blocked_dates_arr = @listing.manually_blocked_dates.split("&")
-
-      # convert session[:booking][:start_date]: mm/dd/yyy => dd/mm/yyy
-      arr_start_date = session[:booking][:start_date].split("/")
-      arr_start_date[0], arr_start_date[1] = arr_start_date[1], arr_start_date[0]
-      start_date = arr_start_date.join("/")
-
-      # convert session[:booking][:end_date]: mm/dd/yyy => dd/mm/yyy
-      arr_end_date = session[:booking][:end_date].split("/")
-      arr_end_date[0], arr_end_date[1] = arr_end_date[1], arr_end_date[0]
-      end_date = arr_end_date.join("/")
+      start_date = session[:booking][:start_date]
+      end_date = session[:booking][:end_date]
+      duration = session[:booking][:total_days]
 
       # Reset session[:booking] if user choose the end date before start date
-      if start_date.to_datetime > end_date.to_datetime
+      if convert_to_date(start_date) > convert_to_date(end_date)
         session[:booking] = nil
       end
-
-      manually_blocked_dates_arr.each do |range_date|
+      manually_blocked_dates_arr.each_with_index do |range_date, index|
+        this_start_date = convert_to_date(range_date.split(",").first)
+        this_end_date = convert_to_date(range_date.split(",").last)
         if range_date.split(",").first.present? && range_date.split(",").last.present?
-          if start_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
-            session[:booking] = nil
+          if convert_to_date(start_date).between?(this_start_date, this_end_date)
+            #update session booking with start day is the next day of the blocking end date.
+            next_day = get_next_day(range_date.split(",").last)
+            next_number_days = get_next_number_days(next_day, duration)
+            session[:booking][:start_date] = next_day
+            session[:booking][:end_date] = next_number_days
+            session[:booking][:total_days] = duration
             break
           end
 
-          if end_date.to_datetime.between?(range_date.split(",").first.to_datetime, range_date.split(",").last.to_datetime)
-            session[:booking] = nil
-            break
+          if convert_to_date(end_date).between?(this_start_date, this_end_date)
+            #check if the total day of current booking day
+            #get next 7 day from the start day
+            next_day_from_start_date = get_next_number_days(start_date, 1)
+            if convert_to_date(next_day_from_start_date).between?(this_start_date, this_end_date)
+              next_day = get_next_day(range_date.split(",").last)
+              session[:booking][:start_date] = next_day
+              session[:booking][:end_date] = get_next_number_days(next_day)
+              session[:booking][:total_days] = 7
+              break
+            else
+              next_day = get_next_day(start_date)
+              session[:booking][:end_date] = next_day
+              session[:booking][:total_days] = 1
+              break
+            end
           end
         else
           session[:booking] = nil
@@ -564,8 +576,6 @@ class ListingsController < ApplicationController
     @blocked_dates = @listing_presenter.blocked_dates_result[1].to_a
     global_blocked_dates = ManuallyBlockedDatesService.get_global_blocked_dates(@current_community).to_a
     @blocked_dates.concat(global_blocked_dates) if global_blocked_dates.any?
-    # reset session coverage
-    session[:coverage] = {}
     # manually_blocked_dates = ManuallyBlockedDatesService.get_manually_blocked_dates(@listing, 1.day).to_a
     # @blocked_dates.concat(manually_blocked_dates) if @listing.manually_blocked_dates
   end
