@@ -268,6 +268,9 @@
               .col-12
                 - if @order.starter
                   .span.block= @order.starter.get_email
+                - elsif @order.shipping_address
+                  .span.block= @order.shipping_address.email
+
 
           .shipping-address.br-bottom.padding-15
             .item.flex-items
