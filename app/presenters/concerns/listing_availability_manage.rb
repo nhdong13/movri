@@ -17,7 +17,6 @@ module ListingAvailabilityManage
 
   def blocked_dates_result
     if availability_enabled
-
       get_blocked_dates(
         start_on: booking_dates_start,
         end_on: booking_dates_end,

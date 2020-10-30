@@ -7,18 +7,17 @@
     .row
       .col-9
         .shipping-select-box{'data-uuid': @transaction.uuid_object }
-          - if @shipping_address.is_office_address?
-            .items
-              .radio-btn.center-items
-                = radio_button_tag :shipment, 'pick_up', @shipping_address.is_office_address?
-              .shipping-service
-                %span= t('transactions.label.pick_up')
-              .price
-                %strong= t('transactions.label.free')
+          .items.enabled-shipping-select
+            .radio-btn.center-items
+              = form.radio_button :service_type, 'free'
+            .shipping-service
+              %span= t('transactions.label.pick_up')
+            .price
+              %strong= t('transactions.label.free')
           - @shipping_selection.each_with_index do |shipment, index|
             .items{class: @shipping_address.is_office_address? ? 'disabled-shipping-select': 'enabled-shipping-select'}
               .radio-btn.center-items
-                = form.radio_button :service_type, shipment['service_type'], checked: (!@shipping_address.is_office_address? && (form.object.service_type == shipment['service_type'])) ? true : false, disabled: @shipping_address.is_office_address?
+                = form.radio_button :service_type, shipment['service_type'], disabled: @shipping_address.is_office_address?
               .shipping-service
                 %span= shipment["service_name"]
                 .days-shippment

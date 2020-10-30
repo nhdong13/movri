@@ -414,19 +414,27 @@ class TransactionsController < ApplicationController
     if result[:success]
       @shipping_selection = result[:shipping_selection]
       session[:shipping][:fedex] = @shipping_selection
-      @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
-      if @transaction.will_pickup?
-        shipper_params = {service_delivery: 'free', amount: 0}
+      if @transaction.shipper
+        if @transaction.will_pickup?
+          shipper_params = {service_delivery: 'free', amount: 0, service_type: "free", service_name: "free"}
+          @transaction.shipper.update(shipper_params)
+        end
+        @default_shipping_fee = @transaction.shipper.amount
       else
-        shipper_params = {
-          service_delivery: 'fedex',
-          service_type: @shipping_selection.first['service_type'],
-          service_name: @shipping_selection.first['service_name'],
-          amount: @shipping_selection.first['total_charge']['amount'],
-          currency: @shipping_selection.first['total_charge']['currency'],
-        }
+        if @transaction.will_pickup?
+          shipper_params = {service_delivery: 'free', amount: 0, service_type: "free", service_name: "free"}
+        else
+          shipper_params = {
+            service_delivery: 'fedex',
+            service_type: @shipping_selection.first['service_type'],
+            service_name: @shipping_selection.first['service_name'],
+            amount: @shipping_selection.first['total_charge']['amount'],
+            currency: @shipping_selection.first['total_charge']['currency'],
+          }
+        end
+        @transaction.create_shipper(shipper_params)
+        @default_shipping_fee = @transaction.shipper.amount
       end
-      @transaction.create_shipper(shipper_params) unless @transaction.shipper
     else
       flash[:notice] = result[:message]
       return redirect_to request.referer
@@ -443,16 +451,27 @@ class TransactionsController < ApplicationController
 
   def change_shipping_selection
     @state = @transaction.shipping_address.state_or_province
-    @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
-    shipper_params = {
-      service_delivery: @shipping_selection.first['shipper_slug'],
-      service_type: @shipping_selection.first['service_type'],
-      service_name: @shipping_selection.first['service_name'],
-      amount: @shipping_selection.first['total_charge']['amount'],
-      currency: @shipping_selection.first['total_charge']['currency'],
-    }
+    if params[:shipping_type] == "free"
+      @default_shipping_fee = 0
+      shipper_params = {
+        service_delivery: 'free',
+        service_type: "free",
+        service_name: "free",
+        amount: 0,
+        currency: 'CAD',
+      }
+    else
+      @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
+      @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
+      shipper_params = {
+        service_delivery: @shipping_selection.first['shipper_slug'],
+        service_type: @shipping_selection.first['service_type'],
+        service_name: @shipping_selection.first['service_name'],
+        amount: @shipping_selection.first['total_charge']['amount'],
+        currency: @shipping_selection.first['total_charge']['currency'],
+      }
+    end
     @transaction.shipper.update(shipper_params)
-    @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
     calculate_money_service(@transaction)
     respond_to do |format|
       format.html
