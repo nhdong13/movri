@@ -105,6 +105,7 @@
 //= require datepicker
 //= require datepicker_v2
 //= require follow
+//= require constants
 //= require paypal_account_settings
 //= require transaction
 //= require listing_form

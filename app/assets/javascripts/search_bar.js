@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
   function getCategorySlug(name) {
     return name
       .split(' ')
@@ -199,25 +198,30 @@ $(document).ready(function() {
     return `
     ${hits
       .map(
-        item =>`
-          <li>
-            <a href= ${'/listings/'+ item.url}>
-              <div class='flex-items'>
-                <div class='width-10 center-items'>
-                  <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
-                </div>
-                <div class='width-90'>
-                  <span class='block'>${instantsearch.highlight({ attribute: 'title', hit: item })}</span>
-                  <span class='sku block'>SKU: ${item.sku}</span>
-                  <div class='listing-price'>
-                    <span>${item.default_7_days_rental_price}</span>
-                    <span>/ 7 days</span>
+        item =>
+          {
+            days_rental_title = `price_rental_with_${current_duration_session}_days`
+            return`
+              <li>
+                <a href= ${'/listings/'+ item.url}>
+                  <div class='flex-items'>
+                    <div class='width-10 center-items'>
+                      <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
+                    </div>
+                    <div class='width-90'>
+                      <span class='block'>${instantsearch.highlight({ attribute: 'title', hit: item })}</span>
+                      <span class='sku block'>SKU: ${item.sku}</span>
+                      <div class='listing-price'>
+                        <span>${item[days_rental_title]}</span>
+                        <span> /${current_duration_session} days</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </a>
-          </li>
-        `)
+                </a>
+              </li>
+            `
+          }
+        )
       .join('')}
     `;
   };
@@ -285,27 +289,31 @@ $(document).ready(function() {
         <div class="row">
           ${hits
             .map(
-              item =>
-                `<a href= ${'/listings/'+ item.url}>
-                  <div class="col-3">
-                    <div class="listing-box">
-                      <div class='main-image'>
-                        <img src=${item.main_image} class="design-image-too-wide" alt="">
-                      </div>
-                      <div class='listing-information center-items'>
-                        ${instantsearch.highlight({ attribute: 'title', hit: item })}
-                      </div>
-                      <div class='listing-price'>
-                        <span>${item.default_7_days_rental_price}</span>
-                        <span> /7 day</span>
-                      </div>
-                      <div>
-                        <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
+              item => {
+                days_rental_title = `price_rental_with_${current_duration_session}_days`
+                return`
+                  <a href= ${'/listings/'+ item.url}>
+                    <div class="col-3">
+                      <div class="listing-box">
+                        <div class='main-image'>
+                          <img src=${item.main_image} class="design-image-too-wide" alt="">
+                        </div>
+                        <div class='listing-information center-items'>
+                          ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                        </div>
+                        <div class='listing-price'>
+                          <span>${item[days_rental_title]}</span>
+                          <span> /${current_duration_session} days</span>
+                        </div>
+                        <div>
+                          <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>`
-              )
+                  </a>
+                `
+              }
+            )
           .join('')}
         </div>
       </div>
@@ -318,35 +326,38 @@ $(document).ready(function() {
         <div class="row">
           ${hits
             .map(
-              item =>
-                `<a href= ${'/listings/'+ item.url}>
-                  <div class="col-12">
-                    <div class="listing-box-mobile">
-                      <div class='main-image'>
-                        <img src=${item.main_image} class="design-image-too-wide" alt=""/>
-                      </div>
-                      <div class='listing-information'>
-                        <div class='listing-title'>
-                          ${instantsearch.highlight({ attribute: 'title', hit: item })}
+              item =>{
+                days_rental_title = `price_rental_with_${current_duration_session}_days`
+                return`
+                  <a href= ${'/listings/'+ item.url}>
+                    <div class="col-12">
+                      <div class="listing-box-mobile">
+                        <div class='main-image'>
+                          <img src=${item.main_image} class="design-image-too-wide" alt=""/>
                         </div>
-                        <div class='listing-price'>
-                          <span>${item.default_7_days_rental_price}</span>
-                          <span> /7 day</span>
-                        </div>
-                        <div class='listing-rent-now'>
-                          <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
+                        <div class='listing-information'>
+                          <div class='listing-title'>
+                            ${instantsearch.highlight({ attribute: 'title', hit: item })}
+                          </div>
+                          <div class='listing-price'>
+                            <span>${item[days_rental_title]}</span>
+                            <span> /${current_duration_session} days</span>
+                          </div>
+                          <div class='listing-rent-now'>
+                            <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </a>`
+                  </a>
+                `
+              }
              )
           .join('')}
         </div>
       </div>
     </div>
   `;
-
 //============================================================================
   // Create the render function
   const createDataAttribtues = refinement =>

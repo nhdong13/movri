@@ -128,7 +128,14 @@ class Listing < ApplicationRecord
       MoneyViewUtils.to_humanized(price)
     end
 
-    %i[brand mount lens_type item_type camera_type camcorder_type sensor_size action_cam_compatibility compatibility lighting_type accessory_type capacity memory_type read_transfer_speed bus_speed power_compatibility power_compatibility power_type support_type head_type quick_release_system color_temperature filter_size filter_style filter_type audio_type monitoring_type camera_support_type cable_type]. each do |attr|
+    [*1..90].each do |day|
+      attributes "price_rental_with_#{day}_days" do
+        price = Money.new(PriceCalculationService.calculate(self, day), 'USD')
+        MoneyViewUtils.to_humanized(price)
+      end
+    end
+
+    %i[brand mount lens_type item_type camera_type camcorder_type sensor_size action_cam_compatibility compatibility lighting_type accessory_type capacity memory_type read_transfer_speed bus_speed power_compatibility power_compatibility power_type support_type head_type quick_release_system color_temperature filter_size filter_style filter_type audio_type monitoring_type camera_support_type cable_type].each do |attr|
       attributes attr do
         listing_accessory&.send(attr.to_s)
       end

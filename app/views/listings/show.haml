@@ -113,38 +113,6 @@
     .recently_viewed
       = render partial: 'listings/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
 
-  .row.mobile-display
-    .similar-product
-      .similar-product-content
-        Find Similar Products with:
-      .similar-wrap
-        .similar-item
-          %label.container
-            %input{:checked => "checked", :type => "checkbox"}
-            %span.checkmark
-          .row.similar-model-wrap
-            %span.similar-model
-              Camera Model
-            %span.similar-name
-              Camera
-        .similar-item
-          %label.container
-            %input{:checked => "checked", :type => "checkbox"}
-            %span.checkmark
-          .row.similar-model-wrap
-            %span.similar-model
-              Camera Model
-            %span.similar-name
-              Camera
-        .similar-item
-          %label.container
-            %input{:checked => "checked", :type => "checkbox"}
-            %span.checkmark
-          .row.similar-model-wrap
-            %span.similar-model
-              Camera Model
-            %span.similar-name
-              Camera
   .desktop-display
     .row#listing-title-fixed
       .listing-title-fixed-wrap
