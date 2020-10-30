@@ -112,9 +112,8 @@ module StripeService::API
           else
             @transaction_address = TransactionAddress.create(transaction_address_params)
           end
-          @transaction.update(billing_address_id: @transaction_address.id)
+          @transaction.update(billing_address_id: @transaction_address.id, transaction_type: 0)
           @current_user.update(default_billing_address: @transaction_address.id) if @current_user && @current_user.billing_address.nil?
-
           update_available_quantity
           customer = create_stripe_customer(params[:stripe_payment_method_id])
           intent = Stripe::PaymentIntent.create({

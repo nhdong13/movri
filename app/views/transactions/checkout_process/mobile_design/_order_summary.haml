@@ -43,9 +43,9 @@
         .shipping-fee.items
           %span= t('transactions.label.shipping')
           - shipping_fee = default_shipping_fee ? PriceCalculationService.to_cents(default_shipping_fee) : 0
-          - if transaction.will_pickup?
-            %span Free
-          -else
+          - if transaction.shipper
+            %span= transaction.shipper.amount
+          - else
             %span= shipping_fee > 0 ? money_to_humanized(shipping_fee) : t('transactions.label.tbd')
         .tax-fee.items
           %span= t('transactions.label.tax')
