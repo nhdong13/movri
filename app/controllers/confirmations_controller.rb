@@ -64,7 +64,7 @@ class ConfirmationsController < Devise::ConfirmationsController
         return
       else # no logged in session
         sign_in person
-        return homepage_with_locale_path()
+        return redirect_to homepage_with_locale_path()
       end
     end
 
