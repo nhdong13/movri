@@ -41,7 +41,6 @@ class ConfirmationsController < Devise::ConfirmationsController
       e.confirmed_at = Time.now
       e.confirmation_token = nil
       e.save
-
       # Accept pending community membership if needed
       if @current_community.approve_pending_membership(person, e.address)
         # If the pending membership was accepted now, it's time to send the welcome email, unless creating admin acocunt
@@ -64,7 +63,8 @@ class ConfirmationsController < Devise::ConfirmationsController
 
         return
       else # no logged in session
-        redirect_to login_path and return
+        sign_in person
+        return homepage_with_locale_path()
       end
     end
 
