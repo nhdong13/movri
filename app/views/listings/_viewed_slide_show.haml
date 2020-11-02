@@ -17,8 +17,9 @@
                   .main-image.center-items
                     = image_tag listing.main_image, :class => "design-image-too-wide"
                   .listing-price
-                    %span= MoneyViewUtils.to_humanized(Money.new(listing.price_cents, 'USD'))
-                    %span /1 day
+                    - number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
+                    %span= MoneyViewUtils.to_humanized(number_price)
+                    %span= "/ #{ListingViewUtils.get_time_rent(session)}"
                   .listing-information
                     = listing.title
                   = link_to "Rent now", listing_path(listing), class: "rent-now-btn"
