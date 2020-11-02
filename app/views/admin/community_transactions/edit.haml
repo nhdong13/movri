@@ -289,11 +289,11 @@
                   .font-size-14
                     = shipping_address&.apartment
                   .font-size-14
-                    = shipping_address&.city
+                    = "#{shipping_address&.city}, #{CANADA_PROVINCES.key(shipping_address&.state_or_province)}"
                   .font-size-14
-                    = shipping_address&.country
+                    = "#{shipping_address&.country}, #{shipping_address&.postal_code}"
                   .font-size-14
-                    = shipping_address&.phone
+                    = shipping_address&.format_phone
                 - else
                   .span.block No shipping address
 
@@ -314,11 +314,11 @@
                   .font-size-14
                     = billing_address&.apartment
                   .font-size-14
-                    = billing_address&.city
+                    = "#{billing_address&.city}, #{CANADA_PROVINCES.key(billing_address&.state_or_province)}"
                   .font-size-14
-                    = billing_address&.country
+                    = "#{billing_address&.country}, #{billing_address&.postal_code}"
                   .font-size-14
-                    = billing_address&.phone
+                    = billing_address&.format_phone
                 - else
                   .span.block No billing address
     = render partial: "cancel_order", locals: {order: @order}
