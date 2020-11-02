@@ -27,4 +27,8 @@ class Shipper < ApplicationRecord
   def ups?
     service_delivery == "ups"
   end
+
+  def free?
+    service_delivery == "free"
+  end
 end

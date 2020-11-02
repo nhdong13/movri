@@ -465,4 +465,16 @@ class Transaction < ApplicationRecord
   def have_stripe_customer
     stripe_customer.present? || (starter && starter.stripe_customers.any?)
   end
+
+  def get_delivery_method
+    if shipper
+      if shipper.free?
+        "Pickup"
+      else
+        "Shipping"
+      end
+    else
+      "None"
+    end
+  end
 end

@@ -460,6 +460,7 @@ class TransactionsController < ApplicationController
         amount: 0,
         currency: 'CAD',
       }
+      @transaction.shipping_address.update_columns(OFFICE_ADDRESS)
     else
       @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
       @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
