@@ -32,11 +32,27 @@ module ManuallyBlockedDatesService
     (padding_time.start_date.to_datetime..padding_time.end_date.to_datetime).to_a
   end
 
+
+  def get_blocked_dates_with_all_transactions community, listing
+    transactions = Transaction.joins(:transaction_items).where(transaction_items: {listing_id: listing.id})
+    transactions.select {|t| t.booking && t.booking.end_on >= Date.today}
+    blocking_dates = []
+    transactions.each do |transaction|
+      booking = transaction.booking
+      padding_time_start = booking.start_on - community.padding_time_before.to_i
+      padding_time_end = booking.end_on + community.padding_time_after.to_i
+      duration_dates = (padding_time_start.to_datetime..padding_time_end.to_datetime).to_a
+      blocking_dates.concat(duration_dates)
+    end
+    blocking_dates
+  end
+
   def get_all_blocked_dates community, listing, step = 1.day
     blocked_dates = []
     blocked_dates.concat(get_global_blocked_dates(community).to_a)
     blocked_dates.concat(get_manually_blocked_dates(listing, step).to_a)
-    blocked_dates.concat(get_padding_time_blocked_dates(listing))
+    # blocked_dates.concat(get_padding_time_blocked_dates(listing))
+    blocked_dates.concat(get_blocked_dates_with_all_transactions(community, listing))
     blocked_dates
   end
 
