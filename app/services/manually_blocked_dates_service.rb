@@ -39,10 +39,12 @@ module ManuallyBlockedDatesService
     blocking_dates = []
     transactions.each do |transaction|
       booking = transaction.booking
-      padding_time_start = booking.start_on - community.padding_time_before.to_i
-      padding_time_end = booking.end_on + community.padding_time_after.to_i
-      duration_dates = (padding_time_start.to_datetime..padding_time_end.to_datetime).to_a
-      blocking_dates.concat(duration_dates)
+      if booking
+        padding_time_start = booking.start_on - community.padding_time_before.to_i
+        padding_time_end = booking.end_on + community.padding_time_after.to_i
+        duration_dates = (padding_time_start.to_datetime..padding_time_end.to_datetime).to_a
+        blocking_dates.concat(duration_dates)
+      end
     end
     blocking_dates
   end
