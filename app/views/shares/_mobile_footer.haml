@@ -6,29 +6,76 @@
       .col-12
         %p
           = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
-          = "+1-778-554-1018"
+          %a{href: "tel:17785541018"}
+            = "+1-778-554-1018"
         %p
           = image_tag("mf_icons/icon-movri-phone.svg", class: 'header-mobile-phone-icon header-menu-icon hidden-desktop')
-          = "+1-604-385-0370"
+          %a{href: "tel:16043850370"}
+            = "+1-604-385-0370"
         %p
           .icon-envelope.left-navi-link-icon
-          = "sales@movri.ca"
-    .col-12.information.br-bottom.padding-bt-12
+          %a{href: "mailto:sales@movri.ca"}
+            = "sales@movri.ca"
+    .col-12.mobile-information-footer.br-bottom.padding-bt-12
       %span.bold.fz-16= "Information"
       .icon-chevron-down.float-right
-    .col-12.customer-service.br-bottom.padding-bt-12
+      - information_section = HelpfulLinkItem.find_by(heading: "Information")
+      - if information_section && information_section.enabled?
+        - heading_color = "color: #{information_section.heading_color};"
+        - subheading_color = "color: #{information_section.text_color};"
+        .helpful-links.hidden
+          - if information_section.footer_link?
+            - information_section.footer_links.each do |link|
+              %p{style: subheading_color}
+                = link_to link.sub_heading, link.link, style: subheading_color
+          - elsif information_section.social_account?
+            - information_section.footer_social_accounts.each do |acc|
+              = link_to acc.link do
+                = image_tag acc.image.url, alt: acc.alt_text
+
+    .col-12.mobile-customer-service-footer.br-bottom.padding-bt-12
       %span.bold.fz-16= "Customer Service"
       .icon-chevron-down.float-right
+      - customer_service = HelpfulLinkItem.find_by(heading: "Customer Service")
+      - if customer_service && customer_service.enabled?
+        - heading_color = "color: #{customer_service.heading_color};"
+        - subheading_color = "color: #{customer_service.text_color};"
+        .helpful-links.hidden
+          - if customer_service.footer_link?
+            - customer_service.footer_links.each do |link|
+              %p{style: subheading_color}
+                = link_to link.sub_heading, link.link, style: subheading_color
+          - elsif customer_service.social_account?
+            - customer_service.footer_social_accounts.each do |acc|
+              = link_to acc.link do
+                = image_tag acc.image.url, alt: acc.alt_text
     .col-12.subscribe.br-bottom.padding-bt-12
       %h3= "Subscribe"
       %p= "Sign Up to receive product updates and special offers"
       = text_field_tag :email, '', placeholder: "Email address", class: "width-70"
       .button.width-20.dp-inline= "Submit"
     .col-12.follow-us.padding-bt-12
-      .col-6
+      - follow_us = HelpfulLinkItem.social_account.last
+      .col-5
         %h3= "Follow us"
-        .icon-facebook-sign.margin-r-5
-        .icon-instagram.margin-r-5
-        .icon-envelope
-      .col-6
+        - if follow_us && follow_us.enabled?
+          - heading_color = "color: #{follow_us.heading_color};"
+          - subheading_color = "color: #{follow_us.text_color};"
+          - follow_us.footer_social_accounts.each do |acc|
+            = link_to acc.link do
+              = image_tag acc.image.url, alt: acc.alt_text, class: "mobile-footer-icon"
+      .col-7
         %span= "Copyright © 2020 MOVRI"
+
+- content_for :extra_javascript do
+  :javascript
+    $(".mobile-information-footer, .mobile-customer-service-footer").click(function(){
+      helpful_links = $(this).find(".helpful-links")
+      if(helpful_links.is(":visible")){
+        helpful_links.slideUp("slow")
+        $(this).find(".icon-chevron-down").addClass("icon-chevron-up").removeClass("icon-chevron-down")
+      } else {
+        helpful_links.slideDown("slow")
+        $(this).find(".icon-chevron-up").addClass("icon-chevron-down").removeClass("icon-chevron-up")
+      }
+    });

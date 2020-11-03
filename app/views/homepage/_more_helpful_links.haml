@@ -18,7 +18,7 @@
                   = link_to link.sub_heading, link.link, style: subheading_color
             - elsif item.social_account?
               - item.footer_social_accounts.each do |acc|
-                = link_to acc.link do 
+                = link_to acc.link do
                   = image_tag acc.image.url, alt: acc.alt_text
             - elsif item.sign_up?
               %div.footer-contact-information{style: subheading_color}= item.text.html_safe
@@ -30,4 +30,3 @@
                     = submit_tag 'Sign Up', class: 'btn btn-submit font-size-14'
             - else
               %div.footer-contact-information{style: subheading_color}= item.text.html_safe
-      
