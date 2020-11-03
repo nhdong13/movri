@@ -321,7 +321,8 @@ class SendgridMailer
       shipping_value: @transaction.will_pickup? ? 0 : @transaction.shipper.amount,
       arrival_date: booking.start_on.strftime("%m/%d/%Y"),
       return_date: booking.end_on.strftime("%m/%d/%Y"),
-      duration:booking.duration
+      duration:booking.duration,
+      tax_value: to_CAD(@calculate_money_service.get_tax_fee)
     }
   end
 
