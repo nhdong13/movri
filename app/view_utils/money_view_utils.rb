@@ -38,4 +38,9 @@ module MoneyViewUtils
       symbol: currency.symbol
     }
   end
+
+  def to_CAD value
+    value = value.to_f / 100
+    value.round(2)
+  end
 end

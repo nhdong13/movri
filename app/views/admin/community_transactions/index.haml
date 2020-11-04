@@ -21,6 +21,11 @@
         = submit_tag t("admin.communities.transactions.search"), class: 'button search-button'
 
   .row
+    .col-12
+      .span.common-link-btn
+        = link_to "Export", export_admin_community_transactions_path(@current_community), remote: true
+  .row
+
     #table-tabs.col-12
       %ul
         %li

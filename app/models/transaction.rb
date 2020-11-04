@@ -99,6 +99,7 @@ class Transaction < ApplicationRecord
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :unit_price_currency
 
   scope :exist, -> { where(deleted: false) }
+  scope :complete, -> { where.not(order_number: nil) }
   scope :for_person, -> (person){
     joins(:listing)
     .where("listings.author_id = ? OR starter_id = ?", person.id, person.id)
