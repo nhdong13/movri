@@ -162,6 +162,13 @@
             .width-50.align-right
               %span= @order.completed? ? money_to_humanized(@calculate_money.final_price) : "$0"
 
+          - if @order.completed? && @order.stripe_payments.standard.any?
+            .flex-items.padding-b-t-15.br-bottom
+              .width-50
+                %span Payment reference
+              .width-50.align-right
+                %span= @order.stripe_payments.standard.last.stripe_payment_intent_id
+
           - if @order.stripe_payments.refund.any?
             .list-refunds.padding-b-t-15.br-bottom
               - @order.stripe_payments.refund.each do |payment|

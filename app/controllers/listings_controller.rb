@@ -987,12 +987,14 @@ class ListingsController < ApplicationController
   end
 
   def transaction_items_service
-    if @current_user && @current_user.starter_transactions.last
-      TransactionItemsService.new(@current_user.starter_transactions.last, session, @current_user)
+    if @current_user && @current_user.has_a_pending_transaction?
+      TransactionItemsService.new(@current_user.pending_transaction, session, @current_user)
     else
       if session[:transaction] && session[:transaction][:transaction_id]
         transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
-        TransactionItemsService.new(transaction, session, nil)
+        if transaction && !transaction.completed?
+          TransactionItemsService.new(transaction, session, nil)
+        end
       end
     end
   end
