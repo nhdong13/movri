@@ -48,6 +48,7 @@ class TransactionAddressesController < ApplicationController
     session[:promo_code] = {}
     # reset session coverage
     session[:coverage] = {}
+    session[:transaction] = {}
     respond_to do |format|
       format.html
       format.json { render json: { redirect_url: thank_you_transaction_path(@transaction.uuid_object) } }

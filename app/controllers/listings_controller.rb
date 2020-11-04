@@ -277,6 +277,7 @@ class ListingsController < ApplicationController
     @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
 
     if update_successful
+      @listing.update(url: @listing.title.to_url)
       create_or_update_tabs(@listing, tabs)
       # create_or_update_accessories(result.data[:recommended_accessory_ids])
       subcategory_ids = params[:subcategory_ids] ? params[:subcategory_ids].uniq.reject(&:empty?) : []
