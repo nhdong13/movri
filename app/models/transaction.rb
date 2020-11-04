@@ -418,7 +418,7 @@ class Transaction < ApplicationRecord
   end
 
   def completed?
-    current_state == "paid" && !order_number.nil?
+    current_state == "paid"
   end
 
   def is_overweight?

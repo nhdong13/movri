@@ -134,7 +134,7 @@ class TransactionMoneyCalculation
   def final_price state=nil, shipping_fee=nil
     shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
     state = state ? state : @state
-    tax_fee = get_tax_fee(state, shipping_fee)
+    tax_fee = get_tax_fee(state, shipping_fee).round(0)
     (listings_subtotal - get_discount_for_all_products_cart + shipping_fee + tax_fee).round(0)
   end
 
