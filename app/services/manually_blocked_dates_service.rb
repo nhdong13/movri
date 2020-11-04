@@ -54,7 +54,9 @@ module ManuallyBlockedDatesService
     blocked_dates.concat(get_global_blocked_dates(community).to_a)
     blocked_dates.concat(get_manually_blocked_dates(listing, step).to_a)
     # blocked_dates.concat(get_padding_time_blocked_dates(listing))
-    blocked_dates.concat(get_blocked_dates_with_all_transactions(community, listing))
+    if listing.available_quantity < 1
+      blocked_dates.concat(get_blocked_dates_with_all_transactions(community, listing))
+    end
     blocked_dates
   end
 
