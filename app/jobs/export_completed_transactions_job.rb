@@ -91,6 +91,7 @@ class ExportCompletedTransactionsJob < Struct.new(:current_user_id, :community_i
       transactions.each do |transaction|
         @calculate_money_service = TransactionMoneyCalculation.new(transaction, {}, nil)
         shipping_address = transaction.shipping_address
+        next unless shipping_address
         billing_address = transaction.billing_address
         stripe_payment = transaction.stripe_payments.standard.last
         refund_payments = transaction.stripe_payments.refund
