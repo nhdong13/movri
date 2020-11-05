@@ -31,24 +31,6 @@ class ExportTransactionsJob < Struct.new(:current_user_id, :community_id, :expor
     def generate_csv_for(yielder, transactions)
       # first line is column names
       yielder << %w{
-        name
-        email
-        financial_status
-        fulfillment_status
-        fulfilled_at
-        payment_reference
-        accepts_marketing
-        currency
-        subtotal
-        shipping
-        taxes
-        total
-        discount_code
-        discount_amount
-        shipping_method
-        created_at
-        lineitem_quantity
-        lineitem_name
         lineitem_price
         lineitem_compare_at_price
         lineitem_sku
