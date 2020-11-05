@@ -58,7 +58,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
         self.response.headers["Last-Modified"] = Time.now.ctime.to_s
 
         self.response_body = Enumerator.new do |yielder|
-          ExportTransactionsJob.generate_csv_for(yielder, @transactions_presenter.transactions)
+          ExportCompletedTransactionsJob.generate_csv_for(yielder, @transactions_presenter.transactions)
         end
       end
     end
@@ -66,7 +66,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def export
     @export_result = ExportTaskResult.create
-    Delayed::Job.enqueue(ExportTransactionsJob.new(@current_user.id, @current_community.id, @export_result.id))
+    Delayed::Job.enqueue(ExportCompletedTransactionsJob.new(@current_user.id, @current_community.id, @export_result.id))
     respond_to do |format|
       format.js { render layout: false }
     end

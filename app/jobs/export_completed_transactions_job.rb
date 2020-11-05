@@ -1,5 +1,5 @@
 require 'csv'
-class ExportTransactionsJob < Struct.new(:current_user_id, :community_id, :export_task_id)
+class ExportCompletedTransactionsJob < Struct.new(:current_user_id, :community_id, :export_task_id)
   include DelayedAirbrakeNotification
 
   # This before hook should be included in all Jobs to make sure that the service_name is
@@ -18,7 +18,7 @@ class ExportTransactionsJob < Struct.new(:current_user_id, :community_id, :expor
     # conversations = Transaction.for_community_sorted_by_activity(community.id, 'desc', nil, nil, true)
     conversations = Transaction.complete.order(order_number: :desc)
     csv_rows = []
-    ExportTransactionsJob.generate_csv_for(csv_rows, conversations)
+    ExportCompletedTransactionsJob.generate_csv_for(csv_rows, conversations)
     csv_content = csv_rows.join("")
     marketplace_name = community.use_domain ? community.domain : community.ident
     filename = "#{marketplace_name}-transactions-#{Time.zone.today}-#{export_task.token}.csv"
