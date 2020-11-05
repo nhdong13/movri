@@ -23,7 +23,7 @@
   .row
     .col-12
       .span.common-link-btn
-        = link_to "Export", export_admin_community_transactions_path(@current_community), remote: true
+        = link_to "Export", export_admin_community_transactions_path(@current_community), {remote: true, class: icon_class("download")}
   .row
 
     #table-tabs.col-12

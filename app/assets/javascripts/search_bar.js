@@ -202,23 +202,44 @@ $(document).ready(function() {
           {
             days_rental_title = `price_rental_with_${current_duration_session}_days`
             return`
-              <li>
-                <a href= ${'/listings/'+ item.url}>
-                  <div class='flex-items'>
-                    <div class='width-10 center-items'>
-                      <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
-                    </div>
-                    <div class='width-90'>
-                      <span class='block'>${instantsearch.highlight({ attribute: 'title', hit: item })}</span>
-                      <span class='sku block'>SKU: ${item.sku}</span>
-                      <div class='listing-price'>
-                        <span>${item[days_rental_title]}</span>
-                        <span> /${current_duration_session} days</span>
+              <div class="desktop-display">
+                <li>
+                  <a href= ${'/listings/'+ item.url}>
+                    <div class='flex-items'>
+                      <div class='width-10 center-items'>
+                        <img src=${item.main_image} class="design-image-too-wide width-100" alt="">
+                      </div>
+                      <div class='width-90'>
+                        <span class='block'>${instantsearch.highlight({ attribute: 'title', hit: item })}</span>
+                        <span class='sku block'>SKU: ${item.sku}</span>
+                        <div class='listing-price'>
+                          <span>${item[days_rental_title]}</span>
+                          <span> /${current_duration_session} days</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
-              </li>
+                  </a>
+                </li>
+              </div>
+              <div class="mobile-display">
+                <li>
+                  <a href= ${'/listings/'+ item.url}>
+                    <div class='flex-items'>
+                      <div class='width-30 center-items'>
+                        <img src=${item.main_image} class="design-image-too-wide search-moobile-image" alt="">
+                      </div>
+                      <div class='width-70'>
+                        <span class='block'>${instantsearch.highlight({ attribute: 'title', hit: item })}</span>
+                        <span class='sku block'>SKU: ${item.sku}</span>
+                        <div class='listing-price'>
+                          <span>${item[days_rental_title]}</span>
+                          <span> /${current_duration_session} days</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </div>
             `
           }
         )
