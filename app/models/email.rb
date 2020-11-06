@@ -41,7 +41,7 @@ class Email < ApplicationRecord
     #force email to be lower case
     self.address = self.address.downcase
     if not confirmed_at
-      self.confirmation_token ||= SecureRandom.base64(12)
+      self.confirmation_token ||= SecureRandom.hex(6)
     end
   end
 

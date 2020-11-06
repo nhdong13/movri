@@ -17,9 +17,8 @@ class ConfirmationsController < Devise::ConfirmationsController
   def create
     email = params.dig(:person, :email)
     to_confirm = create_or_find_email(email)
-
     if to_confirm
-      Email.send_confirmation(to_confirm, @current_community)
+      SendgridMailer.new().send_confirmation_mail(to_confirm, @current_community)
       flash[:notice] = t("sessions.confirmation_pending.check_your_email")
       redirect_to confirmation_pending_path
     else

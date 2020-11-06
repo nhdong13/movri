@@ -239,23 +239,23 @@ class ApplicationController < ActionController::Base
   # sessions which potentially had a person_id pointing to another
   # community are all expired.
   def ensure_user_belongs_to_community
-    return unless @current_user
+    # return unless @current_user
 
-    if !@current_user.has_admin_rights?(@current_community) && @current_user.accepted_community != @current_community
+    # if !@current_user.has_admin_rights?(@current_community) && @current_user.accepted_community != @current_community
 
-      logger.info(
-        "Automatically logged out user that doesn't belong to community",
-        :autologout,
-        current_user_id: @current_user.id,
-        current_community_id: @current_community.id,
-        current_user_community_ids: @current_user.communities.map(&:id)
-      )
+    #   logger.info(
+    #     "Automatically logged out user that doesn't belong to community",
+    #     :autologout,
+    #     current_user_id: @current_user.id,
+    #     current_community_id: @current_community.id,
+    #     current_user_community_ids: @current_user.communities.map(&:id)
+    #   )
 
-      sign_out
-      flash[:notice] = t("layouts.notifications.automatically_logged_out_please_sign_in")
+    #   sign_out
+    #   flash[:notice] = t("layouts.notifications.automatically_logged_out_please_sign_in")
 
-      redirect_to search_path
-    end
+    #   redirect_to search_path
+    # end
   end
 
   # A before filter for views that only users that are logged in can access
