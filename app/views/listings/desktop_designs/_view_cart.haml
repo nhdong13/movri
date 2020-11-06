@@ -20,7 +20,7 @@
                 .col-10
                   .recommended-accessories-listing-title
                     %h1
-                      = @listing.title
+                      = link_to @listing.title, listing_path(@listing)
                   .recommended-accessories-listing-price
                     - number_price = Money.new(PriceCalculationService.calculate(@listing), 'USD')
                     = MoneyViewUtils.to_humanized(number_price)
@@ -45,7 +45,7 @@
                             %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
                       .col-8
                         .recommended-accessories-listing-title
-                          = listing_accessory.title
+                          = link_to listing_accessory.title, listing_path(listing_accessory)
                         .recommended-accessories-listing-price
                           - number_price = Money.new(PriceCalculationService.calculate(listing_accessory), 'USD')
                           = MoneyViewUtils.to_humanized(number_price)

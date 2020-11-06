@@ -479,7 +479,7 @@ class Transaction < ApplicationRecord
   end
 
   def stripe_charge_cents
-    stripe_payments.last.sum_cents
+    stripe_payments.any? ? stripe_payments.last.sum_cents : 0
   end
 
   def have_stripe_customer

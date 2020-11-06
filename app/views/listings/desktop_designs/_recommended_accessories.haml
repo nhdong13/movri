@@ -17,7 +17,7 @@
                   %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
             .col-8
               .recommended-accessories-listing-title
-                = listing_accessory.title
+                = link_to listing_accessory.title, listing_path(listing_accessory)
               .recommended-accessories-listing-price
                 - number_price = Money.new(PriceCalculationService.calculate(listing_accessory, ListingViewUtils.get_booking_days(session)), 'USD')
                 = MoneyViewUtils.to_humanized(number_price)

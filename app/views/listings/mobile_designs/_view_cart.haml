@@ -21,7 +21,7 @@
                           %img.img-responsive{:alt => "", :src => "http://placehold.it/120x120"}/
                   .col-8
                     .recommended-accessories-listing-title
-                      = @listing.title
+                      = link_to @listing.title, listing_path(@listing)
                     .recommended-accessories-listing-price
                       %span.amount
                         - number_price = Money.new(PriceCalculationService.calculate(@listing), 'USD')
@@ -50,7 +50,7 @@
                                 %img.img-responsive{:alt => "", :src => "http://placehold.it/120x120"}/
                         .col-8
                           .recommended-accessories-listing-title
-                            = listing_accessory.title
+                            = link_to listing_accessory.title, listing_path(listing_accessory)
                           .recommended-accessories-listing-price
                             %span.amount
                               - number_price = Money.new(PriceCalculationService.calculate(listing_accessory), 'USD')

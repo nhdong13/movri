@@ -21,14 +21,15 @@
                 %div
                   = link_to "Rent Now", listing_path(listing), class: "rent-now-btn"
           .mobile-display
-            .col-6.padding-15
-              .mobile-listing-box
-                .main-image
-                  = image_tag listing.main_image, :class => "design-image-too-wide"
-                .listing-information.center-items
-                  = listing.title
-                .listing-price
-                  %span= money_to_humanized(number_price)
-                  %span= "/ #{ListingViewUtils.get_time_rent(session)}"
-                %div
-                  = link_to "Rent Now", listing_path(listing), class: "rent-now-btn"
+            = link_to listing_path(listing) do
+              .col-6.padding-15
+                .mobile-listing-box
+                  .main-image
+                    = image_tag listing.main_image, :class => "design-image-too-wide"
+                  .listing-information.center-items
+                    = listing.title
+                  .listing-price
+                    %span= money_to_humanized(number_price)
+                    %span= "/ #{ListingViewUtils.get_time_rent(session)}"
+                  %div
+                    = link_to "Rent Now", listing_path(listing), class: "rent-now-btn"
