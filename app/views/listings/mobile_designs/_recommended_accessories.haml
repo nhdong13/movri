@@ -24,8 +24,8 @@
                     \/
                     = ListingViewUtils.get_time_rent(session)
                     -# = MoneyViewUtils.to_humanized(listing_accessory.price)
-                %button.recommended-accessories-add-to-cart.add-item-to-cart{:id => "recommend-mobile-#{listing_accessory.id}"}
-                  Rent Now
+                %button.recommended-accessories-add-to-cart
+                  = link_to "Rent now", listing_path(listing_accessory)
     .mobile-recommended-accessories-view-all.col-12
       View All Accessories
       %i.icon-angle-right

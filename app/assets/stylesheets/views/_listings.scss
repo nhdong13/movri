@@ -1129,11 +1129,13 @@ $listing-author-avatar-height: 108;
               width: 93px;
               background: #4eb857;
               border: 1px solid #4eb857;
-              color: #ffffff;
+              a{color: #ffffff !important;}
+              color: #ffffff !important;
             }
 
             .recommended-accessories-add-to-cart:hover {
               font-weight: bold;
+              a{color: #ffffff !important;}
             }
           }
         }
@@ -1159,7 +1161,8 @@ $listing-author-avatar-height: 108;
 
     .recommended-accessories-add-to-cart {
       font-size: 14px;
-      color: #0e426e;
+
+      color: #0e426e !important;
       height: 28px;
       width: 107px;
       border: 1px solid #0e426e;
@@ -1170,6 +1173,7 @@ $listing-author-avatar-height: 108;
 
     .recommended-accessories-add-to-cart:hover {
       background: #0e426e;
+      a{color: white}
       color: white;
     }
   }

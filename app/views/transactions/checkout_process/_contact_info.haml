@@ -70,7 +70,7 @@
             .col-12
               = check_box_tag :term, nil, false, class: "term"
               = "I have read, understood and agreed with your "
-              %a= "Rental Agreement."
+              = link_to "Rental Agreement.", "/rental-agreement"
               = "I understand that a signature will be required upon delivery of my gear."
         .form-group
           .row
