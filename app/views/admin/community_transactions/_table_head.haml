@@ -1,19 +1,19 @@
 %thead
   %tr
     %th
-      = render partial: "layouts/sort_link", locals: { column: "order", direction: sort_link_direction("order"), title: "ID"}
+      = render partial: "layouts/sort_link", locals: { column: "id", direction: sort_link_direction("id"), title: "ID"}
     %th
-      = render partial: "layouts/sort_link", locals: { column: "order", direction: sort_link_direction("order"), title: t('admin.communities.manage_orders.order')}
+      = render partial: "layouts/sort_link", locals: { column: "order_number", direction: sort_link_direction("order_number"), title: t('admin.communities.manage_orders.order')}
     %th
-      = render partial: "layouts/sort_link", locals: { column: "date", direction: sort_link_direction("date"), title: t('admin.communities.manage_orders.date')}
+      = render partial: "layouts/sort_link", locals: { column: "updated_at", direction: sort_link_direction("updated_at"), title: t('admin.communities.manage_orders.date')}
     %th= t('admin.communities.manage_orders.customer')
     %th
-      = render partial: "layouts/sort_link", locals: { column: "payment",direction: sort_link_direction("payment"), title: t('admin.communities.manage_orders.payment')}
+      = render partial: "layouts/sort_link", locals: { column: "payment_status", direction: sort_link_direction("payment_status"), title: t('admin.communities.manage_orders.payment')}
     %th
-      = render partial: "layouts/sort_link", locals: { column: "fulfillment",direction: sort_link_direction("fulfillment"), title: t('admin.communities.manage_orders.fulfillment')}
+      = render partial: "layouts/sort_link", locals: { column: "tracking_number", direction: sort_link_direction("tracking_number"), title: t('admin.communities.manage_orders.fulfillment')}
     %th
       = render partial: "layouts/sort_link", locals: { column: "total", direction: sort_link_direction("total"), title: t('admin.communities.manage_orders.total')}
     %th
-      = render partial: "layouts/sort_link", locals: { column: "items", direction: sort_link_direction("items"), title: t('admin.communities.manage_orders.items')}
+      = render partial: "layouts/sort_link", locals: { column: "quantity", direction: sort_link_direction("quantity"), title: t('admin.communities.manage_orders.items')}
     %th
       = render partial: "layouts/sort_link", locals: { column: "delivery_method", direction: sort_link_direction("delivery_method"), title: t('admin.communities.manage_orders.delivery_method')}

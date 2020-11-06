@@ -42,7 +42,15 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   def index
     @selected_left_navi_link = "transactions"
     @transactions_presenter = AdminTransactionsPresenter.new(@current_community, params, request.format)
-
+    @transactions = @transactions_presenter.transactions.normal_order
+    case params[:sort]
+    when 'total'
+      @transactions = @transactions.includes(:stripe_payments).order("stripe_payments.sum_cents #{params[:direction]}")
+    when 'quantity'
+      @transactions = @transactions.joins(:transaction_items).order("transaction_items.quantity #{params[:direction]}")
+    else
+      @transactions = @transactions.order("#{params[:sort]} #{params[:direction]}")
+    end
     respond_to do |format|
       format.html
       format.csv do

@@ -38,7 +38,7 @@
       %table#admin_manage_orders.mytabs
         = render 'table_head'
         %tbody
-          - @transactions_presenter.transactions.normal_order.order(id: :desc).each do |transaction|
+          - @transactions.each do |transaction|
             = render partial: 'order', locals: {order: transaction}
       %table#admin_manage_fulfilled_orders.mytabs
         = render 'table_head'

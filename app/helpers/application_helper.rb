@@ -371,14 +371,14 @@ module ApplicationHelper
         :topic => :orders,
         :text => t("admin.communities.manage_orders.manage_orders"),
         :icon_class => icon_class("orders"),
-        :path => admin_community_transactions_path(@current_community, sort: "last_activity", direction: "desc"),
+        :path => admin_community_transactions_path(@current_community, sort: "id", direction: "desc"),
         :name => "transactions"
       },
       {
         :topic => :orders,
         :text => t("admin.communities.manage_draft_orders.draft_orders"),
         :icon_class => icon_class("orders"),
-        :path => admin_community_draft_orders_path(@current_community, sort: "last_activity", direction: "desc"),
+        :path => admin_community_draft_orders_path(@current_community, sort: "id", direction: "desc"),
         :name => "draft_orders"
       }
     ]

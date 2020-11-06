@@ -40,8 +40,11 @@
 #  tracking_number                   :string(255)
 #  shipping_carrier                  :string(255)
 #  reason_for_cancelling             :string(255)
-#  transaction_type                  :integer          default("normal")
+#  transaction_type                  :integer          default("normal_order")
 #  tax_percent                       :integer          default(0)
+#  fulfilled_at                      :datetime
+#  cancelled_at                      :datetime
+#  payment_status                    :integer          default(0)
 #
 # Indexes
 #
@@ -84,6 +87,7 @@ class Transaction < ApplicationRecord
   accepts_nested_attributes_for :booking
 
   enum transaction_type: [:normal_order, :draft_order]
+  enum payment_status: [:unpaid, :paid]
 
   # validates :payment_gateway, presence: true, on: :create
   # validates :community_uuid, presence: true, on: :create
@@ -159,7 +163,21 @@ class Transaction < ApplicationRecord
 
   before_create :add_current_state
   after_save :update_order_number
+  after_update :update_fulfilled_at, if: :saved_change_to_tracking_number?
+  after_update :update_cancelled_at, if: :saved_change_to_current_state?
+  after_update :update_payment_status, if: :saved_change_to_current_state?
 
+  def update_fulfilled_at
+    update(fulfilled_at: DateTime.now)
+  end
+
+  def update_payment_status
+    paid! if completed?
+  end
+
+  def update_cancelled_at
+    update(cancelled_at: DateTime.now) if is_cancelled?
+  end
 
   def get_shipping_address
     (starter && starter.shipping_address) ? starter.shipping_address : shipping_address
@@ -174,7 +192,8 @@ class Transaction < ApplicationRecord
   end
 
   def add_current_state
-    self.current_state = 'unfulfilled'
+    self.current_state = 'unpaid'
+    self.payment_status = "unpaid"
   end
 
   def will_pickup?

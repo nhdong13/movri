@@ -16,7 +16,7 @@
 #  deleted_at            :datetime
 #  note                  :string(255)
 #  replacement_cents_fee :integer          default(0)
-#  coverage_type         :integer          default(0)
+#  coverage_type         :integer          default("movri_coverage")
 #
 
 class TransactionItem < ApplicationRecord
