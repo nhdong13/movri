@@ -96,9 +96,13 @@ onShowHideBillingAddress = ->
   $('.desktop-payment-form input[name=address_type]').click ->
     address_type = $('input[name=address_type]:checked').val()
     if address_type == 'shipping_address'
-      $('.desktop-payment-form #will_create_billing_address').val(false)
-      $('.desktop-payment-form .billing-address-info').slideUp()
-      $('.desktop-payment-form .billing-address-info .billing-address').prop('disabled', true)
+      if $("#must-have-different-biiling-address").length
+        $('#address_type_billing_address').prop("checked", true)
+        $("#must-have-different-biiling-address").show()
+      else
+        $('.desktop-payment-form #will_create_billing_address').val(false)
+        $('.desktop-payment-form .billing-address-info').slideUp()
+        $('.desktop-payment-form .billing-address-info .billing-address').prop('disabled', true)
     else
       $('.desktop-payment-form #will_create_billing_address').val(true)
       $('.desktop-payment-form .billing-address-info').slideDown()

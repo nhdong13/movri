@@ -188,7 +188,7 @@ class TransactionMailer < ActionMailer::Base
   def send_helping_request_to_admin transaction, helping_request
     @helping_request = helping_request
     @transaction = transaction
-    premailer_mail( to: DEFAULT_ADMIN_EMAIL,
+    premailer_mail( to: SERVICE_EMAIL,
                     from: @transaction.shipping_address.email,
                     subject: @helping_request.subject
                   )
