@@ -437,7 +437,7 @@ class TransactionsController < ApplicationController
       end
     else
       flash[:notice] = result[:message]
-      return redirect_to request.referer
+      return redirect_to checkout_transaction_path(@transaction)
     end
   end
 
