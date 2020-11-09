@@ -6,8 +6,19 @@ window.Commons =
     ), "Invalid email"
 
   formatPhone: ->
-    $phoneInput = $('.phone-input ')
-    $phoneInput.inputmask({mask: "(999) 999-9999", placeholder: ""});
+    $(".phone-input").keyup (e) ->
+      val_old = $(this).val();
+      val = val_old.replace(/\D/g, '');
+      len = val.length;
+      if (len >= 1)
+        val = '(' + val.substring(0);
+      if (len >= 3)
+        val = val.substring(0, 4) + ') ' + val.substring(4);
+      if (len >= 6)
+        val = val.substring(0, 9) + '-' + val.substring(9);
+        $(this).attr('maxlength', '14');
+      if (val != val_old)
+        $(this).focus().val('').val(val);
 
   CanadianZipCodeRule: ->
     jQuery.validator.addMethod 'cdnPostal', ((value, element) ->

@@ -57,7 +57,7 @@
         .form-group
           .row
             .col-12
-              = form.text_field :phone, placeholder: t('transactions.contact_form.phone'), class: "phone-input shipping-address-phone transaction-address-req-field"
+              = form.text_field :phone, value: form.object.format_phone_v2, placeholder: t('transactions.contact_form.phone'), class: "phone-input shipping-address-phone transaction-address-req-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row

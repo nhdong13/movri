@@ -84,4 +84,10 @@ class TransactionAddress < ApplicationRecord
     phone_arr = phone.split("")
     "#{phone_arr[0]} (#{phone_arr[1..3].join()}) #{phone_arr[4..6].join()}-#{phone_arr[7..10].join()}"
   end
+
+  def format_phone_v2
+    return unless phone
+    phone_arr = phone.split("")
+    "(#{phone_arr[0..2].join()}) #{phone_arr[3..5].join()}-#{phone_arr[6..9].join()}"
+  end
 end
