@@ -49,7 +49,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     when 'quantity'
       @transactions = @transactions.joins(:transaction_items).order("transaction_items.quantity #{params[:direction]}")
     else
-      @transactions = @transactions.order("#{params[:sort]} #{params[:direction]}")
+      @transactions = @transactions.order("#{params[:sort]} #{params[:direction]}").order(order_number: :desc)
     end
     respond_to do |format|
       format.html

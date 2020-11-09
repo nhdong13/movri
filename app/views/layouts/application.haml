@@ -144,6 +144,14 @@
         }
       });
 
+    :javascript
+      drift.on('ready', function (api) {
+        $("#ShowCoolDrift").click(function(e){
+          e.preventDefault();
+          api.sidebar.open()
+        })
+      })
+
     -# Disable animations on tests
     - if Rails.env.test?
       :javascript
