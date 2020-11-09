@@ -247,26 +247,26 @@ $(document).ready(function() {
     `;
   };
 
-  const renderSuggestionCategories = ({hits}) => {
-    hits = hits.slice(0, 3)
-    return `
-    ${hits
-      .map(
-        item =>
-          {
-            category = item.category;
-            return`
-              <div class='padding-5'>
-                <div class='bold fz-18'>
-                  <a class='capitalize' href= ${'/categories?'+"categories="+getCategorySlug(category)}>${category}</>
-                </div>
-              </div>
-            `
-          }
-        )
-      .join('')}
-    `;
-  }
+  // const renderSuggestionCategories = ({hits}) => {
+  //   hits = hits.slice(0, 3)
+  //   return `
+  //   ${hits
+  //     .map(
+  //       item =>
+  //         {
+  //           category = item.category;
+  //           return`
+  //             <div class='padding-5'>
+  //               <div class='bold fz-18'>
+  //                 <a class='capitalize' href= ${'/categories?'+"categories="+getCategorySlug(category)}>${category}</>
+  //               </div>
+  //             </div>
+  //           `
+  //         }
+  //       )
+  //     .join('')}
+  //   `;
+  // }
 
   const renderCurrentCategory = () => {
     list_categories = getListCategoriesFromLocation()
@@ -455,7 +455,7 @@ $(document).ready(function() {
     const { indices } = renderOptions;
     if(indices[0]){
       $('.product-items').html([indices[0]].map(ProductItemsTemplate).join(''));
-      $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
+      // $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
     }
   };
 
