@@ -104,41 +104,46 @@ class ListingsController < ApplicationController
       if convert_to_date(start_date) > convert_to_date(end_date)
         session[:booking] = nil
       end
-      manually_blocked_dates_arr.each_with_index do |range_date, index|
-        this_start_date = convert_to_date(range_date.split(",").first)
-        this_end_date = convert_to_date(range_date.split(",").last)
-        if range_date.split(",").first.present? && range_date.split(",").last.present?
-          if convert_to_date(start_date).between?(this_start_date, this_end_date)
-            #update session booking with start day is the next day of the blocking end date.
-            next_day = get_next_day(range_date.split(",").last)
-            next_number_days = get_next_number_days(next_day, duration)
-            session[:booking][:start_date] = next_day
-            session[:booking][:end_date] = next_number_days
-            session[:booking][:total_days] = duration
-            break
-          end
 
-          if convert_to_date(end_date).between?(this_start_date, this_end_date)
-            #check if the total day of current booking day
-            #get next 7 day from the start day
-            next_day_from_start_date = get_next_number_days(start_date, 1)
-            if convert_to_date(next_day_from_start_date).between?(this_start_date, this_end_date)
-              next_day = get_next_day(range_date.split(",").last)
-              session[:booking][:start_date] = next_day
-              session[:booking][:end_date] = get_next_number_days(next_day)
-              session[:booking][:total_days] = 7
-              break
-            else
-              next_day = get_next_day(start_date)
-              session[:booking][:end_date] = next_day
-              session[:booking][:total_days] = 1
-              break
-            end
-          end
-        else
-          session[:booking] = nil
-        end
+      all_blocked_dates = ManuallyBlockedDatesService.get_all_blocked_dates(@current_community, @listing, 1.day)
+      all_blocked_dates = all_blocked_dates.uniq.sort
+      if all_blocked_dates.any?
+        session[:booking][:start_date] = get_next_day_and_convert_it(all_blocked_dates.last)
+        session[:booking][:end_date] = get_next_number_days_and_convert_it(all_blocked_dates.last, duration)
+        session[:booking][:total_days] = duration
       end
+
+      # manually_blocked_dates_arr.each_with_index do |range_date, index|
+      #   this_start_date = convert_to_date(range_date.split(",").first)
+      #   this_end_date = convert_to_date(range_date.split(",").last)
+      #   if range_date.split(",").first.present? && range_date.split(",").last.present?
+      #     if convert_to_date(start_date).between?(this_start_date, this_end_date)
+      #       #update session booking with start day is the next day of the blocking end date.
+      #       next_day = get_next_day(range_date.split(",").last)
+      #       next_number_days = get_next_number_days(next_day, duration)
+      #     end
+
+      #     if convert_to_date(end_date).between?(this_start_date, this_end_date)
+      #       #check if the total day of current booking day
+      #       #get next 7 day from the start day
+      #       next_day_from_start_date = get_next_number_days(start_date, 1)
+      #       if convert_to_date(next_day_from_start_date).between?(this_start_date, this_end_date)
+      #         next_day = get_next_day(range_date.split(",").last)
+      #         session[:booking][:start_date] = next_day
+      #         session[:booking][:end_date] = get_next_number_days(next_day)
+      #         session[:booking][:total_days] = 7
+      #         break
+      #       else
+      #         next_day = get_next_day(start_date)
+      #         session[:booking][:end_date] = next_day
+      #         session[:booking][:total_days] = 1
+      #         break
+      #       end
+      #     end
+      #   else
+      #     session[:booking] = nil
+      #   end
+      # end
     end
 
     session[:recently_viewed] ||= []
@@ -254,13 +259,12 @@ class ListingsController < ApplicationController
         @listing.origin_loc.delete
       end
     end
-
     shape = get_shape(params[:listing][:listing_shape_id])
 
-    unless create_booking(shape, @listing.uuid_object)
-      flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
-      return redirect_to edit_listing_path(@listing)
-    end
+    # unless create_booking(shape, @listing.uuid_object)
+    #   flash[:error] = t("listings.error.update_failed_to_connect_to_booking_service")
+    #   return redirect_to edit_listing_path(@listing)
+    # end
 
     tabs = params.to_unsafe_hash[:listing][:tabs]
     result = ListingFormViewUtils.build_listing_params(shape, @listing.uuid_object, params, @current_community)
@@ -706,6 +710,7 @@ class ListingsController < ApplicationController
     @listing.listing_tabs.create(title: 'New tab', tab_type: "new_tab", is_active: false)
     redirect_to edit_listing_path(@listing)
   end
+
 
   def get_price_base_on_duration
     listing = Listing.find_by(id:params[:id])
