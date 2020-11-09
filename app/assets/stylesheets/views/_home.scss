@@ -850,6 +850,12 @@ $home-list-avatar-padding: lines(0.25);
   }
 }
 
+.sale_expert_advice{
+  h1{
+    color: #13588d;
+    cursor: pointer;
+  }
+}
 .footer {
   background-color: #f3f3f3;
   .select-language, .select-currency {
@@ -1177,7 +1183,7 @@ $home-list-avatar-padding: lines(0.25);
           content: "[";
           color: #e1050a;
         }
-  
+
         &::after {
           content: "]";
           color: #e1050a;
