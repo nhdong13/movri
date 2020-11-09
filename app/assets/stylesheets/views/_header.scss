@@ -1366,6 +1366,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .header-search-icon {
+  z-index: 9999;
   height: 55px;
   width: 55px;
   background-color: #ef3825;
