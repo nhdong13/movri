@@ -74,7 +74,7 @@ module ShippingRatesService
               {
                 description:"Get shipping rates for listing",
                 quantity: quantity,
-                price:{amount:3, currency:"USD"},
+                price:{amount:3, currency:"CAD"},
                 weight:{value: dimension[:weight], unit: "kg"},
                 sku: sku
               }
