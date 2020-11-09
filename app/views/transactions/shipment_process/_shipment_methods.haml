@@ -3,6 +3,8 @@
     .col-9
       .header-title
         %h2= t('transactions.label.shipping_method')
+      .alert-warning{class: @transaction.will_pickup_on_friday? ? '' : 'hidden'}
+        Your Equipment will be ready for Pick up on Friday. Please note we are closed on the Weekend.
   = form_for [@transaction, @transaction.shipper] do |form|
     .row
       .col-9
@@ -15,9 +17,9 @@
             .price
               %strong= t('transactions.label.free')
           - @shipping_selection.each_with_index do |shipment, index|
-            .items{class: @shipping_address.is_office_address? ? 'disabled-shipping-select': 'enabled-shipping-select'}
+            .items{class: @transaction.disabled_select_shipping? ? 'disabled-shipping-select': 'enabled-shipping-select'}
               .radio-btn.center-items
-                = form.radio_button :service_type, shipment['service_type'], disabled: @shipping_address.is_office_address?
+                = form.radio_button :service_type, shipment['service_type'], disabled: @transaction.disabled_select_shipping?
               .shipping-service
                 %span= shipment["service_name"]
                 .days-shippment

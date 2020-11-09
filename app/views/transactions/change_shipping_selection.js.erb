@@ -1,3 +1,8 @@
 //desktop-display
 $(".checkout-section .order-summary-box").html("<%= j render(partial: 'transactions/checkout_process/order_summary', locals: { transaction: @transaction, state: @state, default_shipping_fee: @default_shipping_fee }) %>");
 //mobile-display
+<% if @transaction.will_pickup_on_friday? %>
+  $('.alert-warning').slideDown("slow");
+<% else %>
+  $('.alert-warning').slideUp("slow");
+<% end %>

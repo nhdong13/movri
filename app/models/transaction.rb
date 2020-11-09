@@ -470,6 +470,10 @@ class Transaction < ApplicationRecord
     discount_code = custom_items.is_discount.last
   end
 
+  def disabled_select_shipping?
+    booking.start_on.today?
+  end
+
   def draft_order_shipping_fee
     discount_code = custom_items.is_shipping_fee.last
   end
@@ -496,5 +500,10 @@ class Transaction < ApplicationRecord
     else
       "None"
     end
+  end
+
+  def will_pickup_on_friday?
+    return false unless shipper && booking
+    shipper.free? && (booking.start_on.saturday? || booking.start_on.sunday?)
   end
 end
