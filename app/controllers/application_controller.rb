@@ -492,6 +492,10 @@ class ApplicationController < ActionController::Base
     next_day.strftime("%m/%d/%Y")
   end
 
+  def get_next_day_and_convert_it current_day
+    next_day = current_day + 1.day
+    next_day.strftime("%m/%d/%Y")
+  end
   def get_pre_day current_day
     pre_day = Date.strptime(current_day, "%m/%d/%Y") - 1.day
     pre_day.strftime("%m/%d/%Y")
@@ -506,6 +510,10 @@ class ApplicationController < ActionController::Base
     next_number_days.strftime("%m/%d/%Y")
   end
 
+  def get_next_number_days_and_convert_it current_day, number=7
+    next_number_days = current_day + number.day
+    next_number_days.strftime("%m/%d/%Y")
+  end
   def get_pre_number_days current_day, number=7
     pre_number_days = Date.strptime(current_day, "%m/%d/%Y") - number.day
     pre_number_days.strftime("%m/%d/%Y")
