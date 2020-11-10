@@ -1,0 +1,8 @@
+.wrapper
+  .main-content
+    .row
+      .col-12
+        .listtinggrid--item
+          = render :partial => 'search_result_listing'
+- content_for :javascript do
+  window.ST.AgoliaSearchResult.initAgoliaSearchResult();

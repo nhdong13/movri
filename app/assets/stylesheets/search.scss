@@ -189,3 +189,11 @@ mark{
   font-size:34px;
   color: #254e58;
 }
+
+.view-all-products{
+  cursor: pointer;
+  color: #0288d1;
+  &:hover{
+    background: #f7f7f7;
+  }
+}

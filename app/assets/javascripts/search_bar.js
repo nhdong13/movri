@@ -183,6 +183,10 @@ $(document).ready(function() {
       .join('')}
     `;
 
+  function update_link_search_result(count, query){
+    $(".view-all-products").html(`<a href='/search-results-page/?query=${query}'>View all ${count} items</a>`)
+  }
+
   const ProductItemsTemplate = ( { hits } ) => {
     hits = hits.slice(0, 3)
     return `
@@ -442,8 +446,9 @@ $(document).ready(function() {
       $('.current-collection--title').html(renderCurrentCategory);
     }
     const container = document.querySelector('.search-result-algolia');
-    const { indices } = renderOptions;
+    const {currentRefinement, indices } = renderOptions;
     if(indices[0]){
+      update_link_search_result(indices[0].hits.length, currentRefinement)
       $('.product-items').html([indices[0]].map(ProductItemsTemplate).join(''));
       // $('#suggestion-categories').html([indices[0]].map(renderSuggestionCategories).join(''));
     }

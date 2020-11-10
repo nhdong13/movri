@@ -195,6 +195,7 @@ Rails.application.routes.draw do
 
     get "rent/:category_name/:subcategory_name", to: "categories#index"
     get "rent/:category_name/:subcategory_name/:childcategory_name", to: "categories#index"
+    get "/search-results-page", to: "categories#search_result_page", as: :search_result_page
 
     resources :categories, only: [:index]
 

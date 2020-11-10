@@ -93,6 +93,7 @@
 //= require promo_codes
 //= require payment_math
 //= require dropdown
+//= require agolia_search_result
 //= require jquery.nouislider
 //= require range_filter
 //= require translations

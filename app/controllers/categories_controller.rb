@@ -10,6 +10,10 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def search_result_page
+
+  end
+
   private
 
   def listing_service
