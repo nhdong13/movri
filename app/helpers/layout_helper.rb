@@ -31,11 +31,11 @@ module LayoutHelper
     end
   end
 
-  def custom_meta_title(default, extra_mode = nil)
-    @seo_service.title(default, extra_mode)
+  def custom_meta_title(default=nil, extra_mode = nil)
+    CommunityCustomization.last.meta_title
   end
 
   def custom_meta_description(default, extra_mode = nil)
-    @seo_service.description(default, extra_mode)
+    CommunityCustomization.last.meta_title
   end
 end

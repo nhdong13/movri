@@ -46,16 +46,6 @@ $(document).ready(function() {
 
     routing: {
       router: instantsearch.routers.history({
-        windowTitle({ category, query }) {
-          const queryTitle = query ? `Results for "${query}"` : 'Search';
-
-          if (category) {
-            return `${category} – ${queryTitle}`;
-          }
-
-          return queryTitle;
-        },
-
         createURL({ qsModule, routeState, location }) {
           const urlParts = location.href.match(/^(.*?)\/rent/);
           const baseUrl = `${urlParts ? urlParts[1] : ''}/`;
