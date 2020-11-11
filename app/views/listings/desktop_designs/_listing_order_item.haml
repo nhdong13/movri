@@ -69,7 +69,7 @@
             = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
       - @listing_presenter.blocked_dates_result.on_error do
         = t("listings.listing_actions.unable_load_availability")
-  .row.listing-order-quantity
+  .row.listing-order-quantity.center-items
     .col-2.quantity
       = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field', id: 'quantity-number'
       %i.icon-caret-up#quantity-up
@@ -91,8 +91,13 @@
           .content.add-item-to-cart{:id => "view-cart-desktop-#{@listing.id}"}
             Rent Now
     .col-4.add-wish-list
-      %button.wish-list-btn
-        Add to Wish List
+      .wish-list-btn{'data-id': @listing.id}
+        - if @current_user && @current_user.wish_lists.include?(@listing)
+          %span Wish List
+          %i.fa.fa-check.icon-in-wish-list
+        -else
+          %span Add to Wish List
+          %i.fa.fa-check.icon-in-wish-list.hidden
   .row.listing-shipping-info
     .col-6.clearfix.shipping-rates
       %span.show-shipping-rates-modal{'data-toggle': 'modal', 'data-target': "#shipping-rates-realtime-modal"}
