@@ -61,9 +61,9 @@
           .row
             .col-12
               - if @checkout_setting.optional_shipping_address_phone?
-                = form.text_field :phone, value: f.object.format_phone_v2, placeholder: t('transactions.contact_form.phone'), class: "phone-input shipping-address-phone transaction-address-field"
+                = form.text_field :phone, value: f.object.format_phone, placeholder: t('transactions.contact_form.phone'), class: "phone-input shipping-address-phone transaction-address-field"
               - if @checkout_setting.required_shipping_address_phone?
-                = form.text_field :phone, value: form.object.format_phone_v2, placeholder: t('transactions.contact_form.phone'), class: "phone-input shipping-address-phone transaction-address-req-field"
+                = form.text_field :phone, value: form.object.format_phone, placeholder: t('transactions.contact_form.phone'), class: "phone-input shipping-address-phone transaction-address-req-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row
