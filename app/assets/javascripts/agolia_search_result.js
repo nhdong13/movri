@@ -109,7 +109,7 @@ window.ST = window.ST || {};
     `;
 
     function updateTitleInfo(count, query){
-      $('.search-result-header').html(`Showing <strong>${count}</strong> results for "${query}"`)
+      $('.search-result-header').html(``)
     }
 
     const renderHits = (renderOptions, isFirstRender) => {
@@ -132,7 +132,31 @@ window.ST = window.ST || {};
     };
 
     const customMobileHits = instantsearch.connectors.connectHits(renderMobileHits);
+
   // ====================================================================================
+    const renderStats = (renderOptions, isFirstRender) => {
+      const { nbHits, processingTimeMS, query, widgetParams } = renderOptions;
+
+      if (isFirstRender) {
+        return;
+      }
+
+      let count = '';
+      if (nbHits > 1) {
+        count += `${nbHits} results`;
+      } else if (nbHits === 1) {
+        count += `1 item`;
+      } else {
+        count += `no result`;
+      }
+
+      widgetParams.container.innerHTML = `
+        Showing <strong>${count}</strong> for "${query}"
+      `;
+    };
+
+    const customStats = instantsearch.connectors.connectStats(renderStats);
+  //============================================================================
 
     search.addWidgets([
       instantsearch.widgets.searchBox({
@@ -148,14 +172,14 @@ window.ST = window.ST || {};
       }),
 
       instantsearch.widgets.pagination({
+        padding: 2,
         container: '.categoties-pagination',
-        totalPages: 2,
         scrollTo: false,
       }),
 
       instantsearch.widgets.pagination({
         container: '#mobile-categoties-pagination',
-        totalPages: 2,
+        padding: 1,
         scrollTo: false,
         templates: {
           previous: "Previous",
@@ -163,6 +187,10 @@ window.ST = window.ST || {};
         },
          showFirst: false,
          showLast: false,
+      }),
+
+      customStats({
+        container: document.querySelector('.search-result-header'),
       }),
 
       instantsearch.widgets.configure({
