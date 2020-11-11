@@ -12,6 +12,15 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 
+.listing-box .listing-price, .wish-list-listing-price{
+  font-size: 18px;
+  color: #222222;
+  font-weight: bold;
+  span:last-child{
+    color: #4eb857;
+  }
+}
+
 .listing-box{
   border-radius: 10px;
   background: white;
@@ -33,15 +42,11 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
       max-height: 250px;
     }
   }
+
   .listing-price{
-    font-size: 18px;
-    color: #222222;
-    font-weight: bold;
     margin-bottom: 15px;
-    span:last-child{
-      color: #4eb857;
-    }
   }
+
   .listing-information{
     color: #333333 !important;
     line-height: 1;
@@ -345,6 +350,13 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 .error-icon{
   display: none;
   .fa-times{
+    color: red;
+  }
+}
+
+.wish-list-remove-icon{
+  font-size: 35px !important;
+  &:hover{
     color: red;
   }
 }

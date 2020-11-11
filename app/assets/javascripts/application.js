@@ -95,6 +95,7 @@
 //= require dropdown
 //= require agolia_search_result
 //= require agolia_categoties_search
+//= require agolia_wish_list
 //= require jquery.nouislider
 //= require range_filter
 //= require translations

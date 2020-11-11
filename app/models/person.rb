@@ -78,9 +78,10 @@ class Person < ApplicationRecord
   include ApplicationHelper
   include DeletePerson
   include Person::ToView
+  include AlgoliaSearch
+
 
   self.primary_key = "id"
-
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
   devise :database_authenticatable, :registerable,
@@ -134,6 +135,7 @@ class Person < ApplicationRecord
   has_many :transaction_addresses, :dependent => :destroy
   has_many :stripe_customers, :dependent => :destroy
   has_and_belongs_to_many :promo_codes_used, class_name: 'PromoCode', :dependent => :destroy
+  has_and_belongs_to_many :wish_lists, class_name: "Listing", join_table: "people_wish_lists"
   accepts_nested_attributes_for :transaction_addresses
 
   deprecate communities: "Use accepted_community instead.",

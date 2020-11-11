@@ -38,6 +38,7 @@
             %p
               = t('account_action.my_order')
         .col-4.action-item.display-flex
-          = image_tag("mf_icons/icon-movri-wish-list.svg", class: 'header-menu-icon icon-movri-wish-list')
-          %p
-            = t('account_action.wish_list')
+          = link_to wish_lists_path do
+            = image_tag("mf_icons/icon-movri-wish-list.svg", class: 'header-menu-icon icon-movri-wish-list')
+            %p
+              = t('account_action.wish_list')

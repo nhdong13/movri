@@ -1,0 +1,7 @@
+<% if @can_add_to_wish_list %>
+  $('.wish-list-btn[data-id=<%= @listing.id %>] span').text("Wish List")
+  $('.wish-list-btn[data-id=<%= @listing.id %>]').find(".icon-in-wish-list").removeClass("hidden")
+  swal("Successfully!", '<%= @message %>', "success", {buttons: false});
+<% else %>
+  swal("Failure!", '<%= @message %>', "error");
+<% end %>

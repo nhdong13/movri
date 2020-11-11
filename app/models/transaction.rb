@@ -44,7 +44,7 @@
 #  tax_percent                       :integer          default(0)
 #  fulfilled_at                      :datetime
 #  cancelled_at                      :datetime
-#  payment_status                    :integer          default(0)
+#  payment_status                    :integer          default("unpaid")
 #
 # Indexes
 #

@@ -11,6 +11,18 @@
   }
 }
 
+#wish-list-searchbox{
+  width: 100%;
+  input{
+    font-size: 18px;
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #bdbdbd;
+  }
+}
+
+
 .mobile-display{
   .search-result-algolia{
     width: calc(100% - 46px);

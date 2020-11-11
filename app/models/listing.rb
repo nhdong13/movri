@@ -128,6 +128,10 @@ class Listing < ApplicationRecord
       MoneyViewUtils.to_humanized(price)
     end
 
+    attributes :wisher_id do
+      wisher.pluck(:id)
+    end
+
     [*1..90].each do |day|
       attributes "price_rental_with_#{day}_days" do
         price = Money.new(PriceCalculationService.calculate(self, day), 'USD')
@@ -189,6 +193,7 @@ class Listing < ApplicationRecord
   has_one :listing_accessory, dependent: :destroy
   has_many :listing_tabs, dependent: :destroy
   has_one :padding_time, dependent: :destroy
+  has_and_belongs_to_many :wisher, class_name: 'Person', join_table: "people_wish_lists"
 
   monetize :price_cents, :allow_nil => true, with_model_currency: :currency
   monetize :shipping_price_cents, allow_nil: true, with_model_currency: :currency

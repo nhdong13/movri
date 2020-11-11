@@ -94,6 +94,19 @@ window.Commons =
       else
         $('#mobile-menu').show()
 
+  onClickAddToWishList: ->
+    $('.wish-list-btn').click (e) ->
+      id = $(this).data("id")
+      $.ajax
+        method: "GET"
+        url: '/wish_lists/add_to_wish_list.js'
+        data:
+          id: id
+
+  onClickIconSearchBar: ->
+    $(".header-search-icon").click ->
+      $('.view-all-products a')[0].click()
+
 $(document).ready ->
   Commons.formatPhone()
   Commons.CanadianZipCodeRule()
@@ -103,3 +116,5 @@ $(document).ready ->
   Commons.handleToggleCategories()
   Commons.handleToggleChildCategories()
   Commons.handleToggleMenuCategory()
+  Commons.onClickAddToWishList()
+  Commons.onClickIconSearchBar()

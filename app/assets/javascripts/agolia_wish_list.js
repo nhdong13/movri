@@ -1,7 +1,7 @@
 window.ST = window.ST || {};
 
 (function(module) {
-  var initAgoliaSearchResult = function() {
+  var initAgoliaWishListResult = function(current_user_id) {
   // ====================================================================================
     const search = instantsearch({
       indexName: 'movri_products',
@@ -16,6 +16,9 @@ window.ST = window.ST || {};
               movri_products: {
                 query: routeState.query,
                 page: routeState.page,
+                refinementList: {
+                  wisher_id: [current_user_id]
+                },
               },
             };
           },
@@ -31,40 +34,46 @@ window.ST = window.ST || {};
       },
     });
   // ====================================================================================
-  // ====================================================================================
-    const renderCategoryPage = ({hits}) =>`
+    const renderWishList = ({hits}) =>`
       <div class="snize-ac-results">
         <div class="snize-ac-results-column">
-          <div class="row">
-            ${hits
-              .map(
-                item => {
-                  days_rental_title = `price_rental_with_${current_duration_session}_days`
-                  return`
-                    <a href= ${'/listings/'+ item.url}>
-                      <div class="col-3">
-                        <div class="listing-box">
-                          <div class='main-image'>
-                            <img src=${item.main_image} class="design-image-too-wide" alt="">
-                          </div>
-                          <div class='listing-information center-items'>
-                            ${item.title}
-                          </div>
-                          <div class='listing-price'>
-                            <span>${item[days_rental_title]}</span>
-                            <span> /${current_duration_session} days</span>
-                          </div>
-                          <div>
-                            <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
-                          </div>
+          ${hits
+            .map(
+              item => {
+                days_rental_title = `price_rental_with_${current_duration_session}_days`
+                return`
+                  <div class='flex-items padding-15 br-bottom'>
+                    <div class='width-15 margin-0'>
+                      <a href= ${'/listings/'+ item.url}>
+                        <div class='main-image'>
+                          <img src=${item.main_image} class="design-image-too-wide width-100">
                         </div>
+                      </a>
+                    </div>
+                    <div class='width-35'>
+                      <a href= ${'/listings/'+ item.url}>
+                        ${item.title}
+                      </a>
+                    </div>
+                    <div class='width-20 center-items'>
+                      <div class='wish-list-listing-price'>
+                        <span>${item[days_rental_title]}</span>
+                        <span> / ${current_duration_session} Days Rental</span>
                       </div>
-                    </a>
-                  `
-                }
-              )
-            .join('')}
-          </div>
+                    </div>
+                    <div class='width-20'>
+                      <i class="fa fa-trash-o wish-list-remove-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class='width-20'>
+                      <div class="btn">
+                        <span>Add to cart</span>
+                      </div>
+                    </div>
+                  </div>
+                `
+              }
+            )
+          .join('')}
         </div>
       </div>
     `;
@@ -111,7 +120,7 @@ window.ST = window.ST || {};
     const renderHits = (renderOptions, isFirstRender) => {
       if (isFirstRender) {}
       const { results, hits, widgetParams } = renderOptions;
-      widgetParams.container.innerHTML = renderCategoryPage({hits})
+      widgetParams.container.innerHTML = renderWishList({hits})
     };
 
     const customHits = instantsearch.connectors.connectHits(renderHits);
@@ -127,64 +136,45 @@ window.ST = window.ST || {};
     const customMobileHits = instantsearch.connectors.connectHits(renderMobileHits);
 
   // ====================================================================================
-    const renderStats = (renderOptions, isFirstRender) => {
-      const { nbHits, processingTimeMS, query, widgetParams } = renderOptions;
-
-      if (isFirstRender) {
-        return;
-      }
-
-      let count = '';
-      if (nbHits > 1) {
-        count += `${nbHits} results`;
-      } else if (nbHits === 1) {
-        count += `1 item`;
-      } else {
-        count += `no result`;
-      }
-
-      widgetParams.container.innerHTML = `
-        Showing <strong>${count}</strong> for "${query}"
-      `;
-    };
-
-    const customStats = instantsearch.connectors.connectStats(renderStats);
-  //============================================================================
-
     search.addWidgets([
       instantsearch.widgets.searchBox({
-        container: '#searchbox',
+        container: '#wish-list-searchbox',
+        placeholder: 'Search your Wish Lists',
+        showSubmit: false,
+        showReset: false,
       }),
 
       customHits({
-        container: document.querySelector('.search-result-listings'),
+        container: document.querySelector('.wish-list-result'),
       }),
 
-      customMobileHits({
-        container: document.querySelector('.mobile-search-result-listings'),
+      instantsearch.widgets.refinementList({
+        container: '#wisher-id',
+        attribute: 'wisher_id',
+        operator: 'or',
       }),
 
       instantsearch.widgets.pagination({
         padding: 2,
-        container: '.categoties-pagination',
+        container: '.wish-list-pagination',
         scrollTo: false,
       }),
 
-      instantsearch.widgets.pagination({
-        container: '#mobile-categoties-pagination',
-        padding: 1,
-        scrollTo: false,
-        templates: {
-          previous: "Previous",
-          next: "Next"
-        },
-         showFirst: false,
-         showLast: false,
-      }),
+      // customMobileHits({
+      //   container: document.querySelector('.mobile-wish-list-result'),
+      // }),
 
-      customStats({
-        container: document.querySelector('.search-result-header'),
-      }),
+      // instantsearch.widgets.pagination({
+      //   container: '.mobile-wish-list-pagination',
+      //   padding: 1,
+      //   scrollTo: false,
+      //   templates: {
+      //     previous: "Previous",
+      //     next: "Next"
+      //   },
+      //    showFirst: false,
+      //    showLast: false,
+      // }),
 
       instantsearch.widgets.configure({
         hitsPerPage: 16,
@@ -197,7 +187,7 @@ window.ST = window.ST || {};
 
   };
 
-  module.AgoliaSearchResult = {
-    initAgoliaSearchResult: initAgoliaSearchResult
+  module.AgoliaWishListResult = {
+    initAgoliaWishListResult: initAgoliaWishListResult
   };
 })(window.ST);

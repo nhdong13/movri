@@ -554,6 +554,13 @@ Rails.application.routes.draw do
     # get '/products/new', to: 'listings#new', as: :new_listing
     # get '/products/new_form_content', to: 'listings#new_form_content'
 
+    resources :wish_lists, only: :index do
+      collection do
+        get :add_to_wish_list
+        get :remove_out_of_wish_list
+      end
+    end
+
     resources :listings do
       member do
         post :follow
