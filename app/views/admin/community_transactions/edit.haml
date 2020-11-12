@@ -33,13 +33,13 @@
           - @order.transaction_items.each do |item|
             .flex-items.br-bottom
               .width-15.margin-0
-                = image_tag item.listing.main_image
+                = image_tag item.listing ? item.listing.main_image : ""
               .width-85
                 .flex-items
                   .width-50
-                    %span= item.listing.title
+                    %span= item.listing ? item.listing.title : "Unknow product"
                   .width-25
-                    - price = PriceCalculationService.calculate(item.listing, @order.booking&.duration) * 1
+                    - price = PriceCalculationService.calculate(item, @order.booking&.duration) * 1
                     %span.block= "#{money_to_humanized(price)} x #{item.quantity}"
                   .width-25.align-right
                     %span= "#{money_to_humanized(price*item.quantity)}"
