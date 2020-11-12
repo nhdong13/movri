@@ -45,6 +45,7 @@
 #  fulfilled_at                      :datetime
 #  cancelled_at                      :datetime
 #  payment_status                    :integer          default("unpaid")
+#  completed_at                      :datetime
 #
 # Indexes
 #
@@ -172,7 +173,10 @@ class Transaction < ApplicationRecord
   end
 
   def update_payment_status
-    paid! if completed?
+    if completed?
+      paid!
+      update(completed_at: DateTime.now)
+    end
   end
 
   def update_cancelled_at
