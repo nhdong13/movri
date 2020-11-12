@@ -510,4 +510,8 @@ class Transaction < ApplicationRecord
     return false unless shipper && booking
     shipper.free? && (booking.start_on.saturday? || booking.start_on.sunday?)
   end
+
+  def completed_at_to_PTS
+    completed_at ? completed_at.in_time_zone("Pacific Time (US & Canada)").to_formatted_s(:long) : updated_at.in_time_zone("Pacific Time (US & Canada)").to_formatted_s(:long)
+  end
 end

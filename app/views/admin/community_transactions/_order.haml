@@ -7,7 +7,7 @@
     - else
       = "##{order.order_number}"
   %td
-    = order.completed_at ? order.completed_at.to_formatted_s(:long) : order.updated_at.to_formatted_s(:long)
+    = order.completed_at_to_PTS
   %td
     = order.buyer&.given_name
   %td

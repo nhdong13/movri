@@ -8,7 +8,7 @@
     .row
       .col-12
         %span.fz-30.bold= "##{@order.order_number}"
-        %span= "#{@order.updated_at} from Online Store"
+        %span= "#{@order.completed_at_to_PTS} from Online Store"
         .state-label.paid-state-label
           %i.fa.fa-circle
           %span= @order.completed? ? 'Paid' : "Unpaid"
