@@ -307,6 +307,10 @@ $listing-author-avatar-height: 108;
 .listing-breadcrumbs {
   margin: 10px 0;
   width: 100%;
+  span{
+    font-size: 14px;
+    color: #1A5888;
+  }
   i{
     margin: 0 5px;
     color: #1A5888;
