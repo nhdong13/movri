@@ -558,6 +558,8 @@ Rails.application.routes.draw do
       collection do
         get :add_to_wish_list
         get :remove_out_of_wish_list
+        get :add_wish_list_item_to_cart
+        get :move_to_wish_list
       end
     end
 

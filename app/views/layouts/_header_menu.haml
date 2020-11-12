@@ -26,7 +26,10 @@
         %span= t("header.my_orders")
 
     .item
-      = link_to '#' do
+      - if @current_user
+        = link_to wish_lists_path() do
+          %span= t("header.wish_list")
+      - else
         %span= t("header.wish_list")
   .sub-section-mobile-menu
     .item

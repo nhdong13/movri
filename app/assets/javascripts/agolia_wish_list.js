@@ -42,7 +42,7 @@ window.ST = window.ST || {};
               item => {
                 days_rental_title = `price_rental_with_${current_duration_session}_days`
                 return`
-                  <div class='flex-items padding-15 br-bottom'>
+                  <div class='flex-items padding-15 br-bottom wish-list-item'>
                     <div class='width-15 margin-0'>
                       <a href= ${'/listings/'+ item.url}>
                         <div class='main-image'>
@@ -50,7 +50,7 @@ window.ST = window.ST || {};
                         </div>
                       </a>
                     </div>
-                    <div class='width-35'>
+                    <div class='width-35 center-items'>
                       <a href= ${'/listings/'+ item.url}>
                         ${item.title}
                       </a>
@@ -61,11 +61,11 @@ window.ST = window.ST || {};
                         <span> / ${current_duration_session} Days Rental</span>
                       </div>
                     </div>
-                    <div class='width-20'>
-                      <i class="fa fa-trash-o wish-list-remove-icon" aria-hidden="true"></i>
+                    <div class='width-20 center-items'>
+                      <i class="fa fa-trash-o wish-list-remove-icon"  data-id='${item.id}' aria-hidden="true"></i>
                     </div>
                     <div class='width-20'>
-                      <div class="btn">
+                      <div class="btn add-wish-list-to-cart" data-id='${item.id}'>
                         <span>Add to cart</span>
                       </div>
                     </div>
@@ -78,7 +78,7 @@ window.ST = window.ST || {};
       </div>
     `;
 
-    const renderMobileCategoryPage = ({hits}) =>`
+    const renderMobileWishListPage = ({hits}) =>`
       <div class="snize-ac-results">
         <div class="snize-ac-results-column">
           <div class="row">
@@ -87,27 +87,28 @@ window.ST = window.ST || {};
                 item =>{
                   days_rental_title = `price_rental_with_${current_duration_session}_days`
                   return`
-                    <a href= ${'/listings/'+ item.url}>
-                      <div class="col-12">
-                        <div class="listing-box-mobile">
+                    <div class='col-6 padding-l-r-15 wish-list-item'>
+                      <div class='mobile-listing-box'>
+                        <i class="fa fa-times-circle-o wish-list-remove-icon" data-id='${item.id}' aria-hidden="true"></i>
+                        <a href= ${'/listings/'+ item.url}>
                           <div class='main-image'>
                             <img src=${item.main_image} class="design-image-too-wide" alt=""/>
                           </div>
-                          <div class='listing-information'>
-                            <div class='listing-title'>
-                              ${instantsearch.highlight({ attribute: 'title', hit: item })}
-                            </div>
-                            <div class='listing-price'>
-                              <span>${item[days_rental_title]}</span>
-                              <span> /${current_duration_session} days</span>
-                            </div>
-                            <div class='listing-rent-now'>
-                              <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
-                            </div>
+                        </a>
+                        <a href= ${'/listings/'+ item.url}>
+                          <div class='listing-information center-items'>
+                            ${item.title}
                           </div>
+                        </a>
+                        <div class='listing-price br-bottom'>
+                          <span>${item[days_rental_title]}</span>
+                          <span> /${current_duration_session} days</span>
+                        </div>
+                        <div class="center-items margin-t-10 add-wish-list-to-cart" data-id='${item.id}'>
+                          <span>Add to cart</span>
                         </div>
                       </div>
-                    </a>
+                    </div>
                   `
                 }
                )
@@ -130,7 +131,7 @@ window.ST = window.ST || {};
       if (isFirstRender) {
       }
       const { hits, widgetParams } = renderOptions;
-      widgetParams.container.innerHTML = renderMobileCategoryPage({hits})
+      widgetParams.container.innerHTML = renderMobileWishListPage({hits})
     };
 
     const customMobileHits = instantsearch.connectors.connectHits(renderMobileHits);
@@ -160,21 +161,21 @@ window.ST = window.ST || {};
         scrollTo: false,
       }),
 
-      // customMobileHits({
-      //   container: document.querySelector('.mobile-wish-list-result'),
-      // }),
+      customMobileHits({
+        container: document.querySelector('.mobile-wish-list-result'),
+      }),
 
-      // instantsearch.widgets.pagination({
-      //   container: '.mobile-wish-list-pagination',
-      //   padding: 1,
-      //   scrollTo: false,
-      //   templates: {
-      //     previous: "Previous",
-      //     next: "Next"
-      //   },
-      //    showFirst: false,
-      //    showLast: false,
-      // }),
+      instantsearch.widgets.pagination({
+        container: '#mobile-categoties-pagination',
+        padding: 1,
+        scrollTo: false,
+        templates: {
+          previous: "Previous",
+          next: "Next"
+        },
+         showFirst: false,
+         showLast: false,
+      }),
 
       instantsearch.widgets.configure({
         hitsPerPage: 16,

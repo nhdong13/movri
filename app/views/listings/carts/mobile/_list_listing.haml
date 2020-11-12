@@ -32,8 +32,8 @@
               - else
                 %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
     .listting-action
-      %i.icon-shopping-cart
-      %span Move to wish list
+      %i.icon-shopping-cart.icon-move-to-wish-list{'data-id': listing.id}
+        %span Move to wish list
       %i.icon-remove-sign.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
       %span.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
         Remove

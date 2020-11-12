@@ -37,8 +37,7 @@
             = image_tag("mf_icons/icon-movri-order.svg", class: 'header-menu-icon icon-movri-order')
             %p
               = t('account_action.my_order')
-        .col-4.action-item.display-flex
-          = link_to wish_lists_path do
-            = image_tag("mf_icons/icon-movri-wish-list.svg", class: 'header-menu-icon icon-movri-wish-list')
-            %p
-              = t('account_action.wish_list')
+        = link_to (logged_in? ? wish_lists_path : '#'), class: "col-4 action-item display-flex" do
+          = image_tag("mf_icons/icon-movri-wish-list.svg", class: 'header-menu-icon icon-movri-wish-list')
+          %p
+            = t('account_action.wish_list')

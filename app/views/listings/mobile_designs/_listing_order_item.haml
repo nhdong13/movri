@@ -47,8 +47,8 @@
           %i.icon-caret-up#quantity-up-mobile
           %i.icon-caret-down#quantity-down-mobile
         .col-7.add-wish-list
-          %button.wish-list-btn
-            Wish List
+          .wish-list-btn{'data-id': @listing.id}
+            %span Wish List
       .col-6.listing-shipping-info
         .clearfix.shipping-rates.flex-items
           %span.mobile-show-shipping-rates-modal{'data-toggle': 'modal', 'data-target': "#mobile-shipping-rates-realtime-modal"}

@@ -36,8 +36,8 @@
           .col-8
           .col-4
             .action-item
-              %i.icon-shopping-cart
-              %span= t('transactions.label.move_to_wish_list')
+              %i.icon-shopping-cart.icon-move-to-wish-list{'data-id': listing.id}
+                %span= t('transactions.label.move_to_wish_list')
             .action-item.remove-item-in-cart-detail{id: "remove-item-in-cart-#{listing.id}"}
               %i.icon-remove-sign
               %span= t('transactions.label.remove')

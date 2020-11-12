@@ -1,29 +1,39 @@
 .wrapper
   .main-content
-    .flex-items.margin-bt-20
-      .width-60
-        %h2 My Wish List
-      .width-40
-        #wish-list-searchbox
-    .row
-      .col-12
-
-        #wisher-id.hidden
-        .wish-list
-          .wish-list-header
-            .flex-items.common-box
-              .width-15.uppercase Product Image
-              .width-35.uppercase Product Name
-              .width-20.uppercase Rental Price
-              .width-20.uppercase Remove
-              .width-20.uppercase Add
-    .row
-      .col-12
-        .common-box
-          .wish-list-result
-    .row
-      .col-12
-        .wish-list-pagination
+    .desktop-display
+      .flex-items.margin-bt-20
+        .width-60
+          %h2 My Wish List
+        .width-40
+          #wish-list-searchbox
+      .row
+        .col-12
+          #wisher-id.hidden
+          .wish-list
+            .wish-list-header
+              .flex-items.common-box.padding-15
+                .width-15.uppercase Product Image
+                .width-35.uppercase.center-items Product Name
+                .width-20.uppercase.center-items Rental Price
+                .width-20.uppercase.center-items Remove
+                .width-20.uppercase Add
+      .row
+        .col-12
+          .common-box
+            .wish-list-result
+      .row
+        .col-12
+          .wish-list-pagination
+    .mobile-display
+      .brown-background
+        .row.margin-0
+          .col-12.padding-15
+            %h3 My Wish List
+        .mobile-wish-list-result
+        .row
+          .col-12
+            #mobile-categoties-pagination
 
 - content_for :javascript do
   window.ST.AgoliaWishListResult.initAgoliaWishListResult('#{raw @current_user.id}');
+  WishList.run()

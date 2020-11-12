@@ -107,6 +107,7 @@
 //= require location_search
 //= require datepicker
 //= require datepicker_v2
+//= require wish_lists
 //= require follow
 //= require constants
 //= require paypal_account_settings

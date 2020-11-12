@@ -58,6 +58,13 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 }
 
 .mobile-listing-box{
+  .wish-list-remove-icon{
+    font-size: 20px !important;
+    position: absolute;
+    margin: 2% 15%;
+  }
+}
+.mobile-listing-box{
   border-radius: 10px;
   background: white;
   margin: 10px 0;
@@ -356,6 +363,7 @@ $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
 .wish-list-remove-icon{
   font-size: 35px !important;
+  cursor: pointer;
   &:hover{
     color: red;
   }

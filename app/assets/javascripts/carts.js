@@ -156,4 +156,15 @@ window.ST = window.ST || {};
     }).fail(function(error) {})
   });
 
+  $('body').on('click', '.icon-move-to-wish-list', function(){
+    id = $(this).data('id')
+    $.ajax({
+      url: "/wish_lists/move_to_wish_list.js",
+      type: "GET",
+      data: {
+        id: id
+      }
+    })
+  });
+
 })(window.ST);
