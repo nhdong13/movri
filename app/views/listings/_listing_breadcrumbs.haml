@@ -1,22 +1,30 @@
 .listing-breadcrumbs
-  %div
-    .listing-breadcrumb.flex-items
-      = link_to 'HOME', homepage_with_locale_path
-      %i.fa.fa-chevron-right
-      - if @listing.main_category
-        %span= @listing.main_category.url.gsub("-", " ").upcase
-        %i.fa.fa-chevron-right
-      - if @listing.subcategory
-        - @listing.categories.subcategory.each_with_index do |subcategory, index|
-          - if index != 0
-            %span ,
-          = link_to subcategory.url.gsub("-", " ").upcase, categories_path(category: @listing.main_category, subcategories: subcategory.url)
-        %i.fa.fa-chevron-right
-      - if @listing.children_category
-        - @listing.categories.children_category.each_with_index do |children_category, index|
-          - subcategory = children_category.parent
-          - if index != 0
-            %span ,
-          %span= link_to children_category.url.gsub("-", " ").upcase, categories_path(category: @listing.main_category.url, subcategories: subcategory.url, children_categories: children_category.url)
-        %i.fa.fa-chevron-right
-      = link_to @listing.title, listing_path(@listing)
+  - main_category = @listing.main_category
+  - subcategory_flag = []
+  - if @listing.children_category
+    - @listing.categories.children_category.each do |children_category|
+      - subcategory = children_category.parent
+      - subcategory_flag = subcategory_flag.push(subcategory)
+      %div
+        .listing-breadcrumb.flex-items
+          = link_to 'HOME', homepage_with_locale_path
+          %i.fa.fa-chevron-right
+          %span= main_category.url.gsub("-", " ").upcase
+          %i.fa.fa-chevron-right
+          %span= link_to subcategory.url.gsub("-", " ").upcase, categories_path(category: main_category, subcategories: subcategory.url)
+          %i.fa.fa-chevron-right
+          %span= link_to children_category.url.gsub("-", " ").upcase, categories_path(category: main_category.url, subcategories: subcategory.url, children_categories: children_category.url)
+          %i.fa.fa-chevron-right
+          %span= link_to @listing.title, listing_path(@listing)
+  - if @listing.subcategory
+    - @listing.categories.subcategory.each do |subcategory|
+      - unless subcategory_flag.include?(subcategory)
+        %div
+          .listing-breadcrumb.flex-items
+            = link_to 'HOME', homepage_with_locale_path
+            %i.fa.fa-chevron-right
+            %span= main_category.url.gsub("-", " ").upcase
+            %i.fa.fa-chevron-right
+            %span= link_to subcategory.url.gsub("-", " ").upcase, categories_path(category: main_category, subcategories: subcategory.url)
+            %i.fa.fa-chevron-right
+            %span= link_to @listing.title, listing_path(@listing)
