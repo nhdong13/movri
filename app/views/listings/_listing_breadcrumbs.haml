@@ -1,30 +1,17 @@
 .listing-breadcrumbs
-  - main_category = @listing.main_category
-  - subcategory_flag = []
-  - if @listing.children_category
-    - @listing.categories.children_category.each do |children_category|
-      - subcategory = children_category.parent
-      - subcategory_flag = subcategory_flag.push(subcategory)
-      %div
-        .listing-breadcrumb.flex-items
-          = link_to 'HOME', homepage_with_locale_path
-          %i.fa.fa-chevron-right
-          %span= main_category.url.gsub("-", " ").upcase
-          %i.fa.fa-chevron-right
-          %span= link_to subcategory.url.gsub("-", " ").upcase, categories_path(category: main_category, subcategories: subcategory.url)
-          %i.fa.fa-chevron-right
-          %span= link_to children_category.url.gsub("-", " ").upcase, categories_path(category: main_category.url, subcategories: subcategory.url, children_categories: children_category.url)
-          %i.fa.fa-chevron-right
-          %span= link_to @listing.title, listing_path(@listing)
-  - if @listing.subcategory
-    - @listing.categories.subcategory.each do |subcategory|
-      - unless subcategory_flag.include?(subcategory)
-        %div
-          .listing-breadcrumb.flex-items
-            = link_to 'HOME', homepage_with_locale_path
-            %i.fa.fa-chevron-right
-            %span= main_category.url.gsub("-", " ").upcase
-            %i.fa.fa-chevron-right
-            %span= link_to subcategory.url.gsub("-", " ").upcase, categories_path(category: main_category, subcategories: subcategory.url)
-            %i.fa.fa-chevron-right
-            %span= link_to @listing.title, listing_path(@listing)
+  %div
+    .listing-breadcrumb.flex-items
+      %span.capitalize= link_to 'Home', homepage_with_locale_path
+      - if params[:category]
+        %i.fa.fa-chevron-right
+        %span.capitalize= params[:category].gsub("-", " ")
+      - if params[:subcategories]
+        %i.fa.fa-chevron-right
+        %span.capitalize= link_to params[:subcategories], categories_path(category: params[:category], subcategories: params[:subcategories])
+      - if params[:children_categories]
+        %i.fa.fa-chevron-right
+        %span.capitalize= link_to params[:children_categories].gsub("-", " "), categories_path(category: params[:category], subcategories: params[:subcategories], children_categories: params[:children_categories])
+
+- content_for :extra_javascript do
+  :javascript
+    window.history.replaceState(null, null, window.location.pathname);

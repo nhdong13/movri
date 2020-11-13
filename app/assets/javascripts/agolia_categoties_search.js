@@ -187,9 +187,19 @@ window.ST = window.ST || {};
             ${hits
               .map(
                 item => {
+                  list_categories = getListCategoriesFromLocation()
+                  children_categories_value = list_categories.children_category
+                  subcategories_value = list_categories.subcategory
+                  category_value = list_categories.category
                   days_rental_title = `price_rental_with_${current_duration_session}_days`
+                  if(children_categories_value){
+                    url_item = `/listings/${item.url}?category=${category_value}&subcategories=${subcategories_value}&children_categories=${children_categories_value}`
+                  } else {
+                    url_item = `/listings/${item.url}?category=${category_value}&subcategories=${subcategories_value}`
+                  }
+
                   return`
-                    <a href= ${'/listings/'+ item.url}>
+                    <a href=${url_item}>
                       <div class="col-3">
                         <div class="listing-box">
                           <div class='main-image'>
@@ -203,7 +213,7 @@ window.ST = window.ST || {};
                             <span> /${current_duration_session} days</span>
                           </div>
                           <div>
-                            <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
+                            <a href= ${url_item} class='rent-now-btn'>Rent Now</a>
                           </div>
                         </div>
                       </div>
@@ -224,9 +234,18 @@ window.ST = window.ST || {};
             ${hits
               .map(
                 item =>{
+                  list_categories = getListCategoriesFromLocation()
+                  children_categories_value = list_categories.children_category
+                  subcategories_value = list_categories.subcategory
+                  category_value = list_categories.category
                   days_rental_title = `price_rental_with_${current_duration_session}_days`
+                  if(children_categories_value){
+                    url_item = `/listings/${item.url}?category=${category_value}&subcategories=${subcategories_value}&children_categories=${children_categories_value}`
+                  } else {
+                    url_item = `/listings/${item.url}?category=${category_value}&subcategories=${subcategories_value}`
+                  }
                   return`
-                    <a href= ${'/listings/'+ item.url}>
+                    <a href=${url_item}>
                       <div class="col-12">
                         <div class="listing-box-mobile">
                           <div class='main-image'>
@@ -241,7 +260,7 @@ window.ST = window.ST || {};
                               <span> /${current_duration_session} days</span>
                             </div>
                             <div class='listing-rent-now'>
-                              <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
+                              <a href= ${url_item} class='rent-now-btn'>Rent Now</a>
                             </div>
                           </div>
                         </div>
