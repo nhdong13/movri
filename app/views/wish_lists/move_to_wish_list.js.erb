@@ -1,5 +1,5 @@
 <% if @can_add_to_wish_list %>
-  swal("Successfully!", '<%= @message %>', "success", {buttons: false});
+  swal("Successfully!", '<%= @message %>', "success", {buttons: false, timer: 2000});
   location.reload()
 <% else %>
   swal("Failure!", '<%= @message %>', "error");

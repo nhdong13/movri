@@ -1,5 +1,5 @@
 <% if @listing %>
-  swal("Successfully!", 'Added the product to cart successfully!', "success", {buttons: false});
+  swal("Successfully!", 'Added the product to cart successfully!', "success", {buttons: false, timer: 2000});
   location.reload();
 <% else %>
   swal("Failure!", 'Cannot add this product to cart!', "error");
