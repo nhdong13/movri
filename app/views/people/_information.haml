@@ -15,7 +15,7 @@
               = text_field_tag :last_name, nil, class: 'margin-bt-10', placeholder: "Last name"
             %span.alert-error.d-none.width-100
           .item-3
-            %span.update-name.dp-none.update-item Update
+            %span.update-name.hidden.update-item Update
             %span.edit-item Edit
       .row
         .display-flex.items-group#edit-email-account
@@ -29,7 +29,7 @@
             = hidden_field_tag 'address_id', @current_user.emails.last.id
             %span.alert-error.d-none.width-100
           .item-3
-            %span.update-email.dp-none.update-item Update
+            %span.update-email.hidden.update-item Update
             %span.edit-email.edit-item Edit
       .row
         .display-flex.items-group.edit-password-account
@@ -38,9 +38,9 @@
           .item-2
             %span.label-will-hide ******
             = password_field_tag :current_password, nil, class: 'd-none input-will-show', placeholder: "Current Password"
-            %span.alert-error.d-none.width-100
+            %span.alert-error.hidden.width-100
           .item-3
-            %span.update-password.dp-none Update
+            %span.update-password.hidden Update
             %span.edit-password  Edit
       .new-passwod
         .row

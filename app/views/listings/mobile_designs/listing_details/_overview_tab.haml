@@ -9,7 +9,12 @@
     %span.user-manual-file-icon
       = image_tag("mf_icons/icon-movri-pdf.png", class: 'header-menu-icon icon-movri-pdf')
 
-    = link_to @listing.user_manual.url(:original), {target: "_blank"} do
+    - if @listing.user_manual.exists?
+      = link_to @listing.user_manual.url(:original), {target: "_blank"} do
+        %span.user-manual-title
+          User Manual
+        %i.icon-angle-right{"aria-hidden" => "true"}
+    - else
       %span.user-manual-title
         User Manual
       %i.icon-angle-right{"aria-hidden" => "true"}

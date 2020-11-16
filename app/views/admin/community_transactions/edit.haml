@@ -11,7 +11,7 @@
         %span= "#{@order.completed_at_to_PTS} from Online Store"
         .state-label.paid-state-label
           %i.fa.fa-circle
-          %span= @order.completed? ? 'Paid' : "Unpaid"
+          %span= @order.current_state.capitalize
         .state-label.unfulfilled-state-label
           %i.fa.fa-circle-o
           %span= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"

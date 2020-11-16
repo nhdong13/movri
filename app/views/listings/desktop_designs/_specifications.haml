@@ -16,8 +16,16 @@
     .col-12
       = render partial: 'listings/include_in_the_box'
 
-      .listing-user-manual
-        = link_to @listing.user_manual.url(:original), {target: "_blank"} do
+
+      - if @listing.user_manual.exists?
+        .listing-user-manual
+          = link_to @listing.user_manual.url(:original), {target: "_blank"} do
+            %span.user-manual-file-icon
+              = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
+            %span.user-manual-title
+              User Manual
+      - else
+        .listing-user-manual
           %span.user-manual-file-icon
             = image_tag("mf_icons/icon-movri-file.svg", class: 'header-menu-icon icon-movri-file')
           %span.user-manual-title
