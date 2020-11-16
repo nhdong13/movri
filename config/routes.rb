@@ -118,7 +118,6 @@ Rails.application.routes.draw do
 
   resources :communities, only: [:new, :create]
 
-
   devise_for :people, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "omniauth" }
 
   # Adds locale to every url right after the root path
@@ -576,8 +575,11 @@ Rails.application.routes.draw do
         post :change_number_of_item
         delete :remove_user_manual
         post :add_accessories
+        post :add_alternatives
         put :reorder_accessories
+        put :reorder_alternatives
         put :remove_accessory
+        put :remove_alternative
         put :add_tab
         put :change_coverage_type
         get :get_price_base_on_duration

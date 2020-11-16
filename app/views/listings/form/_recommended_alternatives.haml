@@ -1,0 +1,48 @@
+.recommended-alternatives-wrap
+  = form.hidden_field :recommended_alternative_ids, class: 'listing-alternatives-hidden'
+  = form.label 'Recommended Alternatives', class: 'input'
+  %input.listing_alternatives{type: 'text'}
+  %ul.selectize-recommended-alternatives-result
+.recommended-alternatives-list
+  %ul#recommendedalternativesSortableList.p-0{ 'data-listing-id' => "#{@listing.id}"}
+    - @listing.recommended_alternatives.order(position: :asc).each do |recommended_alternative|
+      - listing_alternative = recommended_alternative.listing_alternative
+      - if listing_alternative
+        %li.cursor-pointer.background{ 'data-id' => "#{listing_alternative.id}"}
+          .recommended-alternative-item.row.m-0.pl-0.pr-0
+            .col-1.p-0.m-0
+              %span
+                %i.fa.fas.fa-ellipsis-v
+                %i.fa.fas.fa-ellipsis-v
+            .col-9.p-0.m-0
+              = listing_alternative.title
+            .col-2.p-0.m-0.text-right
+              %i.icon-remove{ 'data-id' => "#{listing_alternative.id}" }
+
+- content_for :extra_javascript do
+  :javascript
+    var sortable = new Sortable( recommendedalternativesSortableList,
+      {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        onEnd: function (evt) {
+          var paramsData = {
+            listing_accessory_id: evt.item.dataset.id,
+            from: evt.oldIndex,
+            to: evt.newIndex,
+          }
+          var listingId = document.getElementById('recommendedalternativesSortableList').dataset.listingId
+          $.ajax({
+            url: `/listings/${listingId}/reorder_alternatives`,
+            type: "PUT",
+            data: paramsData,
+            success: function(resp) {
+              console.log('success')
+            }
+          });
+        },
+        onMove: function (evt, originalEvent) {
+        },
+      }
+    );
+

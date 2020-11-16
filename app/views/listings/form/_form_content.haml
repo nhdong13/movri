@@ -184,6 +184,8 @@
 
             .col-12.form-listing-wrap.form-recommended-accessories
               = render partial: 'listings/form/recommended_accessories', :locals => { :form => form }
+            .col-12.form-listing-wrap.form-recommended-accessories
+              = render partial: 'listings/form/recommended_alternatives', :locals => { :form => form }
             .col-12.form-listing-wrap.form-packing-dimension
               = render partial: 'listings/form/packing_dimension', :locals => { :form => form }
             .col-12.form-listing-wrap.form-blocked-dates

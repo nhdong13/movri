@@ -150,7 +150,13 @@ class Listing < ApplicationRecord
   WIEGHT_TYPE = ['kg', 'pound']
   enum weight_type: { kg: 0, pound: 1 }
 
-  attr_accessor :product_type, :category_ids, :recommended_accessory_ids, :country_of_origin, :harmonized_code, :province_of_origin
+  attr_accessor :product_type,
+                :category_ids,
+                :recommended_accessory_ids,
+                :country_of_origin,
+                :harmonized_code,
+                :province_of_origin,
+                :recommended_alternative_ids
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
@@ -162,6 +168,8 @@ class Listing < ApplicationRecord
 
   has_many :recommended_accessories, dependent: :destroy
   has_many :listing_accessories, through: :recommended_accessories
+  has_many :recommended_alternatives, dependent: :destroy
+  has_many :listing_alternatives, through: :recommended_alternatives
   belongs_to :community
   belongs_to :author, :class_name => "Person", :foreign_key => "author_id", :inverse_of => :listings
   has_many :listing_images, -> { where("error IS NULL").order("position") }, :dependent => :destroy, :inverse_of => :listing

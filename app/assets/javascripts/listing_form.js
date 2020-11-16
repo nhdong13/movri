@@ -246,6 +246,31 @@ window.ST = window.ST || {};
       }
     })
 
+    $('.listing_alternatives').selectize({
+      create: false,
+      delimiter: ',',
+      closeAfterSelect: true,
+      load: function(query, callback) {
+        emptyRecommendedAlternativesResult();
+        if (!query.length) {
+          return callback()
+        }
+        _this_load = this
+        $.ajax({
+          url: "/search_listing_by_name",
+          type: 'get',
+          data:
+          {
+            q: query
+          },
+          success: function(res) {
+            renderRecommendedAlternativesResult(res)
+            _this_load.loadedSearches = {};
+          }
+        });
+      }
+    })
+
     $('.listing_collection').selectize({
       create: false,
       delimiter: ',',
@@ -260,13 +285,30 @@ window.ST = window.ST || {};
       $('.selectize-recommended-accessories-result').html(html);
     }
 
+    function renderRecommendedAlternativesResult(res) {
+      html = ''
+      $.each(res, function(idx, result) {
+        html += '<li class="add-recommended-alternative" data-id="'+ result.id +'">'+ result.title +'</li>';
+      });
+      $('.selectize-recommended-alternatives-result').html(html);
+    }
+
     function emptyRenderResult() {
       $('.selectize-recommended-accessories-result').empty();
+    }
+
+    function emptyRecommendedAlternativesResult() {
+      $('.selectize-recommended-alternatives-result').empty();
     }
 
     $('.recommended-accessories-wrap .selectize-input input').on('focusin', function() {
       emptyRenderResult();
       $('.selectize-recommended-accessories-result').css('display', 'block');
+    })
+
+    $('.recommended-alternatives-wrap .selectize-input input').on('focusin', function() {
+      emptyRecommendedAlternativesResult();
+      $('.selectize-recommended-alternatives-result').css('display', 'block');
     })
 
     $('.selectize-recommended-accessories-result').on('click', '.add-recommended-accessory', function() {
@@ -303,6 +345,40 @@ window.ST = window.ST || {};
       $('.selectize-recommended-accessories-result').css('display', 'none');
     });
 
+    $('.selectize-recommended-alternatives-result').on('click', '.add-recommended-alternative', function() {
+      var id = $(this).data('id');
+      var title = $(this).text();
+      if (idExists(id) != true) {
+        html =  '<li class="cursor-pointer background" draggable="false" style="" data-id="'+ id +'" >'+
+                  '<div class="recommended-alternative-item row m-0 pl-0 pr-0">' +
+                    '<div class="col-1 p-0 m-0">' +
+                      '<span>' +
+                        '<i class="fa fas fa-ellipsis-v" style="margin-right: 3px"></i>' +
+                        '<i class="fa fas fa-ellipsis-v"></i>' +
+                      '</span>' +
+                    '</div>' +
+                    '<div class="col-9 p-0 m-0">' + title + '</div>' +
+                    '<div class="col-2 p-0 m-0 text-right">'+
+                      '<i class="icon-remove" data-id="'+ id +'"></i>' +
+                    '</div>'+
+                  '</div>'+
+                '</li>';
+        $('#recommendedalternativesSortableList').append(html);
+        updateAlternativesSelectize();
+        var listingId = document.getElementById('recommendedalternativesSortableList').dataset.listingId
+        var paramsData = {listing_alternative_id: id}
+        $.ajax({
+          url: `/listings/${listingId}/add_alternatives`,
+          type: 'POST',
+          data: paramsData,
+          success: function() {
+            return;
+          }
+        });
+      };
+      $('.selectize-recommended-alternatives-result').css('display', 'none');
+    });
+
     $('.submit-new-listing').click(function(e){
       e.preventDefault();
       var selected_attributes = selectedAttributesFromQueryParams(window.location.search);
@@ -325,6 +401,14 @@ window.ST = window.ST || {};
       $('.listing-accessories-hidden').val(listAccessory.join(','))
     }
 
+    function updateAlternativesSelectize() {
+      listAlternative = [];
+      $.each($('.recommended-alternative-item'), function(_idx, el) {
+        listAlternative.push($(el).data('id'));
+      });
+      $('.listing-alternatives-hidden').val(listAlternative.join(','))
+    }
+
     $(document).on('click', '.recommended-accessory-item .icon-remove', function() {
       var id = $(this).data('id');
       $('.recommended-accessories-list').find('[data-id='+ id + ']').remove();
@@ -333,6 +417,22 @@ window.ST = window.ST || {};
       paramsData = {listing_accessory_id: id}
       $.ajax({
         url: `/listings/${listingId}/remove_accessory`,
+        type: 'PUT',
+        data: paramsData,
+        success: function() {
+          return;
+        }
+      });
+    });
+
+    $(document).on('click', '.recommended-alternative-item .icon-remove', function() {
+      var id = $(this).data('id');
+      $('.recommended-alternatives-list').find('[data-id='+ id + ']').remove();
+      updateAlternativesSelectize();
+      var listingId = document.getElementById('recommendedalternativesSortableList').dataset.listingId
+      paramsData = {listing_alternative_id: id}
+      $.ajax({
+        url: `/listings/${listingId}/remove_alternative`,
         type: 'PUT',
         data: paramsData,
         success: function() {

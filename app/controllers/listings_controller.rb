@@ -690,6 +690,12 @@ class ListingsController < ApplicationController
     recommended_accessory = listing.recommended_accessories.create(listing_accessory_id: params[:listing_accessory_id], position: position)
   end
 
+  def add_alternatives
+    listing = Listing.find params[:id]
+    position = listing.recommended_alternatives.count + 1
+    recommended_alternative = listing.recommended_alternatives.create(listing_alternative_id: params[:listing_alternative_id], position: position)
+  end
+
   def reorder_accessories
     listing = Listing.find params[:id]
     recommended_accessories = listing.recommended_accessories.order(position: :asc).to_a
@@ -700,9 +706,27 @@ class ListingsController < ApplicationController
     end
   end
 
+  def reorder_alternatives
+    listing = Listing.find params[:id]
+    recommended_alternatives = listing.recommended_alternatives.order(position: :asc).to_a
+    sorted = recommended_alternatives.insert(params[:to].to_i, recommended_alternatives.delete_at(params[:from].to_i))
+
+    sorted.each_with_index do |item, index|
+      item.update(position: index+1)
+    end
+  end
+
   def remove_accessory
     listing = Listing.find params[:id]
     listing.recommended_accessories.find_by(listing_accessory_id: params[:listing_accessory_id])&.destroy
+    render json: {
+      success: true
+    }
+  end
+
+  def remove_alternative
+    listing = Listing.find params[:id]
+    listing.recommended_alternatives.find_by(listing_alternative_id: params[:listing_alternative_id])&.destroy
     render json: {
       success: true
     }
