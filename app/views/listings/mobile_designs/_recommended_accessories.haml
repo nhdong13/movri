@@ -1,32 +1,33 @@
-.row.mobile-recommended-accessories-container
-  .recommended-accessories-container.col-12.clearfix
-    .recommended-accessories-title
-      Accessories
-    .recommended-accessories-list.clearfix
-      - @listing.listing_accessories.order(:position).limit(8).each do |listing_accessory|
-        .row.col-3.recommended-accessories-item
-          .mobile-recommended-accessories
-            .mobile-accessory-wrap
-              .col-4
-                .mobile-acessory-image-wrap
-                  = link_to listing_path("#{listing_accessory.id}-#{listing_accessory.title.to_url}") do
-                    - if listing_accessory.main_image != nil
-                      = image_tag listing_accessory.main_image, class: 'img-responsive'
-                    - else
-                      %img.img-responsive{:alt => "", :src => "http://placehold.it/120x120"}/
-              .col-8
-                .recommended-accessories-listing-title
-                  = link_to listing_accessory.title, listing_path(listing_accessory)
-                .recommended-accessories-listing-price
-                  %span.amount
-                    - number_price = Money.new(PriceCalculationService.calculate(listing_accessory, ListingViewUtils.get_booking_days(session)), 'USD')
-                    = MoneyViewUtils.to_humanized(number_price)
-                  %span.time-rent
-                    \/
-                    = ListingViewUtils.get_time_rent(session)
-                    -# = MoneyViewUtils.to_humanized(listing_accessory.price)
-                %button.recommended-accessories-add-to-cart
-                  = link_to "Rent now", listing_path(listing_accessory)
-    .mobile-recommended-accessories-view-all.col-12
-      View All Accessories
-      %i.icon-angle-right
+- if @listing.listing_accessories.any?
+  .row.mobile-recommended-accessories-container
+    .recommended-accessories-container.col-12.clearfix
+      .recommended-accessories-title
+        Accessories
+      .recommended-accessories-list.clearfix
+        - @listing.listing_accessories.order(:position).limit(8).each do |listing_accessory|
+          .row.col-3.recommended-accessories-item
+            .mobile-recommended-accessories
+              .mobile-accessory-wrap
+                .col-4
+                  .mobile-acessory-image-wrap
+                    = link_to listing_path("#{listing_accessory.id}-#{listing_accessory.title.to_url}") do
+                      - if listing_accessory.main_image != nil
+                        = image_tag listing_accessory.main_image, class: 'img-responsive'
+                      - else
+                        %img.img-responsive{:alt => "", :src => "http://placehold.it/120x120"}/
+                .col-8
+                  .recommended-accessories-listing-title
+                    = link_to listing_accessory.title, listing_path(listing_accessory)
+                  .recommended-accessories-listing-price
+                    %span.amount
+                      - number_price = Money.new(PriceCalculationService.calculate(listing_accessory, ListingViewUtils.get_booking_days(session)), 'USD')
+                      = MoneyViewUtils.to_humanized(number_price)
+                    %span.time-rent
+                      \/
+                      = ListingViewUtils.get_time_rent(session)
+                      -# = MoneyViewUtils.to_humanized(listing_accessory.price)
+                  %button.recommended-accessories-add-to-cart
+                    = link_to "Rent now", listing_path(listing_accessory)
+      .mobile-recommended-accessories-view-all.col-12
+        View All Accessories
+        %i.icon-angle-right
