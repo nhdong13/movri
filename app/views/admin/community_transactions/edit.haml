@@ -135,7 +135,7 @@
                     .width-25.padding-0
                       %span.block.items-style= "#{k} #{v}%"
                     .width-75.align-right
-                      %span= money_to_humanized(@calculate_money.calculate_tax_fee_base_on_percent(v))
+                      %span= "$#{MoneyViewUtils.to_CAD(@calculate_money.calculate_tax_fee_base_on_percent(v))}"
           .shipping-fee
             .flex-items
               .width-25

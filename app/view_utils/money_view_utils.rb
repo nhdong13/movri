@@ -41,6 +41,6 @@ module MoneyViewUtils
 
   def to_CAD value
     value = value.to_f / 100
-    value.round(2)
+    value.ceil(2)
   end
 end
