@@ -441,7 +441,7 @@ class Transaction < ApplicationRecord
   end
 
   def completed?
-    current_state == "paid"
+    stripe_payments.any? && stripe_payments.standard.any?
   end
 
   def is_overweight?
