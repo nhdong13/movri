@@ -57,7 +57,7 @@
         .form-group
           .row
             .col-6
-              = form.text_field :postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "shipping-address-postal-code transaction-address-req-field", disabled: @shipping_address.is_office_address?
+              = form.text_field :postal_code, value: form.object.format_postal_code, placeholder: t('transactions.contact_form.zip_code'), class: "postal-code shipping-address-postal-code transaction-address-req-field uppercase", disabled: @shipping_address.is_office_address?
               = fa_icon "check", class: "d-none"
             .col-6
               - if @checkout_setting.optional_shipping_address_phone?

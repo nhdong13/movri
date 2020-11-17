@@ -20,10 +20,17 @@ window.Commons =
       if (val != val_old)
         $(this).focus().val('').val(val);
 
+  formatPostalCode: ->
+    $('.postal-code').keyup (e) ->
+      val = $(this).val().replace(/\s/g, '');
+      if (val.length > 0 && val.length >= 3)
+        new_val = val.substr(0, 3) + " " + val.substr(3);
+        $(this).val(new_val);
+
   CanadianZipCodeRule: ->
     jQuery.validator.addMethod 'cdnPostal', ((value, element) ->
       return this.optional(element) ||
-      value.match(/^(?!.*[DFIOQU])[A-VXY][0-9][A-Z]●?[0-9][A-Z][0-9]$/);
+      value.match(/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i);
     ), "Please specify a valid Canadian postal code."
 
   formatCardName: ->
@@ -118,3 +125,4 @@ $(document).ready ->
   Commons.handleToggleMenuCategory()
   Commons.onClickAddToWishList()
   Commons.onClickIconSearchBar()
+  Commons.formatPostalCode()

@@ -55,7 +55,7 @@
             .col-4
               = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, {:class => "shipping-address-state", disabled: @shipping_address.is_office_address?}
             .col-4
-              = form.text_field :postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "shipping-address-postal-code transaction-address-req-field", disabled: @shipping_address.is_office_address?
+              = form.text_field :postal_code, value: form.object.format_postal_code, placeholder: t('transactions.contact_form.zip_code'), class: "postal-code shipping-address-postal-code transaction-address-req-field uppercase", disabled: @shipping_address.is_office_address?
               = fa_icon "check", class: "d-none"
         .form-group
           .row

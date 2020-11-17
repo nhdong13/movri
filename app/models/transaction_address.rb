@@ -32,6 +32,7 @@ class TransactionAddress < ApplicationRecord
   validates_length_of :phone, :in => 10..16, :allow_nil => false, unless: :is_office_address?
 
   before_save :convert_phone
+  before_save :convert_postal_code
   before_create :add_country
 
   validate :change_office_address, on: :update
@@ -56,6 +57,11 @@ class TransactionAddress < ApplicationRecord
   def convert_phone
     return unless self.phone
     self.phone = phone.tr("(), ,-", "")
+  end
+
+  def convert_postal_code
+    return unless self.postal_code
+    self.postal_code = postal_code.split(" ").join("")
   end
 
   def is_office_address?
@@ -83,5 +89,11 @@ class TransactionAddress < ApplicationRecord
     return unless phone
     phone_arr = phone.split("")
     "(#{phone_arr[0..2].join()}) #{phone_arr[3..5].join()}-#{phone_arr[6..9].join()}"
+  end
+
+  def format_postal_code
+    return unless postal_code
+    code_arr = postal_code.split("")
+    "#{code_arr[0..2].join()} #{code_arr[3..5].join()}"
   end
 end
