@@ -87,7 +87,7 @@ class Transaction < ApplicationRecord
 
   accepts_nested_attributes_for :booking
 
-  enum transaction_type: [:normal_order, :draft_order]
+  enum transaction_type: [:normal_order, :draft_order, :abandoned_order]
   enum payment_status: [:unpaid, :paid]
 
   # validates :payment_gateway, presence: true, on: :create
@@ -441,7 +441,7 @@ class Transaction < ApplicationRecord
   end
 
   def completed?
-    !order_number.nil?
+    current_state == "paid"
   end
 
   def is_overweight?
