@@ -85,97 +85,44 @@ class TransactionsController < ApplicationController
   end
 
   def create
+    # if @current_user
+    #   if @current_user.has_a_pending_transaction?
+    #     update_transaction_with_current_user(@current_user.pending_transaction, params)
+    #   elsif session[:transaction] && session[:transaction][:transaction_id]
+    #     # check if transaction is pending
+    #     @transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
+    #     if @transaction.completed?
+    #       @transaction = create_transaction_with_current_user(params)
+    #     else
+    #       @transaction = update_transaction_with_current_user(@transaction, params)
+    #     end
+    #   else
+    #     @transaction = create_transaction_with_current_user(params)
+    #   end
+    # else
+    #   if session[:transaction] && session[:transaction][:transaction_id]
+    #     @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
+    #     if @transaction && !@transaction.completed?
+    #       @transaction = update_transaction_without_current_user(@transaction, params)
+    #     else
+    #       @transaction = create_transaction_without_current_user(params)
+    #     end
+    #     return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
+    #   else
+    #     @transaction = create_transaction_without_current_user(params)
+    #   end
+    # end
+
     if @current_user
-      if @current_user.has_a_pending_transaction?
-        update_transaction_with_current_user(@current_user.pending_transaction, params)
-      elsif session[:transaction] && session[:transaction][:transaction_id]
-        # check if transaction is pending
-        @transaction = Transaction.find_by(id: session[:transaction][:transaction_id])
-        if @transaction.completed?
-          @transaction = create_transaction_with_current_user(params)
-        else
-          @transaction = update_transaction_with_current_user(@transaction, params)
-        end
-      else
-        @transaction = create_transaction_with_current_user(params)
-      end
+      @transaction = create_transaction_with_current_user(params)
     else
-      if session[:transaction] && session[:transaction][:transaction_id]
-        @transaction =  Transaction.find_by(id: session[:transaction][:transaction_id])
-        if @transaction && !@transaction.completed?
-          @transaction = update_transaction_without_current_user(@transaction, params)
-        else
-          @transaction = create_transaction_without_current_user(params)
-        end
-        return render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)}
-      else
-        @transaction = create_transaction_without_current_user(params)
-      end
+      @transaction = create_transaction_without_current_user(params)
     end
 
     respond_to do |format|
       format.html
       format.json { render json: {redirect_url: checkout_transaction_path(@transaction.uuid_object)} }
     end
-    # Result.all(
-    #   -> {
-    #     TransactionForm.validate(params.to_unsafe_hash)
-    #   },
-    #   ->(form) {
-    #     fetch_data(form[:listing_id])
-    #   },
-    #   ->(form, (_, _, _, process)) {
-    #     validate_form(form, process)
-    #   },
-    #   ->(_, (listing_id, listing_model), _) {
-    #     ensure_can_start_transactions(listing_model: listing_model, current_user: @current_user, current_community: @current_community)
-    #   },
-    #   ->(form, (listing_id, listing_model, author_model, process, gateway), _, _) {
-    #     booking_fields = Maybe(form).slice(:start_on, :end_on).select { |booking| booking.values.all? }.or_else({})
-
-    #     is_booking = date_selector?(listing_model)
-    #     quantity = calculate_quantity(tx_params: {
-    #                                     quantity: form[:quantity],
-    #                                     start_on: booking_fields.dig(:start_on),
-    #                                     end_on: booking_fields.dig(:end_on)
-    #                                   },
-    #                                   is_booking: is_booking,
-    #                                   unit: listing_model.unit_type&.to_sym)
-
-
-    #     transaction_service.create(
-    #       {
-    #         transaction: {
-    #           community_id: @current_community.id,
-    #           community_uuid: @current_community.uuid_object,
-    #           listing_id: listing_id,
-    #           listing_uuid: listing_model.uuid_object,
-    #           listing_title: listing_model.title,
-    #           starter_id: @current_user.id,
-    #           starter_uuid: @current_user.uuid_object,
-    #           listing_author_id: author_model.id,
-    #           listing_author_uuid: author_model.uuid_object,
-    #           unit_type: listing_model.unit_type,
-    #           unit_price: listing_model.price || Money.new(0, @current_community.currency),
-    #           unit_tr_key: listing_model.unit_tr_key,
-    #           availability: listing_model.availability,
-    #           listing_quantity: quantity,
-    #           content: form[:message],
-    #           starting_page: ::Conversation::PAYMENT,
-    #           booking_fields: booking_fields,
-    #           payment_gateway: process.process == :none ? :none : gateway, # TODO This is a bit awkward
-    #           payment_process: process.process
-    #         }
-    #       })
-    #   }
-    # ).on_success { |(_, (_, _, _, process), _, _, tx)|
-    #   after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
-    #   flash[:notice] = after_create_flash(process: process) # add more params here when needed
-    #   redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
-    # }.on_error { |error_msg, data|
-    #   flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
-    #   redirect_to(session[:return_to_content] || root)
-    # }
   end
 
   def create_transaction_with_current_user params
@@ -190,17 +137,17 @@ class TransactionsController < ApplicationController
     @transaction
   end
 
-  def update_transaction_with_current_user transaction, params
-    @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
-    @transaction.update(starter_id: @current_user.id)
-    @transaction
-  end
+  # def update_transaction_with_current_user transaction, params
+  #   @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
+  #   @transaction.update(starter_id: @current_user.id)
+  #   @transaction
+  # end
 
-  def update_transaction_without_current_user transaction, params
-    @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
-    session[:transaction] = {transaction_id: @transaction.id}
-    @transaction
-  end
+  # def update_transaction_without_current_user transaction, params
+  #   @transaction = transaction_service.update(session, transaction, params[:code], params[:instructions])
+  #   session[:transaction] = {transaction_id: @transaction.id}
+  #   @transaction
+  # end
 
   def show
     @transaction = @current_community.transactions.find(params[:id])

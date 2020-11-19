@@ -380,6 +380,13 @@ module ApplicationHelper
         :icon_class => icon_class("orders"),
         :path => admin_community_draft_orders_path(@current_community, sort: "id", direction: "desc"),
         :name => "draft_orders"
+      },
+      {
+        :topic => :orders,
+        :text => "Abandoned Checkouts",
+        :icon_class => icon_class("orders"),
+        :path => admin_community_transactions_path(@current_community, transaction_type: 'abandoned_order', sort: "id", direction: "desc"),
+        :name => "abandoned_orders"
       }
     ]
 

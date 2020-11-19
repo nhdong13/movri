@@ -292,7 +292,7 @@ class Person < ApplicationRecord
   end
 
   def pending_transaction
-    starter_transactions.normal_order.where.not(current_state: 'paid').first
+    starter_transactions.normal_order.where.not(current_state: 'paid').last
   end
 
   def set_emails_that_receive_notifications(email_ids)

@@ -87,7 +87,7 @@ class Transaction < ApplicationRecord
 
   accepts_nested_attributes_for :booking
 
-  enum transaction_type: [:normal_order, :draft_order, :abandoned_order]
+  enum transaction_type: [:normal_order, :draft_order]
   enum payment_status: [:unpaid, :paid]
 
   # validates :payment_gateway, presence: true, on: :create
@@ -105,6 +105,7 @@ class Transaction < ApplicationRecord
 
   scope :exist, -> { where(deleted: false) }
   scope :complete, -> { where.not(order_number: nil) }
+  scope :abandoned_order, -> { where(order_number: nil) }
   scope :for_person, -> (person){
     joins(:listing)
     .where("listings.author_id = ? OR starter_id = ?", person.id, person.id)

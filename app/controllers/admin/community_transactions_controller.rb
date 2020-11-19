@@ -42,7 +42,16 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   def index
     @selected_left_navi_link = "transactions"
     @transactions_presenter = AdminTransactionsPresenter.new(@current_community, params, request.format)
-    @transactions = @transactions_presenter.transactions.normal_order
+    if params[:transaction_type] && params[:transaction_type] == "abandoned_order"
+      @selected_left_navi_link = "abandoned_orders"
+      @transaction_type = 'abandoned_order'
+      @transactions = @transactions_presenter.transactions.abandoned_order
+    else
+      @selected_left_navi_link = "transactions"
+      @transaction_type = 'completed_order'
+      @transactions = @transactions_presenter.transactions.complete
+    end
+
     case params[:sort]
     when 'total'
       @transactions = @transactions.includes(:stripe_payments).order("stripe_payments.sum_cents #{params[:direction]}")
