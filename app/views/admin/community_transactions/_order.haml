@@ -11,14 +11,25 @@
   %td
     = order.buyer&.given_name
   %td
-    .state-label.paid-state-label
-      %i.fa.fa-circle
-      %span= order.completed? ? "Paid": "Unpaid"
+    - if order.completed?
+      .state-label.paid-state-label
+        %i.fa.fa-usd
+        %span Paid
+    - else
+      .state-label.unpaid-state-label
+        %i.fa.fa-circle
+        %span Unpaid
 
   %td
-    .state-label.unfulfilled-state-label
-      %i.fa.fa-circle-o
-      %span= order.fulfilled? ? 'Fulfilled' : "Unfulfilled"
+    .order-label-state
+      .state-label{class: order.fulfilled? ? 'fulfilled-state-label' : 'unfulfilled-state-label' }
+        %i.fa.fa-circle-o
+        %span= order.fulfilled? ? 'Fulfilled' : "Unfulfilled"
+    .order-label-state
+      - if order.is_cancelled?
+        .state-label.cacelled-state-label
+          %i.fa.fa-ban
+          %span Cancelled
   %td
     = money_to_humanized(TransactionMoneyCalculation.new(order, session, @current_user).final_price)
   %td

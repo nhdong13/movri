@@ -10,7 +10,7 @@
     %th
       = render partial: "layouts/transaction_sort_link", locals: { column: "payment_status", direction: sort_link_direction("payment_status"), title: t('admin.communities.manage_orders.payment'), transaction_type: @transaction_type}
     %th
-      = render partial: "layouts/transaction_sort_link", locals: { column: "tracking_number", direction: sort_link_direction("tracking_number"), title: t('admin.communities.manage_orders.fulfillment'), transaction_type: @transaction_type}
+      = render partial: "layouts/transaction_sort_link", locals: { column: "tracking_number", direction: sort_link_direction("tracking_number"), title: "Status", transaction_type: @transaction_type}
     %th
       = render partial: "layouts/transaction_sort_link", locals: { column: "total", direction: sort_link_direction("total"), title: t('admin.communities.manage_orders.total'), transaction_type: @transaction_type}
     %th

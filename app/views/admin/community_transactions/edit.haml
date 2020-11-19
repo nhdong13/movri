@@ -9,10 +9,19 @@
       .col-12
         %span.fz-30.bold= "##{@order.order_number}"
         %span= "#{@order.completed_at_to_PTS} from Online Store"
-        .state-label.paid-state-label
-          %i.fa.fa-circle
-          %span= @order.current_state.capitalize
-        .state-label.unfulfilled-state-label
+        - if @order.completed?
+          .state-label.paid-state-label
+            %i.fa.fa-usd
+            %span Paid
+        - else
+          .state-label.unpaid-state-label
+            %i.fa.fa-circle
+            %span Unpaid
+        - if @order.is_cancelled?
+          .state-label.cacelled-state-label
+            %i.fa.fa-ban
+            %span Cancelled
+        .state-label{class: @order.fulfilled? ? 'fulfilled-state-label' : 'unfulfilled-state-label' }
           %i.fa.fa-circle-o
           %span= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
     .row

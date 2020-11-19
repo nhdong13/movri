@@ -407,6 +407,8 @@ li{
 }
 
 .state-label{
+  margin: 2px 0;
+  span{padding: 0 !important}
   display: inline-block;
   padding: 0px 15px;
   border-radius: 20px;
@@ -416,10 +418,26 @@ li{
   }
 }
 .paid-state-label{
+  color: #155724;
+  background-color: #d4edda;
+}
+
+.unpaid-state-label{
   background: #dfe3e8;
 }
+
 .unfulfilled-state-label{
   background: #fcea8a;
+}
+
+.fulfilled-state-label{
+  color: #004085;
+  background-color: #cce5ff;
+}
+
+.cacelled-state-label{
+  color: #721c24;
+  background-color: #f8d7da;
 }
 
 .admin-background{
