@@ -12,6 +12,7 @@ onClickShipmentItems = ->
 onChangePromoCode = ->
   $(".shipping-promo-code button[type=submit]").click ->
     $('.promo-code-error').hide()
+    $('.coupon-code-apply').hide();
     promoCode = $(this).parents('.shipping-promo-code').find("input[name=promo_code]").val()
     uuid = $(this).parents(".shipping-promo-code").data('uuid')
     $.ajax

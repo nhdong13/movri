@@ -37,6 +37,7 @@ window.ST = window.ST || {};
 
   function handleChangeInput() {
     $('.promo-code-error').hide();
+    $('.coupon-code-apply').hide();
   }
 
   function handleChangeZipCode() {
