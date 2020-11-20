@@ -470,8 +470,8 @@ class ApplicationController < ActionController::Base
 
   def update_booking_session
     if session[:booking] && session[:booking][:start_date]
-      session[:booking][:start_date] = get_today if session[:booking][:start_date] < get_today
-      session[:booking][:end_date] = get_next_number_days(session[:booking][:start_date])if session[:booking][:end_date] <= session[:booking][:start_date]
+      session[:booking][:start_date] = get_today if convert_to_date(session[:booking][:start_date]) < convert_to_date(get_today)
+      session[:booking][:end_date] = get_next_number_days(session[:booking][:start_date]) if convert_to_date(session[:booking][:end_date]) <= convert_to_date(session[:booking][:start_date])
       data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
       session[:booking][:total_days] = data[:total_days]
     else

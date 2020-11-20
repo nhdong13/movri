@@ -85,6 +85,7 @@ class ListingsController < ApplicationController
   end
 
   def show
+
     @selected_tribe_navi_tab = "home"
     make_onboarding_popup
 
@@ -108,10 +109,15 @@ class ListingsController < ApplicationController
       all_blocked_dates = ManuallyBlockedDatesService.get_all_blocked_dates(@current_community, @listing, 1.day)
       all_blocked_dates = all_blocked_dates.uniq.sort
       if all_blocked_dates.any?
-        session[:booking][:start_date] = get_next_day_and_convert_it(all_blocked_dates.last)
-        session[:booking][:end_date] = get_next_number_days_and_convert_it(all_blocked_dates.last, duration)
+        if all_blocked_dates.last < convert_to_date(get_today)
+          session[:booking][:start_date] = get_today
+        else
+          session[:booking][:start_date] = get_next_day_and_convert_it(all_blocked_dates.last)
+        end
+        session[:booking][:end_date] = get_next_number_days_and_convert_it(convert_to_date(session[:booking][:start_date]), duration)
         session[:booking][:total_days] = duration
       end
+
 
       # manually_blocked_dates_arr.each_with_index do |range_date, index|
       #   this_start_date = convert_to_date(range_date.split(",").first)
