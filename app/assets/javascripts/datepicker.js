@@ -107,10 +107,11 @@ window.ST = window.ST || {};
     var today = dateAtBeginningOfDay(new Date());
     var dateRage = $('#'+ rangeContainerId);
     var dateLocale = dateRage.data('locale');
-    var next_day = function(day){
-      var new_day = day.setDate(day.getDate() + 1)
+    var next_number_days = function(day, number){
+      var new_day = day.setDate(day.getDate() + number)
       return new Date(new_day)
     }
+
     var current_start_date = opts.current_start_date || next_day
 
     $(input_arrival_date_el).datepicker({
@@ -123,7 +124,7 @@ window.ST = window.ST || {};
     $(input_return_date_el).datepicker({
       daysOfWeekDisabled: '0',
       autoclose: true,
-      startDate: next_day(new Date(current_start_date)),
+      startDate: next_number_days(new Date(current_start_date), 1),
       todayHighlight: true,
       datesDisabled: disabledStartDates,
     });
@@ -136,7 +137,7 @@ window.ST = window.ST || {};
 
     $(input_arrival_date_el).on('changeDate', function(e){
       newDate = e.dates[0];
-      oneDayMore = next_day(newDate);
+      oneDayMore = next_number_days(newDate, 1);
       endDate = $(input_arrival_date_el).datepicker('getDate');
       if(oneDayMore <= endDate){
         newDate = oneDayMore
@@ -148,20 +149,28 @@ window.ST = window.ST || {};
     });
 
     $(input_return_date_el).on('changeDate', function(){
-      var changeBookingDayUrl = "/en/change_cart_detail_booking_days.js";
-      var end_date = $(this).val();
-      var start_date = $(input_arrival_date_el).val();
-      if(end_date != "" && start_date != ""){
-        $.ajax({
-          url: changeBookingDayUrl,
-          type: "PUT",
-          data: {
-             start_date: start_date,
-             end_date: end_date,
-             today: today
-          }
-        })
-        $(input_return_date_el).datepicker('hide')
+      changeBookingDayUrl = "/en/change_cart_detail_booking_days.js";
+      end_date = $(this).val();
+      start_date = $(input_arrival_date_el).val();
+      diffDays = new Date(end_date) - new Date(start_date);
+      diffDaysToNumber = Math.ceil(diffDays / (1000 * 60 * 60 * 24));
+      if(diffDaysToNumber > 90){
+        $(input_return_date_el).focus().datepicker('setDate', '')
+        alert("You cannot rent for more than 90 days")
+        return;
+      } else {
+        if(end_date != "" && start_date != ""){
+          $.ajax({
+            url: changeBookingDayUrl,
+            type: "PUT",
+            data: {
+               start_date: start_date,
+               end_date: end_date,
+               today: today
+            }
+          })
+          $(input_return_date_el).datepicker('hide')
+        }
       }
     });
 
