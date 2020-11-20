@@ -77,6 +77,7 @@
 #  lens_type                       :string(255)
 #  compatibility                   :string(255)
 #  url                             :string(255)
+#  enable                          :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -103,8 +104,8 @@ class Listing < ApplicationRecord
     }
   )
 
-  algoliasearch index_name: "movri_products" do
-    attribute :id, :title, :price_cents, :number_of_rent, :sku, :url
+  algoliasearch index_name: "movri_products", if: :is_enable do
+    attribute :id, :title, :price_cents, :number_of_rent, :sku, :url, :enable
     attributes :main_image do
       main_image
     end
@@ -145,6 +146,11 @@ class Listing < ApplicationRecord
       end
     end
   end
+
+  def is_enable
+    enable
+  end
+
   after_touch :index!
 
   WIEGHT_TYPE = ['kg', 'pound']
@@ -219,8 +225,9 @@ class Listing < ApplicationRecord
 
   validates :available_quantity, numericality: { greater_than_or_equal_to: 0 }
 
-  default_scope { where(deleted: false) }
+  default_scope { where(deleted: false, enable: true) }
   scope :exist, -> { where(deleted: false) }
+  scope :admin_index, -> { unscope(:where).where(deleted: false) }
 
   scope :search_title_author_category, ->(pattern) do
     joins(:author)

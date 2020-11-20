@@ -1,0 +1,3 @@
+.listing-avalability-wrap
+  = form.label 'Product Availability', class: 'input'
+  = form.select :enable, options_for_select({"On": 1 , "Off": 0}, selected: form.object.enable ? "1" : "0")

@@ -43,6 +43,7 @@ class ApplicationController < ActionController::Base
     :setup_custom_footer,
     :disarm_custom_head_script,
     :update_booking_session,
+    :update_cart_session,
     :set_paper_trail_whodunnit,
     :check_redirect_URLs
 
@@ -480,6 +481,17 @@ class ApplicationController < ActionController::Base
       session[:booking][:end_date] = get_next_number_days(session[:booking][:start_date])
       data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
       session[:booking][:total_days] = data[:total_days]
+    end
+  end
+
+  def update_cart_session
+    if session[:cart].present?
+      session[:cart].each do |k, v|
+        listing = Listing.find_by(id: k)
+        unless listing
+          session[:cart].delete(k)
+        end
+      end
     end
   end
 

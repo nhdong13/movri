@@ -77,6 +77,7 @@
 #  lens_type                       :string(255)
 #  compatibility                   :string(255)
 #  url                             :string(255)
+#  enable                          :boolean          default(TRUE)
 #
 # Indexes
 #

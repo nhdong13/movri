@@ -305,7 +305,11 @@ class ListingsController < ApplicationController
       Delayed::Job.enqueue(ListingUpdatedJob.new(@listing.id, @current_community.id))
       reprocess_missing_image_styles(@listing) if @listing.closed?
       service.update_by_author_successful(@listing)
-      redirect_to @listing
+      if @listing.enable
+        return redirect_to @listing
+      else
+        return redirect_to homepage_with_locale_path
+      end
     else
       logger.error("Errors in editing listing: #{@listing.errors.full_messages.inspect}")
       flash[:error] = t("layouts.notifications.listing_could_not_be_saved", :contact_admin_link => view_context.link_to(t("layouts.notifications.contact_admin_link_text"), new_user_feedback_path, :class => "flash-error-link")).html_safe
@@ -360,7 +364,12 @@ class ListingsController < ApplicationController
   end
 
   def ensure_current_user_is_listing_author(error_message)
-    @listing = Listing.find_by_url(params[:id]) || Listing.find_by_id(params[:id])
+    if @current_user.is_admin?
+      @listings = Listing.all.admin_index
+    else
+      @listings = Listing.all
+    end
+    @listing = @listings.find_by_url(params[:id]) || @listings.find_by_id(params[:id])
     return if current_user?(@listing.author) || @current_user.has_admin_rights?(@current_community)
 
     flash[:error] = error_message
