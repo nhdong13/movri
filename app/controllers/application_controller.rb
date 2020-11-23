@@ -532,7 +532,17 @@ class ApplicationController < ActionController::Base
   end
 
   def user_for_paper_trail
-    logged_in? ? @current_user.fullname : 'Online Store'
+    if logged_in?
+     fullname = @current_user.fullname
+    else
+      if session[:transaction].any?
+        transaction =  Transaction.find_by(id: session[:transaction].values[0])
+        fullname = transaction ? transaction.shipping_address.fullname : "Un-login User"
+      else
+        fullname = "Un-login User"
+      end
+    end
+    fullname
   end
 
   private
