@@ -535,6 +535,7 @@ class ApplicationController < ActionController::Base
     if logged_in?
      fullname = @current_user.fullname
     else
+      session[:transaction] ||= {}
       if session[:transaction].any?
         transaction =  Transaction.find_by(id: session[:transaction].values[0])
         fullname = transaction ? transaction.shipping_address.fullname : "Un-login User"
