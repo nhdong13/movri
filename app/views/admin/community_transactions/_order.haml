@@ -9,7 +9,10 @@
   %td
     = order.completed_at_to_PTS
   %td
-    = order.buyer&.given_name
+    - if order.shipping_address
+      = order.shipping_address.fullname
+    - else
+      = order.buyer&.fullname
   %td
     - if order.completed?
       .state-label.paid-state-label
