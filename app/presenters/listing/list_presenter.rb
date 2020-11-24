@@ -59,7 +59,7 @@ class Listing::ListPresenter
   private
 
   def resource_scope
-    scope = community.listings.exist.includes(:author, :category)
+    scope = community.listings.admin_index.includes(:author, :category)
 
     unless admin_mode
       scope = scope.where(author: author)

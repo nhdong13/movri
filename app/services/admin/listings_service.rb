@@ -73,7 +73,7 @@ class Admin::ListingsService
   private
 
   def resource_scope
-    community.listings
+    community.listings.admin_index
   end
 
   class << self
