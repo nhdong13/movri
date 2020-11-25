@@ -71,14 +71,15 @@ module ListingsHelper
   end
 
   def with_image_frame(listing, &block)
-    if self.has_images?(listing) then
+    if self.has_images?(listing)
       images = listing.listing_images
-      if !listing.listing_images.all? { |image| image.image_ready? } then
-        block.call(:images_processing, nil)
+      image_ready_count = images.where(image_processing: true).count
+      if images.count > image_ready_count
+        block.call(:images_ok, images.where.not(id: images.where(image_processing: true).ids))
       else
-        block.call(:images_ok, images)
+        block.call(:images_processing, nil)
       end
-    elsif listing.description.blank? then
+    elsif listing.description.blank?
       block.call(:no_description, nil)
     end
   end
@@ -218,7 +219,6 @@ module ListingsHelper
       elsif action == 'negative' && number_of_rent_changeset.present?
         event = 'Order created'
       end
-
       {
         date: version.created_at.in_time_zone.strftime("%b %d, at %H:%M %P %Z"),
         event: event,
