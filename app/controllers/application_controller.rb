@@ -538,7 +538,7 @@ class ApplicationController < ActionController::Base
       session[:transaction] ||= {}
       if session[:transaction].any?
         transaction =  Transaction.find_by(id: session[:transaction].values[0])
-        fullname = transaction ? transaction.shipping_address.fullname : "Un-login User"
+        fullname = (transaction && transaction.shipping_address) ? transaction.shipping_address.fullname : "Un-login User"
       else
         fullname = "Un-login User"
       end
