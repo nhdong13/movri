@@ -304,10 +304,10 @@
     outline: none;
   }
 
-  .recommended-accessories-wrap {
+  .recommended-accessories-wrap, .listing-combos-wrap, .recommended-alternatives-wrap {
     position: relative;
 
-    .selectize-recommended-accessories-result {
+    .selectize-recommended-accessories-result, .selectize-listing-combos-result, .selectize-recommended-alternatives-result{
       padding-left: 0;
       border: 1px solid #d0d0d0;
       border-bottom: 0px;

@@ -1,0 +1,48 @@
+.listing-combos-wrap
+  = form.hidden_field :listing_combo_ids, class: 'listing-combos-hidden'
+  = form.label 'Select Products for Combos', class: 'input'
+  %input.listing_combo{type: 'text'}
+  %ul.selectize-listing-combos-result
+.listing-combos-list
+  %ul#listingCombosSortableList.p-0{ 'data-listing-id' => "#{@listing.id}"}
+    - @listing.listing_combos.order(position: :asc).each do |listing_combo|
+      - listing = listing_combo.combo
+      - if listing
+        %li.cursor-pointer.background{ 'data-id' => "#{listing.id}"}
+          .listing-combo-item.row.m-0.pl-0.pr-0
+            .col-1.p-0.m-0
+              %span
+                %i.fa.fas.fa-ellipsis-v
+                %i.fa.fas.fa-ellipsis-v
+            .col-9.p-0.m-0
+              = listing.title
+            .col-2.p-0.m-0.text-right
+              %i.icon-remove{ 'data-id' => "#{listing.id}"}
+
+- content_for :extra_javascript do
+  :javascript
+    var sortable = new Sortable( listingCombosSortableList,
+      {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        onEnd: function (evt) {
+          var paramsData = {
+            listing_accessory_id: evt.item.dataset.id,
+            from: evt.oldIndex,
+            to: evt.newIndex,
+          }
+          var listingId = document.getElementById('listingCombosSortableList').dataset.listingId
+          $.ajax({
+            url: `/listings/${listingId}/reorder_listing_combos`,
+            type: "PUT",
+            data: paramsData,
+            success: function(resp) {
+              console.log('success')
+            }
+          });
+        },
+        onMove: function (evt, originalEvent) {
+        },
+      }
+    );
+

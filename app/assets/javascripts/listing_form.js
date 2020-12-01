@@ -220,6 +220,8 @@ window.ST = window.ST || {};
 
   function loadSelectize() {
     updateAccessoriesSelectize();
+    updateAlternativesSelectize();
+    updateListingCombosSelectize();
 
     $('.listing_accessories').selectize({
       create: false,
@@ -240,6 +242,31 @@ window.ST = window.ST || {};
           },
           success: function(res) {
             renderResult(res)
+            _this_load.loadedSearches = {};
+          }
+        });
+      }
+    })
+
+    $('.listing_combo').selectize({
+      create: false,
+      delimiter: ',',
+      closeAfterSelect: true,
+      load: function(query, callback) {
+        emptyListingCombosResult();
+        if (!query.length) {
+          return callback()
+        }
+        _this_load = this
+        $.ajax({
+          url: "/search_listing_by_name",
+          type: 'get',
+          data:
+          {
+            q: query
+          },
+          success: function(res) {
+            renderListingCombosResult(res)
             _this_load.loadedSearches = {};
           }
         });
@@ -293,12 +320,24 @@ window.ST = window.ST || {};
       $('.selectize-recommended-alternatives-result').html(html);
     }
 
+    function renderListingCombosResult(res) {
+      html = ''
+      $.each(res, function(idx, result) {
+        html += '<li class="add-listing-combo" data-id="'+ result.id +'">'+ result.title +'</li>';
+      });
+      $('.selectize-listing-combos-result').html(html);
+    }
+
     function emptyRenderResult() {
       $('.selectize-recommended-accessories-result').empty();
     }
 
     function emptyRecommendedAlternativesResult() {
       $('.selectize-recommended-alternatives-result').empty();
+    }
+
+    function emptyListingCombosResult() {
+      $('.selectize-listing-combos-result').empty();
     }
 
     $('.recommended-accessories-wrap .selectize-input input').on('focusin', function() {
@@ -309,6 +348,11 @@ window.ST = window.ST || {};
     $('.recommended-alternatives-wrap .selectize-input input').on('focusin', function() {
       emptyRecommendedAlternativesResult();
       $('.selectize-recommended-alternatives-result').css('display', 'block');
+    })
+
+    $('.listing-combos-wrap .selectize-input input').on('focusin', function() {
+      emptyListingCombosResult();
+      $('.selectize-listing-combos-result').css('display', 'block');
     })
 
     $('.selectize-recommended-accessories-result').on('click', '.add-recommended-accessory', function() {
@@ -379,6 +423,53 @@ window.ST = window.ST || {};
       $('.selectize-recommended-alternatives-result').css('display', 'none');
     });
 
+    $('.selectize-listing-combos-result').on('click', '.add-listing-combo', function() {
+      var id = $(this).data('id');
+      var title = $(this).text();
+      if (idExists(id) != true) {
+        html =  '<li class="cursor-pointer background" draggable="false" style="" data-id="'+ id +'" >'+
+                  '<div class="listing-combo-item row m-0 pl-0 pr-0">' +
+                    '<div class="col-1 p-0 m-0">' +
+                      '<span>' +
+                        '<i class="fa fas fa-ellipsis-v" style="margin-right: 3px"></i>' +
+                        '<i class="fa fas fa-ellipsis-v"></i>' +
+                      '</span>' +
+                    '</div>' +
+                    '<div class="col-9 p-0 m-0">' + title + '</div>' +
+                    '<div class="col-2 p-0 m-0 text-right">'+
+                      '<i class="icon-remove" data-id="'+ id +'"></i>' +
+                    '</div>'+
+                  '</div>'+
+                '</li>';
+
+        connectd_listing_html =  `<li class='cursor-pointer background' draggable='false' data-id='${id}'>
+                  <div class="listing-combo-item row m-0 pl-0 pr-0">
+                    <div class="col-7 items-style"> ${title} </div>
+                    <div class="col-4 center-items">
+                      <input type='text' value='1' name='listing_combo[quantity_${id}]'>
+                    </div>
+                    <div class="col-1 p-0 m-0 center-items">
+                      <i class="icon-remove" data-id="${id}"></i>
+                    </div>
+                  </div>
+                </li>`;
+        $('#listingCombosSortableList').append(html);
+        $('.listing-connected').append(connectd_listing_html);
+        updateListingCombosSelectize();
+        var listingId = document.getElementById('listingCombosSortableList').dataset.listingId
+        var paramsData = {listing_combo_id: id}
+        $.ajax({
+          url: `/listings/${listingId}/add_listing_combos`,
+          type: 'POST',
+          data: paramsData,
+          success: function() {
+            return;
+          }
+        });
+      };
+      $('.selectize-listing-combos-result').css('display', 'none');
+    });
+
     $('.submit-new-listing').click(function(e){
       e.preventDefault();
       var selected_attributes = selectedAttributesFromQueryParams(window.location.search);
@@ -409,6 +500,14 @@ window.ST = window.ST || {};
       $('.listing-alternatives-hidden').val(listAlternative.join(','))
     }
 
+    function updateListingCombosSelectize() {
+      listListingCombos = [];
+      $.each($('.listing-combo-item'), function(_idx, el) {
+        listListingCombos.push($(el).data('id'));
+      });
+      $('.listing-combos-hidden').val(listListingCombos.join(','))
+    }
+
     $(document).on('click', '.recommended-accessory-item .icon-remove', function() {
       var id = $(this).data('id');
       $('.recommended-accessories-list').find('[data-id='+ id + ']').remove();
@@ -433,6 +532,22 @@ window.ST = window.ST || {};
       paramsData = {listing_alternative_id: id}
       $.ajax({
         url: `/listings/${listingId}/remove_alternative`,
+        type: 'PUT',
+        data: paramsData,
+        success: function() {
+          return;
+        }
+      });
+    });
+
+    $(document).on('click', '.listing-combo-item .icon-remove', function() {
+      var id = $(this).data('id');
+      $('.listing-combos-list').find('[data-id='+ id + ']').remove();
+      updateListingCombosSelectize();
+      var listingId = document.getElementById('listingCombosSortableList').dataset.listingId
+      paramsData = {listing_combo_id: id}
+      $.ajax({
+        url: `/listings/${listingId}/remove_listing_combo`,
         type: 'PUT',
         data: paramsData,
         success: function() {

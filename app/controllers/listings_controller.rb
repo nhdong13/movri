@@ -219,6 +219,7 @@ class ListingsController < ApplicationController
         childcategory_ids = params[:childcategory_ids] ? params[:childcategory_ids].uniq.reject(&:empty?) : []
         create_or_update_category_listings([result.data[:category_ids]], subcategory_ids, childcategory_ids)
         create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
+        create_or_update_listing_combo(@listing, params.to_unsafe_hash[:listing_combo])
         @listing.upsert_field_values!(params.to_unsafe_hash[:custom_fields])
         @listing.reorder_listing_images(params, @current_user.id)
         notify_about_new_listing
@@ -294,6 +295,7 @@ class ListingsController < ApplicationController
       childcategory_ids = params[:childcategory_ids] ? params[:childcategory_ids].uniq.reject(&:empty?) : []
       create_or_update_category_listings([result.data[:category_ids]], subcategory_ids, childcategory_ids)
       create_or_update_listing_assessory(@listing, params.to_unsafe_hash[:listing_accessory])
+      create_or_update_listing_combo(@listing, params.to_unsafe_hash[:listing_combo])
       if shape.booking_per_hour? && !@listing.per_hour_ready
         @listing.working_hours_new_set(force_create: true)
       end
@@ -711,6 +713,12 @@ class ListingsController < ApplicationController
     recommended_alternative = listing.recommended_alternatives.create(listing_alternative_id: params[:listing_alternative_id], position: position)
   end
 
+  def add_listing_combos
+    listing = Listing.find params[:id]
+    position = listing.listing_combos.count + 1
+    listing_combos = listing.listing_combos.create(listing_combo_id: params[:listing_combo_id], position: position)
+  end
+
   def reorder_accessories
     listing = Listing.find params[:id]
     recommended_accessories = listing.recommended_accessories.order(position: :asc).to_a
@@ -731,6 +739,16 @@ class ListingsController < ApplicationController
     end
   end
 
+  def reorder_listing_combos
+    listing = Listing.find params[:id]
+    listing_combos = listing.listing_combos.order(position: :asc).to_a
+    sorted = listing_combos.insert(params[:to].to_i, listing_combos.delete_at(params[:from].to_i))
+
+    sorted.each_with_index do |item, index|
+      item.update(position: index+1)
+    end
+  end
+
   def remove_accessory
     listing = Listing.find params[:id]
     listing.recommended_accessories.find_by(listing_accessory_id: params[:listing_accessory_id])&.destroy
@@ -742,6 +760,14 @@ class ListingsController < ApplicationController
   def remove_alternative
     listing = Listing.find params[:id]
     listing.recommended_alternatives.find_by(listing_alternative_id: params[:listing_alternative_id])&.destroy
+    render json: {
+      success: true
+    }
+  end
+
+  def remove_listing_combo
+    listing = Listing.find params[:id]
+    listing.listing_combos.find_by(listing_combo_id: params[:listing_combo_id])&.destroy
     render json: {
       success: true
     }
@@ -790,6 +816,21 @@ class ListingsController < ApplicationController
       listing.listing_accessory.update(listing_accessory_attrs)
     else
       listing.create_listing_accessory(listing_accessory_attrs)
+    end
+  end
+
+  def create_or_update_listing_combo listing, listing_combo_attrs
+    return unless listing_combo_attrs
+    listing_combo_attrs.each do |attr|
+      combo_id = attr[0].split("_").last
+      quantity = attr[1].to_i || 1
+      listing_combo = listing.listing_combos.find_by(listing_combo_id: combo_id)
+      if listing_combo
+        listing_combo.update(quantity: quantity)
+      else
+        position = listing.listing_combos.count + 1
+        listing_combos = listing.listing_combos.create(listing_combo_id: combo_id, position: position, quantity: quantity)
+      end
     end
   end
 

@@ -55,18 +55,33 @@ module StripeService::API
       padding_time_end = booking.end_on + @community.padding_time_after.to_i
       @transaction.transaction_items.each do |item|
         listing = item.listing
+        if listing.combo?
+          listing.listing_combos.each do |listing_combo|
+            listing_child = listing_combo.combo
+            listing_quantity = listing_child.available_quantity
+            new_quantity = listing_quantity - 1
+            new_quantity = new_quantity >= 0 ? new_quantity : 0
+            number_of_rent = listing_child.number_of_rent + 1
+            listing_child.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
+            update_padding_time(listing_child, padding_time_start, padding_time_end)
+          end
+        end
+
         listing_quantity = listing.available_quantity
         new_quantity = listing_quantity - item.quantity
         new_quantity = new_quantity >= 0 ? new_quantity : 0
         number_of_rent = listing.number_of_rent + item.quantity
-        item.listing.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
-        if listing.available_quantity == 0
-          @session[:booking] = {}
-          if listing.padding_time
-            listing.padding_time.update(start_date: padding_time_start, end_date: padding_time_end)
-          else
-            listing.create_padding_time(start_date: padding_time_start, end_date: padding_time_end)
-          end
+        listing.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
+        update_padding_time(listing, padding_time_start, padding_time_end)
+      end
+    end
+
+    def update_padding_time listing, padding_time_start, padding_time_end
+      if listing.available_quantity == 0
+        if listing.padding_time
+          listing.padding_time.update(start_date: padding_time_start, end_date: padding_time_end)
+        else
+          listing.create_padding_time(start_date: padding_time_start, end_date: padding_time_end)
         end
       end
     end

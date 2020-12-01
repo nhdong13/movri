@@ -72,7 +72,7 @@
 #  replacement_cents_fee           :integer          default(0)
 #  brand                           :string(255)
 #  number_of_rent                  :integer          default(0)
-#  listing_type                    :integer          default(0)
+#  listing_type                    :integer          default("single")
 #  mount                           :string(255)
 #  lens_type                       :string(255)
 #  compatibility                   :string(255)
@@ -155,6 +155,7 @@ class Listing < ApplicationRecord
 
   WIEGHT_TYPE = ['kg', 'pound']
   enum weight_type: { kg: 0, pound: 1 }
+  enum listing_type: [:single, :combo]
 
   attr_accessor :product_type,
                 :category_ids,
@@ -162,7 +163,8 @@ class Listing < ApplicationRecord
                 :country_of_origin,
                 :harmonized_code,
                 :province_of_origin,
-                :recommended_alternative_ids
+                :recommended_alternative_ids,
+                :listing_combo_ids
 
   include ApplicationHelper
   include ActionView::Helpers::TranslationHelper
@@ -176,6 +178,9 @@ class Listing < ApplicationRecord
   has_many :listing_accessories, through: :recommended_accessories
   has_many :recommended_alternatives, dependent: :destroy
   has_many :listing_alternatives, through: :recommended_alternatives
+  has_many :listing_combos, dependent: :destroy
+  has_many :combos, through: :listing_combos
+
   belongs_to :community
   belongs_to :author, :class_name => "Person", :foreign_key => "author_id", :inverse_of => :listings
   has_many :listing_images, -> { where("error IS NULL").order("position") }, :dependent => :destroy, :inverse_of => :listing

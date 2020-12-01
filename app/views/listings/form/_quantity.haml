@@ -12,5 +12,30 @@
   .col-6
     = form.label 'Incomming', 'Incomming'
     = form.label "0"
+.row
+  %span Products Connected
+  .listing-combos-list.listing-connected
+    .row.br-bottom
+      .col-7
+        %span Title
+      .col-2.center-items
+        Quantity
+      .col-2.center-items
+        Available
+      .col-1.p-0.m-0.center-items
+        Action
+    - @listing.listing_combos.order(position: :asc).each do |listing_combo|
+      - listing = listing_combo.combo
+      - if listing
+        %li.cursor-pointer.background.margin-bt-10{ 'data-id' => "#{listing.id}"}
+          .listing-combo-item.row.m-0.pl-0.pr-0
+            .col-7.items-style
+              = link_to listing.title, edit_listing_path(listing)
+            .col-2.center-items
+              = text_field_tag "listing_combo[quantity_#{listing.id}]", listing_combo.quantity
+            .col-2.center-items
+              %span= listing.available_quantity
+            .col-1.p-0.m-0.center-items
+              %i.icon-remove{ 'data-id' => "#{listing.id}" }
 
 = render 'listings/form/inventory_history_modal', versions: @listing.versions

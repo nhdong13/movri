@@ -576,10 +576,13 @@ Rails.application.routes.draw do
         delete :remove_user_manual
         post :add_accessories
         post :add_alternatives
+        post :add_listing_combos
         put :reorder_accessories
         put :reorder_alternatives
+        put :reorder_listing_combos
         put :remove_accessory
         put :remove_alternative
+        put :remove_listing_combo
         put :add_tab
         put :change_coverage_type
         get :get_price_base_on_duration
