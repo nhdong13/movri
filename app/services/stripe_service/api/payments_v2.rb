@@ -59,9 +59,9 @@ module StripeService::API
           listing.listing_combos.each do |listing_combo|
             listing_child = listing_combo.combo
             listing_quantity = listing_child.available_quantity
-            new_quantity = listing_quantity - 1
+            new_quantity = listing_quantity - listing_combo.quantity
             new_quantity = new_quantity >= 0 ? new_quantity : 0
-            number_of_rent = listing_child.number_of_rent + 1
+            number_of_rent = listing_child.number_of_rent + listing_combo.quantity
             listing_child.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
             update_padding_time(listing_child, padding_time_start, padding_time_end)
           end
