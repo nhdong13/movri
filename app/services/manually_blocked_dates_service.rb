@@ -79,6 +79,15 @@ module ManuallyBlockedDatesService
       blocked_dates.concat(get_blocked_dates_with_all_transactions(community, listing))
       blocked_dates.concat(get_blocked_dates_with_all_combo_listing_transactions(community, listing))
     end
+
+    if listing.combo?
+      listing.listing_combos.each do |listing_combo|
+        listing_item = listing_combo.combo
+        if listing_item.available_quantity < 1
+          blocked_dates.concat(get_blocked_dates_with_all_transactions(community, listing_item))
+        end
+      end
+    end
     blocked_dates
   end
 
