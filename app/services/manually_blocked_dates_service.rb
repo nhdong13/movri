@@ -54,7 +54,7 @@ module ManuallyBlockedDatesService
     listing_combos = ListingCombo.where(listing_combo_id: listing.id)
     blocking_dates = []
     listing_combos.each do |listing_combo|
-      listing_parent = listing_combo.listing
+      listing_parent = Listing.admin_index.find_by(id: listing_combo.listing_id)
       transactions = Transaction.joins(:transaction_items).where(transaction_items: {listing_id: listing_parent.id})
       transactions.select {|t| t.booking && t.booking.end_on >= Date.today}
       transactions.each do |transaction|
