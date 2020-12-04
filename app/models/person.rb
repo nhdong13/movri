@@ -304,7 +304,7 @@ class Person < ApplicationRecord
   end
 
   def get_email
-    emails.last.address
+    emails.any? ? emails.last.address : email
   end
 
   def last_community_updates_at
