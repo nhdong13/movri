@@ -1,7 +1,15 @@
-%tr.row.p-0.m-0
-  %td.assurance-image.col-8.p-3.pt-1.text-left
-    = link_to customer.fullname, admin_community_customer_path(community_id: @current_community.id, uuid: customer.id)
-  %td.col-1.p-3.pt-1
-    = "#{customer.completed_orders.count} #{customer.completed_orders.count == 1 ? "order" : "orders"}"
-  %td.col-3.p-3.pt-1.text-right
-    = "#{number_to_currency(customer.total_spent)} spent"
+%tr.row.p-0.m-0.customers-row
+  %td
+    = link_to customer.fullname, admin_community_customer_path(@current_community, customer.id)
+  %td
+    = customer.get_email
+  %td
+    = "#{customer.completed_orders.count} order(s) - #{number_to_currency(customer.total_spent)} spent"
+  %td
+    .center-items
+      = link_to 'Resend', send_confirmation_email_to_customer_admin_community_customer_path(@current_community, customer.id), remote: true
+      %i.fa.fa-check.hidden{'data-id': customer.id}
+  %td
+    .center-items
+      %i.fa.fa-times
+      -# # = link_to admin_community_customer_path(@current_community, customer.id), method: :delete, data: {confirm: "Are you sure?"}, remote: true do

@@ -25,6 +25,14 @@
     .body-section.p-1
       %table
         %thead
+          %tr
+            %th Customer Name
+            %th Email
+            %th Total Spent
+            %th
+              .center-items Confirmation Link
+            %th
+              .center-items Actions
         %tbody
           - @service.customers.each do |customer|
             = render 'customer', customer: customer

@@ -17,7 +17,7 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
       logger.error("Errors in adding new customer.")
       flash[:error] = t("layouts.notifications.add_new_customer_failed")
     end
-  
+
     redirect_to admin_community_customers_path(@current_community)
   end
 
@@ -45,8 +45,23 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
     render_not_found! unless @customer
   end
 
+  def send_confirmation_email_to_customer
+    @person = Person.find_by(id: params[:id])
+    email = @person.emails.last
+    SendgridMailer.new().send_confirmation_mail(email, @current_community)
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
+  def destroy
+    # person = Person.find_by(id: params[:id])
+    # person.destroy
+    # redirect_to admin_community_customers_path
+  end
+
   private
-  
+
   def set_selected_left_navi_link
     @selected_left_navi_link = "customers"
   end

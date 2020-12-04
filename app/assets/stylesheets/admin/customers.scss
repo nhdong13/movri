@@ -1,6 +1,6 @@
 .customer-page {
   &.customer-details-page {
-    
+
   }
   &.add-customer-form {
     .section {
@@ -34,3 +34,9 @@
 }
 
 
+.customers-row{
+  .fa-check{
+    position: relative;
+    margin: 0 3px;
+  }
+}

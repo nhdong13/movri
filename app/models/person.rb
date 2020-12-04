@@ -98,7 +98,7 @@ class Person < ApplicationRecord
   # This is in addition to a real persisted field like 'username'
   attr_accessor :login
 
-  has_many :listings, -> { exist }, :dependent => :destroy, :foreign_key => "author_id", :inverse_of => :author
+  has_many :listings, -> { exist }, :foreign_key => "author_id", :inverse_of => :author
   has_many :emails, :dependent => :destroy, :inverse_of => :person
 
   has_one :location, -> { where(location_type: :person) }, :dependent => :destroy, :inverse_of => :person
@@ -129,13 +129,13 @@ class Person < ApplicationRecord
   has_many :custom_checkbox_field_values, :class_name => "CheckboxFieldValue", :dependent => :destroy
   has_one :stripe_account, :dependent => :destroy
   has_one :paypal_account, :dependent => :destroy
-  has_many :starter_transactions, :class_name => "Transaction", :foreign_key => "starter_id", :dependent => :destroy, :inverse_of => :starter
+  has_many :starter_transactions, :class_name => "Transaction", :foreign_key => "starter_id", :inverse_of => :starter
   has_many :payer_stripe_payments, :class_name => "StripePayment", :foreign_key => "payer_id", :dependent => :destroy, :inverse_of => :payer
   has_many :receiver_stripe_payments, :class_name => "StripePayment", :foreign_key => "receiver_id", :dependent => :destroy, :inverse_of => :receiver
   has_many :transaction_addresses, :dependent => :destroy
   has_many :stripe_customers, :dependent => :destroy
   has_and_belongs_to_many :promo_codes_used, class_name: 'PromoCode', :dependent => :destroy
-  has_and_belongs_to_many :wish_lists, class_name: "Listing", join_table: "people_wish_lists"
+  has_and_belongs_to_many :wish_lists, class_name: "Listing", join_table: "people_wish_lists", dependent: :destroy
   accepts_nested_attributes_for :transaction_addresses
 
   deprecate communities: "Use accepted_community instead.",

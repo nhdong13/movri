@@ -450,7 +450,11 @@ Rails.application.routes.draw do
 
         resources :assurance_options, controller: :community_assurance_options, except: [:show]
         resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create, :edit, :update]
-        resources :customers, controller: :community_customers, only: [:index, :new, :create]
+        resources :customers, controller: :community_customers, only: [:index, :new, :create, :destroy] do
+          member do
+            get :send_confirmation_email_to_customer
+          end
+        end
         resources :customers, controller: :community_customers, param: :uuid, :only => [:show, :update]
         resources :pages, controller: :community_pages
         resources :taxes, controller: :community_taxes, only: [:index] do
