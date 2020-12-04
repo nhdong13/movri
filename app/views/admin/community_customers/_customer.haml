@@ -7,9 +7,5 @@
     = "#{customer.completed_orders.count} order(s) - #{number_to_currency(customer.total_spent)} spent"
   %td
     .center-items
-      = link_to 'Resend', send_confirmation_email_to_customer_admin_community_customer_path(@current_community, customer.id), remote: true
-      %i.fa.fa-check.hidden{'data-id': customer.id}
-  %td
-    .center-items
       %i.fa.fa-times
       -# # = link_to admin_community_customer_path(@current_community, customer.id), method: :delete, data: {confirm: "Are you sure?"}, remote: true do

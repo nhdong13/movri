@@ -65,12 +65,14 @@
           %th= t("admin.communities.manage_members.admin")
           %th= t("admin.communities.manage_members.ban_user")
           %th
+            Confirmation Link
+          %th
       %tbody
         - @presenter.memberships.each do |membership|
           - accepted_or_banned = membership.accepted? || membership.banned?
           - member = membership.person
           - unless member.blank?
-            %tr{class: "member-#{membership.status}"}
+            %tr.customers-row{class: "member-#{membership.status}"}
               %td.admin-members-full-name
                 = link_to @presenter.person_name(member), member
               %td
@@ -97,6 +99,9 @@
                     data: {ban_url: ban_admin_community_community_membership_path(@presenter.community.id, membership.id),
                     unban_url: unban_admin_community_community_membership_path(@presenter.community.id, membership.id)},
                     class: "admin-members-ban-toggle"
+              %td
+                = link_to 'Resend', send_confirmation_email_to_customer_admin_community_customer_path(@current_community, member.id), remote: true
+                %i.fa.fa-check.hidden{'data-id': member.id}
               %td.membership-actions
                 - edit_class = membership.banned?  ? 'is-disabled' : ''
                 %span{class: edit_class}
