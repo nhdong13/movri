@@ -11,7 +11,7 @@
         %label.margin-0.padding-15.label-radio-btn
           = radio_button_tag :address_type, 'billing_address', true
           %span Use a different billing address
-      - if @transaction.shipper.free?
+      - if @transaction.shipper && @transaction.shipper.free?
         .alert-warning#must-have-different-biiling-address.hidden Please add the different Billing Address
   .row
     .col-9.padding-0

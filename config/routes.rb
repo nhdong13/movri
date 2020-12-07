@@ -450,7 +450,7 @@ Rails.application.routes.draw do
 
         resources :assurance_options, controller: :community_assurance_options, except: [:show]
         resources :redirect_urls, controller: :community_redirect_urls, only: [:index, :new, :create, :edit, :update]
-        resources :customers, controller: :community_customers, only: [:index, :new, :create, :destroy] do
+        resources :customers, controller: :community_customers do
           member do
             get :send_confirmation_email_to_customer
           end

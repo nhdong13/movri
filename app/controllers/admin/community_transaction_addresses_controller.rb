@@ -20,11 +20,19 @@ class Admin::CommunityTransactionAddressesController < Admin::AdminBaseControlle
   end
 
   def create
-    if TransactionAddress.create(transaction_address_params)
+    address = TransactionAddress.new(transaction_address_params)
+    if address.save
       @address_type = transaction_address_params[:address_type] == 'shipping_address' ? 'default_shipping_address': 'default_billing_address'
       Person.find(transaction_address_params[:person_id]).update("#{@address_type}": TransactionAddress.last.id)
       @transaction_address = TransactionAddress.last
-
+      if params[:transaction_id]
+        transaction = Transaction.find_by(id: params[:transaction_id])
+        if address.shipping_address?
+          transaction.update(shipping_address_id: address&.id )
+        else
+          transaction.update(billing_address_id: address&.id )
+        end
+      end
       respond_to do |format|
         format.html { redirect_to admin_community_customer_path(params[:community_id], transaction_address_params[:person_id]) }
         format.js { render layout: false }

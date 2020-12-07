@@ -1,5 +1,5 @@
 class TransactionMoneyCalculation
-  def initialize(transaction, session, current_user)
+  def initialize(transaction, session, current_user, with_booking=true)
     @transaction = transaction
     @current_user = current_user
     @session = session
@@ -9,7 +9,11 @@ class TransactionMoneyCalculation
     if @transaction.booking
      @duration = @transaction.booking.duration
     else
-      @duration = @session[:booking] ? @session[:booking][:total_days] : 1
+      if with_booking
+        @duration = @session[:booking] ? @session[:booking][:total_days] : 1
+      else
+        @duration = 1
+      end
     end
   end
 
@@ -42,10 +46,15 @@ class TransactionMoneyCalculation
 
   def get_draft_order_price_cents_with_discount_code
     if @transaction.draft_order_discount_code
-      get_price_cents_for_all_products_cart - get_discount_for_draft_order(@transaction.draft_order_discount_code.discount_percent)
+      if @transaction.draft_order_discount_code.is_discount_percent?
+        price = get_price_cents_for_all_products_cart - get_discount_for_draft_order(@transaction.draft_order_discount_code.discount_percent)
+      else
+        price = get_price_cents_for_all_products_cart - @transaction.draft_order_discount_code.discount_value
+      end
     else
-      get_price_cents_for_all_products_cart
+      price = get_price_cents_for_all_products_cart
     end
+    price
   end
 
   def get_draft_order_price_cents_without_discount_code
@@ -94,7 +103,11 @@ class TransactionMoneyCalculation
 
   def calculate_price_cents_without_promo_code listing, quantity
     return 0 unless quantity
-    price_cents = PriceCalculationService.calculate(listing, @duration) * quantity
+    if @transaction && @transaction.draft_order?
+      price_cents = PriceCalculationService.calculate(listing, 1) * quantity
+    else
+      price_cents = PriceCalculationService.calculate(listing, @duration) * quantity
+    end
   end
 
   def price_with_promo_code price
@@ -116,8 +129,12 @@ class TransactionMoneyCalculation
 
   def listing_subtotal listing, quantity
     price_cents = calculate_price_cents_without_promo_code(listing, quantity)
-    total_coverage = listing.no_coverage? ? 0 : total_coverage(listing, quantity)
-    price_cents + total_coverage
+    if @transaction && @transaction.draft_order?
+      price_cents
+    else
+      total_coverage = listing.no_coverage? ? 0 : total_coverage(listing, quantity)
+      price_cents + total_coverage
+    end
   end
 
   def total_coverage listing, quantity

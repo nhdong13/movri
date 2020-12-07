@@ -19,4 +19,7 @@ class CustomItem < ApplicationRecord
   belongs_to :tx, class_name: 'Transaction'
   enum custom_item_type: [:is_listing, :is_discount, :is_shipping_fee]
 
+  def is_discount_percent?
+    discount_percent > 0
+  end
 end

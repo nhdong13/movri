@@ -180,14 +180,24 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   end
 
   def add_discount_to_draft_order
-    discount_percent = params[:discount_percent].to_i
-    custom_params = {
+    if params[:discount_type] == "percent"
+      custom_params = {
+        discount_percent: params[:discount_value].to_i,
+        discount_value: 0
+      }
+    else
+      custom_params = {
+        discount_value: params[:discount_value].to_i * 100,
+        discount_percent: 0
+      }
+    end
+    custom_params = custom_params.merge({
       name: 'discount_code',
       price_cents: params[:price].to_i * 100,
       note: params[:reason],
-      discount_percent: discount_percent,
       custom_item_type: 1,
-    }
+    })
+
     if @transaction.draft_order_discount_code
       @transaction.draft_order_discount_code.update(custom_params)
     else

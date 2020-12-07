@@ -8,9 +8,11 @@
 .col-12.content
   - if address.present?
     %p= "#{address&.first_name} #{address&.last_name}"
-    %p= address&.company.present? ? address.company : ''
+    %p= address&.company
     %p= address&.street1
-    %p= address&.country
-    %p= address&.phone
+    %p= address&.apartment
+    %p= "#{address&.city}, #{CANADA_PROVINCES.key(address&.state_or_province)}"
+    %p= "#{address&.country}, #{address&.postal_code}"
+    %p= address&.format_phone
   - else
     = "Shipping address not create yet"

@@ -335,21 +335,32 @@ $border-color: #E1E3E5;
   #discount-section {
     display: inline-flex;
 
-    .percent {
+    .draft-discount-percent {
+      cursor: pointer;
+      width: 50px;
       border-bottom-right-radius: 0px;
       border-top-right-radius: 0px;
     }
 
-    .price {
+    .draft-discount-value {
+      cursor: pointer;
+      width: 50px;
       border-radius: 0px;
     }
 
-    .price,
-    .percent {
+    .draft-discount-value,
+    .draft-discount-percent {
       background: linear-gradient(to bottom, white, #f9fafb);
       color: grey;
       border: 1px solid #9e9e9e;
       border-right: 0px !important;
+    }
+
+    .draft-discount-active{
+      color: white;
+      font-weight: bold;
+      background: #61bd4f;
+      border-color: #d4edda;
     }
 
     .price:hover,

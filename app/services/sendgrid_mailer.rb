@@ -16,12 +16,16 @@ class SendgridMailer
   CART_URL = "#{APP_CONFIG.smtp_email_domain}/cart"
   ROUTES_URL = APP_CONFIG.smtp_email_domain
 
-  def initialize(transaction=nil, session={}, current_user=nil)
+  def initialize(transaction=nil, session={}, current_user=nil, with_booking=true)
     @session = session
     @transaction = transaction
     @current_user = current_user
-    if @transaction
-      @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
+    if with_booking
+      if @transaction
+        @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
+      end
+    else
+      @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user, false)
     end
   end
 
@@ -454,14 +458,37 @@ class SendgridMailer
   end
 
 
-  def send_invoice_mail(to, subsitutions)
-    subsitutions = {order_number: 1, custom_message: 'Admin', total: '50', shipping: '6', taxes: '1', address: '46A Le trung nghia', city: 'Ho Chi Minh', state_province_region: 'Ho Chi Minh', postal_code: '700000', country: "Viet Nam"}
+  def send_invoice_mail(to, payment_path)
+    shipping_address = @transaction.shipping_address
+    billing_address = @transaction.billing_address
+    email_to = to
+    subsitutions = {
+      order_number: @transaction.id,
+      first_name: shipping_address.first_name,
+      last_name: shipping_address.last_name,
+      shipping_address_line_1: shipping_address.street1,
+      shipping_address_city: shipping_address.city,
+      shipping_address_state_province_region:  CANADA_PROVINCES.key(shipping_address.state_or_province),
+      shipping_address_postal_code: shipping_address.postal_code,
+      country: shipping_address.country,
+      billing_address_line_1: billing_address.street1,
+      billing_address_city: billing_address.city,
+      billing_address_state_province_region:  CANADA_PROVINCES.key(billing_address.state_or_province),
+      billing_address_postal_code: billing_address.postal_code,
+      shop_email: SERVICE_EMAIL,
+      Sender_Name: "Movri Admin",
+      link_complete_order: payment_path,
+      subtotal: to_CAD(@calculate_money_service.get_price_cents_for_all_products_cart),
+      tax_value: to_CAD(@transaction.tax_cents),
+      shipping_value: @transaction.draft_order_shipping_fee&.price_cents
+    }
+
     data = {
       "personalizations": [
         {
           "to": [
             {
-              "email": to
+              "email": email_to
             }
           ],
           "dynamic_template_data": subsitutions

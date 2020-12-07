@@ -13,7 +13,7 @@ module StripeService::API
     def create_payment_intent payment_method_id
       begin
         ActiveRecord::Base.transaction(:requires_new => true) do
-          update_available_quantity
+          @transaction.draft_order? ? update_available_quantity_for_draft_order : update_available_quantity
           customer = create_stripe_customer(payment_method_id)
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
@@ -25,8 +25,10 @@ module StripeService::API
           })
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
-          sendgridmailer.send_order_confirmed_mail
-          sendgridmailer.send_notification_to_admin
+          unless @transaction.draft_order?
+            sendgridmailer.send_order_confirmed_mail
+            sendgridmailer.send_notification_to_admin
+          end
           return {success: true}
         end
       rescue => e
@@ -73,6 +75,30 @@ module StripeService::API
         number_of_rent = listing.number_of_rent + item.quantity
         listing.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
         update_padding_time(listing, padding_time_start, padding_time_end)
+      end
+    end
+
+    def update_available_quantity_for_draft_order
+      @transaction.transaction_items.each do |item|
+        listing = item.listing
+        if listing
+          if listing.combo?
+            listing.listing_combos.each do |listing_combo|
+              listing_child = listing_combo.combo
+              listing_quantity = listing_child.available_quantity
+              new_quantity = listing_quantity - listing_combo.quantity
+              new_quantity = new_quantity >= 0 ? new_quantity : 0
+              number_of_rent = listing_child.number_of_rent + listing_combo.quantity
+              listing_child.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
+            end
+          end
+
+          listing_quantity = listing.available_quantity
+          new_quantity = listing_quantity - item.quantity
+          new_quantity = new_quantity >= 0 ? new_quantity : 0
+          number_of_rent = listing.number_of_rent + item.quantity
+          listing.update!(available_quantity: new_quantity, number_of_rent: number_of_rent)
+        end
       end
     end
 
@@ -129,7 +155,7 @@ module StripeService::API
           end
           @transaction.update(billing_address_id: @transaction_address.id, transaction_type: 0)
           @current_user.update(default_billing_address: @transaction_address.id) if @current_user && @current_user.billing_address.nil?
-          update_available_quantity
+          @transaction.draft_order? ? update_available_quantity_for_draft_order : update_available_quantity
           customer = create_stripe_customer(params[:stripe_payment_method_id])
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
@@ -141,8 +167,10 @@ module StripeService::API
           })
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
-          sendgridmailer.send_order_confirmed_mail
-          sendgridmailer.send_notification_to_admin
+          unless @transaction.draft_order?
+            sendgridmailer.send_order_confirmed_mail
+            sendgridmailer.send_notification_to_admin
+          end
           return {success: true}
         end
       rescue StandardError => e

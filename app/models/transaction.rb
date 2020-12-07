@@ -176,6 +176,7 @@ class Transaction < ApplicationRecord
   def update_payment_status
     if completed?
       paid!
+      normal_order!
       update(completed_at: DateTime.now)
     end
   end
@@ -438,7 +439,11 @@ class Transaction < ApplicationRecord
   end
 
   def shipping_method_label
-    will_pickup? ? 'Free' : "#{shipper.service_name} #{shipper.amount} #{shipper.currency}"
+    if draft_order?
+      draft_order_shipping_fee&.name
+    else
+      will_pickup? ? 'Free' : "#{shipper.service_name} #{shipper.amount} #{shipper.currency}"
+    end
   end
 
   def completed?

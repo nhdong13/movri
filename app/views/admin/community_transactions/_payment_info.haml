@@ -1,4 +1,4 @@
-- @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
+- @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user, false)
 #craft-order-product-list
   = render partial: 'admin/community_draft_orders/listings', locals: {transaction: transaction}
 .col-6.add-note
@@ -11,7 +11,10 @@
         %a.open-discount-modal Add discount
       %td
         - if transaction.draft_order_discount_code
-          %span.discount= money_to_humanized(@calculate_money.get_discount_for_draft_order(transaction.draft_order_discount_code.discount_percent))
+          - if transaction.draft_order_discount_code.is_discount_percent?
+            %span.discount= money_to_humanized(@calculate_money.get_discount_for_draft_order(transaction.draft_order_discount_code.discount_percent))
+          - else
+            %span.discount= money_to_humanized(transaction.draft_order_discount_code.discount_value)
           .reason
         - else
           %span.discount= "$ 0.0"
@@ -40,9 +43,19 @@
   .col-12.br-bottom.padding-bt-15.margin-t-15
     %p= "Discount this order by"
     #discount-section.width-100
-      %button.percent.margin-0= "%"
-      %button.price.margin-0= "$"
-      = number_field_tag :discount_percent, transaction.draft_order_discount_code&.discount_percent, placeholder: "$", step: 1
+      - if transaction.draft_order_discount_code
+        - if transaction.draft_order_discount_code.discount_percent > 0
+          - is_percent = true
+          - discount_value = transaction.draft_order_discount_code.discount_percent
+        - else
+          - is_percent = false
+          - discount_value = transaction.draft_order_discount_code.discount_value/100
+      - else
+        - is_percent = true
+        - discount_value = 0
+      .draft-discount-percent.margin-0.center-items{class: is_percent ? "draft-discount-active" : ""}= "%"
+      .draft-discount-value.margin-0.center-items{class: is_percent ? "" : "draft-discount-active"}= "$"
+      = number_field_tag :discount_percent, discount_value, placeholder: "$", step: 1
     %p.margin-top-5= "Reason"
     = text_field_tag :reason, transaction.draft_order_discount_code&.note, placeholder: "Damage item, loyalty discount"
   .col-12

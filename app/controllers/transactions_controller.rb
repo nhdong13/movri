@@ -461,7 +461,11 @@ class TransactionsController < ApplicationController
         @billing_address = TransactionAddress.new
       end
     end
-    @default_shipping_fee = @transaction.shipper.amount
+    if @transaction.draft_order?
+      @default_shipping_fee = @transaction.draft_order_shipping_fee&.price_cents
+    else
+      @default_shipping_fee = @transaction.shipper.amount
+    end
   end
 
   def thank_you

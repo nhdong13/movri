@@ -44,11 +44,16 @@ class Admin::PersonCustomFieldsController < Admin::AdminBaseController
 
   def person_information
     person = Person.find(params[:id])
-
+    transaction = Transaction.find_by(id: params[:transaction_id])
+    shipping_address = person&.shipping_address
+    billing_address = person&.billing_address
+    transaction.update(shipping_address_id: shipping_address&.id)
+    transaction.update(billing_address_id: billing_address&.id)
     @person_information = {
       person: person,
-      shipping_address: person&.shipping_address,
-      billing_address: person&.billing_address
+      shipping_address: shipping_address,
+      billing_address: billing_address,
+      transaction: transaction
     }
 
     respond_to do |format|

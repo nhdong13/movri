@@ -19,7 +19,9 @@ class Admin::CustomersService
   end
 
   def update
-    resource_scope.update(customer_params[:person])
+    person = resource_scope.find_by(id: params[:id])
+    person.update(customer_params[:person])
+    person.active_email.update(address: customer_params[:person][:email]) if customer_params[:person][:email].present?
   end
 
   private

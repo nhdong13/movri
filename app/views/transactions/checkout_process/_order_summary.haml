@@ -29,7 +29,10 @@
                   = money_to_humanized(listing_subtotal)
                 %span.day-rent
                   \/
-                  = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
+                  - if transaction.draft_order?
+                    %span 1 Day Rental
+                  - else
+                    = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
   .row
     .col-12
       .order-summary-prices
@@ -42,14 +45,23 @@
             %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
         .shipping-fee.items
           %span= t('transactions.label.shipping')
-          - shipping_fee = default_shipping_fee ? PriceCalculationService.to_cents(default_shipping_fee) : 0
-          - if transaction.shipper
-            %span= transaction.shipper.amount
+          - if transaction.draft_order?
+            %span= money_to_humanized(transaction.draft_order_shipping_fee&.price_cents)
           - else
-            %span= shipping_fee > 0 ? money_to_humanized(shipping_fee) : t('transactions.label.tbd')
+            - shipping_fee = default_shipping_fee ? PriceCalculationService.to_cents(default_shipping_fee) : 0
+            - if transaction.shipper
+              %span= transaction.shipper.amount
+            - else
+              %span= shipping_fee > 0 ? money_to_humanized(shipping_fee) : t('transactions.label.tbd')
         .tax-fee.items
           %span= t('transactions.label.tax')
-          %span= money_to_humanized(@calculate_money.get_tax_fee(state, shipping_fee))
+          - if transaction.draft_order?
+            %span= money_to_humanized(transaction.tax_cents)
+          - else
+            %span= money_to_humanized(@calculate_money.get_tax_fee(state, shipping_fee))
         .price-with-all-fee.items
           %span= t('transactions.label.total_with_tax')
-          %span= money_to_humanized(@calculate_money.final_price(state, shipping_fee))
+          - if transaction.draft_order?
+            %span= money_to_humanized((@calculate_money.get_final_price_for_draft_order))
+          - else
+            %span= money_to_humanized(@calculate_money.final_price(state, shipping_fee))

@@ -13,22 +13,25 @@
   %tbody
   - transaction.transaction_items.each do |item|
     - listing = item.listing
-    %tr{'data-id': item.id}
-      %td.w-5.padding-0
-        = hidden_field_tag "id", listing.id, class: "ids"
-        = image_tag(listing.main_image)
-      %td.w-45.padding-0
-        = listing.title
-      %td
-        = text_field_tag 'price', to_CAD(item.price_cents), class: 'craft-order-price'
-      %td
-        = "x"
-      %td
-        = text_field_tag 'quantity', item.quantity, class: 'craft-order-quantity'
-      %td.total-price
-        = money_to_humanized(item.price_cents * item.quantity)
-      %td
-        %i.icon-times.remove-draft-listing-item
+    - if listing
+      %tr{'data-id': item.id}
+        %td.w-5.padding-0
+          = hidden_field_tag "id", listing.id, class: "ids"
+          = image_tag(listing.main_image)
+        %td.w-45.padding-0
+          = listing.title
+        %td
+          = text_field_tag 'price', to_CAD(item.price_cents), class: 'craft-order-price'
+        %td
+          = "x"
+        %td
+          = text_field_tag 'quantity', item.quantity, class: 'craft-order-quantity'
+        %td.total-price
+          = money_to_humanized(item.price_cents * item.quantity)
+        %td
+          %i.icon-times.remove-draft-listing-item
+    - else
+      %p No listing available
   - transaction.custom_items.is_listing.each do |item|
     %tr{'data-id': item.id}
       %td.w-5.padding-0

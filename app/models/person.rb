@@ -307,6 +307,10 @@ class Person < ApplicationRecord
     emails.any? ? emails.last.address : email
   end
 
+  def active_email
+    emails.last
+  end
+
   def last_community_updates_at
     community_updates_last_sent_at || DEFAULT_TIME_FOR_COMMUNITY_UPDATES.ago
   end

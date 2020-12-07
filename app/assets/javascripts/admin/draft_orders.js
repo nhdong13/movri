@@ -38,11 +38,14 @@ $.getJSON("/admin/user_fields/person_profile", function(data) {
       if (ui.item.button) {
         event.preventDefault();
       } else {
+        transaction_id = $('#draft_order_id').data("id");
+
         $.ajax({
           url: "/admin/user_fields/person_information.js",
           method: "GET",
           data: {
-            id: ui.item.id
+            id: ui.item.id,
+            transaction_id: transaction_id
           },
           complete: function(){
             $('#craft-order-product-list .icon-times').on('click', function(e){
@@ -100,11 +103,9 @@ $.getJSON("/admin/communities/1/listings", function(data) {
 })
 
 $('#review-email').on('click', function(){
-  var data = {
-    receiver: $('#receiver').val(),
-    sender: $('#sender').val(),
-    subject: $('#subject').val(),
-    custom_message: $('#custom_message').val()
+  transaction_id = $('#draft_order_id').data("id");
+  data = {
+    transaction_id: transaction_id
   }
 
   $.ajax({
@@ -114,9 +115,11 @@ $('#review-email').on('click', function(){
 })
 
 $('#send-notification').on('click', function(){
-  var data = {
+  transaction_id = $('#draft_order_id').data("id");
+  data = {
     to: $('#receiver').val(),
-    person_id: $('#person_id').val()
+    person_id: $('#person_id').val(),
+    transaction_id: transaction_id
   }
 
   $.ajax({
@@ -206,7 +209,6 @@ $('body').on('click', '.remove-draft-custom-item', function(e){
 });
 
 $('.add-to-order-button').on('click', function(){
-
   var ids = []
 
   $('.products input:checked').map(function(i, el){
@@ -259,21 +261,38 @@ $("body").on('click', '.remove-draft-order-discount', function() {
 
 // add discount to draft order
 $("body").on('click', '.add-discount-btn', function() {
-  var discount_percent = $('#discount_percent').val()
-  var reason = $('#reason').val()
-  var transaction_id = $('#draft_order_id').data("id");
+  discount_value = $('#discount_percent').val()
+  reason = $('#reason').val()
+  transaction_id = $('#draft_order_id').data("id");
+  if($('.draft-discount-percent').hasClass('draft-discount-active')){
+    discount_type = 'percent'
+  }else{
+    discount_type = 'value'
+  }
+
   $.ajax({
     url: "/admin/communities/1/transactions/add_discount_to_draft_order.js",
     method: "POST",
     data: {
-      discount_percent: discount_percent,
+      discount_value: discount_value,
       reason: reason,
-      transaction_id:  transaction_id
+      transaction_id:  transaction_id,
+      discount_type: discount_type
     },
   })
 
   $('.remove').removeClass('dp-none')
   $('.close').addClass('dp-none')
+})
+
+// add discount to draft order
+$("body").on('click', '.draft-discount-percent, .draft-discount-value', function() {
+  if($(this).hasClass("draft-discount-active")){
+
+  }else{
+    $('.draft-discount-percent, .draft-discount-value').removeClass('draft-discount-active')
+    $(this).addClass('draft-discount-active')
+  }
 })
 
 $("body").on('click', '.open-discount-modal', function() {
@@ -308,6 +327,20 @@ $('body').on('click', '#shipping_false', function(){
 $('body').on('click', '#shipping_true', function(){
    $('#custom_rate_name').attr({disabled: true})
   $('#shipping_price').attr({disabled: true})
+})
+
+$('body').on('click', '#update-customer-email', function(){
+  email = $('#new_person_email').val()
+  person_id = $('#edit_email_person_id').val()
+  $.ajax({
+    url: `/admin/communities/1/customers/${person_id}.js`,
+    method: "PUT",
+    data: {
+      person: {
+        email: email
+      }
+    },
+  })
 })
 
 $('body').on('click', '.add-shipping', function(){
