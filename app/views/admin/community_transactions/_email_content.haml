@@ -75,7 +75,7 @@
         %p= "#{shipping_address&.country}, #{shipping_address&.postal_code}"
         %p= shipping_address&.format_phone
       - else
-        %span Shipping address not create yet
+        .alert-warning Please add shipping address before send this email to customer.
     .col-6
       %p= "Billing Address"
       - billing_address = transaction.billing_address
