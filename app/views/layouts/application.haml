@@ -4,32 +4,6 @@
 %script{src: "https://cdn.jsdelivr.net/npm/algoliasearch@4.0.0/dist/algoliasearch-lite.umd.js", integrity: "sha256-MfeKq2Aw9VAkaE9Caes2NOxQf6vUa8Av0JqcUXUGkd0=", crossorigin: "anonymous"}
 %script{src: "https://cdn.jsdelivr.net/npm/instantsearch.js@4.0.0/dist/instantsearch.production.min.js",integrity: "sha256-6S7q0JJs/Kx4kb/fv0oMjS855QTz5Rc2hh9AkIUjUsk=", crossorigin: "anonymous"}
 %link{rel: "stylesheet", type:"text/css", href: "#{CustomStyle.last ? CustomStyle.last.style_file.url : ""}"}
--# :javascript
--#   "use strict";
-
--#   !function() {
--#     var t = window.driftt = window.drift = window.driftt || [];
--#     if (!t.init) {
--#       if (t.invoked) return void (window.console && console.error && console.error("Drift snippet included twice."));
--#       t.invoked = !0, t.methods = [ "identify", "config", "track", "reset", "debug", "show", "ping", "page", "hide", "off", "on" ],
--#       t.factory = function(e) {
--#         return function() {
--#           var n = Array.prototype.slice.call(arguments);
--#           return n.unshift(e), t.push(n), t;
--#         };
--#       }, t.methods.forEach(function(e) {
--#         t[e] = t.factory(e);
--#       }), t.load = function(t) {
--#         var e = 3e5, n = Math.ceil(new Date() / e) * e, o = document.createElement("script");
--#         o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js";
--#         var i = document.getElementsByTagName("script")[0];
--#         i.parentNode.insertBefore(o, i);
--#       };
--#     }
--#   }();
--#   drift.SNIPPET_VERSION = '0.3.1';
--#   drift.load('#{APP_CONFIG.DRIFT_APP_ID}');
-
 :javascript
   var algolia_application_id = '#{APP_CONFIG.algolia_application_id}';
   var algolia_search_only_api_key = '#{APP_CONFIG.algolia_search_only_api_key}';
@@ -166,4 +140,5 @@
     = render :partial => 'analytics/bottom_scripts'
 
     = render :partial => "layouts/noscript"
-  <script src="//code.tidio.co/odgzpymvscz4zfiooyaywiszfok34qz7.js" async></script>
+  - if Rails.env.production?
+    <script src="//code.tidio.co/odgzpymvscz4zfiooyaywiszfok34qz7.js" async></script>
