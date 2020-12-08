@@ -176,7 +176,6 @@ class Transaction < ApplicationRecord
   def update_payment_status
     if completed?
       paid!
-      normal_order!
       update(completed_at: DateTime.now)
     end
   end
@@ -427,6 +426,7 @@ class Transaction < ApplicationRecord
     quantity = 0
     return quantity unless transaction_items.any?
     transaction_items.map { |item| quantity += item.quantity}
+    custom_items.is_listing.map { |item| quantity += item.quantity}
     quantity
   end
 

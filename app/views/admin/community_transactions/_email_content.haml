@@ -1,3 +1,4 @@
+- transaction = email_params[:transaction]
 - @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user, false)
 
 .col-12.from.br-bottom
@@ -9,12 +10,12 @@
   .col-4
     %span= "To:"
   .col-8
-    %span
+    %span= email_params[:email_to]
 .col-12.subject
   .col-4
     %span= "Subject:"
   .col-8
-    %span
+    %span Complete your purchase
 .col-12.email-content
   .row.br-bottom
     .col-12
@@ -23,7 +24,7 @@
     .col-12
       %h2.left= "Complete your purchase"
     .col-12
-      %span
+      %span= email_params[:custom_message]
     .col-12
       %button.button.dp-inline= "Complete your purchase"
       %span= "or"

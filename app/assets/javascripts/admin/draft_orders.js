@@ -105,7 +105,9 @@ $.getJSON("/admin/communities/1/listings", function(data) {
 $('#review-email').on('click', function(){
   transaction_id = $('#draft_order_id').data("id");
   data = {
-    transaction_id: transaction_id
+    transaction_id: transaction_id,
+    to: $('#receiver').val(),
+    custom_message: $('#custom_message').val(),
   }
 
   $.ajax({
@@ -118,6 +120,7 @@ $('#send-notification').on('click', function(){
   transaction_id = $('#draft_order_id').data("id");
   data = {
     to: $('#receiver').val(),
+    custom_message: $('#custom_message').val(),
     person_id: $('#person_id').val(),
     transaction_id: transaction_id
   }

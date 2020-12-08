@@ -33,16 +33,49 @@
                     %span 1 Day Rental
                   - else
                     = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
+    - transaction.custom_items.is_listing.each do |item|
+      .row
+        .col-12
+          .listing-row
+            .main-image
+              = image_tag "missing_image.png", :class => "design-image-too-wide"
+            .listing-information
+              .listing-title.cut-text
+                %span= item.name
+              .sku-quantity
+                .quantity
+                  %span= "#{t('transactions.label.quantity')}:"
+                  %span= item.quantity
+              .price
+                %span.number-price
+                  -# with coverage fee
+                  - listing_subtotal = @calculate_money.listing_subtotal(item, item.quantity)
+                  = money_to_humanized(listing_subtotal)
+                %span.day-rent
+                  \/
+                  %span 1 Day Rental
   .row
     .col-12
       .order-summary-prices
         .subtotal.items
           %span= t('transactions.label.subtotal')
           %span= money_to_humanized(@calculate_money.listings_subtotal)
-        - if transaction.promo_code
-          .promo-code-discount.items
-            %span= "Promo Code (#{transaction.promo_code.code})"
-            %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
+
+        - if transaction.draft_order?
+          - if transaction.draft_order_discount_code
+            - if transaction.draft_order_discount_code.is_discount_percent?
+              .promo-code-discount.items
+                %span= "Promo Code"
+                %span= "- #{money_to_humanized(@calculate_money.get_discount_for_draft_order(transaction.draft_order_discount_code.discount_percent))}"
+            - else
+              .promo-code-discount.items
+                %span= "Promo Code"
+                %span= "- #{money_to_humanized(transaction.draft_order_discount_code.discount_value)}"
+        - else
+          - if transaction.promo_code
+            .promo-code-discount.items
+              %span= "Promo Code (#{transaction.promo_code.code})"
+              %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
         .shipping-fee.items
           %span= t('transactions.label.shipping')
           - if transaction.draft_order?

@@ -6,8 +6,13 @@ module StripeService::API
       @transaction = transaction
       @current_user = current_user
       Stripe.api_key = APP_CONFIG.stripe_api_secret_key
-      @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
-      @amount = @calculate_money_service.final_price
+      if @transaction.draft_order?
+        @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user, false)
+        @amount = @calculate_money_service.get_final_price_for_draft_order.to_i
+      else
+        @calculate_money_service = TransactionMoneyCalculation.new(@transaction, @session, @current_user)
+        @amount = @calculate_money_service.final_price
+      end
     end
 
     def create_payment_intent payment_method_id
@@ -146,7 +151,6 @@ module StripeService::API
     def processing_billing_address_and_payment_intent params, transaction_address_params
       begin
         ActiveRecord::Base.transaction do
-          amount = @calculate_money_service.final_price
           if params[:billing_address_id].present?
             @transaction_address = TransactionAddress.find_by(id: params[:billing_address_id])
             @transaction_address.update(transaction_address_params)

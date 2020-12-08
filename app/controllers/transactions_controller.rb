@@ -463,6 +463,7 @@ class TransactionsController < ApplicationController
     end
     if @transaction.draft_order?
       @default_shipping_fee = @transaction.draft_order_shipping_fee&.price_cents
+      @billing_address = @transaction.billing_address
     else
       @default_shipping_fee = @transaction.shipper.amount
     end
@@ -472,7 +473,12 @@ class TransactionsController < ApplicationController
     @shipping_address = @transaction.shipping_address
     @billing_address = @transaction.billing_address
     @state = @transaction.shipping_address.state_or_province
-    @default_shipping_fee = @transaction.shipper.amount
+    if @transaction.draft_order?
+      @default_shipping_fee = @transaction.draft_order_shipping_fee&.price_cents
+      @billing_address = @transaction.billing_address
+    else
+      @default_shipping_fee = @transaction.shipper.amount
+    end
     @helping_request = @transaction.helping_requests.build
   end
 

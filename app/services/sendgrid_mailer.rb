@@ -6,7 +6,7 @@ class SendgridMailer
   ORDER_RETURN_REMINDER_TEMPLATE_ID = 'd-709940f55b9c41d0bf1af567bbfa5dc5'
   ORDER_RECEIVED_TEMPLATE_ID = 'd-cb16da8e31174951b37a1a7e44ad3ac7'
   PAYMENT_ERROR_EMAIL_TEMPLATE_ID = 'd-1f7a88f66cf143d0a78dedbe752bad6c'
-  ORDER_INVOICE_EMAIL_TEMPLATE_ID = 'd-09d81bdc6e4b4b5f8f234afa7197b519'
+  ORDER_INVOICE_EMAIL_TEMPLATE_ID = 'd-8dba831c641d4d89a687a907d69f791b'
   REFUND_NOTIFICATION_EMAIL_TEMPLATE_ID = 'd-3c4452e2cf4b4d49a05fc40a478d3688'
   ORDER_CANCELLED_EMAIL_TEMPLATE_ID = 'd-28c1411907e64eb88fade388ca33b696'
   ORDER_DELIVERED_TEMPLATE_ID = 'd-ecf7fd441f6b467d81c1c758a5bff3c8'
@@ -313,6 +313,18 @@ class SendgridMailer
     list_products
   end
 
+  def get_custom_items_from_transaction
+    list_items = []
+    @transaction.custom_items.is_listing.each do |item|
+      list_items.push({
+        title: item.name,
+        amount: to_CAD(item.price_cents),
+        quantity: item.quantity,
+      })
+    end
+    list_items
+  end
+
   def get_data_from_transaction
     promo_code = @transaction.promo_code ? @transaction.promo_code.code : ""
     booking = @transaction.booking
@@ -405,6 +417,7 @@ class SendgridMailer
   end
 
   def send_order_confirmed_mail
+
     shipping_address = @transaction.shipping_address
     billing_address = @transaction.billing_address
     email_to = shipping_address.email
@@ -458,11 +471,33 @@ class SendgridMailer
   end
 
 
-  def send_invoice_mail(to, payment_path)
+  def get_discount_code_for_draft_order
+    promo_code = {code: "", value: 0}
+    if @transaction.draft_order_discount_code
+      if @transaction.draft_order_discount_code.is_discount_percent?
+
+          promo_code = {
+            code: "",
+            value: to_CAD(@calculate_money_service.get_discount_for_draft_order(@transaction.draft_order_discount_code.discount_percent))
+          }
+      else
+        promo_code = {
+          code: "",
+          value: to_CAD(@transaction.draft_order_discount_code.discount_value)
+        }
+      end
+    end
+    promo_code
+  end
+
+  def send_invoice_mail(to, custom_message, payment_path)
     shipping_address = @transaction.shipping_address
     billing_address = @transaction.billing_address
     email_to = to
+    promo_code = get_discount_code_for_draft_order()
     subsitutions = {
+      discount_code: promo_code[:code],
+      discount_value: promo_code[:value],
       order_number: @transaction.id,
       first_name: shipping_address.first_name,
       last_name: shipping_address.last_name,
@@ -480,7 +515,16 @@ class SendgridMailer
       link_complete_order: payment_path,
       subtotal: to_CAD(@calculate_money_service.get_price_cents_for_all_products_cart),
       tax_value: to_CAD(@transaction.tax_cents),
-      shipping_value: @transaction.draft_order_shipping_fee&.price_cents
+      shipping_value: to_CAD(@transaction.draft_order_shipping_fee&.price_cents),
+      total_value: to_CAD(@calculate_money_service.get_final_price_for_draft_order),
+      shop: {
+        url: ROUTES_URL
+      },
+      custom_message: custom_message,
+      item: {
+        products: get_items_from_transaction(),
+        custom_items: get_custom_items_from_transaction()
+      },
     }
 
     data = {

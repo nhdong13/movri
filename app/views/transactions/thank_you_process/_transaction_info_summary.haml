@@ -17,10 +17,13 @@
                 %span Canada
                 %span.phone-input.margin-bt-20= @shipping_address.format_phone
                 %span.label-title Shipping method
-                - if @transaction.will_pickup?
-                  %span Free
+                - if @transaction.draft_order?
+                  %span= @transaction.draft_order_shipping_fee&.name
                 - else
-                  %span= @transaction.shipper.service_name
+                  - if @transaction.will_pickup?
+                    %span Free
+                  - else
+                    %span= @transaction.shipper.service_name
               .width-50
                 %span.label-title Billing Address
                 %span= @billing_address.fullname

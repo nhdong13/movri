@@ -104,7 +104,7 @@ class TransactionMoneyCalculation
   def calculate_price_cents_without_promo_code listing, quantity
     return 0 unless quantity
     if @transaction && @transaction.draft_order?
-      price_cents = PriceCalculationService.calculate(listing, 1) * quantity
+      price_cents = listing.price_cents * quantity
     else
       price_cents = PriceCalculationService.calculate(listing, @duration) * quantity
     end
@@ -120,11 +120,15 @@ class TransactionMoneyCalculation
 
   # this value is including coverage
   def listings_subtotal
-    listings_subtotal = 0
+    listings_subtotal_value = 0
     @transaction.transaction_items.each do |item|
-      listings_subtotal += listing_subtotal(item, item.quantity)
+      listings_subtotal_value += listing_subtotal(item, item.quantity)
     end
-    listings_subtotal
+
+    @transaction.custom_items.is_listing.each do |item|
+      listings_subtotal_value += listing_subtotal(item, item.quantity)
+    end
+    listings_subtotal_value
   end
 
   def listing_subtotal listing, quantity

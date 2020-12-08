@@ -1,1 +1,1 @@
-$(".invoice-email-content").html("<%= j render(partial: '/admin/community_transactions/email_content', locals: {transaction: @transaction}) %>");
+$(".invoice-email-content").html("<%= j render(partial: '/admin/community_transactions/email_content', locals: {email_params: @email_params}) %>");

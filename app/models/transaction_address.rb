@@ -92,7 +92,7 @@ class TransactionAddress < ApplicationRecord
   end
 
   def format_postal_code
-    return unless postal_code
+    return unless postal_code.present?
     code_arr = postal_code.split("")
     "#{code_arr[0..2].join()} #{code_arr[3..5].join()}"
   end

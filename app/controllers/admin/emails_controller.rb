@@ -29,6 +29,13 @@ class Admin::EmailsController < Admin::AdminBaseController
 
   def review_email
     @transaction = Transaction.find_by(id: params[:transaction_id])
+    email_to = params[:to]
+    custom_message = params[:custom_message]
+    @email_params = {
+      transaction: @transaction,
+      email_to:  email_to,
+      custom_message: custom_message
+    }
 
     respond_to do |format|
       format.js { render layout: false }
@@ -38,7 +45,8 @@ class Admin::EmailsController < Admin::AdminBaseController
   def sent_invoice_email
     transaction = Transaction.find_by(id: params[:transaction_id])
     payment_path =  payment_transaction_url(transaction.uuid_object)
-    SendgridMailer.new(transaction, nil, nil, false).send_invoice_mail(params[:to], payment_path)
+    custom_message =  params[:custom_message]
+    SendgridMailer.new(transaction, nil, nil, false).send_invoice_mail(params[:to], custom_message, payment_path)
   end
 
   protected
