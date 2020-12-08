@@ -45,6 +45,7 @@ class Admin::PersonCustomFieldsController < Admin::AdminBaseController
   def person_information
     person = Person.find(params[:id])
     transaction = Transaction.find_by(id: params[:transaction_id])
+    transaction.starter = person
     shipping_address = person&.shipping_address
     billing_address = person&.billing_address
     transaction.update(shipping_address_id: shipping_address&.id)
