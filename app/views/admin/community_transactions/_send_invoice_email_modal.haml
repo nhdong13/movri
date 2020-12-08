@@ -5,9 +5,9 @@
     .col-6
       %span= "To"
       = text_field_tag 'receiver'
-    .col-6  
+    .col-6
       %span= "From"
-      = select_tag 'sender', options_for_select([DEFAULT_ADMIN_EMAIL]), class: "width-100"
+      = select_tag 'sender', options_for_select([SERVICE_EMAIL]), class: "width-100"
 
     .col-12
       %span= "Subject"
