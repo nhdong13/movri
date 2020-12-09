@@ -47,6 +47,6 @@ class Admin::CommunityTransactionAddressesController < Admin::AdminBaseControlle
   end
 
   def transaction_address_params
-    params.require(:transaction_address).permit(:address_type, :person_id, :transaction_id, :first_name, :last_name, :company, :street1, :city, :phone, :apartment, :country, :postal_code)
+    params.require(:transaction_address).permit(:address_type, :person_id, :transaction_id, :first_name, :last_name, :company, :street1, :city, :phone, :apartment, :country, :postal_code, :state_or_province)
   end
 end
