@@ -520,4 +520,8 @@ class Transaction < ApplicationRecord
   def completed_at_to_PTS
     completed_at ? completed_at.in_time_zone("Pacific Time (US & Canada)").to_formatted_s(:long) : updated_at.in_time_zone("Pacific Time (US & Canada)").to_formatted_s(:long)
   end
+
+  def refund?
+    stripe_payments.any? && stripe_payments.refund.any?
+  end
 end

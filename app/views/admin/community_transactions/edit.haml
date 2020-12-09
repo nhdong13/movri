@@ -24,9 +24,13 @@
         .state-label{class: @order.fulfilled? ? 'fulfilled-state-label' : 'unfulfilled-state-label' }
           %i.fa.fa-circle-o
           %span= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
+        - if @order.refund?
+          .state-label.refund-state-label
+            %i.fa.fa-reply
+            %span Refund
         - if @order.draft_order?
           .state-label.draft-order-label
-            %i.fa.fa-circle-o
+            %i.fa.fa-certificate
             %span Draft order
     .row
       .col-12

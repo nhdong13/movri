@@ -343,6 +343,7 @@ class SendgridMailer
   end
 
   def send_refund_notification_mail refund_value
+    return if @transaction.draft_order?
     shipping_address = @transaction.shipping_address
     email_to = shipping_address.email
 

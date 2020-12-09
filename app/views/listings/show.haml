@@ -103,9 +103,6 @@
   .mobile-display
     = render partial: 'listings/mobile_designs/recommended_accessories'
     = render partial: 'listings/mobile_designs/recommended_alternatives'
-  .mobile-display
-    .recently_viewed
-      = render partial: 'listings/mobile_designs/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
   .desktop-display
     = render partial: 'listings/desktop_designs/specifications'
   .mobile-display
@@ -114,6 +111,9 @@
   .row.desktop-display
     .recently_viewed
       = render partial: 'listings/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
+  .mobile-display
+    .recently_viewed
+      = render partial: 'listings/mobile_designs/viewed_slide_show', locals: {title: 'Recently Viewed', el: 'recently-viewed'}
 
   .desktop-display
     .row#listing-title-fixed

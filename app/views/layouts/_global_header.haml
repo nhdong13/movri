@@ -17,7 +17,6 @@
         .col-3.m-0.p-0
           .header-right
             .info-header-text.display-inline-flex.mr-2
-              = image_tag("mf_icons/icon-movri-info.svg", class: 'header-menu-icon icon-movri-info')
               = link_to faq_setting['link'], {style: "color: #{faq_setting['text_color'] || '#959698'} !important;background-color:  #{faq_setting['background_color'] || '#e8e9ea'} !important;"} do
                 = faq_setting['text']&.html_safe
           .header-right{style: "color: #{contact_us_setting['text_color'] || '#959698'} !important;background-color:  #{contact_us_setting['background_color'] || '#e8e9ea'} !important;"}
@@ -29,7 +28,7 @@
               .smbold{style: "color: #{phone_number_setting['text_color'] || '#959698'} !important;background-color:  #{phone_number_setting['background_color'] || '#e8e9ea'} !important;"}
                 = link_to phone_number_setting['link'], {style: "color: #{phone_number_setting['text_color'] || '#959698'}"} do
                   = phone_number_setting['phone_number']
-      
+
 
   %header.header.main-header
     .header-wrapper.header-nav.clearfix
@@ -73,7 +72,7 @@
                 - session[:cart] ||= {}
                 = session[:cart].values.sum
               %strong
-                = "View Cart"
+                = "My Cart"
               %i.icon-chevron-down
             = render :partial => "layouts/header_cart", locals: { locale_change_links: locale_change_links, icons: icons}
 

@@ -33,6 +33,11 @@
         .state-label.cacelled-state-label
           %i.fa.fa-ban
           %span Cancelled
+    .order-label-state
+      - if order.refund?
+        .state-label.refund-state-label
+          %i.fa.fa-reply
+          %span Refund
   %td
     = money_to_humanized(TransactionMoneyCalculation.new(order, session, @current_user).final_price)
   %td
