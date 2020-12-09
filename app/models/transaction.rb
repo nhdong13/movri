@@ -522,6 +522,6 @@ class Transaction < ApplicationRecord
   end
 
   def refund?
-    stripe_payments.any? && stripe_payments.refund.any?
+    stripe_payments.any? && (stripe_payments.refund.any? || stripe_payments.cancel.any?)
   end
 end
