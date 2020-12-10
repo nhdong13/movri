@@ -1,9 +1,0 @@
-.order-items
-  = form_for @order, url: {controller: "admin/community_draft_orders", action: :update} do |form|
-    %h3= "#{@order.status.capitalize}  (#{@order.transaction_items.size})"
-    .order-item
-      - @order.transaction_items.each do |transaction_item|
-        = render 'order_item', transaction_item: transaction_item
-    - unless @order.fulfilled?
-      = hidden_field_tag 'transaction[current_state]', 'fulfilled'
-      = form.submit 'Mark as fulfilled', class: "button mark-fulfilled-button"

@@ -1,49 +1,60 @@
+= javascript_include_tag "#{STRIPE_JS_HOST}/v3/"
 = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
-.left-navi-section#edit-orders-info
-  .row
-    .col-12
-      %a{href: admin_community_draft_orders_path(@current_community)}
-        %i.icon-chevron-left
-        %span= "Orders"
-  .row
-    .col-12.overall-status
-      %span.id= "##{@order.id}"
-      %span.created-date= @order.created_at.to_formatted_s(:long)
-      %span= "from Draft Orders"
-      %span.payment-process{class: (@order.paid? ? "pending-span" : "grey-span")}
-        %i.icon-circle= @order.payment_process.capitalize
-      %span.current-state{class: (@order.fulfilled? ? "grey-span" : "unfulfilled-span")}
-        %i.icon-circle= @order.status.capitalize
-  .row
-    .col-12.action
-      %i.icon-print
-        %span= "Print"
-      %i.icon-chevron-left
-        %a#refund{href: "#refund-modal", rel: "modal:open"}= "Refund"
-      %i.icon-remove
-        %a#cancel-booking{href: "#cancel-booking-modal", rel: "modal:open"}= "Cancel"
-  .row
-    .col-9
-      .col-12.order-info
-        = render "order_info", transaction_items: @order.transaction_items
-      .col-12.payment-info
-        = render "payment_info", order: @order
-    .col-3
-      .col-12.edit-note
-        .row
-          .col-10
-            %h3= "Notes"
-          .col-2
-            %a{href: "#edit-customer-note", rel: "modal:open"}= "Edit"
-        .row
-          .col-12
-            = @order.note
-      .col-12.edit-customer-info
-        = render "customer_info", order: @order
-  .row
-    .col-12
-      %btn.button.save-button= "Save"
 
-= render 'cancel_booking', order: @order
-= render 'refund', order: @order
-= render 'edit_customer_note', order: @order
+.left-navi-section#create-draft-order
+  .row
+    .col-12
+      %h2.margin-bt-0 Create order
+  = form_for [:admin, @transaction], url: update_draft_order_admin_community_transaction_path(@current_community, @transaction), method: :post do |f|
+    .row
+      #draft_order_id{'data-id': @transaction.id}
+      = hidden_field_tag :draft_order_person_id
+      .col-12
+        .row
+          .col-9.order-details
+            .col-12
+              %h3.left= "Order details"
+              %a.right{href: "#custom-item-modal", rel: "modal:open"}= "Add custom item"
+            .col-12
+              .row.search-product
+                = text_field_tag :product_name, params[:product_name], placeholder: 'Search products'
+                %a.button#browse-products{href: "#browse-product-modal", rel: "modal:open"}= "Browse products"
+              #craft-order-product-list
+              .row.payment-info#draft-payment-info
+                = render partial: 'admin/community_transactions/payment_info', locals: {transaction: @transaction}
+            .col-12.email-invoice
+              .col-6
+                %i.icon-file-text-alt.left
+                %span.left= "EMAIL INVOICE"
+              .col-6
+                %a.button.right#send-invoice-email{href: "#send-invoice-email-modal", rel: "modal:open"}= "Email Invoice"
+            .col-12
+              .paid-type
+                %a.button.right{href: "#payment-with-credit-card-modal", rel: "modal:open"}= "Pay with credit card"
+                = f.button 'Mark as pending', name: "draft_order_status", value: "pending", class: 'button right'
+                = f.button 'Mark as paid', name: "draft_order_status", value: "paid", class: 'button right'
+                %p.right= "ACCEPT PAYMENT"
+                %i.icon-money.right
+          .col-3.find-create-customer
+            .find-customer
+              .row
+                %h3= "Find or create a customer"
+              = text_field_tag :customer_name, params[:customer_name], placeholder: 'Search products'
+            .customer-info.margin-t-15
+      .row
+        .col-12
+          = f.submit 'Save Draft Order', class: 'button right'
+
+= render 'admin/community_transactions/browse_product_modal', listings: @current_community.listings
+= render 'admin/community_transactions/add_custom_item_modal'
+= render 'admin/community_transactions/create_new_customer_modal'
+= render 'admin/community_transactions/send_invoice_email_modal'
+= render 'admin/community_transactions/review_email'
+= render 'admin/community_transactions/payment_with_credit_card'
+
+- content_for :extra_javascript do
+  :javascript
+    window.ST.StripePayment.initIntent({
+      publishable_key: '#{APP_CONFIG.stripe_api_publishable_key}'
+    });
+    Shipment.run();
