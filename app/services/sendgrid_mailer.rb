@@ -304,8 +304,8 @@ class SendgridMailer
     list_products = []
     @transaction.transaction_items.each do |item|
       list_products.push({
-        title: item.listing.title,
-        product_image_url: item.listing.main_image,
+        title: item.listing ? item.listing.title : "None" ,
+        product_image_url: item.listing ? item.listing.main_image : "",
         amount: item.price_cents_to_CAD,
         quantity: item.quantity,
       })
