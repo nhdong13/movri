@@ -143,14 +143,31 @@
               .width-60.align-right
                 %span= money_to_humanized(@calculate_money.get_price_cents_for_all_products_cart)
           .discount-code
-            - if @order.promo_code
-              .flex-items
-                .width-25
-                  %span Discount
-                .width-25
-                  %span= @order.promo_code.code
-                .width-50.align-right
-                  %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
+            - if @order.draft_order?
+              - if @order.draft_order_discount_code
+                - if @order.draft_order_discount_code.is_discount_percent?
+                  .flex-items
+                    .width-25
+                      %span Discount
+                    .width-25
+                    .width-50.align-right
+                      %span= "- #{money_to_humanized(@calculate_money.get_discount_for_draft_order(@order.draft_order_discount_code.discount_percent))}"
+                - else
+                  .flex-items
+                    .width-25
+                      %span Discount
+                    .width-25
+                    .width-50.align-right
+                      %span= "- #{money_to_humanized(@order.draft_order_discount_code.discount_value)}"
+            - else
+              - if @order.promo_code
+                .flex-items
+                  .width-25
+                    %span Discount
+                  .width-25
+                    %span= @order.promo_code.code
+                  .width-50.align-right
+                    %span= "- #{money_to_humanized(@calculate_money.get_discount_for_all_products_cart)}"
           - unless @order.draft_order?
             .morvi_coverage
               .flex-items

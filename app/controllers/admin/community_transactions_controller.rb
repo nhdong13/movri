@@ -26,7 +26,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   def update_draft_order
     person = Person.find_by(id: params[:draft_order_person_id])
     draft_order_params = {
-      instructions_from_seller: params[:draft_oder_note], starter: person
+      instructions_from_seller: params[:draft_order_note], starter: person
     }
     if params[:draft_order_status].present?
       draft_order_params = draft_order_params.merge(current_state: params[:draft_order_status])

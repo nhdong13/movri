@@ -328,17 +328,41 @@ class SendgridMailer
   def get_data_from_transaction
     promo_code = @transaction.promo_code ? @transaction.promo_code.code : ""
     booking = @transaction.booking
-    {
-      insurance_coverage: to_CAD(@calculate_money_service.total_coverage_for_all_items_cart),
+    if @transaction.draft_order?
+      shipping_value = @transaction.draft_order_shipping_fee&.price_cents
+      arrival_date = ""
+      return_date = ""
+      duration = 1
+      insurance_coverage = 0
+      tax_value = @transaction.tax_cents
+      if @transaction.draft_order_discount_code
+        if @transaction.draft_order_discount_code.is_discount_percent?
+          discount_value = @calculate_money_service.get_discount_for_draft_order(@transaction.draft_order_discount_code.discount_percent)
+        else
+          discount_value = @transaction.draft_order_discount_code.discount_value
+        end
+      end
+    else
+      arrival_date = booking.start_on.strftime("%m/%d/%Y"),
+      return_date = booking.end_on.strftime("%m/%d/%Y"),
+      shipping_value = @transaction.will_pickup? ? 0 : @transaction.shipper.amount
+      duration = booking.duration
+      insurance_coverage = @calculate_money_service.total_coverage_for_all_items_cart
+      discount_value = @calculate_money_service.get_discount_for_all_products_cart
+      tax_value = @calculate_money_service.get_tax_fee
+    end
+
+    params = {
+      shipping_value: to_CAD(shipping_value),
+      insurance_coverage: to_CAD(insurance_coverage),
       discount_code: promo_code,
-      discount_value: to_CAD(@calculate_money_service.get_discount_for_all_products_cart),
+      discount_value: to_CAD(discount_value),
       subtotal: to_CAD(@calculate_money_service.listings_subtotal),
       total_value: to_CAD(@transaction.stripe_payments.standard.last.sum_cents),
-      shipping_value: @transaction.will_pickup? ? 0 : @transaction.shipper.amount,
-      arrival_date: booking.start_on.strftime("%m/%d/%Y"),
-      return_date: booking.end_on.strftime("%m/%d/%Y"),
-      duration:booking.duration,
-      tax_value: to_CAD(@calculate_money_service.get_tax_fee)
+      arrival_date: arrival_date,
+      return_date: return_date,
+      duration: duration,
+      tax_value: to_CAD(tax_value)
     }
   end
 
