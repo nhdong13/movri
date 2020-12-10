@@ -1,6 +1,7 @@
 %tr
   %td
-    %a{href: edit_admin_community_draft_order_path(@current_community, order)}= "#D#{order.id}"
+    = "#D#{order.id}"
+    -# %a{href: edit_admin_community_draft_order_path(@current_community, order)}= "#D#{order.id}"
   %td
     = order.created_at.to_formatted_s(:long)
   %td
