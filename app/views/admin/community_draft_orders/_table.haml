@@ -14,3 +14,7 @@
   %tbody
     - @draft_orders.each do |order|
       = render 'order', order: order
+
+.row
+  .col-12
+    = will_paginate @draft_orders

@@ -60,6 +60,8 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     else
       @transactions = @transactions.order("#{params[:sort]} #{params[:direction]}").order(order_number: :desc)
     end
+
+    @transactions = @transactions.paginate(page: params[:page])
     respond_to do |format|
       format.html
       format.csv do

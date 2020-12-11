@@ -52,7 +52,7 @@
             = render 'order', order: transaction
   .row
     .col-12
-      -# = will_paginate @transactions_presenter.transactions
+      = will_paginate @transactions
 
 - content_for :extra_javascript do
   = js_t ["admin.communities.transactions.status_filter.all", "admin.communities.transactions.status_filter.selected_js"], true

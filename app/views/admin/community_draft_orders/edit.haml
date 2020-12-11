@@ -41,6 +41,8 @@
                 %h3= "Find or create a customer"
               = text_field_tag :customer_name, params[:customer_name], placeholder: 'Search products'
             .customer-info.margin-t-15
+              - if @transaction.starter
+                = render partial: 'admin/person_custom_fields/person_information', locals: {person_information: @person_information}
       .row
         .col-12
           = f.submit 'Save Draft Order', class: 'button right'
