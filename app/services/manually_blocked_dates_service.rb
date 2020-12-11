@@ -34,8 +34,8 @@ module ManuallyBlockedDatesService
 
 
   def get_blocked_dates_with_all_transactions community, listing
-    transactions = Transaction.joins(:transaction_items).where(transaction_items: {listing_id: listing.id})
-    transactions.select {|t| t.booking && t.booking.end_on >= Date.today}
+    transactions = Transaction.joins(:transaction_items).where(transaction_items: {listing_id: listing.id}).complete
+    transactions = transactions.select {|t| t.booking && t.booking.end_on >= Date.today}
     blocking_dates = []
     transactions.each do |transaction|
       booking = transaction.booking
@@ -55,8 +55,8 @@ module ManuallyBlockedDatesService
     blocking_dates = []
     listing_combos.each do |listing_combo|
       listing_parent = Listing.admin_index.find_by(id: listing_combo.listing_id)
-      transactions = Transaction.joins(:transaction_items).where(transaction_items: {listing_id: listing_parent.id})
-      transactions.select {|t| t.booking && t.booking.end_on >= Date.today}
+      transactions = Transaction.joins(:transaction_items).where(transaction_items: {listing_id: listing_parent.id}).complete
+      transactions = transactions.select {|t| t.booking && t.booking.end_on >= Date.today}
       transactions.each do |transaction|
         booking = transaction.booking
         if booking
