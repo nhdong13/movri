@@ -295,6 +295,11 @@ class TransactionsController < ApplicationController
         @shipping_address = create_shipping_address_without_current_user @transaction
       end
     end
+    if @transaction.draft_order? && @transaction.shipping_address
+      @shipping_address = @transaction.shipping_address
+    else
+      @shipping_address = create_shipping_address_without_current_user @transaction
+    end
     #TODO: fix this function
     # add_padding_time_to_listing(@transaction.transaction_items.pluck(:listing_id), @transaction.booking, @current_community)
   end
@@ -339,6 +344,7 @@ class TransactionsController < ApplicationController
   end
 
   def shipment
+    return redirect_to payment_transaction_path(@transaction.uuid_object)
     return unless @transaction.transaction_items.any?
     listing_ids = @transaction.transaction_items.pluck(:listing_id)
     listings = Listing.where(id: listing_ids)
@@ -489,6 +495,7 @@ class TransactionsController < ApplicationController
   private
 
   def update_transaction_items transaction
+    return if transaction.draft_order?
     keys_id = session[:cart].keys
     session[:cart].each do |listing_id, quantity|
       item = transaction.transaction_items.find_by(listing_id: listing_id)

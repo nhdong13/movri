@@ -515,7 +515,7 @@ class SendgridMailer
     promo_code
   end
 
-  def send_invoice_mail(to, custom_message, payment_path)
+  def send_invoice_mail(to, custom_message, checkout_path)
     shipping_address = @transaction.shipping_address
     billing_address = @transaction.billing_address
     email_to = to
@@ -537,7 +537,7 @@ class SendgridMailer
       billing_address_postal_code: billing_address&.postal_code,
       shop_email: SERVICE_EMAIL,
       Sender_Name: "Movri Admin",
-      link_complete_order: payment_path,
+      link_complete_order: checkout_path,
       subtotal: to_CAD(@calculate_money_service.get_price_cents_for_all_products_cart),
       tax_value: to_CAD(@transaction.tax_cents),
       shipping_value: to_CAD(@transaction.draft_order_shipping_fee&.price_cents),
