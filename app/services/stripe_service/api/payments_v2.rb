@@ -4,6 +4,7 @@ module StripeService::API
       @community =  Community.last
       @session = session
       @transaction = transaction
+      @shipping_address = transaction.shipping_address
       @current_user = current_user
       Stripe.api_key = APP_CONFIG.stripe_api_secret_key
       if @transaction.draft_order?
@@ -26,7 +27,17 @@ module StripeService::API
             payment_method: payment_method_id,
             customer: customer['id'],
             error_on_requires_action: true,
-            confirm: true
+            confirm: true,
+            shipping: {
+              address: {
+                line1: @shipping_address.street1,
+                city: @shipping_address.city ,
+                country: 'CA',
+                postal_code: @shipping_address.postal_code,
+                state: CANADA_PROVINCES.key(@shipping_address.state_or_province)
+              },
+              name: @shipping_address.fullname
+            }
           })
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
@@ -141,7 +152,7 @@ module StripeService::API
         email = @transaction.shipping_address&.email,
         customer = Stripe::Customer.create({
           email: email,
-          payment_method: stripe_payment_method_id
+          payment_method: stripe_payment_method_id,
         })
         @transaction.create_stripe_customer(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
       end
@@ -167,7 +178,17 @@ module StripeService::API
             payment_method: params[:stripe_payment_method_id],
             error_on_requires_action: true,
             confirm: true,
-            customer: customer['id']
+            customer: customer['id'],
+            shipping: {
+              address: {
+                line1: @shipping_address.street1,
+                city: @shipping_address.city ,
+                country: 'CA',
+                postal_code: @shipping_address.postal_code,
+                state: CANADA_PROVINCES.key(@shipping_address.state_or_province)
+              },
+              name: @shipping_address.fullname
+            }
           })
           increase_total_of_used_discount_code
           create_stripe_payment(intent) if intent
