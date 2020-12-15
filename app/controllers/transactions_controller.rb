@@ -297,8 +297,6 @@ class TransactionsController < ApplicationController
     end
     if @transaction.draft_order? && @transaction.shipping_address
       @shipping_address = @transaction.shipping_address
-    else
-      @shipping_address = create_shipping_address_without_current_user @transaction
     end
     #TODO: fix this function
     # add_padding_time_to_listing(@transaction.transaction_items.pluck(:listing_id), @transaction.booking, @current_community)
