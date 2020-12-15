@@ -342,7 +342,7 @@ class TransactionsController < ApplicationController
   end
 
   def shipment
-    return redirect_to payment_transaction_path(@transaction.uuid_object)
+    return redirect_to payment_transaction_path(@transaction.uuid_object) if @transaction.draft_order?
     return unless @transaction.transaction_items.any?
     listing_ids = @transaction.transaction_items.pluck(:listing_id)
     listings = Listing.where(id: listing_ids)
