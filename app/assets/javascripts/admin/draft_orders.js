@@ -14,93 +14,97 @@ $.ui.autocomplete.prototype._renderItem = function (ul, item) {
 };
 
 // Person autocomplete
-$.getJSON("/admin/user_fields/person_profile", function(data) {
-  source = []
-  data.forEach(function(item){ source.push({ value: item.given_name, id: item.id, given_name: item.given_name, email: item.email })})
+if($('#draft_order_person_id').length > 0){
+  $.getJSON("/admin/user_fields/person_profile", function(data) {
+    source = []
+    data.forEach(function(item){ source.push({ value: item.given_name, id: item.id, given_name: item.given_name, email: item.email })})
 
-  $('#customer_name').autocomplete({
-    minLength: 0,
-    source: source,
-    messages: {
-      noResults: '',
-      results: function(amount) { return '' }
-    },
-    focus: function(event, ui) {
-      $('#customer_name').val(ui.item.given_name)
-    },
-    response: function (event, ui) {
-      ui.content.push({
-        label: '<i class="icon-plus"></i> <a href="#create-new-customer-modal" id="create-new-customer" rel="modal:open">Create new customer</a>',
-        button: true
-      });
-    },
-    select: function (event, ui) {
-      if (ui.item.button) {
-        event.preventDefault();
-      } else {
-        transaction_id = $('#draft_order_id').data("id");
+    $('#customer_name').autocomplete({
+      minLength: 0,
+      source: source,
+      messages: {
+        noResults: '',
+        results: function(amount) { return '' }
+      },
+      focus: function(event, ui) {
+        $('#customer_name').val(ui.item.given_name)
+      },
+      response: function (event, ui) {
+        ui.content.push({
+          label: '<i class="icon-plus"></i> <a href="#create-new-customer-modal" id="create-new-customer" rel="modal:open">Create new customer</a>',
+          button: true
+        });
+      },
+      select: function (event, ui) {
+        if (ui.item.button) {
+          event.preventDefault();
+        } else {
+          transaction_id = $('#draft_order_id').data("id");
 
-        $.ajax({
-          url: "/admin/user_fields/person_information.js",
-          method: "GET",
-          data: {
-            id: ui.item.id,
-            transaction_id: transaction_id
-          },
-          complete: function(){
-            $('#craft-order-product-list .icon-times').on('click', function(e){
-              $(e.target).parents('#craft-order-product-list').remove()
-            })
-
-            $('#draft_order_person_id').val(ui.item.id)
-
-            $('.create-address').on('click', function(e){
-              address_type = $(e.currentTarget).attr('data-attribute')
-              $('#create-customer-address-modal').on($.modal.OPEN, function(){
-                $('#create-customer-address-modal #transaction_address_address_type').attr("value", address_type)
+          $.ajax({
+            url: "/admin/user_fields/person_information.js",
+            method: "GET",
+            data: {
+              id: ui.item.id,
+              transaction_id: transaction_id
+            },
+            complete: function(){
+              $('#craft-order-product-list .icon-times').on('click', function(e){
+                $(e.target).parents('#craft-order-product-list').remove()
               })
-            })
+
+              $('#draft_order_person_id').val(ui.item.id)
+
+              $('.create-address').on('click', function(e){
+                address_type = $(e.currentTarget).attr('data-attribute')
+                $('#create-customer-address-modal').on($.modal.OPEN, function(){
+                  $('#create-customer-address-modal #transaction_address_address_type').attr("value", address_type)
+                })
+              })
 
 
-          }
-        })
+            }
+          })
+        }
       }
-    }
-  }).autocomplete('widget').addClass('person-name-list')
-})
+    }).autocomplete('widget').addClass('person-name-list')
+  })
+}
 
 // Listing autocomplete
-$.getJSON("/admin/communities/1/listings", function(data) {
-  source = []
-  data.forEach(function(item){
-    source.push({
-      value: item.title,
-      lable: item.title,
-      id: item.id
-    })
-  })
-
-  $('#product_name').autocomplete({
-    minLength: 0,
-    source: source,
-    messages: {
-      noResults: '',
-      results: function() { return '' }
-    },
-    select: function(event, ui){
-      var id = ui.item.id
-      var transaction_id = $('#draft_order_id').data("id");
-      $.ajax({
-        url: "/admin/communities/1/transactions/add_listing_to_draft_order.js",
-        method: "POST",
-        data: {
-          transaction_id: transaction_id,
-          ids: [id]
-        },
+if($('#draft_order_person_id').length > 0){
+  $.getJSON("/admin/communities/1/listings", function(data) {
+    source = []
+    data.forEach(function(item){
+      source.push({
+        value: item.title,
+        lable: item.title,
+        id: item.id
       })
-    }
-  }).autocomplete('widget').addClass('product-name-list')
-})
+    })
+
+    $('#product_name').autocomplete({
+      minLength: 0,
+      source: source,
+      messages: {
+        noResults: '',
+        results: function() { return '' }
+      },
+      select: function(event, ui){
+        var id = ui.item.id
+        var transaction_id = $('#draft_order_id').data("id");
+        $.ajax({
+          url: "/admin/communities/1/transactions/add_listing_to_draft_order.js",
+          method: "POST",
+          data: {
+            transaction_id: transaction_id,
+            ids: [id]
+          },
+        })
+      }
+    }).autocomplete('widget').addClass('product-name-list')
+  })
+}
 
 $('#review-email').on('click', function(){
   transaction_id = $('#draft_order_id').data("id");
