@@ -532,7 +532,7 @@ class Community < ApplicationRecord
     end
 
     if options[:with_protocol]
-      dom = "#{(APP_CONFIG.always_use_ssl.to_s == "true" ? "https://" : "http://")}#{dom}"
+      dom = "#{(APP_CONFIG.always_use_ssl.to_s == "true" ? "https://" : "https://")}#{dom}"
     end
 
     return dom
