@@ -21,6 +21,7 @@ module StripeService::API
         ActiveRecord::Base.transaction(:requires_new => true) do
           @transaction.draft_order? ? update_available_quantity_for_draft_order : update_available_quantity
           customer = create_stripe_customer(payment_method_id)
+          update_payment_method(payment_method_id)
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
             currency: 'cad',
@@ -51,6 +52,25 @@ module StripeService::API
         # Display error on client
         sendgridmailer.send_payment_error_mail
         return {success: false, error: e.message}
+      end
+    end
+
+    def update_payment_method payment_method_id
+      @billing_address = @transaction.billing_address
+      if @billing_address
+        Stripe::PaymentMethod.update(
+          payment_method_id,
+          billing_details: {
+            address: {
+              line1: @billing_address.street1,
+              city: @billing_address.city ,
+              country: 'CA',
+              postal_code: @billing_address.postal_code,
+              state: CANADA_PROVINCES.key(@billing_address.state_or_province)
+            },
+            name: @billing_address.fullname
+          }
+        )
       end
     end
 
@@ -143,9 +163,10 @@ module StripeService::API
             email: @current_user.get_email,
             payment_method: stripe_payment_method_id
           })
-
+          Stripe::PaymentMethod.attach(stripe_payment_method_id,{customer: customer['id']})
           @current_user.stripe_customers.create(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
         else
+          Stripe::PaymentMethod.attach(stripe_payment_method_id, {customer: @current_user.stripe_customers.last.stripe_customer_id})
           customer = Stripe::Customer.retrieve(@current_user.stripe_customers.last.stripe_customer_id)
         end
       else
@@ -154,6 +175,7 @@ module StripeService::API
           email: email,
           payment_method: stripe_payment_method_id,
         })
+        Stripe::PaymentMethod.attach(stripe_payment_method_id, {customer: customer['id']})
         @transaction.create_stripe_customer(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
       end
       customer
@@ -172,6 +194,7 @@ module StripeService::API
           @current_user.update(default_billing_address: @transaction_address.id) if @current_user && @current_user.billing_address.nil?
           @transaction.draft_order? ? update_available_quantity_for_draft_order : update_available_quantity
           customer = create_stripe_customer(params[:stripe_payment_method_id])
+          update_payment_method(params[:stripe_payment_method_id])
           intent = Stripe::PaymentIntent.create({
             amount: @amount,
             currency: 'cad',

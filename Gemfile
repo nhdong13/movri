@@ -77,7 +77,8 @@ gem 'stringex', '~> 2.7.1'
 gem 'paypal-sdk-permissions', '~> 1.96.4'
 gem 'paypal-sdk-merchant', '~> 1.116.0'
 gem 'airbrake', '~> 9.1.0'
-gem 'stripe', '~> 4.9.0'
+gem 'stripe', '~> 5.28'
+# gem 'stripe', '~> 4.9.0'
 
 gem 'lograge', '~> 0.10.0'
 gem 'public_suffix', '~> 2.0.5' # Needed currently to set GA hostname right, probably not
