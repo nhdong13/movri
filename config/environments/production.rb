@@ -64,6 +64,7 @@ Rails.application.configure do
 
   config.lograge.formatter = Lograge::Formatters::Json.new
 
+  config.force_ssl = true
   config.after_initialize do
     ActiveRecord::Base.logger = Rails.logger.clone
     ActiveRecord::Base.logger.level = Logger::INFO
