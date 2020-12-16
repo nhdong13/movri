@@ -1,6 +1,12 @@
 $mobile: "(max-width: 767px)";
 $tablet: "(min-width: 768px) and (max-width: 1024px)";
 
+.contact-term{
+  border: 1px solid white;
+  padding: 2px;
+  border-radius: 5px;
+}
+
 .checkout-section{
   .common-box{
     padding-top: 20px;

@@ -1,7 +1,7 @@
 #myTopnav.topnav.flex-items.font-open-sans
   - @main_categories.each do |main_category|
     .dropdown
-      %button.dropbtn
+      %button.dropbtn.capitalize
         = main_category.url_name
       .dropdown-content
         - if main_category.all_subcategories.any?
@@ -11,11 +11,11 @@
                 .dropdown
                   %button.dropbtn
                     .flex-items
-                      .width-80
+                      .width-80.capitalize
                         - if subcategory.all_children_categories.any?
-                          .category-bar-label= subcategory.url_name
+                          .category-bar-label.capitalize= subcategory.display_title
                         - else
-                          = link_to subcategory.url_name, categories_path(category: main_category, subcategories: subcategory), class: "category-bar-label"
+                          = link_to subcategory.display_title, categories_path(category: main_category, subcategories: subcategory), class: "category-bar-label"
                       .width-20.algin-right
                         - if subcategory.all_children_categories.any?
                           %i.fa.fa-chevron-right
@@ -23,8 +23,8 @@
                     - if subcategory.all_children_categories.any?
                       - subcategory.all_children_categories.each do |child|
                         %ul
-                          %li
-                            = link_to child.url_name, categories_path(category: main_category, subcategories: subcategory, children_categories: child), class: "category-bar-label width-100"
+                          %li.capitalize
+                            = link_to child.display_title, categories_path(category: main_category, subcategories: subcategory, children_categories: child), class: "category-bar-label width-100"
 
 - content_for :extra_javascript do
   :javascript

@@ -1,5 +1,12 @@
 validateShippingAddressForm = ->
   $(".desktop-shipping-address").validate
+    errorPlacement: (error, element) ->
+      if $(element).attr("id") == "term"
+        $(element).parent().css("border-color", "red")
+      else
+        $(element).css("border-color", "red")
+      $('.fullfill-fields-form-message').show()
+      true
     rules:
       'transaction_address[email]':
         required: true
@@ -23,6 +30,10 @@ validateShippingAddressForm = ->
 
 validateBillingAddressForm = ->
   $(".desktop-payment-form").validate
+    errorPlacement: (error, element) ->
+      $(element).css("border-color", "red")
+      $('.fullfill-fields-form-message').show()
+      true
     rules:
       'transaction_address[first_name]':
         required: true
@@ -43,6 +54,13 @@ validateBillingAddressForm = ->
 
 validateMobileShippingAddressForm = ->
   $(".mobile-shipping-address").validate
+    errorPlacement: (error, element) ->
+      if $(element).attr("id") == "term"
+        $(element).parent().css("border-color", "red")
+      else
+        $(element).css("border-color", "red")
+      $('.fullfill-fields-form-message').show()
+      true
     rules:
       'transaction_address[email]':
         required: true

@@ -68,10 +68,16 @@
         .form-group
           .row
             .col-12
-              = check_box_tag :term, nil, false, class: "term"
-              = "I have read, understood and agreed with your "
-              = link_to "Rental Agreement.", "/rental-agreement"
-              = "I understand that a signature will be required upon delivery of my gear."
+              .contact-term
+                = check_box_tag :term, nil, false, class: "term"
+                = "I have read, understood and agreed with your "
+                = link_to "Rental Agreement.", "/rental-agreement"
+                = "I understand that a signature will be required upon delivery of my gear."
+        .form-group
+          .row
+            .col-12
+              .fullfill-fields-form-message.alert-warning.hidden
+                Please fill all compulsory fields
         .form-group
           .row
             .col-12.center-items

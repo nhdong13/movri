@@ -47,11 +47,6 @@
       - if @current_community.configuration.display_about_menu?
         = link_to about_infos_path do
           %span= t("header.about_us")
-
-    .item
-      = link_to '#' do
-        %span= t("header.store_location")
-
     -# .item
     -#   - if @current_community.configuration.display_invite_menu?
     -#     - with_invite_link do
