@@ -3,6 +3,7 @@
 %script{:src => "https://unpkg.com/sweetalert/dist/sweetalert.min.js"}
 %script{src: "https://cdn.jsdelivr.net/npm/algoliasearch@4.0.0/dist/algoliasearch-lite.umd.js", integrity: "sha256-MfeKq2Aw9VAkaE9Caes2NOxQf6vUa8Av0JqcUXUGkd0=", crossorigin: "anonymous"}
 %script{src: "https://cdn.jsdelivr.net/npm/instantsearch.js@4.0.0/dist/instantsearch.production.min.js",integrity: "sha256-6S7q0JJs/Kx4kb/fv0oMjS855QTz5Rc2hh9AkIUjUsk=", crossorigin: "anonymous"}
+%script{type: "text/javascript", src: "//cdn.callrail.com/companies/696578082/dd87a7cf637aeb754bc6/12/swap.js"}
 %link{rel: "stylesheet", type:"text/css", href: "#{CustomStyle.last ? CustomStyle.last.style_file.url : ""}"}
 :javascript
   var algolia_application_id = '#{APP_CONFIG.algolia_application_id}';
