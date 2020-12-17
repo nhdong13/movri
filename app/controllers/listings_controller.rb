@@ -602,6 +602,17 @@ class ListingsController < ApplicationController
       all_listing_blocked_dates.concat(all_blocked_dates)
     end
     @blocked_dates.concat(all_listing_blocked_dates)
+    @blocked_dates = @blocked_dates.uniq.sort
+    duration = session[:booking][:total_days] || 7
+    if @blocked_dates.any?
+      if @blocked_dates.last < convert_to_date(get_today)
+        session[:booking][:start_date] = get_today
+      else
+        session[:booking][:start_date] = get_next_day_and_convert_it(@blocked_dates.last)
+      end
+      session[:booking][:end_date] = get_next_number_days_and_convert_it(convert_to_date(session[:booking][:start_date]), duration)
+      session[:booking][:total_days] = duration
+    end
   end
 
   def change_booking_days

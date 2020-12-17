@@ -27,6 +27,12 @@ class TransactionsController < ApplicationController
     :thank_you
   ]
 
+  before_action :check_blocked_dates, only: [
+    :shipment,
+    :checkout,
+    :payment,
+  ]
+
   before_action :find_transaction_by_id, only: [:order_details]
 
   before_action :calculate_money_service, only: [:shipment, :checkout, :change_state_shipping_form, :payment, :thank_you, :order_details]
@@ -787,6 +793,28 @@ class TransactionsController < ApplicationController
 
   def checkout_setting
     @checkout_setting = CheckoutSetting.last
+  end
+
+  def check_blocked_dates
+    return if @transaction.draft_order?
+    all_listing_blocked_dates = []
+    @blocked_dates = []
+    @transaction.transaction_items.each do |item|
+      listing = item.listing
+      if listing
+        all_blocked_dates = ManuallyBlockedDatesService.get_all_blocked_dates(@current_community, listing, 1.day)
+        all_listing_blocked_dates.concat(all_blocked_dates)
+      end
+    end
+    @blocked_dates.concat(all_listing_blocked_dates)
+    @blocked_dates = @blocked_dates.uniq.sort
+
+    booking = @transaction.booking
+    booking_end_on = booking.end_on
+    if @blocked_dates.include?(booking_end_on)
+      flash[:error] = 'Something wrong with the rental dates.'
+      return redirect_to cart_path
+    end
   end
 
   def transaction_service
