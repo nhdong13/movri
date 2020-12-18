@@ -5,6 +5,13 @@
 %script{src: "https://cdn.jsdelivr.net/npm/instantsearch.js@4.0.0/dist/instantsearch.production.min.js",integrity: "sha256-6S7q0JJs/Kx4kb/fv0oMjS855QTz5Rc2hh9AkIUjUsk=", crossorigin: "anonymous"}
 %script{type: "text/javascript", src: "//cdn.callrail.com/companies/696578082/dd87a7cf637aeb754bc6/12/swap.js"}
 %link{rel: "stylesheet", type:"text/css", href: "#{CustomStyle.last ? CustomStyle.last.style_file.url : ""}"}
+-# Global site tag (gtag.js) - Google Analytics
+%script{:async => "", :src => "https://www.googletagmanager.com/gtag/js?id=UA-152998824-1"}
+:javascript
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-152998824-1');
 :javascript
   var algolia_application_id = '#{APP_CONFIG.algolia_application_id}';
   var algolia_search_only_api_key = '#{APP_CONFIG.algolia_search_only_api_key}';

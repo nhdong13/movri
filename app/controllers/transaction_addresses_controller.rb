@@ -49,9 +49,33 @@ class TransactionAddressesController < ApplicationController
     # reset session coverage
     session[:coverage] = {}
     session[:transaction] = {}
+    @calculate_money = TransactionMoneyCalculation.new(@transaction, session, @current_user)
+    data_transaction = {
+      transaction_id: @transaction.id,
+      value: MoneyViewUtils.to_CAD(@transaction.stripe_payments.standard.last.sum_cents),
+      currency: "CA",
+      tax: MoneyViewUtils.to_CAD(@calculate_money.get_tax_fee),
+      items:
+        @transaction.transaction_items.map do |item|
+          listing = item.listing
+          if listing
+            {
+              id: listing.id,
+              name: listing.title,
+              quantity: item.quantity,
+              price: MoneyViewUtils.to_CAD(item.price_cents)
+            }
+          end
+        end
+      }
     respond_to do |format|
       format.html
-      format.json { render json: { redirect_url: thank_you_transaction_path(@transaction.uuid_object) } }
+      format.json {
+        render json: {
+          redirect_url: thank_you_transaction_path(@transaction.uuid_object),
+          data_transaction: data_transaction
+        }
+      }
     end
   end
 

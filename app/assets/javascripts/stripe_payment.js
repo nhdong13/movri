@@ -147,6 +147,18 @@ window.ST = window.ST || {};
     $('html, body').animate({ scrollTop: $('.flash-notifications').offset().top}, 1000);
   };
 
+
+  sendDataToGoogleAnalytics = function(data){
+    gtag('event', 'purchase', {
+      "transaction_id": data.transaction_id,
+      "value": data.value,
+      "currency": data.currency,
+      "tax": data.tax,
+      "shipping": 0,
+      "items": data.items
+    });
+  }
+
   var formSubmit = function(e) {
     var form = $(this),
       formAction = form.attr('action');
@@ -158,6 +170,7 @@ window.ST = window.ST || {};
           buttons: false,
           timer: 2000,
         });
+        sendDataToGoogleAnalytics(data.data_transaction)
         window.location = data.redirect_url;
         return;
       } else if (data.errors) {
