@@ -146,14 +146,10 @@ class TransactionMoneyCalculation
   end
 
   def get_tax_fee state=nil, shipping_fee=nil
-    if @transaction.draft_order?
-      @transaction.tax_cents
-    else
-      shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
-      state = state ? state : @state
-      all_fee = listings_subtotal - get_discount_for_all_products_cart + shipping_fee
-      PriceCalculationService.calculate_tax_fee(all_fee, state)
-    end
+    shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
+    state = state ? state : @state
+    all_fee = listings_subtotal - get_discount_for_all_products_cart + shipping_fee
+    PriceCalculationService.calculate_tax_fee(all_fee, state)
   end
 
   def final_price state=nil, shipping_fee=nil
