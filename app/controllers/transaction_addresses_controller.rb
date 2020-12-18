@@ -53,7 +53,7 @@ class TransactionAddressesController < ApplicationController
     data_transaction = {
       transaction_id: @transaction.id,
       value: MoneyViewUtils.to_CAD(@transaction.stripe_payments.standard.last.sum_cents),
-      currency: "CA",
+      currency: "USD",
       tax: MoneyViewUtils.to_CAD(@calculate_money.get_tax_fee),
       items:
         @transaction.transaction_items.map do |item|
