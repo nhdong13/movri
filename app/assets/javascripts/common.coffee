@@ -116,11 +116,10 @@ window.Commons =
 
 
   onClickGG: ->
-    $(".history-since-text").click ->
+    $(".helpful-link-btn").click ->
       gtag('event', 'purchase', {
-        "transactionId": "1",
+        "transaction_id": "1",
         "affiliation": "Test",
-        "transactionTotal": 10,
         "value": 10,
         "currency": "USD",
         "tax": 10,

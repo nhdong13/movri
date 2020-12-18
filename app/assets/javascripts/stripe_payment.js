@@ -150,8 +150,8 @@ window.ST = window.ST || {};
 
   sendDataToGoogleAnalytics = function(data){
     gtag('event', 'purchase', {
-      "transactionId": data.transaction_id,
-      "transactionTotal": data.value,
+      "transaction_id": data.transaction_id,
+      "value": data.value,
       "currency": data.currency,
       "tax": data.tax,
       "shipping": 0,
