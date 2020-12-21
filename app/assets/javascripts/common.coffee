@@ -114,42 +114,6 @@ window.Commons =
     $(".header-search-icon").click ->
       $('.view-all-products a')[0].click()
 
-
-  onClickGG: ->
-    $(".helpful-link-btn").click ->
-      gtag('event', 'purchase', {
-        "transaction_id": "1",
-        "affiliation": "Test",
-        "value": 10,
-        "currency": "USD",
-        "tax": 10,
-        "shipping": 0,
-        "items": [
-          {
-            "id": "Test1",
-            "name": "Test 1",
-            "list_name": "Search Results",
-            "brand": "Google",
-            "category": "Apparel/T-Shirts",
-            "variant": "Black",
-            "list_position": 1,
-            "quantity": 2,
-            "price": '2.0'
-          },
-          {
-            "id": "Test2",
-            "name": "Test 2",
-            "list_name": "Search Results",
-            "brand": "MyBrand",
-            "category": "Apparel/T-Shirts",
-            "variant": "Red",
-            "list_position": 2,
-            "quantity": 1,
-            "price": '3.0'
-          }
-        ]
-      });
-
 $(document).ready ->
   Commons.formatPhone()
   Commons.CanadianZipCodeRule()
@@ -162,4 +126,3 @@ $(document).ready ->
   Commons.onClickAddToWishList()
   Commons.onClickIconSearchBar()
   Commons.formatPostalCode()
-  Commons.onClickGG()
