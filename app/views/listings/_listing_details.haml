@@ -12,6 +12,5 @@
     = render partial: 'listings/mobile_designs/listing_details/in_the_box_tab'
     = render partial: 'listings/mobile_designs/listing_details/qa_tab'
     = render partial: 'listings/mobile_designs/listing_details/question_tab'
-    = render partial: 'listings/mobile_designs/listing_details/accessories_tab'
     - @listing.listing_tabs.extra_tabs.each do |tab|
       = render partial: 'listings/desktop_designs/listing_details/extra_tabs', locals: {tab: tab}
