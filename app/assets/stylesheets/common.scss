@@ -221,11 +221,54 @@ $border-color: #E1E3E5;
   img{width: 30px}
 }
 
-.fa-check{
-  color: #4eb857;
-  position: absolute;
-  margin: 12px -25px;
+.address-fields{
+  position: relative;
+  .fa-check{
+    color: #4eb857;
+    position: absolute;
+  }
 }
+
+.swal-text{
+  text-align: center !important;
+}
+
+.desktop-address-form{
+  .fa-check{
+    margin: 12px -25px;
+  }
+}
+
+.mobile-address-fields{
+  .address-fields{
+    .fa-check{
+      top: 30%;
+    }
+  }
+  .col-6.address-fields{
+    .fa-check{
+      right: 10%;
+    }
+  }
+
+  .col-6.address-fields:first-child{
+    .fa-check{
+      right: 17%;
+    }
+  }
+
+  .col-12.address-fields{
+    .fa-check{
+      right: 5%;
+    }
+  }
+}
+
+// .fa-check{
+//   color: #4eb857;
+//   position: absolute;
+//   margin: 12px -25px;
+// }
 
 .btn{
   display: inline-block;

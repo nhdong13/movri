@@ -171,11 +171,15 @@
     }
   }
 
+  .price-coverage{
+    padding: 0;
+    margin-left: 5px;
+  }
   .coverage {
     font-size: 14px;
     .coverage-selection {
       max-width:85px;
-      select{max-width:85px}
+      select{max-width:85px; height: 50px;}
       .custom-select {
         border: 1px solid #0b0a0a;
         background: white;
