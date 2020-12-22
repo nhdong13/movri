@@ -127,11 +127,9 @@
 
     :javascript
       if(window.tidioChatApi){
-        $(function() {
-          $(".sale_expert_advice h1").click(function(e){
-            e.preventDefault();
-            window.tidioChatApi.open();
-          })
+        $(".sale_expert_advice .second_phone_number h1").last().click(function(e){
+          e.preventDefault();
+          window.tidioChatApi.open();
         })
       }
 
