@@ -125,13 +125,15 @@
         }
       });
 
-    -# :javascript
-    -#   drift.on('ready', function (api) {
-    -#     $(".sale_expert_advice h1").click(function(e){
-    -#       e.preventDefault();
-    -#       api.sidebar.open()
-    -#     })
-    -#   })
+    :javascript
+      if(window.tidioChatApi){
+        $(function() {
+          $(".sale_expert_advice h1").click(function(e){
+            e.preventDefault();
+            window.tidioChatApi.open();
+          })
+        })
+      }
 
     -# Disable animations on tests
     - if Rails.env.test?
