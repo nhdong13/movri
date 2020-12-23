@@ -136,6 +136,7 @@
         }
 
         $(".sale_expert_advice .second_phone_number h1").last().click(function(e) {
+          e.preventDefault();
           window.tidioChatApi.show();
           window.tidioChatApi.open();
         });
