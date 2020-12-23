@@ -126,15 +126,20 @@
       });
 
     :javascript
-      $(document).ready(function() {
-        if(window.tidioChatApi){
-          $(".sale_expert_advice .second_phone_number h1").last().click(function(e){
-            e.preventDefault();
-            window.tidioChatApi.open();
-          })
+      (function() {
+        function onTidioChatApiReady() {
+          window.tidioChatApi.hide();
         }
-      });
 
+        if (window.tidioChatApi) {
+          window.tidioChatApi.on("ready", onTidioChatApiReady);
+        }
+
+        $(".sale_expert_advice .second_phone_number h1").last().click(function(e) {
+          window.tidioChatApi.show();
+          window.tidioChatApi.open();
+        });
+      })();
     -# Disable animations on tests
     - if Rails.env.test?
       :javascript
