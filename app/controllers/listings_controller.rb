@@ -108,7 +108,7 @@ class ListingsController < ApplicationController
 
       all_blocked_dates = ManuallyBlockedDatesService.get_all_blocked_dates(@current_community, @listing, 1.day)
       all_blocked_dates = all_blocked_dates.uniq.sort
-      if all_blocked_dates.any?
+      if all_blocked_dates.any? && convert_to_date(start_date) < all_blocked_dates.last
         if all_blocked_dates.last < convert_to_date(get_today)
           session[:booking][:start_date] = get_today
         else
