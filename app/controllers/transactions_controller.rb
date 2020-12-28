@@ -304,6 +304,7 @@ class TransactionsController < ApplicationController
     if @transaction.draft_order? && @transaction.shipping_address
       @shipping_address = @transaction.shipping_address
     end
+    @started_checkout_as_json = started_checkout_as_json(@transaction)
     #TODO: fix this function
     # add_padding_time_to_listing(@transaction.transaction_items.pluck(:listing_id), @transaction.booking, @current_community)
   end
@@ -831,5 +832,33 @@ class TransactionsController < ApplicationController
 
   def promo_code_service(promo_code)
     @promo_code_service ||= PromoCodeService.new(promo_code, session, @current_user)
+  end
+
+  def started_checkout_as_json transaction
+    calculate_money_service = calculate_money_service(transaction)
+    json = {
+      '$event_id': "#{transaction.id}_#{Time.now.to_i}",
+      id: transaction.id,
+      '$value': calculate_money_service.final_price,
+      CheckoutURL: checkout_transaction_url(transaction),
+      Categories: transaction.categories,
+      Items:
+        transaction.transaction_items.map do |item|
+          listing = item.listing
+          if listing
+            {
+              ProductID: listing.id,
+              SKU: listing.sku,
+              ProductName: listing.title,
+              Quantity: item.quantity,
+              ItemPrice: MoneyViewUtils.to_CAD(listing.price_cents),
+              ProductURL: listing_url(listing),
+              ImageURL: listing.main_image,
+              ProductCategories: listing.categories.pluck(:display_title)
+            }
+          end
+        end
+      }
+    json
   end
 end

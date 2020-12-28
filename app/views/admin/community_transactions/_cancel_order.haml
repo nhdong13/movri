@@ -46,7 +46,7 @@
         .center-items
           %span This order already cancelled.
       - else
-        = form_for [:admin , order], url: admin_community_transaction_path(@current_community, order), method: :delete do |f|
+        = form_for [:admin , order], url: admin_community_transaction_path(@current_community, order), method: :delete, remote: true do |f|
           .padding-15
             .display-flex.cancel-refund-field
               .width-60

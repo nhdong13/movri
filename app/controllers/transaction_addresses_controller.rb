@@ -73,7 +73,8 @@ class TransactionAddressesController < ApplicationController
       format.json {
         render json: {
           redirect_url: thank_you_transaction_path(@transaction.uuid_object),
-          data_transaction: data_transaction
+          data_transaction: data_transaction,
+          klaviyo_placed_order_data: klaviyo_service(@transaction).get_data_for_placed_order
         }
       }
     end
@@ -160,5 +161,15 @@ class TransactionAddressesController < ApplicationController
 
   def stripe_api
     StripeService::API::Api.payments_v2.new(@transaction, session, @current_user)
+  end
+
+  def calculate_money_service(transaction=nil)
+    transaction = transaction || @transaction
+    @calculate_money = TransactionMoneyCalculation.new(transaction, session, @current_user)
+  end
+
+  def klaviyo_service(transaction=nil)
+    transaction = transaction || @transaction
+    @klaviyo_service = KlaviyoService.new(transaction, session, @current_user)
   end
 end

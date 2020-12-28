@@ -152,10 +152,15 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     result = stripe_api.charge_refund_fee(params)
     if result[:success]
       flash[:notice] =  "Successfully!"
-      redirect_to edit_admin_community_transaction_path(@current_community, @order)
+      @redirect_path = edit_admin_community_transaction_path(@current_community, @order)
     else
       flash[:error] = result[:error]
-      redirect_to refund_transaction_admin_community_transaction_path(@current_community, @order)
+      @redirect_path =  refund_transaction_admin_community_transaction_path(@current_community, @order)
+    end
+    @refunded_data =  klaviyo_service(@order).get_data_for_refunded_order
+    respond_to do |format|
+      format.html
+      format.js { render layout: false }
     end
   end
 
@@ -166,7 +171,12 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     else
       flash[:error] = result[:error]
     end
-    redirect_to edit_admin_community_transaction_path(@current_community, @order)
+    @cancelled_data =  klaviyo_service(@order).get_data_for_cancelled_order
+    @redirect_path = edit_admin_community_transaction_path(@current_community, @order)
+    respond_to do |format|
+      format.html
+      format.js { render layout: false }
+    end
   end
 
   def add_listing_to_draft_order
@@ -361,5 +371,10 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       community: @current_community,
       params: params)
     @presenter = Listing::ListPresenter.new(@current_community, @current_user, params, true)
+  end
+
+  def klaviyo_service(transaction=nil)
+    transaction = transaction || @transaction
+    @klaviyo_service = KlaviyoService.new(transaction, session, @current_user)
   end
 end

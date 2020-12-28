@@ -32,3 +32,4 @@
 
 - content_for :javascript do
   ValidateForm.run();
+  KlaviyoTracking.trackingStartedCheckout(#{raw @started_checkout_as_json.to_json})

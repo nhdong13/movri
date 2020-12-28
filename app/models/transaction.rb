@@ -524,4 +524,14 @@ class Transaction < ApplicationRecord
   def refund?
     stripe_payments.any? && (stripe_payments.refund.any? || stripe_payments.cancel.any?)
   end
+  def categories
+    list_cates = []
+    transaction_items.each do |item|
+      listing = item.listing
+      if listing
+        list_cates.concat(listing.categories.pluck(:display_title))
+      end
+    end
+    list_cates.uniq
+  end
 end

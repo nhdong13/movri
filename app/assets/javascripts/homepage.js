@@ -10,6 +10,20 @@ $(function() {
     };
   }
 
+  function sendDataToKlaviyo(product) {
+    _learnq.push(["track", "Added to Cart", {
+         "$value": product.price,
+         "AddedItemProductName": product.title,
+         "AddedItemProductID": product.id,
+         "AddedItemSKU": product.sku,
+         "AddedItemCategories": product.categories,
+         "AddedItemImageURL": product.image_url,
+         "AddedItemURL": product.url,
+         "AddedItemPrice": product.price,
+         "AddedItemQuantity": 1,
+       }]);
+  }
+
   $('.homepage-carousel').on('init', function () {
     $('.loading-carousel').css({display: 'none'});
     $('.homepage-carousel').css({display: 'block', opacity: 1});
@@ -61,7 +75,6 @@ $(function() {
         });
 
         var data = response.data;
-
         // Change number show on cart
         $(".number-on-cart").html(data.total_items);
         $(".number-item-in-cart").html(data.total_items);
@@ -72,6 +85,7 @@ $(function() {
           var quantityNumber = "#quantity-item-" + data.item;
           $(quantityNumber).html(data.item_count);
         }
+        sendDataToKlaviyo(data.product)
         location.reload();
       } else {
         // TODO:

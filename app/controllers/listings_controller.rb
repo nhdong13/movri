@@ -398,10 +398,12 @@ class ListingsController < ApplicationController
     # Get total items in cart
     cart_total_items = session[:cart].values.sum
 
+    listing_to_js = listing.as_json.merge({url: listing_url(listing)})
     render json: {
       success: true,
       message: "Add item to cart sucessfully",
       data: {
+        product: listing_to_js,
         item: listing_id,
         item_count: session[:cart][listing_id],
         cart: session[:cart],

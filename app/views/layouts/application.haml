@@ -16,6 +16,15 @@
   var algolia_application_id = '#{APP_CONFIG.algolia_application_id}';
   var algolia_search_only_api_key = '#{APP_CONFIG.algolia_search_only_api_key}';
   var current_duration_session = '#{session[:booking][:total_days]}';
+%script{:async => "", :src => "//static.klaviyo.com/onsite/js/klaviyo.js?company_id=HLsMny", :type => "text/javascript"}
+:javascript
+  var _learnq = _learnq || [];
+
+  _learnq.push(['identify', {
+    // Change the line below to dynamically print the user's email.
+    '$email' : '#{@current_user ? @current_user.get_email : "un_login_user@gmail.com"}'
+  }]);
+
 %body
 
   #sidewinder-wrapper

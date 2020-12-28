@@ -159,6 +159,12 @@ window.ST = window.ST || {};
     });
   }
 
+  sendDataPlacedOrderToKlaviyo = function(data){
+    _learnq.push(["track", "Placed Order",
+      data
+    ]);
+  }
+
   var formSubmit = function(e) {
     var form = $(this),
       formAction = form.attr('action');
@@ -171,6 +177,7 @@ window.ST = window.ST || {};
           timer: 2000,
         });
         sendDataToGoogleAnalytics(data.data_transaction)
+        sendDataPlacedOrderToKlaviyo(data.klaviyo_placed_order_data)
         window.location = data.redirect_url;
         return;
       } else if (data.errors) {

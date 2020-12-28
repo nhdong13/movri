@@ -1,0 +1,5 @@
+_learnq.push(["track", "Refunded Order",
+  <%= raw @refunded_data.to_json %>
+]);
+
+window.location.href = '<%= @redirect_path%>'

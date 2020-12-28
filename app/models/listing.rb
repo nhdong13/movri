@@ -584,8 +584,10 @@ class Listing < ApplicationRecord
       id: id,
       community_id: community_id,
       title: title,
-      price_cents: price_cents
-
+      price_cents: price_cents,
+      price: MoneyViewUtils.to_CAD(price_cents),
+      categories: categories.pluck(:display_title),
+      image_url: main_image
     }
   end
 end
