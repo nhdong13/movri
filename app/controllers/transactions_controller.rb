@@ -839,7 +839,7 @@ class TransactionsController < ApplicationController
     json = {
       '$event_id': "#{transaction.id}_#{Time.now.to_i}",
       id: transaction.id,
-      '$value': calculate_money_service.final_price,
+      '$value': MoneyViewUtils.to_CAD(calculate_money_service.final_price),
       CheckoutURL: checkout_transaction_url(transaction),
       Categories: transaction.categories,
       Items:
