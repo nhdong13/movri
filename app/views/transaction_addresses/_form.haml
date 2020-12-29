@@ -61,6 +61,11 @@
               = fa_icon "check", class: "d-none"
         .form-group
           .row
+            .col-12
+              .fullfill-fields-form-message.hidden
+                Please fill all compulsory fields
+        .form-group
+          .row
             .col-12.center-items
               = form.submit "#{@transaction_address.id ? 'Update' : 'Create'}", class:"btn btn-submit"
         .row
