@@ -191,11 +191,14 @@ $border-color: #E1E3E5;
   border-color: #f5c6cb;
 }
 
-.alert-warning{
+.fullfill-fields-form-message{
+  color: red;
   margin: 5px 0;
+}
+
+.alert-warning{
   padding: 10px;
   border-radius: 5px;
-  color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb;
 }
@@ -235,7 +238,22 @@ $border-color: #E1E3E5;
 
 .desktop-address-form{
   .fa-check{
-    margin: 12px -25px;
+    top: 30%;
+  }
+  .col-6.address-fields{
+    .fa-check{
+      right: 8%;
+    }
+  }
+  .col-12.address-fields{
+    .fa-check{
+      right: 4%;
+    }
+  }
+  .col-4.address-fields{
+    .fa-check{
+      right: 12%;
+    }
   }
 }
 
