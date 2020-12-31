@@ -21,7 +21,7 @@ window.Commons =
         $(this).focus().val('').val(val);
 
   formatPostalCode: ->
-    $('.postal-code').keyup (e) ->
+    $('.postal_code').keyup (e) ->
       val = $(this).val().replace(/\s/g, '');
       if (val.length > 0 && val.length >= 3)
         new_val = val.substr(0, 3) + " " + val.substr(3);
@@ -114,6 +114,53 @@ window.Commons =
     $(".header-search-icon").click ->
       $('.view-all-products a')[0].click()
 
+  initGGPlaceAPI: ->
+    initGGPlaceAPIForDesktop()
+    initGGPlaceAPIForMobile()
+
+initGGPlaceAPIForDesktop = ->
+  input = document.getElementById('desktop-address-autocomplete');
+  if input
+    addGGPleaceIntoInput(input)
+
+initGGPlaceAPIForMobile = ->
+  input = document.getElementById('mobile-address-autocomplete');
+  if input
+    addGGPleaceIntoInput(input)
+
+addGGPleaceIntoInput = (input) ->
+  options = {types: [], componentRestrictions: {country: 'ca'}};
+  autocomplete = new google.maps.places.Autocomplete(input, options);
+  autocomplete.setFields(["address_component"]);
+  autocomplete.addListener('place_changed', ->
+    componentForm = {
+      'street_number': "short_name",
+      locality: "long_name",
+      route: 'long_name'
+      postal_code: "short_name",
+      administrative_area_level_1: "long_name",
+      locality: "long_name"
+    };
+    place = autocomplete.getPlace();
+    street_number = ''
+    _.map(place.address_components, (component) ->
+      addressType = component.types[0];
+      if (componentForm[addressType])
+        val = component[componentForm[addressType]];
+        switch addressType
+          when 'street_number'
+            street_number = val
+          when 'route'
+            val = "#{street_number} #{val}"
+          when 'postal_code'
+            val = val.split("_").join(" ")
+          when 'administrative_area_level_1'
+            val = val.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ").join("_");
+        $(".#{addressType}").val(val);
+    )
+  );
+
+
 $(document).ready ->
   Commons.formatPhone()
   Commons.CanadianZipCodeRule()
@@ -126,3 +173,4 @@ $(document).ready ->
   Commons.onClickAddToWishList()
   Commons.onClickIconSearchBar()
   Commons.formatPostalCode()
+  Commons.initGGPlaceAPI()

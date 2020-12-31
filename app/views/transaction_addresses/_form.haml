@@ -33,7 +33,7 @@
         .form-group
           .row
             .col-12.address-fields
-              = form.text_field :street1, placeholder: t('transactions.contact_form.address'), class: "shipping-address-street1 transaction-address-req-field", disabled: @transaction_address.is_office_address?
+              = form.text_field :street1, placeholder: t('transactions.contact_form.address'), id: 'desktop-address-autocomplete', class: "street_number route shipping-address-street1 transaction-address-req-field", disabled: @transaction_address.is_office_address?
               = fa_icon "check", class: "d-none"
         .form-group
           .row
@@ -43,16 +43,16 @@
         .form-group
           .row
             .col-12.address-fields
-              = form.text_field :city, placeholder: t('transactions.contact_form.city'), class: "shipping-address-city transaction-address-req-field", disabled: @transaction_address.is_office_address?
+              = form.text_field :city, placeholder: t('transactions.contact_form.city'), class: "locality shipping-address-city transaction-address-req-field", disabled: @transaction_address.is_office_address?
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-4
               = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true
             .col-4
-              = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, {:class => "shipping-address-state", disabled: @transaction_address.is_office_address?}
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES, selected: form.object.state_or_province), {}, {:class => "shipping-address-state administrative_area_level_1", disabled: @transaction_address.is_office_address?}
             .col-4.address-fields
-              = form.text_field :postal_code, value: form.object.format_postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "postal-code shipping-address-postal-code transaction-address-req-field uppercase", disabled: @transaction_address.is_office_address?
+              = form.text_field :postal_code, value: form.object.format_postal_code,  placeholder: t('transactions.contact_form.zip_code'), class: "postal_code shipping-address-postal-code transaction-address-req-field uppercase", disabled: @transaction_address.is_office_address?
               = fa_icon "check", class: "d-none"
         .form-group
           .row

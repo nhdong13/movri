@@ -7,6 +7,7 @@
 %link{rel: "stylesheet", type:"text/css", href: "#{CustomStyle.last ? CustomStyle.last.style_file.url : ""}"}
 -# Global site tag (gtag.js) - Google Analytics
 %script{:async => "", :src => "https://www.googletagmanager.com/gtag/js?id=UA-152998824-1"}
+%script{:defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyCQIcFZGFUcUksqgtAk4DJLF3AiqrOCaeY&libraries=places"}
 :javascript
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -119,9 +120,6 @@
     = javascript_include_tag "i18n/#{I18n.locale}"
 
     = javascript_include_tag 'application'
-    :javascript
-      $('article.page-content').css("margin-top", $('#sticky-header').height() || 0);
-
     :javascript
       window.ST.jsonTranslations = #{raw JSONTranslations.get(I18n.locale)}
 

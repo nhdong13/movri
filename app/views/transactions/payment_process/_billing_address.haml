@@ -34,7 +34,7 @@
         .form-group
           .row
             .col-12.address-fields
-              = form.text_field :street1, placeholder: t('transactions.contact_form.address'), class: "billing-address-street1 billing-address transaction-address-req-field"
+              = form.text_field :street1, placeholder: t('transactions.contact_form.address'), id: 'desktop-address-autocomplete', class: "street_number route billing-address-street1 billing-address transaction-address-req-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row
@@ -44,16 +44,16 @@
         .form-group
           .row
             .col-12.address-fields
-              = form.text_field :city, placeholder: t('transactions.contact_form.city'), class: "billing-address-city billing-address transaction-address-req-field"
+              = form.text_field :city, placeholder: t('transactions.contact_form.city'), class: "locality billing-address-city billing-address transaction-address-req-field"
               = fa_icon "check", class: "d-none"
         .form-group
           .row
             .col-4
               = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true, class: ''
             .col-4
-              = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {}, {:class => "shipping-address-state"}
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {}, {:class => "administrative_area_level_1 shipping-address-state "}
             .col-4.address-fields
-              = form.text_field :postal_code, value: form.object.format_postal_code, placeholder: t('transactions.contact_form.zip_code'), class: "postal-code billing-address-postal-code billing-address transaction-address-req-field uppercase"
+              = form.text_field :postal_code, value: form.object.format_postal_code, placeholder: t('transactions.contact_form.zip_code'), class: "postal_code billing-address-postal-code billing-address transaction-address-req-field uppercase"
               = fa_icon "check", class: "d-none"
         .form-group
           .row
