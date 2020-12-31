@@ -118,7 +118,12 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       SendgridMailer.new(@order, @current_community, @current_user).send_order_fulfilled_mail
     end
     flash[:notice] = "Update successfully!"
-    redirect_to edit_admin_community_transaction_path(@current_community, @order)
+    @fulfill_data =  klaviyo_service(@order).get_data_for_fulfill_order
+    @redirect_path = edit_admin_community_transaction_path(@current_community, @order)
+    respond_to do |format|
+      format.html
+      format.js { render layout: false }
+    end
   end
 
   def charge_extra_fee
