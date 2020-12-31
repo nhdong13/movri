@@ -7,7 +7,7 @@
 %link{rel: "stylesheet", type:"text/css", href: "#{CustomStyle.last ? CustomStyle.last.style_file.url : ""}"}
 -# Global site tag (gtag.js) - Google Analytics
 %script{:async => "", :src => "https://www.googletagmanager.com/gtag/js?id=UA-152998824-1"}
-%script{:defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyCQIcFZGFUcUksqgtAk4DJLF3AiqrOCaeY&libraries=places"}
+%script{:defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{APP_CONFIG.google_auto_complete_key}&libraries=places"}
 :javascript
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
