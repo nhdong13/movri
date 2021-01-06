@@ -2,7 +2,13 @@
   - @main_categories.each do |main_category|
     .dropdown
       %button.dropbtn.capitalize
-        = main_category.url_name
+        - if main_category.all_subcategories.any?
+          = main_category.url_name
+        - else
+          - if  main_category.link.present?
+            = link_to main_category.url_name, main_category.link
+          - else
+            = main_category.url_name
       .dropdown-content
         - if main_category.all_subcategories.any?
           - main_category.all_subcategories.each do |subcategory|
@@ -15,7 +21,10 @@
                         - if subcategory.all_children_categories.any?
                           .category-bar-label.capitalize= subcategory.display_title
                         - else
-                          = link_to subcategory.display_title, categories_path(category: main_category, subcategories: subcategory), class: "category-bar-label"
+                          - if subcategory.link.present?
+                            = link_to subcategory.display_title, subcategory.link, class: "category-bar-label"
+                          - else
+                            = link_to subcategory.display_title, categories_path(category: main_category, subcategories: subcategory), class: "category-bar-label"
                       .width-20.algin-right
                         - if subcategory.all_children_categories.any?
                           %i.fa.fa-chevron-right
@@ -24,7 +33,10 @@
                       - subcategory.all_children_categories.each do |child|
                         %ul
                           %li.capitalize
-                            = link_to child.display_title, categories_path(category: main_category, subcategories: subcategory, children_categories: child), class: "category-bar-label width-100"
+                            - if child.link.present?
+                              = link_to child.display_title, child.link, class: "category-bar-label width-100"
+                            - else
+                              = link_to child.display_title, categories_path(category: main_category, subcategories: subcategory, children_categories: child), class: "category-bar-label width-100"
 
 - content_for :extra_javascript do
   :javascript

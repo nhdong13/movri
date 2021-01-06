@@ -1,9 +1,17 @@
 .menu-categories
   .main-category.flex-items
     .width-70.padding-0
-      %span.block.toggle-cat.capitalize= main_category.url_name
-    .width-30.align-right.padding-0
-      %i.icon-chevron-down.toggle-cat
+      %span.block.toggle-cat.capitalize
+        - if main_category.all_subcategories.any?
+          = main_category.url_name
+        - else
+          - if  main_category.link.present?
+            = link_to main_category.url_name, main_category.link
+          - else
+            = main_category.url_name
+    - if main_category.all_subcategories.any?
+      .width-30.align-right.padding-0
+        %i.icon-chevron-down.toggle-cat
   - if main_category.all_subcategories.any?
     .subcategories.hidden
       - main_category.all_subcategories.each do |subcategory|
@@ -14,13 +22,21 @@
                 - if subcategory.all_children_categories.any?
                   %span.block.capitalize= subcategory.display_title
                 - else
-                  = link_to categories_path(category: main_category, subcategories: subcategory) do
-                    %span.block.capitalize= subcategory.display_title
+                  - if subcategory.link.present?
+                    = link_to subcategory.link do
+                      %span.block.capitalize= subcategory.display_title
+                  - else
+                    = link_to categories_path(category: main_category, subcategories: subcategory) do
+                      %span.block.capitalize= subcategory.display_title
               .width-30.align-right.padding-0
                 - if subcategory.all_children_categories.any?
                   %i.icon-chevron-down.toggle-subcategory
             .child-categories.hidden
               - subcategory.all_children_categories.each do |child|
                 .sub-cat.capitalize
-                  = link_to categories_path(category: main_category, subcategories: subcategory, children_categories: child), class: 'sub-cat' do
-                    = child.display_title
+                  - if child.link.present?
+                    = link_to child.link, class: 'sub-cat' do
+                      = child.display_title
+                  - else
+                    = link_to categories_path(category: main_category, subcategories: subcategory, children_categories: child), class: 'sub-cat' do
+                      = child.display_title
