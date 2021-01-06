@@ -81,7 +81,7 @@
                   .account-listing-item.br-bottom
                     .flex-items.padding-5
                       .width-10.center-items
-                        = image_tag listing.main_image, class: "width-100"
+                        = image_tag listing.main_image, class: "width-100", alt: @current_community.image_alt_text
                       .width-40
                         %p.margin-0.title= link_to listing.title, listing_path(listing)
                         %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"
@@ -169,7 +169,7 @@
                   .account-listing-item.br-bottom
                     .flex-items.padding-5
                       .width-15.center-items.padding-0
-                        = image_tag listing.main_image, class: "width-100"
+                        = image_tag listing.main_image, class: "width-100", alt: @current_community.image_alt_text
                       .width-40
                         %p.margin-0.title.cut-text= link_to listing.title, listing_path(listing)
                         %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"

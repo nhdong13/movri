@@ -11,7 +11,7 @@
                 .mobile-acessory-image-wrap
                   = link_to listing_path("#{listing_accessory.id}-#{listing_accessory.title.to_url}") do
                     - if listing_accessory.main_image != nil
-                      = image_tag listing_accessory.main_image, class: 'img-responsive'
+                      = image_tag listing_accessory.main_image, class: 'img-responsive', alt: @current_community.image_alt_text
                     - else
                       %img.img-responsive{:alt => "", :src => "http://placehold.it/120x120"}/
               .col-8

@@ -102,6 +102,14 @@ class Admin::CommunitiesController < Admin::AdminBaseController
 
   end
 
+  def image_alt_text
+  end
+
+  def update_image_alt_text
+    @current_community.update(image_alt_text: params[:community][:image_alt_text])
+    redirect_to image_alt_text_admin_community_path(@current_community)
+  end
+
   def resend_verification_email
     EmailService::API::Api.addresses.enqueue_verification_request(community_id: @current_community.id, id: params[:address_id])
     render json: {}, status: :ok

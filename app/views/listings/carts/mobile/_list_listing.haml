@@ -4,7 +4,7 @@
   .row.mobile-listing-info.unique-listing-sku{id: "listing-info-#{listing.id}", 'data-sku': "#{listing.id}"}
     .display-flex
       .width-30.flex-items
-        = image_tag listing.main_image, alt: '', height: 'auto', width: '80', class: 'img-responsive-cart'
+        = image_tag listing.main_image, alt: '', height: 'auto', width: '80', class: 'img-responsive-cart', alt: @current_community.image_alt_text
       .width-70.mobile-listing-info-wrap.padding-0
         %span.title
           = listing.title

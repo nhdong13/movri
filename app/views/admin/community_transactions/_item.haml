@@ -1,7 +1,7 @@
 .col-12.item
   .col-6
     - if listing
-      = image_tag listing.listing_image.image(:tiny), class: "left"
+      = image_tag listing.listing_image.image(:tiny), class: "left", alt: @current_community.image_alt_text
     - else
       = image_tag("homepage_icons/cancellations.png")
     = listing.name

@@ -9,11 +9,11 @@
                 - if index < 4
                   %li.zoom-image-slide
                     .zoom-image-item
-                      = image_tag(listing_image.image(:thumb))
+                      = image_tag listing_image.image(:thumb), alt: @current_community.image_alt_text
                 - elsif index < 5
                   %li.zoom-image-slide.zoom-image-show-more
                     .zoom-image-item
-                      = image_tag(listing_image.image(:thumb))
+                      = image_tag listing_image.image(:thumb), alt: @current_community.image_alt_text
                       %span
                         = "+ #{listing_images.count - 4}"
               - if @listing.video.present?
@@ -26,7 +26,7 @@
             - listing_images.each do |listing_image|
               %li.zoom-image-slide
                 .zoom-image-item
-                  = image_tag(listing_image.image(:original))
+                  = image_tag listing_image.image(:original), alt: @current_community.image_alt_text
     .flex-items
       .width-10.padding-0
       .width-90.listing-include.padding-0

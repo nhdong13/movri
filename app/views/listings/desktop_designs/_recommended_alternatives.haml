@@ -10,7 +10,7 @@
               .col-4
                 = link_to listing_path("#{listing_alternative.id}-#{listing_alternative.title.to_url}") do
                   - if listing_alternative.main_image != nil
-                    = image_tag listing_alternative.main_image, class: 'img-responsive'
+                    = image_tag listing_alternative.main_image, class: 'img-responsive', alt: @current_community.image_alt_text
                   - else
                     %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
               .col-8

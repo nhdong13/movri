@@ -15,7 +15,7 @@
               .slide-item
                 .listing-box
                   .main-image.center-items
-                    = image_tag listing.main_image, :class => "design-image-too-wide"
+                    = image_tag listing.main_image, :class => "design-image-too-wide", alt: @current_community.image_alt_text
                   .listing-price
                     - number_price = Money.new(PriceCalculationService.calculate(listing, ListingViewUtils.get_booking_days(session)), 'USD')
                     %span= MoneyViewUtils.to_humanized(number_price)

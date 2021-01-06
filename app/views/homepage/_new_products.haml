@@ -7,7 +7,7 @@
         .col-3
           .product
             .product-image
-              = image_tag(listing.main_image)
+              = image_tag(listing.main_image, alt: @current_community.image_alt_text)
             .product-name
               %a{href: listing_path(listing.id)}= listing.title
             .product-rent-price

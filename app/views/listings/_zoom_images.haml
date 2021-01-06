@@ -20,13 +20,13 @@
             - listing_images.each do |listing_image|
               .zoom-image-wrap
                 .zoom-image-item
-                  = image_tag(listing_image.image(:thumb))
+                  = image_tag(listing_image.image(:thumb), alt: @current_community.image_alt_text)
           .modal-slideshow-list
             %i.icon-angle-left.desktop-display
             .zoom-image-show
               - listing_images.each do |listing_image|
                 .zoom-image-wrap
-                  = image_tag(listing_image.image(:original))
+                  = image_tag(listing_image.image(:original), alt: @current_community.image_alt_text)
             %i.icon-angle-right.desktop-display
         .tab-content#video_tab
           .row
@@ -40,12 +40,12 @@
           .zoom-image-show
             - listing_images.each do |listing_image|
               .zoom-image-wrap
-                = image_tag(listing_image.image(:original))
+                = image_tag(listing_image.image(:original), alt: @current_community.image_alt_text)
         .modal-image-list
           - listing_images.each do |listing_image|
             .zoom-image-wrap
               .zoom-image-item
-                = image_tag(listing_image.image(:thumb))
+                = image_tag(listing_image.image(:thumb), alt: @current_community.image_alt_text)
 
 - content_for :extra_javascript do
   :javascript

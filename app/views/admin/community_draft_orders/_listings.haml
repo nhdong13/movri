@@ -17,7 +17,7 @@
       %tr{'data-id': item.id}
         %td.w-5.padding-0
           = hidden_field_tag "id", listing.id, class: "ids"
-          = image_tag(listing.main_image)
+          = image_tag listing.main_image, alt: @current_community.image_alt_text
         %td.w-45.padding-0
           = listing.title
         %td

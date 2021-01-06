@@ -50,7 +50,7 @@
           - @order.transaction_items.each do |item|
             .flex-items.br-bottom
               .width-15.margin-0
-                = image_tag item.listing ? item.listing.main_image : ""
+                = image_tag item.listing ? item.listing.main_image : "", alt: @current_community.image_alt_text
               .width-85
                 .flex-items
                   .width-50

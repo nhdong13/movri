@@ -12,7 +12,7 @@
             .col-3
               .listing-box
                 .main-image
-                  = image_tag listing.main_image, :class => "design-image-too-wide"
+                  = image_tag listing.main_image, :class => "design-image-too-wide", alt: @current_community.image_alt_text
                 .listing-information.center-items
                   = listing.title
                 .listing-price
@@ -25,7 +25,7 @@
               .col-6.padding-15
                 .mobile-listing-box
                   .main-image
-                    = image_tag listing.main_image, :class => "design-image-too-wide"
+                    = image_tag listing.main_image, :class => "design-image-too-wide", alt: @current_community.image_alt_text
                   .listing-information.center-items
                     = listing.title
                   .listing-price

@@ -6,7 +6,7 @@
       .content
         .row
           .col-2
-            = image_tag listing.main_image, alt: '', height: '100', width: 'auto', class: 'img-responsive-cart'
+            = image_tag listing.main_image, alt: '', height: '100', width: 'auto', class: 'img-responsive-cart', alt: @current_community.image_alt_text
           .col-4
             .listing-title
               %span= listing.title

@@ -10,7 +10,7 @@
           .slide-item-container
             .slide-item
               - if listing.main_image != nil
-                = image_tag listing.main_image, class: 'img-responsive'
+                = image_tag listing.main_image, class: 'img-responsive', alt: @current_community.image_alt_text
               - else
                 %img.img-responsive{:alt => "", :src => "http://placehold.it/98x98"}/
               .slide-item-detail

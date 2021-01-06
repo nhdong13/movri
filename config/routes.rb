@@ -381,7 +381,8 @@ Rails.application.routes.draw do
           get "getting_started_guide/paypal",                 to: redirect("/admin/getting_started_guide/paypal")
           get "getting_started_guide/listing",                to: redirect("/admin/getting_started_guide/listing")
           get "getting_started_guide/invitation",             to: redirect("/admin/getting_started_guide/invitation")
-
+          get 'image_alt_text'
+          post 'update_image_alt_text'
         end
         resources :online_store, only: [:show, :index]
         resources :listings, controller: :community_listings, only: [:index, :edit, :update] do

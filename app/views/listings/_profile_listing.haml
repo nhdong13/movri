@@ -3,7 +3,7 @@
     .people-listing-image-frame
       = link_to(listing) do
         - if listing.listing_images.size > 0 && !listing.listing_images.first.image_processing
-          = image_tag listing.listing_images.first.image.url(:email), {:alt => listed_listing_title(listing), :class => "people-listing-with-overlay"}
+          = image_tag listing.listing_images.first.image.url(:email), {alt: @current_community.image_alt_text, :class => "people-listing-with-overlay"}
         .people-listing-overlay
         - if listing.price
           .people-listing-price

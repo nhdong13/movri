@@ -1,0 +1,22 @@
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section
+  = form_for [:admin, @current_community], url: update_image_alt_text_admin_community_path(@current_community), method: :post do |form|
+    .row
+      .col-12
+        %h2 Alt Text Template
+
+    .row
+      .col-1
+      .col-9
+        .col-2
+          %span Alt Text Template
+        .col-10
+          = form.text_field :image_alt_text
+    .row
+      .col-1
+      .col-9
+        .col-2
+        .col-10
+
+          = form.submit "Save", class: "button"

@@ -3,10 +3,10 @@
     .browsing-list-item-image-container
       - if listing.listing_images.size > 0
         = link_to listing_path(listing.url), class: "browsing-list-item-image-desktop" do
-          = image_tag listing.listing_images.first[:small_3x2], { alt: listed_listing_title(listing), class: "home-list-image"}
+          = image_tag listing.listing_images.first[:small_3x2], {alt: @current_community.image_alt_text, class: "home-list-image"}
       - if listing.listing_images.size > 0
         = link_to listing_path(listing.url), class: "browsing-list-item-image-mobile" do
-          = image_tag listing.listing_images.first[:thumb], { alt: listed_listing_title(listing), class: "home-list-image"}
+          = image_tag listing.listing_images.first[:thumb], {alt: @current_community.image_alt_text, class: "home-list-image"}
     .browsing-list-item-details
       .browsing-list-item-details-right
         .browsing-list-item-price

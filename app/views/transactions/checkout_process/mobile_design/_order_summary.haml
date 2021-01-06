@@ -10,7 +10,7 @@
         .col-12
           .listing-row
             .main-image
-              = image_tag listing.main_image, :class => "design-image-too-wide"
+              = image_tag listing.main_image, :class => "design-image-too-wide", alt: @current_community.image_alt_text
             .listing-information
               .listing-title.cut-text
                 = listing.title
