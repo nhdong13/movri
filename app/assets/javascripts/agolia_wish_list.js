@@ -58,7 +58,7 @@ window.ST = window.ST || {};
                     <div class='width-20 center-items'>
                       <div class='wish-list-listing-price'>
                         <span>${item[days_rental_title]}</span>
-                        <span> / ${current_duration_session} Days Rental</span>
+                        <span> / ${current_duration_session_label} rental</span>
                       </div>
                     </div>
                     <div class='width-20 center-items'>
@@ -102,7 +102,7 @@ window.ST = window.ST || {};
                         </a>
                         <div class='listing-price br-bottom'>
                           <span>${item[days_rental_title]}</span>
-                          <span> /${current_duration_session} days</span>
+                          <span> /${current_duration_session_label}</span>
                         </div>
                         <div class="center-items margin-t-10 add-wish-list-to-cart" data-id='${item.id}'>
                           <span>Add to cart</span>

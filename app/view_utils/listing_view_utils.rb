@@ -113,10 +113,11 @@ module ListingViewUtils
     time_rent = "7 days"
 
     return time_rent unless session[:booking]&.[](:total_days)
-
-    "#{session[:booking][:total_days]} day" if session[:booking][:total_days] == 1
-
-    "#{session[:booking][:total_days]} days"
+     if session[:booking][:total_days] == 1
+      "#{session[:booking][:total_days]} day"
+    else
+      "#{session[:booking][:total_days]} days"
+    end
   end
 
   def get_arr_breadcrumb_listing(listing)

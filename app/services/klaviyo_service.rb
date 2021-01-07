@@ -9,7 +9,6 @@ class KlaviyoService
   end
 
   def get_data_for_placed_order
-    byebug
     json = {
       "token": APP_CONFIG.klaviyo_public_api_key,
       "event": "Placed Order",

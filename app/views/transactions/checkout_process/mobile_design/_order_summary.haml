@@ -29,7 +29,7 @@
                   = money_to_humanized(listing_subtotal)
                 %span.day-rent
                   \/
-                  = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
+                  = "#{ListingViewUtils.get_time_rent(session)} rental"
     - transaction.custom_items.is_listing.each do |item|
       .row
         .col-12

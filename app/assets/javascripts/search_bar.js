@@ -70,7 +70,7 @@ $(document).ready(function() {
                         <span class='sku block'>SKU: ${item.sku}</span>
                         <div class='listing-price'>
                           <span>${item[days_rental_title]}</span>
-                          <span> /${current_duration_session} days</span>
+                          <span> /${current_duration_session_label}</span>
                         </div>
                       </div>
                     </div>
@@ -89,7 +89,7 @@ $(document).ready(function() {
                         <span class='sku block'>SKU: ${item.sku}</span>
                         <div class='listing-price'>
                           <span>${item[days_rental_title]}</span>
-                          <span> /${current_duration_session} days</span>
+                          <span> /${current_duration_session_label}</span>
                         </div>
                       </div>
                     </div>

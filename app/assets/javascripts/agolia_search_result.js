@@ -52,7 +52,7 @@ window.ST = window.ST || {};
                           </div>
                           <div class='listing-price'>
                             <span>${item[days_rental_title]}</span>
-                            <span> /${current_duration_session} days</span>
+                            <span> /${current_duration_session_label}</span>
                           </div>
                           <div>
                             <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>
@@ -90,7 +90,7 @@ window.ST = window.ST || {};
                             </div>
                             <div class='listing-price'>
                               <span>${item[days_rental_title]}</span>
-                              <span> /${current_duration_session} days</span>
+                              <span> /${current_duration_session_label}</span>
                             </div>
                             <div class='listing-rent-now'>
                               <a href= ${'/listings/'+ item.url} class='rent-now-btn'>Rent Now</a>

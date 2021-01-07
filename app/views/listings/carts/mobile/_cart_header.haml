@@ -9,7 +9,7 @@
         = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
       %span.day-rent
         \/
-        = t('transactions.label.total_days_rental', total_days: session[:booking][:total_days])
+        = "#{ListingViewUtils.get_time_rent(session)} rental"
   .col-4
     = button_tag class: "custom-btn" do
       -# %i.icon-lock.fa-fw
