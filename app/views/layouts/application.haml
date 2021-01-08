@@ -27,6 +27,7 @@
     '$email' : '#{@current_user ? @current_user.get_email : "un_login_user@gmail.com"}'
   }]);
 
+<!-- Facebook Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -36,11 +37,11 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '889747965167034');
+fbq('init', '713852522604062');
 fbq('track', 'PageView');
 </script>
-%noscript
-  %img{:height => "1", :src => "https://www.facebook.com/tr?id=889747965167034&ev=PageView&noscript=1", :style => "display:none", :width => "1"}/
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=713852522604062&ev=PageView&noscript=1"/></noscript>
+<!-- End Facebook Pixel Code -->
 %body
 
   #sidewinder-wrapper
