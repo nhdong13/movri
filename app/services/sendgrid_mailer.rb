@@ -303,10 +303,12 @@ class SendgridMailer
   def get_items_from_transaction
     list_products = []
     @transaction.transaction_items.each do |item|
+      duration = @transaction.booking ? @transaction.booking.duration : 7
+      price = PriceCalculationService.calculate(item, duration)
       list_products.push({
         title: item.listing ? item.listing.title : "None" ,
         product_image_url: item.listing ? item.listing.main_image : "",
-        amount: item.price_cents_to_CAD,
+        amount: to_CAD(price),
         quantity: item.quantity,
       })
     end
@@ -329,7 +331,7 @@ class SendgridMailer
     promo_code = @transaction.promo_code ? @transaction.promo_code.code : ""
     booking = @transaction.booking
     if @transaction.draft_order?
-      shipping_value = @transaction.draft_order_shipping_fee&.price_cents
+      shipping_value = to_CAD(@transaction.draft_order_shipping_fee&.price_cents)
       arrival_date = ""
       return_date = ""
       duration = 1
@@ -353,7 +355,7 @@ class SendgridMailer
     end
 
     params = {
-      shipping_value: to_CAD(shipping_value),
+      shipping_value: shipping_value,
       insurance_coverage: to_CAD(insurance_coverage),
       discount_code: promo_code,
       discount_value: to_CAD(discount_value),
@@ -442,7 +444,6 @@ class SendgridMailer
   end
 
   def send_order_confirmed_mail
-
     shipping_address = @transaction.shipping_address
     billing_address = @transaction.billing_address
     email_to = shipping_address.email
