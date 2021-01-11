@@ -372,7 +372,7 @@ class ListingsController < ApplicationController
       @listings = Listing.all
     end
     @listing = @listings.find_by_url(params[:id]) || @listings.find_by_id(params[:id])
-    return if current_user?(@listing.author) || @current_user.has_admin_rights?(@current_community)
+    return if @current_user.has_admin_rights?(@current_community)
 
     flash[:error] = error_message
     redirect_to @listing and return
