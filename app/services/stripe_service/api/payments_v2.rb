@@ -157,24 +157,22 @@ module StripeService::API
     end
 
     def create_stripe_customer stripe_payment_method_id
-      if @current_user
-        unless @current_user.stripe_customers.any?
+      if @transaction.starter
+        user = @transaction.starter
+        unless user.stripe_customers.any?
           customer = Stripe::Customer.create({
-            email: @current_user.get_email,
+            email: user.get_email,
             payment_method: stripe_payment_method_id
           })
           Stripe::PaymentMethod.attach(stripe_payment_method_id,{customer: customer['id']})
-          @current_user.stripe_customers.create(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
+          user.stripe_customers.create(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
         else
-          Stripe::PaymentMethod.attach(stripe_payment_method_id, {customer: @current_user.stripe_customers.last.stripe_customer_id})
-          customer = Stripe::Customer.retrieve(@current_user.stripe_customers.last.stripe_customer_id)
+          Stripe::PaymentMethod.attach(stripe_payment_method_id, {customer: user.stripe_customers.last.stripe_customer_id})
+          customer = Stripe::Customer.retrieve(user.stripe_customers.last.stripe_customer_id)
         end
       else
         email = @transaction.shipping_address&.email,
-        customer = Stripe::Customer.create({
-          email: email,
-          payment_method: stripe_payment_method_id,
-        })
+        customer = Stripe::Customer.create({email: email,payment_method: stripe_payment_method_id})
         Stripe::PaymentMethod.attach(stripe_payment_method_id, {customer: customer['id']})
         @transaction.create_stripe_customer(stripe_customer_id: customer['id'], payment_method_id: stripe_payment_method_id)
       end
