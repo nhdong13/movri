@@ -19,8 +19,6 @@
   - if font_path.present? && FeatureFlagHelper.feature_enabled?(:topbar_v1)
     = render partial: "layouts/fonts", locals: { font_path: font_path }
 
-  %meta{content: "width=device-width, initial-scale=1.0, user-scalable=no", name: "viewport"}
-  %meta{ :property => "og:type", :content =>"website"}
   %meta{:"http-equiv" => "content-language", content: "#{I18n.locale}"}
   %meta{name: "google-site-verification", content: "YqFR8i3vznrBdgJoxtzyheWm9c3Rn8xFYhjjh1XbbdM"}
   - if @current_community.social_logo&.image&.present?

@@ -30,7 +30,6 @@
     - meta_image = image_path("sharetribe_icon.png")
 %title= custom_meta_title
 - if @listing
-  %meta{ :property => "fb:app_id", :content => @listing.title}
   %meta{ :property => "og:title", :content => @listing.title}
   %meta{ :property =>"og:description", :content => @listing.title}
   %meta{ :property => "og:url", :content => full_url}
@@ -46,16 +45,15 @@
 - if meta_image_width && meta_image_height
   %meta{ :property => "og:image:width", :content => meta_image_width}
   %meta{ :property => "og:image:height", :content => meta_image_height}
-%meta{ :name => "twitter:image", :content => meta_image}
 %link{:rel => "canonical", :href => full_url}
 - if @facebook_locale_code
   %meta{ :property => "og:locale", :content => @facebook_locale_code}
 
-- if @current_community.twitter_handle.present?
-  %meta{ :name => "twitter:site", :content => "@#{@current_community.twitter_handle}"}
+-# - if @current_community.twitter_handle.present?
+-#   %meta{ :name => "twitter:site", :content => "@#{@current_community.twitter_handle}"}
 
-- if @current_community.facebook_connect_id
-  %meta{ :property => "fb:app_id", :content => "#{@current_community.facebook_connect_id}" }
+-# - if @current_community.facebook_connect_id
+-#   %meta{ :property => "fb:app_id", :content => "#{@current_community.facebook_connect_id}" }
 
 / CSS
 = stylesheet_link_tag "application"
