@@ -28,20 +28,19 @@
     - meta_image = @current_community.logo.url(:original)
   - else
     - meta_image = image_path("sharetribe_icon.png")
-
 %title= custom_meta_title
-%meta{ :property => "og:title", :content => custom_meta_title(title, :social)}
-%meta{ :name => "twitter:title", :content => custom_meta_title(title, :social)}
-%meta{ :name => "author", :content=> meta_author }
-%meta{ :property => "og:url", :content => full_url}
-%meta{ :name => "identifier-url", :content => "#{@current_community.full_domain(with_protocol: true)}"}
-%meta{ :name => "copyright", :content => "#{@current_community.name(I18n.locale)}"}
-%meta{ :name => "twitter:url", :content => full_url}
-%meta{ :property => "og:site_name", :content =>"#{@current_community.full_name(locale)}"}
-%meta{ :name => "description", :content => strip_tags(custom_meta_description(meta_description))}
-%meta{ :property => "og:description", :content => strip_tags(custom_meta_description(meta_description, :social))}
-%meta{ :name => "twitter:description", :content => strip_tags(custom_meta_description(meta_description, :social))}
-%meta{ :property => "og:image", :content => meta_image}
+- if @listing
+  %meta{ :property => "og:title", :content => @listing.title}
+  %meta{ :property =>"og:description", :content => @listing.title}
+  %meta{ :property => "og:url", :content => full_url}
+  %meta{ :property =>"og:image", :content => @listing.main_image}
+  %meta{ :property =>"product:brand", :content => "Facebook"}
+  %meta{ :property =>"product:availability", :content => "#{@listing.available_quantity > 0 ? "in stock" : "out of stock"}"}
+  %meta{ :property =>"product:condition", :content => "new"}
+  %meta{ :property =>"product:price:amount", :content => MoneyViewUtils.to_CAD(@listing.price_cents)}
+  %meta{ :property =>"product:price:currency", :content => "CAD"}
+  %meta{ :property =>"product:retailer_item_id", :content => "Unknow"}
+  %meta{ :property =>"product:item_group_id", :content => "rental"}
 - if meta_image_width && meta_image_height
   %meta{ :property => "og:image:width", :content => meta_image_width}
   %meta{ :property => "og:image:height", :content => meta_image_height}

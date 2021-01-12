@@ -1,29 +1,3 @@
-%script{:type => "application/ld+json"}
-  :cdata
-    {
-    "@context":"https://schema.org",
-    "@type":"Product",
-    "productID":"facebook_tshirt_001",
-    "name":"Facebook T-Shirt",
-    "description":"Unisex Facebook T-shirt, Small",
-    "url":"https://example.org/facebook",
-    "image":"https://example.org/facebook.jpg",
-    "brand":"facebook",
-    "offers": [
-    {
-    "@type": "Offer",
-    "price": "7.99",
-    "priceCurrency": "USD",
-    "itemCondition": "https://schema.org/NewCondition",
-    "availability": "https://schema.org/InStock"
-    }
-    ],
-    "additionalProperty": [{
-    "@type": "PropertyValue",
-    "propertyID": "item_group_id",
-    "value": "fb_tshirts"
-    }]
-  }
 .row.listing-price
   .col-12.clearfix.padding-0
     %span.amount.font-open-sans.font-size-25.main-listing-price
