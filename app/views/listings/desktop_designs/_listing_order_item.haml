@@ -110,7 +110,7 @@
 
 - content_for :extra_javascript do
   :javascript
-    fbq('track', 'ViewContent');
+    fbq('track', 'ViewContent', { content_type: "test123", content_ids: ['test123'] });
 -#     ST.ListingTags.initTagsForEditListing();
 -#     ST.BlockedDates.addBlockedDates();
 -#     $(document).ready(function(){
