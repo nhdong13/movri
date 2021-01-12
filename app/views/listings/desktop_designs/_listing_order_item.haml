@@ -1,3 +1,18 @@
+%div{:itemscope => "", :itemtype => "http://schema.org/Product"}
+  %meta{:content => "facebook", :itemprop => "brand"}/
+  %meta{:content => "Facebook T-Shirt", :itemprop => "name"}/
+  %meta{:content => "Unisex Facebook T-shirt, Small", :itemprop => "description"}/
+  %meta{:content => "facebook_tshirt_001", :itemprop => "productID"}/
+  %meta{:content => "https://example.org/facebook", :itemprop => "url"}/
+  %meta{:content => "https://example.org/facebook.jpg", :itemprop => "image"}/
+  %div{:itemprop => "value", :itemscope => "", :itemtype => "http://schema.org/PropertyValue"}
+    %span{:content => "item_group_id", :itemprop => "propertyID"}
+    %meta{:content => "fb_tshirts", :itemprop => "value"}/
+  %div{:itemprop => "offers", :itemscope => "", :itemtype => "http://schema.org/Offer"}
+    %link{:href => "http://schema.org/InStock", :itemprop => "availability"}/
+    %link{:href => "http://schema.org/NewCondition", :itemprop => "itemCondition"}/
+    %meta{:content => "7.99", :itemprop => "price"}/
+    %meta{:content => "USD", :itemprop => "priceCurrency"}/
 .row.listing-price
   .col-12.clearfix.padding-0
     %span.amount.font-open-sans.font-size-25.main-listing-price
