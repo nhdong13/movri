@@ -29,22 +29,23 @@
   - else
     - meta_image = image_path("sharetribe_icon.png")
 %title= custom_meta_title
--# - if @listing
--#   %meta{ :property => "og:title", :content => @listing.title}
--#   %meta{ :property =>"og:description", :content => @listing.title}
--#   %meta{ :property => "og:url", :content => full_url}
--#   %meta{ :property =>"og:image", :content => @listing.main_image}
--#   %meta{ :property =>"product:brand", :content => "Facebook"}
--#   %meta{ :property =>"product:availability", :content => "#{@listing.available_quantity > 0 ? "in stock" : "out of stock"}"}
--#   %meta{ :property =>"product:condition", :content => "new"}
--#   %meta{ :property =>"product:price:amount", :content => MoneyViewUtils.to_CAD(@listing.price_cents)}
--#   %meta{ :property =>"product:price:currency", :content => "CAD"}
--#   %meta{ :property =>"product:retailer_item_id", :content => @listing.id}
--#   %meta{ :property =>"product:item_group_id", :content => "rental"}
--#   %meta{ :property =>"product:google_product_category", :content => "Unset"}
--# - if meta_image_width && meta_image_height
--#   %meta{ :property => "og:image:width", :content => meta_image_width}
--#   %meta{ :property => "og:image:height", :content => meta_image_height}
+- if @listing
+  %meta{ :property => "fb:app_id", :content => @listing.title}
+  %meta{ :property => "og:title", :content => @listing.title}
+  %meta{ :property =>"og:description", :content => @listing.title}
+  %meta{ :property => "og:url", :content => full_url}
+  %meta{ :property =>"og:image", :content => @listing.main_image}
+  %meta{ :property =>"product:brand", :content => "Facebook"}
+  %meta{ :property =>"product:availability", :content => "#{@listing.available_quantity > 0 ? "in stock" : "out of stock"}"}
+  %meta{ :property =>"product:condition", :content => "new"}
+  %meta{ :property =>"product:price:amount", :content => MoneyViewUtils.to_CAD(@listing.price_cents)}
+  %meta{ :property =>"product:price:currency", :content => "CAD"}
+  %meta{ :property =>"product:retailer_item_id", :content => @listing.id}
+  %meta{ :property =>"product:item_group_id", :content => "rental"}
+  %meta{ :property =>"product:google_product_category", :content => "Unset"}
+- if meta_image_width && meta_image_height
+  %meta{ :property => "og:image:width", :content => meta_image_width}
+  %meta{ :property => "og:image:height", :content => meta_image_height}
 %meta{ :name => "twitter:image", :content => meta_image}
 %link{:rel => "canonical", :href => full_url}
 - if @facebook_locale_code
