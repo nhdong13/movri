@@ -78,6 +78,8 @@
 #  compatibility                   :string(255)
 #  url                             :string(255)
 #  enable                          :boolean          default(TRUE)
+#  meta_title                      :string(255)
+#  meta_description                :text(65535)
 #
 # Indexes
 #

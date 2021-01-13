@@ -28,10 +28,10 @@
     - meta_image = @current_community.logo.url(:original)
   - else
     - meta_image = image_path("sharetribe_icon.png")
-%title= custom_meta_title
 - if @listing
+  %title= @listing.meta_title
   %meta{ :property => "og:title", :content => @listing.title}
-  %meta{ :property =>"og:description", :content => @listing.title}
+  %meta{ :property =>"og:description", :content => @listing.meta_description}
   %meta{ :property => "og:url", :content => full_url}
   %meta{ :property =>"og:image", :content => @listing.main_image}
   %meta{ :property =>"product:brand", :content => "Facebook"}
