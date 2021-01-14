@@ -1,4 +1,4 @@
-= link_to({:sort => column, :direction => direction, :page => (params[:page] || 1), transaction_type: transaction_type}, {:class => "sort-link"}) do
+= link_to({:sort => column, :direction => direction, :page => (params[:page] || 1), transaction_type: transaction_type, q: @params_query }, {:class => "sort-link"}) do
   .sort-text-wrapper
     .sort-text
       =title

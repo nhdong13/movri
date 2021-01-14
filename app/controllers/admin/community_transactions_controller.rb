@@ -61,6 +61,11 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
       @transactions = @transactions.order("#{params[:sort]} #{params[:direction]}").order(order_number: :desc)
     end
 
+    @params_query = params[:q].present? ? params[:q] : ""
+    if params[:q].present?
+      @transactions = @transactions.joins(:shipping_address).where("order_number LIKE ? || transaction_addresses.first_name LIKE ? || transaction_addresses.last_name LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
+    end
+
     @transactions = @transactions.paginate(page: params[:page])
     respond_to do |format|
       format.html
