@@ -69,10 +69,6 @@ $(function() {
       data: {quantity: quantity}
     }).done(function(response) {
       if (response.success === true) {
-        swal("Successfully!", "1 Item Added to Your Cart!", "success", {
-          buttons: false,
-          timer: 1000,
-        });
 
         var data = response.data;
         // Change number show on cart
@@ -86,7 +82,11 @@ $(function() {
           $(quantityNumber).html(data.item_count);
         }
         sendDataToKlaviyo(data.product)
-        location.reload();
+
+        swal("Successfully!", "1 Item Added to Your Cart!", "success", {
+          buttons: false,
+          timer: 1000,
+        }).then(function() {location.reload();})
       } else {
         // TODO:
       }
