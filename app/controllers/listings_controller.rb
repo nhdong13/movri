@@ -606,7 +606,7 @@ class ListingsController < ApplicationController
     @blocked_dates.concat(all_listing_blocked_dates)
     @blocked_dates = @blocked_dates.uniq.sort
     duration = session[:booking][:total_days] || 7
-    if @blocked_dates.any?
+    if @blocked_dates.any? && convert_to_date(session[:booking][:start_date]) < @blocked_dates.last
       if @blocked_dates.last < convert_to_date(get_today)
         session[:booking][:start_date] = get_today
       else
