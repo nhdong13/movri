@@ -1,10 +1,11 @@
 .modal#create-new-customer-modal
-  = form_with url: admin_community_people_path(@current_community), html: {method: :post} do |form|
+  = form_with url: admin_community_people_path(@current_community) do |form|
     = form.hidden_field 'person[community_id]', value: @current_community.id 
     .row.title.br-bottom
       .col-12
         %p= "Create a new customer"
     .row.padding-bt-15.br-bottom
+      .alert-error.create-customer-error.hidden
       .col-6
         %span= "First name"
         = form.text_field 'person[given_name]'
@@ -50,4 +51,4 @@
           = form.text_field 'person[transaction_addresses_attributes][][postal_code]'
     .footer
       = submit_tag "Save customer", class: "button right margin-r-12"
-      %button.button.right.margin-r-12= "Cancel"
+      %button.button.right.margin-r-12.close-create-customer= "Cancel"

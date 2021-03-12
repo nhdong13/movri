@@ -2,9 +2,28 @@ class Admin::PeopleController < Admin::AdminBaseController
   before_action :get_person, only: :create
   def create
     if @person.present?
-      render_error 'Person already existed'
+      return render json: {
+        success: false,
+        message: "The email is already used!"
+      }
     else
-      person = Person.create person_params
+      begin
+        ActiveRecord::Base.transaction do
+          person = Person.new person_params
+          if person.save
+            return render json: {
+              success: true,
+              message: ""
+            }
+          else
+            return render json: {
+              success: false,
+              message: person.errors.full_messages[0]
+            }
+          end
+        end
+      rescue => e
+      end
     end
   end
   private
