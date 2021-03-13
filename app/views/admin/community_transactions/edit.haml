@@ -330,6 +330,10 @@
                 - if @order.starter
                   .span.block= @order.starter.fullname
                   .span.block= "#{@order.starter.starter_transactions.count} orders"
+                - else
+                  - if @order.shipping_address
+                    .span.block= @order.shipping_address.fullname
+
           .contact.br-bottom.padding-15
             .item.flex-items
               .width-80.bold
