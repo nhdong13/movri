@@ -41,7 +41,7 @@
 #  shipping_carrier                  :string(255)
 #  reason_for_cancelling             :string(255)
 #  transaction_type                  :integer          default("normal_order")
-#  tax_percent                       :integer          default(0)
+#  tax_percent                       :decimal(10, 2)   default(0.0)
 #  fulfilled_at                      :datetime
 #  cancelled_at                      :datetime
 #  payment_status                    :integer          default("unpaid")

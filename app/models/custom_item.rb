@@ -5,7 +5,7 @@
 #  id               :bigint           not null, primary key
 #  transaction_id   :integer
 #  name             :string(255)
-#  price_cents      :float(24)        default(0.0)
+#  price_cents      :decimal(10, 2)   default(0.0)
 #  quantity         :integer
 #  discount_percent :integer          default(0)
 #  discount_value   :integer          default(0)

@@ -87,7 +87,7 @@
       .col-8.margin-t-15
         = text_field_tag :custom_rate_name, transaction.draft_order_shipping_fee.name, placeholder: "Custom rate name"
       .col-4.margin-t-15
-        = number_field_tag :shipping_price, transaction.draft_order_shipping_fee.price_cents/100, placeholder: "$"
+        = number_field_tag :shipping_price, (transaction.draft_order_shipping_fee.price_cents/100).round(2), placeholder: "$"
     - else
       .col-12
         = radio_button_tag "shipping", true, "checked"

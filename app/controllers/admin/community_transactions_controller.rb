@@ -274,7 +274,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     if params[:free_shipping] == 'true'
       @transaction.draft_order_shipping_fee.delete if @transaction.draft_order_shipping_fee
     else
-      shipping_fee = params[:shipping_price].to_i
+      shipping_fee = params[:shipping_price].to_f
       custom_params = {
         name: params[:custom_rate_name],
         price_cents: shipping_fee * 100,
@@ -317,7 +317,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def calculate_taxes
     if params[:will_charge_taxes] == 'true'
-      tax_percent = params[:tax_percent].to_i
+      tax_percent = params[:tax_percent].to_f
       tax_cents = calculate_money_service(@transaction).get_tax_fee_for_draft_order(tax_percent)
       @transaction.update(
         tax_percent: tax_percent,
