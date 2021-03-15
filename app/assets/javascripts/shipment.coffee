@@ -21,8 +21,34 @@ onChangePromoCode = ->
       data:
         promo_code: promoCode
 
+onClickSubmitCreateNewCustomer = ->
+  $("#create-new-customer-modal input[type=submit]").click (e) ->
+    e.preventDefault()
+    $(".create-customer-error").hide()
+    form_data = new FormData($("#create-new-customer-modal form")[0])
+    $.ajax(
+      method: "POST"
+      url: "/admin/communities/1/people"
+      dataType: "JSON"
+      data: form_data
+      processData: false
+      contentType: false).done((response) ->
+        if !response.success
+          $(".create-customer-error").text(response.message).show()
+        else
+          $(".close-modal").click()
+      ).fail (error) ->
+        console.log 'Error:', error
+
+onClickCloseCreateCustomerModel = ->
+  $(".close-create-customer").click (e) ->
+    e.preventDefault();
+    $(".close-modal").click()
+
 window.Shipment =
   run: ->
     $(document).ready ->
       onClickShipmentItems()
       onChangePromoCode()
+      onClickSubmitCreateNewCustomer()
+      onClickCloseCreateCustomerModel()
