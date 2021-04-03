@@ -234,7 +234,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def update_draft_order_items
     items = @transaction.transaction_items.find(params[:transaction_item_id])
-    items.update(price_cents: to_price_cents(params[:price].to_i), quantity: params[:quantity])
+    items.update(price_cents: to_price_cents(params[:price].to_f), quantity: params[:quantity])
     calculate_money_service(@transaction).update_tax_cents_for_craft_order
     respond_to do |format|
       format.js { render layout: false }
@@ -244,7 +244,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def update_draft_order_custom_items
     items = @transaction.custom_items.find(params[:custom_item_id])
-    items.update(price_cents: to_price_cents(params[:price].to_i), quantity: params[:quantity])
+    items.update(price_cents: to_price_cents(params[:price].to_f), quantity: params[:quantity])
     calculate_money_service(@transaction).update_tax_cents_for_craft_order
     respond_to do |format|
       format.js { render layout: false }
@@ -305,7 +305,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   def create_new_custom_item
     @transaction.custom_items.create(
       name: params[:title],
-      price_cents: params[:price].to_i * 100,
+      price_cents: params[:price].to_f * 100,
       quantity: params[:quantity],
     )
     calculate_money_service(@transaction).update_tax_cents_for_craft_order

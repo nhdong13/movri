@@ -303,7 +303,11 @@ class SendgridMailer
   def get_items_from_transaction
     list_products = []
     @transaction.transaction_items.each do |item|
-      duration = @transaction.booking ? @transaction.booking.duration : 7
+      if @transaction.draft_order?
+        duration = 1
+      else
+        duration = @transaction.booking ? @transaction.booking.duration : 7
+      end  
       price = PriceCalculationService.calculate(item, duration)
       list_products.push({
         title: item.listing ? item.listing.title : "None" ,

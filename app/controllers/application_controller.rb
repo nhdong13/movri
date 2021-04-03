@@ -430,7 +430,7 @@ class ApplicationController < ActionController::Base
   end
 
   def to_price_cents value
-    value.to_i * 100
+    value.to_f * 100
   end
 
   def maintenance_warning
