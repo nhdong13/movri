@@ -1,3 +1,5 @@
+_learnq.push(['identify', { '$email': '<%=  @fulfill_data[:customer_properties][:$email] %>', '$first_name': '<%= @fulfill_data[:customer_properties][:$first_name] %>', '$last_name': '<%= @fulfill_data[:customer_properties][:$last_name] %>'}]);
+
 _learnq.push(["track", "Fulfilled Order", <%= raw @fulfill_data.to_json %>]);
 
 window.location.href = '<%= @redirect_path%>'
