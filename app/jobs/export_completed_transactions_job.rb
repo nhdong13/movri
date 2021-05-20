@@ -95,7 +95,7 @@ class ExportCompletedTransactionsJob < Struct.new(:current_user_id, :community_i
         billing_address = transaction.billing_address
         stripe_payment = transaction.stripe_payments.standard.last
         refund_payments = transaction.stripe_payments.refund
-        tax =  Tax.find_by(province: shipping_address.state_or_province)
+        tax =  Tax.find_by(province: shipping_address.get_state_or_province)
         yielder << [
           transaction.order_number,
           shipping_address.email,
@@ -122,23 +122,23 @@ class ExportCompletedTransactionsJob < Struct.new(:current_user_id, :community_i
           1,
           transaction.fulfilled? ? "fulfilled" : "unfulfilled",
           billing_address.fullname,
-          billing_address.street1,
+          billing_address.get_street1,
           "",
           "",
           billing_address.company,
-          billing_address.city,
-          billing_address.postal_code,
-          CANADA_PROVINCES.key(billing_address.state_or_province),
+          billing_address.get_city,
+          billing_address.get_postal_code,
+          CANADA_PROVINCES.key(billing_address.get_state_or_province),
           billing_address.country,
           billing_address.phone,
           shipping_address.fullname,
-          shipping_address.street1,
+          shipping_address.get_street1,
           "",
           "",
           shipping_address.company,
-          shipping_address.city,
-          shipping_address.postal_code,
-          CANADA_PROVINCES.key(shipping_address.state_or_province),
+          shipping_address.get_city,
+          shipping_address.get_postal_code,
+          CANADA_PROVINCES.key(shipping_address.get_state_or_province),
           shipping_address.country,
           shipping_address.phone,
           transaction.instructions_from_seller,

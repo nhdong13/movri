@@ -320,7 +320,7 @@ class TransactionsController < ApplicationController
 
   def create_shipping_address_without_current_user transaction
     if session[:booking][:start_date] == get_today
-      shipping_address = TransactionAddress.create(OFFICE_ADDRESS)
+      shipping_address = TransactionAddress.create(is_office_address: true)
     else
       shipping_address = TransactionAddress.new
     end
@@ -330,7 +330,7 @@ class TransactionsController < ApplicationController
 
   def create_shipping_address_with_current_user_params transaction
     if session[:booking][:start_date] == get_today
-      shipping_address = @current_user.transaction_addresses.create(OFFICE_ADDRESS)
+      shipping_address = @current_user.transaction_addresses.create(is_office_address: true)
     else
       shipping_address = TransactionAddress.new
     end
@@ -339,13 +339,16 @@ class TransactionsController < ApplicationController
   end
 
   def update_shipping_address_with_current_user_params transaction, shipping_address
+    return transaction.shipping_address if transaction.shipping_address
+    new_shipping_address = shipping_address.dup
+    new_shipping_address.save
     if session[:booking][:start_date] == get_today
-      shipping_address.update_columns(OFFICE_ADDRESS)
+      new_shipping_address.enable_office_address
     else
-      shipping_address.update(EMPTY_SHIPPING_ADDRESS)
+      new_shipping_address.update(EMPTY_SHIPPING_ADDRESS)
     end
-    transaction.update(shipping_address_id: @current_user.shipping_address.id)
-    shipping_address
+    transaction.update(shipping_address_id: new_shipping_address.id)
+    return new_shipping_address
   end
 
   def shipment
@@ -353,7 +356,7 @@ class TransactionsController < ApplicationController
     return unless @transaction.transaction_items.any?
     listing_ids = @transaction.transaction_items.pluck(:listing_id)
     listings = Listing.where(id: listing_ids)
-    zipcode = @transaction.shipping_address.postal_code
+    zipcode = @transaction.shipping_address.get_postal_code
     return unless zipcode
 
     listings.each do |listing|
@@ -366,7 +369,7 @@ class TransactionsController < ApplicationController
 
     total_quantity = @transaction.total_quantity
     @shipping_address = @transaction.shipping_address
-    @state = @shipping_address.state_or_province
+    @state = @shipping_address.get_state_or_province
     @promo_code = @transaction.promo_code ? @transaction.promo_code.code : nil
     result = ShippingRatesService.get_shipping_rates_for_cart_page(listing_ids, zipcode, total_quantity)
     if result[:success]
@@ -408,7 +411,7 @@ class TransactionsController < ApplicationController
   end
 
   def change_shipping_selection
-    @state = @transaction.shipping_address.state_or_province
+    @state = @transaction.shipping_address.get_state_or_province
     if params[:shipping_type] == "free"
       @default_shipping_fee = 0
       shipper_params = {
@@ -418,8 +421,9 @@ class TransactionsController < ApplicationController
         amount: 0,
         currency: 'CAD',
       }
-      # @transaction.shipping_address.update_columns(OFFICE_ADDRESS)
+      @transaction.shipping_address.enable_office_address
     else
+      @transaction.shipping_address.disable_office_address
       @shipping_selection = session[:shipping][:fedex].select{|s| s["service_type"] == params[:shipping_type]}
       @default_shipping_fee = @shipping_selection.first['total_charge']['amount']
       shipper_params = {
@@ -448,7 +452,7 @@ class TransactionsController < ApplicationController
     else
       @result = {success: false, message: 'This code is invalid or already used.'}
     end
-    @state = @transaction.shipping_address.state_or_province
+    @state = @transaction.shipping_address.get_state_or_province
     @default_shipping_fee = @transaction.shipper.amount
     calculate_money_service(@transaction)
     respond_to do |format|
@@ -458,7 +462,7 @@ class TransactionsController < ApplicationController
   end
 
   def payment
-    @shipping_address = @transaction.shipping_address
+    @shipping_address = @transaction.shipping_address 
     if @current_user
       if @current_user.billing_address
         @billing_address = @current_user.billing_address
@@ -483,7 +487,7 @@ class TransactionsController < ApplicationController
   def thank_you
     @shipping_address = @transaction.shipping_address
     @billing_address = @transaction.billing_address
-    @state = @transaction.shipping_address.state_or_province
+    @state = @transaction.shipping_address.get_state_or_province
     if @transaction.draft_order?
       @default_shipping_fee = @transaction.draft_order_shipping_fee&.price_cents
       @billing_address = @transaction.billing_address

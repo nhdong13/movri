@@ -31,11 +31,11 @@ module StripeService::API
             confirm: true,
             shipping: {
               address: {
-                line1: @shipping_address.street1,
-                city: @shipping_address.city ,
+                line1: @shipping_address.get_street1,
+                city: @shipping_address.get_city ,
                 country: 'CA',
-                postal_code: @shipping_address.postal_code,
-                state: CANADA_PROVINCES.key(@shipping_address.state_or_province)
+                postal_code: @shipping_address.get_postal_code,
+                state: CANADA_PROVINCES.key(@shipping_address.get_state_or_province)
               },
               name: @shipping_address.fullname
             }
@@ -62,11 +62,11 @@ module StripeService::API
           payment_method_id,
           billing_details: {
             address: {
-              line1: @billing_address.street1,
-              city: @billing_address.city ,
+              line1: @billing_address.get_street1,
+              city: @billing_address.get_city ,
               country: 'CA',
-              postal_code: @billing_address.postal_code,
-              state: CANADA_PROVINCES.key(@billing_address.state_or_province)
+              postal_code: @billing_address.get_postal_code,
+              state: CANADA_PROVINCES.key(@billing_address.get_state_or_province)
             },
             name: @billing_address.fullname
           }
@@ -202,11 +202,11 @@ module StripeService::API
             customer: customer['id'],
             shipping: {
               address: {
-                line1: @shipping_address.street1,
-                city: @shipping_address.city ,
+                line1: @shipping_address.get_street1,
+                city: @shipping_address.get_city ,
                 country: 'CA',
-                postal_code: @shipping_address.postal_code,
-                state: CANADA_PROVINCES.key(@shipping_address.state_or_province)
+                postal_code: @shipping_address.get_postal_code,
+                state: CANADA_PROVINCES.key(@shipping_address.get_state_or_province)
               },
               name: @shipping_address.fullname
             }

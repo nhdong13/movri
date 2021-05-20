@@ -12,8 +12,8 @@
                 %p.margin-bt-20= "#{@shipping_address.email}"
                 %span.label-title Shipping Address
                 %span= @shipping_address.fullname
-                %span= @shipping_address.street1
-                %span= "#{@shipping_address.city} #{CANADA_PROVINCES.key(@shipping_address.state_or_province)} #{@shipping_address.postal_code},"
+                %span= @shipping_address.get_street1
+                %span= "#{@shipping_address.get_city} #{CANADA_PROVINCES.key(@shipping_address.get_state_or_province)} #{@shipping_address.get_postal_code},"
                 %span Canada
                 %span.phone-input.margin-bt-20= @shipping_address.format_phone
                 %span.label-title Shipping method
@@ -27,8 +27,8 @@
               .width-50
                 %span.label-title Billing Address
                 %span= @billing_address.fullname
-                %span= @billing_address.street1
-                %span= "#{@billing_address.city} #{CANADA_PROVINCES.key(@billing_address.state_or_province)} #{@billing_address.postal_code},"
+                %span= @billing_address.get_street1
+                %span= "#{@billing_address.get_city} #{CANADA_PROVINCES.key(@billing_address.get_state_or_province)} #{@billing_address.get_postal_code},"
                 %span Canada
                 %span.phone-input= @billing_address.format_phone
       .row

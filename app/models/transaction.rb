@@ -185,11 +185,11 @@ class Transaction < ApplicationRecord
   end
 
   def get_shipping_address
-    (starter && starter.shipping_address) ? starter.shipping_address : shipping_address
+    shipping_address
   end
 
   def get_billing_address
-    (starter && starter.billing_address) ? starter.billing_address : billing_address
+    billing_address
   end
 
   def is_cancelled?
@@ -481,7 +481,7 @@ class Transaction < ApplicationRecord
   end
 
   def disabled_select_shipping?
-    booking.start_on.today?
+    booking.start_on == Date.today
   end
 
   def draft_order_shipping_fee

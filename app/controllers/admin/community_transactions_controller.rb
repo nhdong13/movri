@@ -108,7 +108,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def edit
     if @order.shipping_address
-      @tax = Tax.find_by(province: @order.shipping_address.state_or_province)
+      @tax = Tax.find_by(province: @order.shipping_address.get_state_or_province)
     else
       @tax = Tax.first
     end

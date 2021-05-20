@@ -63,7 +63,7 @@ class Booking < ApplicationRecord
     if start_on.strftime("%m/%d/%Y") > today && tx.shipping_address && tx.shipping_address.is_office_address?
       tx.shipping_address.update_columns(EMPTY_SHIPPING_ADDRESS)
     elsif start_on.strftime("%m/%d/%Y") == today && tx.shipping_address
-      tx.shipping_address.update_columns(OFFICE_ADDRESS)
+      tx.shipping_address.enable_office_address
     end
   end
 

@@ -4,7 +4,7 @@ class TransactionMoneyCalculation
     @current_user = current_user
     @session = session
     @promo_code = @transaction.promo_code
-    @state = @transaction.shipping_address ? @transaction.shipping_address.state_or_province : 'alberta'
+    @state = @transaction.shipping_address ? @transaction.shipping_address.get_state_or_province : 'alberta'
     @shipping_fee = @transaction.shipper ? @transaction.shipper.amount_to_cents : 0
     if @transaction.booking
      @duration = @transaction.booking.duration

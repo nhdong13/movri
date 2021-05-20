@@ -52,10 +52,10 @@ class KlaviyoService
       "$first_name": @shipping_address.first_name,
       "$last_name": @shipping_address.last_name,
       "$phone_number": @shipping_address.phone,
-      "$address1": @shipping_address.street1,
+      "$address1": @shipping_address.get_street1,
       "$address2": @shipping_address.street2,
-      "$city": @shipping_address.city,
-      "$zip": @shipping_address.postal_code,
+      "$city": @shipping_address.get_city,
+      "$zip": @shipping_address.get_postal_code,
       "$country": "CA"
     }
   end
@@ -65,12 +65,12 @@ class KlaviyoService
       "FirstName": @shipping_address.first_name,
       "LastName": @shipping_address.last_name,
       "Company": @shipping_address.company,
-      "Address1": @shipping_address.street1,
+      "Address1": @shipping_address.get_street1,
       "Address2": @shipping_address.street2,
-      "City": @shipping_address.city,
+      "City": @shipping_address.get_city,
       "Country": "Canada",
       "CountryCode": "CA",
-      "Zip": @shipping_address.postal_code,
+      "Zip": @shipping_address.get_postal_code,
       "Phone": @shipping_address.phone
     }
   end
@@ -80,12 +80,12 @@ class KlaviyoService
       "FirstName": @billing_address.first_name,
       "LastName": @billing_address.last_name,
       "Company": @billing_address.company,
-      "Address1": @billing_address.street1,
+      "Address1": @billing_address.get_street1,
       "Address2": @billing_address.street2,
-      "City": @billing_address.city,
+      "City": @billing_address.get_city,
       "Country": "Canada",
       "CountryCode": "CA",
-      "Zip": @billing_address.postal_code,
+      "Zip": @billing_address.get_postal_code,
       "Phone": @billing_address.phone
     }
   end

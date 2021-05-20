@@ -18,8 +18,8 @@
               %p.bold Ship to
               %span.block= @transaction.shipping_address.fullname
               %span.block.uppercase= @transaction.shipping_address.apartment
-              %span.block.uppercase= @transaction.shipping_address.street1
-              %span.block.uppercase= "#{@transaction.shipping_address.city}, #{CANADA_PROVINCES.key(@transaction.shipping_address.state_or_province)} #{@transaction.shipping_address.postal_code}"
+              %span.block.uppercase= @transaction.shipping_address.get_street1
+              %span.block.uppercase= "#{@transaction.shipping_address.get_city}, #{CANADA_PROVINCES.key(@transaction.shipping_address.get_state_or_province)} #{@transaction.shipping_address.get_postal_code}"
               %p.uppercase= @transaction.shipping_address.format_phone
               %span.block Payment Information
               %span= money_to_humanized(@transaction.stripe_payments.last.sum_cents)
@@ -106,8 +106,8 @@
                 %p.bold Ship to
                 %span.block= @transaction.shipping_address.fullname
                 %span.block.uppercase= @transaction.shipping_address.apartment
-                %span.block.uppercase= @transaction.shipping_address.street1
-                %span.block.uppercase= "#{@transaction.shipping_address.city}, #{CANADA_PROVINCES.key(@transaction.shipping_address.state_or_province)} #{@transaction.shipping_address.postal_code}"
+                %span.block.uppercase= @transaction.shipping_address.get_street1
+                %span.block.uppercase= "#{@transaction.shipping_address.get_city}, #{CANADA_PROVINCES.key(@transaction.shipping_address.get_state_or_province)} #{@transaction.shipping_address.get_postal_code}"
                 %p.uppercase= @transaction.shipping_address.format_phone
                 %span.block Payment Information
                 %span= money_to_humanized(@transaction.stripe_payments.last.sum_cents)
