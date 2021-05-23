@@ -576,7 +576,12 @@ class SendgridMailer
     sg = SendGrid::API.new(api_key: APP_CONFIG.SENDGRID_API_KEY)
     begin
       response = sg.client.mail._("send").post(request_body: data)
-      return response.status_code
+      if response.status_code == "202"
+        return {success: true}
+      else
+        data = JSON.parse(response.body)
+        return {success: false, message: data["errors"][0]["message"]}
+      end
     rescue Exception => e
       puts e.message
     end

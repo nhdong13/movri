@@ -21,7 +21,9 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
     redirect_to admin_community_customers_path(@current_community)
   end
 
-  def edit; end
+  def edit
+    @customer = Person.find_by(id: params[:id])
+  end
 
   def update
     begin
@@ -35,7 +37,7 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
       flash[:error] = t("layouts.notifications.add_new_customer_failed")
     end
     respond_to do |format|
-      format.html { redirect_to admin_community_customer_path(@current_community, params[:person][:id]) }
+      format.html { redirect_to admin_community_customers_path }
       format.js { render layout: false }
     end
   end
@@ -55,9 +57,9 @@ class Admin::CommunityCustomersController < Admin::AdminBaseController
   end
 
   def destroy
-    # person = Person.find_by(id: params[:id])
-    # person.destroy
-    # redirect_to admin_community_customers_path
+    person = Person.find_by(id: params[:id])
+    person.destroy
+    redirect_to admin_community_customers_path
   end
 
   private

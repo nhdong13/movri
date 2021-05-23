@@ -1,4 +1,9 @@
-= form_for customer, :url => admin_community_customers_path(community_id: @current_community.id), :method => :post do |f|
+- if customer.id
+  - url = admin_community_customer_path(community_id: @current_community.id, id: customer.id)
+- else 
+  - url = admin_community_customers_path(community_id: @current_community.id)
+
+= form_for customer, :url => url do |f|
   .customer-page.add-customer-form
     .section.p-0
       .row.p-0.m-0
@@ -24,42 +29,42 @@
                 = f.label :agree_to_subscription, "Customer agreed to receive marketing emails.", :class => 'checkbox'
             .font-size-14
               You should ask your customers for permission before you subscribe them to your marketing emails
-    .section.p-0
-      .row.p-0
-        .col-4
-          %label Address
-          .font-weight-regular.font-size-14
-            The primary address of this customer
-        .col-8
-          = fields_for :transaction_address do |address_form|
-            .section-wrapper.row.m-0.pt-0
-              .col-6.p-0.m-0.pr-2
-                = address_form.label :first_name, "First name", class: 'font-weight-regular'
-                = address_form.text_field :first_name, class: 'text_field'
-              .col-6.p-0.m-0.pl-2
-                = address_form.label :last_name, "Last name", class: 'font-weight-regular'
-                = address_form.text_field :last_name, class: 'text_field'
-              .col-12.p-0.m-0
-                = address_form.label :company, "Company", class: 'font-weight-regular'
-                = address_form.text_field :company, class: 'text_field'
-              .col-12.p-0.m-0
-                = address_form.label :street1, "Address", class: 'font-weight-regular'
-                = address_form.text_field :street1, class: 'text_field'
-              .col-12.p-0.m-0
-                = address_form.label :apartment, "Apartment, suite, etc.", class: 'font-weight-regular'
-                = address_form.text_field :apartment, class: 'text_field'
-              .col-12.p-0.m-0
-                = address_form.label :city, "City", class: 'font-weight-regular'
-                = address_form.text_field :city, class: 'text_field'
-              .col-6.p-0.m-0.pr-2.select-country
-                = address_form.label :country, "Country/Region", class: 'font-weight-regular'
-                = address_form.country_select("country", [], {:prompt => "Country/Region"})
-              .col-6.p-0.m-0.pl-2
-                = address_form.label :postal_code, "Postal code", class: 'font-weight-regular'
-                = address_form.text_field :postal_code, class: 'text_field'
-              .col-12.p-0.m-0
-                = address_form.label :phone, "Phone", class: 'font-weight-regular'
-                = address_form.text_field :phone, class: 'text_field'
+    / .section.p-0
+    /   .row.p-0
+    /     .col-4
+    /       %label Address
+    /       .font-weight-regular.font-size-14
+    /         The primary address of this customer
+    /     .col-8
+    /       = fields_for :transaction_address do |address_form|
+    /         .section-wrapper.row.m-0.pt-0
+    /           .col-6.p-0.m-0.pr-2
+    /             = address_form.label :first_name, "First name", class: 'font-weight-regular'
+    /             = address_form.text_field :first_name, class: 'text_field'
+    /           .col-6.p-0.m-0.pl-2
+    /             = address_form.label :last_name, "Last name", class: 'font-weight-regular'
+    /             = address_form.text_field :last_name, class: 'text_field'
+    /           .col-12.p-0.m-0
+    /             = address_form.label :company, "Company", class: 'font-weight-regular'
+    /             = address_form.text_field :company, class: 'text_field'
+    /           .col-12.p-0.m-0
+    /             = address_form.label :street1, "Address", class: 'font-weight-regular'
+    /             = address_form.text_field :street1, class: 'text_field'
+    /           .col-12.p-0.m-0
+    /             = address_form.label :apartment, "Apartment, suite, etc.", class: 'font-weight-regular'
+    /             = address_form.text_field :apartment, class: 'text_field'
+    /           .col-12.p-0.m-0
+    /             = address_form.label :city, "City", class: 'font-weight-regular'
+    /             = address_form.text_field :city, class: 'text_field'
+    /           .col-6.p-0.m-0.pr-2.select-country
+    /             = address_form.label :country, "Country/Region", class: 'font-weight-regular'
+    /             = address_form.country_select("country", [], {:prompt => "Country/Region"})
+    /           .col-6.p-0.m-0.pl-2
+    /             = address_form.label :postal_code, "Postal code", class: 'font-weight-regular'
+    /             = address_form.text_field :postal_code, class: 'text_field'
+    /           .col-12.p-0.m-0
+    /             = address_form.label :phone, "Phone", class: 'font-weight-regular'
+    /             = address_form.text_field :phone, class: 'text_field'
     .section.p-0
       .row.p-0
         .col-4

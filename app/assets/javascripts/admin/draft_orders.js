@@ -130,7 +130,7 @@ $('#send-notification').on('click', function(){
   }
 
   $.ajax({
-    url: "/admin/communities/1/emails/sent_invoice_email",
+    url: "/admin/communities/1/emails/sent_invoice_email.js",
     data: data
   })
 })

@@ -46,7 +46,10 @@ class Admin::EmailsController < Admin::AdminBaseController
     transaction = Transaction.find_by(id: params[:transaction_id])
     checkout_path =  checkout_transaction_url(transaction.uuid_object)
     custom_message =  params[:custom_message]
-    SendgridMailer.new(transaction, nil, nil, false).send_invoice_mail(params[:to], custom_message, checkout_path)
+    @result = SendgridMailer.new(transaction, nil, nil, false).send_invoice_mail(params[:to], custom_message, checkout_path)
+    respond_to do |format|
+      format.js { render layout: false }
+    end
   end
 
   protected
