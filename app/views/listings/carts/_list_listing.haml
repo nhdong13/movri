@@ -13,8 +13,8 @@
             .listing-sku
               %span SKU:
               %span= listing.sku.present? ? listing.sku.upcase : 'CAE5D3'
-            .listing-coverage
-              = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS, selected: coverage_type), class: 'custom-select-coverage'
+            / .listing-coverage
+            /   = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS, selected: coverage_type), class: 'custom-select-coverage'
           .col-3
             .quantity-box
               %span= t('transactions.label.quantity')
@@ -25,12 +25,12 @@
             .cart-item
               %span= "#{t('transactions.label.price')}:"
               %span#price-item= readable_price
-            .cart-item#coverage
-              %span= "#{t('transactions.label.coverage')}:"
-              - if coverage_type == "no_coverage"
-                %span $0
-              - else
-                %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
+            / .cart-item#coverage
+            /   %span= "#{t('transactions.label.coverage')}:"
+            /   - if coverage_type == "no_coverage"
+            /     %span $0
+            /   - else
+            /     %span= MoneyViewUtils.to_humanized(Money.new(total_coverage(listing, value), 'USD'))
       .listing-action
         .row
           .col-8

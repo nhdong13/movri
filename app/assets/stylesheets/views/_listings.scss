@@ -3052,7 +3052,7 @@ $listing-author-avatar-height: 108;
     }
 
     #pricing-charts-table {
-      table, td {
+      table, tr, td {
         border-top: 1px solid#cdcdcd;
         border-collapse: collapse;
       }
@@ -3151,7 +3151,7 @@ $listing-author-avatar-height: 108;
     }
 
     #mobile-pricing-charts-table {
-      table, td {
+      table, tr, td {
         border-top: 1px solid#cdcdcd;
         border-collapse: collapse;
       }

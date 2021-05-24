@@ -202,7 +202,11 @@ class Transaction < ApplicationRecord
   end
 
   def will_pickup?
-    delivery_method == "pickup"
+    if shipping_address
+      shipping_address.is_office_address?
+    else
+      delivery_method == "pickup"
+    end
   end
 
   def create_transaction_item listing, quantity=1, duration=1, coverage_type="movri_coverage"

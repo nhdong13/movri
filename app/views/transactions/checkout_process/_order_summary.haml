@@ -14,10 +14,10 @@
             .listing-information
               .listing-title.cut-text
                 %span= listing.title
-              .coverage
-                .coverage-selection
-                  %span= "#{t('transactions.label.coverage')}:"
-                  %span= item.coverage_type.split("_").join(" ")
+              / .coverage
+              /   .coverage-selection
+              /     %span= "#{t('transactions.label.coverage')}:"
+              /     %span= item.coverage_type.split("_").join(" ")
               .sku-quantity
                 .quantity
                   %span= "#{t('transactions.label.quantity')}:"

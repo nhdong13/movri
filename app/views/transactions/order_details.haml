@@ -41,16 +41,16 @@
                   %span= "Shipping (#{@transaction.shipper.service_delivery.upcase}):"
                 .width-50.align-right
                   %span= "$#{@transaction.shipper.amount}"
-              .flex-items
+              .flex-items.br-bottom
                 .width-50
                   %span Sales Tax:
                 .width-50.align-right
                   %span= money_to_humanized(@transaction.payment.fee_cents)
-              .flex-items.br-bottom
-                .width-70
-                  %span Movri Coverage:
-                .width-30.align-right
-                  %span= money_to_humanized(@transaction.coverage_cents)
+              / .flex-items.br-bottom
+              /   .width-70
+              /     %span Movri Coverage:
+              /   .width-30.align-right
+              /     %span= money_to_humanized(@transaction.coverage_cents)
               .flex-items
                 .width-50
                   %span.bold Total
@@ -70,12 +70,12 @@
                 .flex-items.data-header.padding-5.brown-background
                   .width-10
                   .width-40
-                  .width-10.center-items
+                  .width-20.center-items
                     %span QTY
-                  .width-20.center-items
+                  .width-30.center-items
                     %span Price
-                  .width-20.center-items
-                    %span MOVRI COVERAGE
+                  / .width-20.center-items
+                  /   %span MOVRI COVERAGE
                 - @transaction.transaction_items.each do |item|
                   - listing = item.listing
                   .account-listing-item.br-bottom
@@ -85,12 +85,12 @@
                       .width-40
                         %p.margin-0.title= link_to listing.title, listing_path(listing)
                         %p.margin-0.sku.uppercase= "SKU: #{listing.sku ? listing.sku : 'OLLC62F'}"
-                      .width-10.center-items
+                      .width-20.center-items
                         %p= item.quantity
-                      .width-20.center-items
+                      .width-30.center-items
                         = money_to_humanized(item.price_cents)
-                      .width-20.center-items
-                        = money_to_humanized(item.coverage_price_cents)
+                      / .width-20.center-items
+                      /   = money_to_humanized(item.coverage_price_cents)
       .mobile-display.fz-14
         #order-details.margin-bt-20
           .row
@@ -130,16 +130,16 @@
                   %span= "Shipping (#{@transaction.shipper.service_delivery.upcase}):"
                 .width-50.align-right
                   %span= "$#{@transaction.shipper.amount}"
-              .flex-items
+              .flex-items.br-bottom
                 .width-50
                   %span Sales Tax:
                 .width-50.align-right
                   %span= money_to_humanized(@transaction.payment.fee_cents)
-              .flex-items.br-bottom
-                .width-70
-                  %span Movri Coverage:
-                .width-30.align-right
-                  %span= money_to_humanized(@transaction.coverage_cents)
+              / .flex-items.br-bottom
+              /   .width-70
+              /     %span Movri Coverage:
+              /   .width-30.align-right
+              /     %span= money_to_humanized(@transaction.coverage_cents)
               .flex-items
                 .width-50
                   %span.bold Total
@@ -177,5 +177,5 @@
                         %span= item.quantity
                       .width-25.center-items
                         %span= money_to_humanized(item.price_cents)
-                    .align-right
-                      %span= t('transactions.order_details.coverage', coverage: money_to_humanized(item.coverage_price_cents))
+                    / .align-right
+                    /   %span= t('transactions.order_details.coverage', coverage: money_to_humanized(item.coverage_price_cents))

@@ -14,22 +14,32 @@ class Admin::CustomersService
     customer = Person.create(customer_params[:person]) do |ps|
       ps.community_id = community.id
     end
-    default_address = customer.transaction_addresses.create(customer_params[:transaction_address])
-    customer.update(default_shipping_address: default_address.id)
+    # default_address = customer.transaction_addresses.create(customer_params[:transaction_address])
+    # customer.update(default_shipping_address: default_address.id)
   end
 
   def update
     person = resource_scope.find_by(id: params[:id])
     person.update(customer_params[:person])
-    person.active_email.update(address: customer_params[:person][:email]) if customer_params[:person][:email].present?
+    if person.active_email 
+      person.active_email.update(address: customer_params[:person][:email]) if customer_params[:person][:email].present?
+    else
+      person.update(email: customer_params[:person][:email]) if customer_params[:person][:email].present?
+    end
+    # if person.shipping_address 
+    #   person.shipping_address.update(customer_params[:transaction_address])
+    # else
+    #   default_address = person.transaction_addresses.create(customer_params[:transaction_address])
+    #   person.update(default_shipping_address: default_address.id)
+    # end
   end
 
   private
 
   def customer_params
     params.permit(
-      person: [:family_name, :given_name, :email, :phone_number, :agree_to_subscription, :note],
-      transaction_address: [:first_name, :last_name, :company, :street1, :apartment, :city, :country, :postal_code, :phone]
+      person: [:id, :family_name, :given_name, :email, :phone_number, :agree_to_subscription, :note],
+      transaction_address: [:id, :first_name, :last_name, :company, :street1, :apartment, :city, :country, :postal_code, :phone]
     )
   end
 

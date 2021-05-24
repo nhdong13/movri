@@ -9,16 +9,16 @@
       .mobile-display.root-parent
         .mobile-descriptions
           = @current_community.pricing_chart_content
-        %br
-        .mobile-group-options-coverage
-          .row
-            %form
-              %label
-                %input{:checked => "checked", :name => "coverage", :type => "radio", :value => "no-coverage"}/
-                No Coverage
-              %label
-                %input{:name => "coverage", :type => "radio", :value => "movri-coverage"}/
-                Movri Coverage
+        / %br
+        / .mobile-group-options-coverage
+        /   .row
+        /     %form
+        /       %label
+        /         %input{:checked => "checked", :name => "coverage", :type => "radio", :value => "no-coverage"}/
+        /         No Coverage
+        /       %label
+        /         %input{:name => "coverage", :type => "radio", :value => "movri-coverage"}/
+        /         Movri Coverage
 
     .rental-price-with-no-insurance
       .mobile-modal-list-shipping

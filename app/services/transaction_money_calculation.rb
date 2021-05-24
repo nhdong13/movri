@@ -136,13 +136,15 @@ class TransactionMoneyCalculation
     if @transaction && @transaction.draft_order?
       price_cents
     else
-      total_coverage = listing.no_coverage? ? 0 : total_coverage(listing, quantity)
-      price_cents + total_coverage
+      # total_coverage = listing.no_coverage? ? 0 : total_coverage(listing, quantity)
+      # price_cents + total_coverage
+      price_cents
     end
   end
 
   def total_coverage listing, quantity
-    listing.no_coverage? ? 0 : InsuranceCalculationService.call(listing, @duration) * quantity
+    0
+    # listing.no_coverage? ? 0 : InsuranceCalculationService.call(listing, @duration) * quantity
   end
 
   def get_tax_fee state=nil, shipping_fee=nil
@@ -161,10 +163,10 @@ class TransactionMoneyCalculation
 
   def total_coverage_for_all_items_cart
     total_coverage = 0
-    @transaction.transaction_items.each do|item|
-      coverage = item.no_coverage? ? 0 : InsuranceCalculationService.call(item, @duration) * item.quantity
-      total_coverage += coverage
-    end
+    # @transaction.transaction_items.each do|item|
+    #   coverage = item.no_coverage? ? 0 : InsuranceCalculationService.call(item, @duration) * item.quantity
+    #   total_coverage += coverage
+    # end
     total_coverage
   end
 

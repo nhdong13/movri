@@ -1,6 +1,8 @@
 module PriceCalculationService
   module_function
 
+  EXTRA_FEE = 12
+
   def calculate_total_price(session)
     total_price = 0
 
@@ -22,12 +24,14 @@ module PriceCalculationService
     days = 7 unless days
     a_day_price = item.price_cents
     if days == 1
-      a_day_price
+      final_price = a_day_price
     else
       day_price = a_day_price - (a_day_price * PriceCalculationService.get_discount_percent(days)/100)
       # rounding the price
-      ((day_price * days)/100).to_i * 100
+      final_price = ((day_price * days)/100).to_i * 100
     end
+    fee = (final_price *  EXTRA_FEE)/100
+    final_price + fee
   end
 
   def get_discount_percent(days)

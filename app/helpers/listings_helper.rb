@@ -140,28 +140,31 @@ module ListingsHelper
   end
 
   def total_coverage listing, quantity
-    InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
+    # InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
+    0
   end
 
   def total_coverage_for_all_items_cart
     total_coverage = 0
-    session[:cart].each do|listing_id, quantity|
-      session[:coverage] ||= {}
-      coverage_type = session[:coverage][listing_id]
-      listing = Listing.find_by(id: listing_id)
-      if coverage_type == "no_coverage"
-        coverage = 0
-      else
-        coverage = InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
-      end
-      total_coverage += coverage
-    end
+    # session[:cart].each do|listing_id, quantity|
+    #   session[:coverage] ||= {}
+    #   coverage_type = session[:coverage][listing_id]
+    #   listing = Listing.find_by(id: listing_id)
+    #   if coverage_type == "no_coverage"
+    #     coverage = 0
+    #   else
+    #     coverage = InsuranceCalculationService.call(listing, session[:booking][:total_days]) * quantity
+    #   end
+    #   total_coverage += coverage
+    # end
     total_coverage
   end
 
   def price_with_all_fee promo_code=nil, shipping_fee=nil
     shipping_fee =  FEDEX_STANDARD_FEE unless shipping_fee
-    price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code) + total_coverage_for_all_items_cart + shipping_fee
+    # price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code) + total_coverage_for_all_items_cart + shipping_fee
+    # TODO: remove coverage at the moment
+    price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code) + shipping_fee
   end
 
   def price_with_promo_code price, promo_code

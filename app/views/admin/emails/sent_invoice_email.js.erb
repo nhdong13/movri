@@ -1,5 +1,5 @@
 <% if @result[:success] %>
-	swal("Successfully!", "Send email successfully!", "success", {buttons: false, timer: 2000});
+	swal("Successfully!", "Email has been sent to the customer.", "success", {buttons: false, timer: 2000});
 <% else %>
 	swal("Failure!", '<%= @result[:message] %>', "error");
 <% end %>

@@ -411,7 +411,6 @@ class TransactionsController < ApplicationController
   end
 
   def change_shipping_selection
-    @state = @transaction.shipping_address.get_state_or_province
     if params[:shipping_type] == "free"
       @default_shipping_fee = 0
       shipper_params = {
@@ -434,6 +433,7 @@ class TransactionsController < ApplicationController
         currency: @shipping_selection.first['total_charge']['currency'],
       }
     end
+    @state = @transaction.shipping_address.get_state_or_province
     @transaction.shipper.update(shipper_params)
     calculate_money_service(@transaction)
     respond_to do |format|
