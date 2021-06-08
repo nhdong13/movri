@@ -196,6 +196,7 @@ gem 'biz'
 gem 'ffi', '>= 1.9.25'
 gem 'rubyzip', '~> 1.2.2'
 gem 'bootsnap', require: false
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: 'd5ebc0cd846dcc68142622c76ad71d021768b7c2'
 gem 'puma'
 
 # Provides object geocoding (by street or IP address), reverse geocoding (coordinates to street address), distance queries for ActiveRecord and Mongoid, result caching, and more.
