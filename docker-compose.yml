@@ -1,8 +1,9 @@
 version: '2'
 services:
   web:
-    build: .
-    dockerfile: Dockerfile.local
+    build:
+      context: .
+      dockerfile: Dockerfile.local
     ports:
       - "3000:3000"
     image: movri_web
