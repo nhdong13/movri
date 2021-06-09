@@ -4,6 +4,8 @@ MAINTAINER Sharetribe Team <team@sharetribe.com>
 
 ENV REFRESHED_AT 2019-09-20
 
+USER root
+
 # NOTE: we will migrate soon to newer ruby version and away from Debian
 # Jessie-based image. For now, enable only package repositories that are still
 # maintained for jessie for LTS.
@@ -73,7 +75,7 @@ RUN gem install bundler -v 1.17.3
 
 # Run as non-privileged user
 RUN useradd -m -s /bin/bash app \
-  && mkdir /opt/app /opt/app/client /opt/app/log /opt/app/tmp && chown -R app:app /opt/app
+  && mkdir /opt/app /opt/app/client /opt/app/log /opt/app/tmp
 
 WORKDIR /opt/app
 
@@ -81,8 +83,6 @@ COPY Gemfile /opt/app
 COPY Gemfile.lock /opt/app
 
 ENV RAILS_ENV development
-
-USER app
 
 RUN bundle install --deployment
 
@@ -108,18 +108,10 @@ ENTRYPOINT ["script/entrypoint.sh"]
 #
 
 # Fix ownership of directories that need to be writable
-USER root
 RUN mkdir -p \
           app/assets/webpack \
           public/assets \
-          public/webpack \
-    && chown -R app:app \
-       app/assets/javascripts \
-       app/assets/webpack \
-       client/app/ \
-       public/assets \
-       public/webpack
-USER app
+          public/webpack
 
 # If assets.tar.gz file exists in project root
 # assets will be extracted from there.
