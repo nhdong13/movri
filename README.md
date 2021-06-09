@@ -254,6 +254,44 @@ Some components are created with React (see [documentation](https://github.com/s
     foreman start -f Procfile.client-hot
     ```
 
+### Docker
+
+- Clone `config.example.yml` -> `config.yml`
+
+```
+  harmony_api_url: http://harmony_api:8085
+```
+
+- Clone `database.example.yml` -> `database.yml`
+
+```
+    host: db
+```
+
+- docker-compose build
+
+- docker-compose up
+
+- Restore harmony database
+
+```
+  sql file: ./harmony/harmony_db.sql
+  db name: harmony_db
+  host: 127.0.0.1
+  port: 13306
+  user: root
+  pass: harmony_root
+```
+
+- ssh to movri_web container and run some commands
+
+```
+docker exec -it <container_id> bash
+
+rake ts:index
+rake ts:start
+```
+
 ### Setting up Sharetribe for production
 
 Before starting these steps, perform [steps 1-5 from above](#setting-up-the-development-environment).
