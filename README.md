@@ -280,7 +280,7 @@ Some components are created with React (see [documentation](https://github.com/s
   host: 127.0.0.1
   port: 13306
   user: root
-  pass: harmony_root
+  pass: harmony-root
 ```
 
 - ssh to movri_web container and run some commands
