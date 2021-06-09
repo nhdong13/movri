@@ -8,9 +8,10 @@ services:
       - "3000:3000"
     image: movri_web
     env_file: .env.local
-    command: foreman start -f Procfile.static
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
     depends_on:
       - harmony_api
+      - db
   worker:
     image: movri_web
     env_file: .env.local
@@ -18,6 +19,7 @@ services:
     depends_on:
       - web
       - harmony_api
+      - db
   memcached:
     image: memcached:latest
   db:

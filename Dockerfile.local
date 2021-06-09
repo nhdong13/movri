@@ -72,6 +72,7 @@ RUN apt-get install -y sphinxsearch
 # Install latest bundler
 ENV BUNDLE_BIN=
 RUN gem install bundler -v 1.17.3
+RUN gem install foreman
 
 # Run as non-privileged user
 RUN useradd -m -s /bin/bash app \
@@ -101,3 +102,9 @@ EXPOSE 3000
 
 CMD ["script/startup.sh"]
 ENTRYPOINT ["script/entrypoint.sh"]
+
+RUN mkdir -p \
+          app/assets/webpack \
+          public/assets \
+          public/webpack
+RUN script/prepare-assets.sh
