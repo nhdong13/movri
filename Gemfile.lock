@@ -298,6 +298,7 @@ GEM
       thinking-sphinx
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
+    foreman (0.87.2)
     formatador (0.2.5)
     geocoder (1.6.1)
     gherkin (5.1.0)
@@ -770,6 +771,7 @@ DEPENDENCIES
   ffi (>= 1.9.25)
   flying-sphinx (~> 1.2.0)
   font-awesome-rails
+  foreman
   geocoder (~> 1.6, >= 1.6.1)
   guard-rspec (~> 4.7.3)
   haml (~> 5.0.4)

@@ -120,6 +120,7 @@ end
 group :development, :test do
   gem 'rubocop', '~> 0.67.2', require: false
   gem 'factory_girl_rails', '~> 4.8.0'
+  gem 'foreman', require: false
 end
 
 group :development, :staging do

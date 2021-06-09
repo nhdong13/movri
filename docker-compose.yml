@@ -8,12 +8,16 @@ services:
       - "3000:3000"
     image: movri_web
     env_file: .env.local
+    command: foreman start -f Procfile.static
+    depends_on:
+      - harmony_api
   worker:
     image: movri_web
     env_file: .env.local
     command: bundle exec rake jobs:work
     depends_on:
       - web
+      - harmony_api
   memcached:
     image: memcached:latest
   db:
@@ -24,3 +28,20 @@ services:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
+  harmony_api:
+    build:
+      context: ./harmony
+    ports:
+      - "8085:8085"
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=harmony_db
+    command: ["./docker/startup.sh"]
+  harmony_db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=harmony-root
+    volumes:
+      - ~/.sharetribe/harmony-mysql-data:/var/lib/mysql
+    ports:
+      - "13306:3306"
