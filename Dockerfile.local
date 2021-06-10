@@ -72,6 +72,7 @@ RUN apt-get install -y sphinxsearch
 # Install latest bundler
 ENV BUNDLE_BIN=
 RUN gem install bundler -v 1.17.3
+RUN gem install foreman
 
 # Run as non-privileged user
 RUN useradd -m -s /bin/bash app \
@@ -102,19 +103,8 @@ EXPOSE 3000
 CMD ["script/startup.sh"]
 ENTRYPOINT ["script/entrypoint.sh"]
 
-
-#
-# Assets
-#
-
-# Fix ownership of directories that need to be writable
 RUN mkdir -p \
           app/assets/webpack \
           public/assets \
           public/webpack
-
-# If assets.tar.gz file exists in project root
-# assets will be extracted from there.
-# Otherwise, assets will be compiled with `rake assets:precompile`.
-# Useful for caching assets between builds.
 RUN script/prepare-assets.sh
