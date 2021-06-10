@@ -268,28 +268,35 @@ Some components are created with React (see [documentation](https://github.com/s
     host: db
 ```
 
-- docker-compose build
+- `docker-compose build`
 
-- docker-compose up
+- `docker-compose up`
 
-- Restore harmony database
+- Create harmony db
 
 ```
-  sql file: ./harmony/harmony_db.sql
-  db name: harmony_db
-  host: 127.0.0.1
-  port: 13306
-  user: root
-  pass: harmony-root
+echo "CREATE DATABASE IF NOT EXISTS harmony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root --password=harmony-root -h 127.0.0.1 --port 13306
+```
+
+- ssh to movri_harmony_api container and run command:
+
+```
+  lein migrate migrate
 ```
 
 - ssh to movri_web container and run some commands
 
 ```
-docker exec -it <container_id> bash
-
+rake db:create
+rake db:structure:load
 rake ts:index
 rake ts:start
+```
+
+*** Notes: ssh to container
+
+```
+docker exec -it <container_id> bash
 ```
 
 ### Setting up Sharetribe for production
@@ -565,30 +572,6 @@ e.g: `Community.first.update(domain: 'localhost')`
 12. Update person password and set this person is admin
 
 e.g `Person.first.update(password: 'your_pass')`
-
-13. Harmony setup
-
-Setup follow this guide:
-https://github.com/sharetribe/harmony
-
-Note: If you setup harmony on macos you just do more some steps below:
-
-- Update Dockerfile:
-
-Remove:
-
-```bash
-RUN apt-get update \
-    && apt-get upgrade -y
-```
-
-Replaced the above code by:
-
-```bash
-RUN echo 'deb http://archive.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list
-RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
-RUN apt-get -o Acquire::Check-Valid-Until=false update
-```
 
 - Install java:
 https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
