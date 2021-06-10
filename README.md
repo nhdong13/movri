@@ -254,6 +254,55 @@ Some components are created with React (see [documentation](https://github.com/s
     foreman start -f Procfile.client-hot
     ```
 
+### Docker
+
+- Clone `config.example.yml` -> `config.yml`
+
+```
+  harmony_api_url: http://harmony_api:8085
+```
+
+- Clone `database.example.yml` -> `database.yml`
+
+```
+    host: db
+```
+
+- `docker-compose build`
+
+- `docker-compose up`
+
+- Create harmony db
+
+```
+echo "CREATE DATABASE IF NOT EXISTS harmony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root --password=harmony-root -h 127.0.0.1 --port 13306
+```
+
+- ssh to movri_harmony_api_1 container and run command:
+
+```
+  lein migrate migrate
+```
+
+- ssh to movri_web_1 container and run some commands
+
+```
+rake db:create
+rake db:structure:load
+rake ts:index
+rake ts:start
+rake sharetribe:create_booking_for_exist_listings
+bundle exec rails c
+  Community.first.update(domain: 'localhost')
+  Person.first.update(password: 'your_pass')
+```
+
+*** Notes: ssh to container
+
+```
+docker exec -it <container_id> bash
+```
+
 ### Setting up Sharetribe for production
 
 Before starting these steps, perform [steps 1-5 from above](#setting-up-the-development-environment).
@@ -477,80 +526,3 @@ The forum is a great place to ask support and help for example with issues durin
 ## License
 
 Sharetribe is source available under the Sharetribe Community Public Licence. See [LICENSE](LICENSE) for details.
-
-## Setup project note
-
-1. Install Ruby and dependencies
-`rvm install 2.6.2`
-`bundle install`
-
-2. Setup Javascript dependencies
-`nvm install`
-`npm install`
-
-3. Install sphinxsearch
-`searchd --status`
-`sudo apt-get install sphinxsearch`
-
-4. Install imagemagick for edit image uploaded
-`sudo apt list imagemagick -a`
-`sudo apt install imagemagick`
-
-5. Add files
-`database.yml` and `config.yml`
-
-6. Create and handle data
-
-`rake db:create`
-
-`rake db:structure:load`
-
-`bundle exec rake ts:index`
-
-`bundle exec rake ts:start`
-
-7. Assets compile
-`rake assets:precompile`
-
-8. Start foreman
-`foreman start -f Procfile.static`
-
-9. Start delayed_job
-`bundle exec rake jobs:work`
-
-10. Import sample database
-
-11. Update community for local development
-
-e.g: `Community.first.update(domain: 'localhost')`
-
-12. Update person password and set this person is admin
-
-e.g `Person.first.update(password: 'your_pass')`
-
-13. Harmony setup
-
-Setup follow this guide:
-https://github.com/sharetribe/harmony
-
-Note: If you setup harmony on macos you just do more some steps below:
-
-- Update Dockerfile:
-
-Remove:
-
-```bash
-RUN apt-get update \
-    && apt-get upgrade -y
-```
-
-Replaced the above code by:
-
-```bash
-RUN echo 'deb http://archive.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list
-RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
-RUN apt-get -o Acquire::Check-Valid-Until=false update
-```
-
-- Install java:
-https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html

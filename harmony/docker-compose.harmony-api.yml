@@ -1,0 +1,23 @@
+# This compose file describes only the Harmony API component Used for
+# deployment to convox.
+version: '2'
+services:
+  api:
+    build: .
+    labels:
+      - convox.deployment.minimum=50
+      - convox.deployment.maximum=200
+      - convox.port.443.protocol=https
+      - convox.idle.timeout=60
+      - convox.start.shift=2000
+      - convox.health.path=/_health
+      - convox.health.timeout=5
+    ports:
+      - "443:8085"
+    environment:
+      - DB_PORT=3306
+      - DB_HOST
+      - DB_USER
+      - DB_PASSWORD
+      - DB_NAME=harmony_db
+    command: ["./docker/startup.sh"]

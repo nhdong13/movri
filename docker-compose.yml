@@ -8,12 +8,15 @@ services:
       - "3000:3000"
     image: movri_web
     env_file: .env.local
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    depends_on:
+      - db
   worker:
     image: movri_web
     env_file: .env.local
     command: bundle exec rake jobs:work
     depends_on:
-      - web
+      - db
   memcached:
     image: memcached:latest
   db:
@@ -24,3 +27,22 @@ services:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
+  harmony_api:
+    build:
+      context: ./harmony
+    ports:
+      - "8085:8085"
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=harmony_db
+    command: ["./docker/startup.sh"]
+    depends_on:
+      - harmony_db
+  harmony_db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=harmony-root
+    volumes:
+      - ~/.sharetribe/harmony-mysql-data:/var/lib/mysql
+    ports:
+      - "13306:3306"
