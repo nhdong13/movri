@@ -39,6 +39,8 @@ services:
       - DB_PORT=3306
       - DB_HOST=harmony_db
     command: ["./docker/startup.sh"]
+    depends_on:
+      - harmony_db
   harmony_db:
     image: mysql:5.7
     environment:
