@@ -1,18 +1,21 @@
-FROM openjdk:8
+FROM java:8u102
 
 MAINTAINER  Sharetribe Ltd. "http://github.com/sharetribe"
 ENV REFRESHED_AT 2016-10-28
 
+RUN echo 'deb http://archive.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
+RUN apt-get -o Acquire::Check-Valid-Until=false update
+
 # Update the package repository
-RUN apt-get update \
-    && apt-get upgrade -y
 
 RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein -o /usr/local/bin/lein \
 	&& chmod 755 /usr/local/bin/lein
 
 # Run as non-privileged user
 RUN useradd -m -s /bin/bash app \
-	&& mkdir /opt/app /var/log/app
+	&& mkdir /opt/app /var/log/app && chown -R app:app /opt/app /var/log/app
+USER app
 
 # Copy project file and download dependencies
 COPY project.clj /opt/app/project.clj
