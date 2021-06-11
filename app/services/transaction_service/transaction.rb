@@ -110,7 +110,7 @@ module TransactionService::Transaction
     transaction_params = {
       instructions_from_seller: params[:instructions]
     }
-    transaction_params.merge(promo_code_id: promo_code.id) if promo_code
+    transaction_params.merge!(promo_code_id: promo_code.id) if promo_code
     transaction =  Transaction.create(transaction_params)
 
     session[:cart].each do |key, value|
