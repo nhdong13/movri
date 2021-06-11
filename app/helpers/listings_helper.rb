@@ -175,6 +175,10 @@ module ListingsHelper
     price - discount
   end
 
+  def subtotal_in_view
+    PriceCalculationService.calculate_total_price(session)
+  end
+
   def get_today
     Date.today.strftime("%m/%d/%Y")
   end

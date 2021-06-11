@@ -1,13 +1,8 @@
 .common-box
   .checkout-box
     .price-list
-      - price_cents = price_with_promo_code(PriceCalculationService.calculate_total_price(session), promo_code)
       %span= t('transactions.label.subtotal')
-      %span.price#subtotal-price= MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))
-    / .price-list
-    /   %span= t('transactions.label.coverage')
-    /   - total_coverage = total_coverage_for_all_items_cart
-    /   %span.price#coverage-price= MoneyViewUtils.to_humanized(Money.new(total_coverage, 'USD'))
+      %span.price#subtotal-price= MoneyViewUtils.to_humanized(Money.new(subtotal_in_view, 'USD'))
     .price-list
       - if promo_code
         %span= "Promo Code (#{promo_code.code})"

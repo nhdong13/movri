@@ -7,8 +7,7 @@
         %span.subtotal= t('transactions.label.subtotal')
         .price
           %span.number-price
-            - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
-            = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
+            = MoneyViewUtils.to_humanized(Money.new(subtotal_in_view, 'USD'))
           %span.day-rent
             \/
             = "#{ListingViewUtils.get_time_rent(session)} rental"
@@ -25,8 +24,7 @@
         %span= t('transactions.label.subtotal')
         .price
           %span
-            - shipping_fee = calculate_shipping_fee(session[:shipping], session[:booking], shipping_type)
-            = MoneyViewUtils.to_humanized(Money.new(price_with_all_fee(promo_code, shipping_fee), 'USD'))
+            = MoneyViewUtils.to_humanized(Money.new(subtotal_in_view, 'USD'))
           %span
             \/
             = "#{ListingViewUtils.get_time_rent(session)} rental"
