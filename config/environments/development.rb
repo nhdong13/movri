@@ -92,6 +92,9 @@ Rails.application.configure do
       :authentication       => 'plain',
       :enable_starttls_auto => true
     }
+  elsif APP_CONFIG.mail_delivery_method == "letter_opener_web"
+    ActionMailer::Base.delivery_method = :letter_opener_web
+    ActionMailer::Base.perform_deliveries = :true
   end
 
   # Print deprecation notices to the Rails logger.

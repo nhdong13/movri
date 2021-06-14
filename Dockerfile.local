@@ -107,4 +107,4 @@ RUN mkdir -p \
           app/assets/webpack \
           public/assets \
           public/webpack
-RUN script/prepare-assets.sh
+# RUN script/prepare-assets.sh
