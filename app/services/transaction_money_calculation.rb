@@ -1,5 +1,6 @@
 class TransactionMoneyCalculation
   def initialize(transaction, session, current_user, with_booking=true)
+    @with_booking = with_booking
     @transaction = transaction
     @current_user = current_user
     @session = session
@@ -24,6 +25,7 @@ class TransactionMoneyCalculation
   end
 
   def get_final_price_for_draft_order
+    reload_something
     tax_cents = @transaction.tax_cents ? @transaction.tax_cents : 0
     get_draft_order_price_cents_with_discount_code + get_shipping_fee_for_draft_order + tax_cents
   end
@@ -34,6 +36,7 @@ class TransactionMoneyCalculation
   end
 
   def update_tax_cents_for_craft_order
+    reload_something
     if @transaction.tax_percent > 0
       @transaction.update(tax_cents: get_tax_fee_for_draft_order(@transaction.tax_percent))
     end
@@ -45,6 +48,7 @@ class TransactionMoneyCalculation
   end
 
   def get_draft_order_price_cents_with_discount_code
+    reload_something
     if @transaction.draft_order_discount_code
       if @transaction.draft_order_discount_code.is_discount_percent?
         price = get_price_cents_for_all_products_cart - get_discount_for_draft_order(@transaction.draft_order_discount_code.discount_percent)
@@ -71,6 +75,7 @@ class TransactionMoneyCalculation
   end
 
   def get_discount_from_promo_code(price)
+    reload_something
     return 0 unless @promo_code
     case @promo_code.promo_type
     when 'percentage'
@@ -84,6 +89,7 @@ class TransactionMoneyCalculation
 
   # this value is not including coverage
   def get_price_cents_for_all_products_cart
+    reload_something
     price_cents = 0
     @transaction.transaction_items.each do |item|
       price_cents += calculate_price_cents_without_promo_code(item, item.quantity)
@@ -102,6 +108,7 @@ class TransactionMoneyCalculation
   end
 
   def calculate_price_cents_without_promo_code listing, quantity
+    reload_something
     return 0 unless quantity
     if @transaction && @transaction.draft_order?
       price_cents = listing.price_cents * quantity
@@ -111,6 +118,7 @@ class TransactionMoneyCalculation
   end
 
   def price_with_promo_code price
+    reload_something
     return price unless @promo_code
     result = PromoCodeService.new(@promo_code, @session, @current_user).check_if_promo_code_can_use
     return price unless result[:success]
@@ -120,6 +128,7 @@ class TransactionMoneyCalculation
 
   # this value is including coverage
   def listings_subtotal
+    reload_something
     listings_subtotal_value = 0
     @transaction.transaction_items.each do |item|
       listings_subtotal_value += listing_subtotal(item, item.quantity)
@@ -132,6 +141,7 @@ class TransactionMoneyCalculation
   end
 
   def listing_subtotal listing, quantity
+    reload_something
     price_cents = calculate_price_cents_without_promo_code(listing, quantity)
     if @transaction && @transaction.draft_order?
       price_cents
@@ -148,6 +158,7 @@ class TransactionMoneyCalculation
   end
 
   def get_tax_fee state=nil, shipping_fee=nil
+    reload_something
     shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
     state = state ? state : @state
     all_fee = listings_subtotal - get_discount_for_all_products_cart + shipping_fee
@@ -155,6 +166,7 @@ class TransactionMoneyCalculation
   end
 
   def final_price state=nil, shipping_fee=nil
+    reload_something
     shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
     state = state ? state : @state
     tax_fee = get_tax_fee(state, shipping_fee).round(0)
@@ -171,9 +183,34 @@ class TransactionMoneyCalculation
   end
 
   def calculate_tax_fee_base_on_percent percent
+    reload_something
     shipping_fee = @transaction.will_pickup? ? 0 : @shipping_fee
     state = state ? state : @state
     all_fee = listings_subtotal - get_discount_for_all_products_cart + shipping_fee
     percent_of(all_fee, percent)
   end
+
+  private
+
+  def reload_something
+    return unless @transaction
+    @transaction.reload
+
+    @promo_code = @transaction.promo_code
+
+    @state = @transaction.shipping_address ? @transaction.shipping_address.get_state_or_province : 'alberta'
+
+    @shipping_fee = @transaction.shipper ? @transaction.shipper.amount_to_cents : 0
+
+    if @transaction.booking
+     @duration = @transaction.booking.duration
+    else
+      if @with_booking
+        @duration = @session[:booking] ? @session[:booking][:total_days] : 1
+      else
+        @duration = 1
+      end
+    end
+  end
+
 end

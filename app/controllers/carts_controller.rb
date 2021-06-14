@@ -1,4 +1,8 @@
 class CartsController < ApplicationController
+  before_action do
+    @promo_code = PromoCode.find_by(code: params[:code])
+  end
+
   def get_shipping_rates_for_listing_items
     listing_ids = session[:cart].keys
     listings = Listing.where(id: listing_ids)
@@ -44,7 +48,6 @@ class CartsController < ApplicationController
     session[:booking][:end_date] = data[:end_date]
     session[:booking][:total_days] = data[:total_days]
 
-    @promo_code = PromoCode.find_by(code: params[:code])
     @shipping_type = params[:shipping_type]
 
     respond_to do |format|
@@ -54,7 +57,6 @@ class CartsController < ApplicationController
   end
 
   def change_cart_select_shipping
-    @promo_code = PromoCode.find_by(code: params[:code])
     @shipping_type = params[:shipping_type]
     respond_to do |format|
       format.html

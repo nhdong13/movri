@@ -21,7 +21,7 @@ window.ST = window.ST || {};
     $.ajax({
       url: '/carts/get_shipping_rates_for_listing_items.js',
       type: "GET",
-      data: { zipcode: zipcode }
+      data: { zipcode: zipcode, code: getPromoCode() }
     }).done(function(response) {
     }).fail(function(error) {});
   });
