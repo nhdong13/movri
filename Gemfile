@@ -148,7 +148,9 @@ group :development do
   gem 'ed25519', '~> 1.2'
   gem 'bcrypt_pbkdf', '~> 1'
   gem 'bullet'
+  gem 'letter_opener_web'
 end
+
 
 group :test do
   gem 'capybara', '~> 3.16.2'

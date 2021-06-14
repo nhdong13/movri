@@ -147,32 +147,60 @@ Before you get started, the following needs to be installed:
 
 Congratulations! Sharetribe should now be up and running for development purposes. Open a browser and go to the server URL (e.g. http://lvh.me:3000 or http://lvh.me:5000). Fill in the form to create a new marketplace and admin user. You should be now able to access your marketplace and modify it from the admin area.
 
-### Mailcatcher
+### Docker
 
-Use [Mailcatcher](http://mailcatcher.me) to receive sent emails locally:
+- Run `script/prepare-assets.sh` outside docker at first
 
-1.  Install Mailcatcher:
+- Clone `config.example.yml` -> `config.yml`
 
-    ```bash
-    gem install mailcatcher
-    ```
+```
+  harmony_api_url: http://harmony_api:8085
+```
 
-1.  Start it:
+- Clone `database.example.yml` -> `database.yml`
 
-    ```bash
-    mailcatcher
-    ```
+```
+    host: db
+```
 
-1.  Add the following lines to `config/config.yml`:
+- `docker-compose build`
 
-    ```yml
-    development:
-      mail_delivery_method: smtp
-      smtp_email_address: "localhost"
-      smtp_email_port: 1025
-    ```
+- `docker-compose up`
 
-1.  Open `http://localhost:1080` in your browser
+- Create harmony db
+
+```
+echo "CREATE DATABASE IF NOT EXISTS harmony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root --password=harmony-root -h 127.0.0.1 --port 13306
+```
+
+- ssh to movri_harmony_api_1 container and run command:
+
+```
+  lein migrate migrate
+```
+
+- ssh to movri_web_1 container and run some commands
+
+```
+rake db:create
+rake db:structure:load
+rake ts:index
+rake ts:start
+rake sharetribe:create_booking_for_exist_listings
+bundle exec rails c
+  Community.first.update(domain: 'localhost')
+  Person.first.update(password: 'your_pass')
+```
+
+*** Notes: ssh to container
+
+```
+docker exec -it <container_id> bash
+```
+
+### Mail catching at development
+
+All emails at development are catched at `http://localhost:3000/letter_opener`
 
 ### Database migrations
 
@@ -254,54 +282,6 @@ Some components are created with React (see [documentation](https://github.com/s
     foreman start -f Procfile.client-hot
     ```
 
-### Docker
-
-- Clone `config.example.yml` -> `config.yml`
-
-```
-  harmony_api_url: http://harmony_api:8085
-```
-
-- Clone `database.example.yml` -> `database.yml`
-
-```
-    host: db
-```
-
-- `docker-compose build`
-
-- `docker-compose up`
-
-- Create harmony db
-
-```
-echo "CREATE DATABASE IF NOT EXISTS harmony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root --password=harmony-root -h 127.0.0.1 --port 13306
-```
-
-- ssh to movri_harmony_api_1 container and run command:
-
-```
-  lein migrate migrate
-```
-
-- ssh to movri_web_1 container and run some commands
-
-```
-rake db:create
-rake db:structure:load
-rake ts:index
-rake ts:start
-rake sharetribe:create_booking_for_exist_listings
-bundle exec rails c
-  Community.first.update(domain: 'localhost')
-  Person.first.update(password: 'your_pass')
-```
-
-*** Notes: ssh to container
-
-```
-docker exec -it <container_id> bash
-```
 
 ### Setting up Sharetribe for production
 
