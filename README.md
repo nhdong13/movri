@@ -165,7 +165,7 @@ Congratulations! Sharetribe should now be up and running for development purpose
 
 - `docker-compose build`
 
-- `docker-compose up`
+- `docker-compose up -d`
 
 - Create harmony db
 
@@ -192,11 +192,26 @@ bundle exec rails c
   Person.first.update(password: 'your_pass')
 ```
 
-*** Notes: ssh to container
+- Access `http://localhost:3000`
+
+*** Notes: docker commands
+
+- SSH to docker container, e.g
+```
+docker exec -it movri_web_1 bash
+bundle exec rails c
+```
+
+- If source code are changed, we have to re-build docker images and update docker container, e.g
 
 ```
-docker exec -it <container_id> bash
+docker-compose build web
+docker-compose up -d
 ```
+
+- Tail log: `docker-compose logs -f --tail='20'`
+
+- Debug byebug, e.g `docker attach movri_web_1`
 
 ### Mail catching at development
 
