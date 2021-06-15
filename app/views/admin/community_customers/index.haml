@@ -15,13 +15,13 @@
           %span Add customers
   .assurance-options-lists
     .head-section.p-2
-      .tabs.display-flex
-        .tab-item.tab-active All
-        .tab-item New
-        .tab-item Returning
-        .tab-item Email subscribers
-      .filters.m-2.mt-4.mb-4
-        %input{type: :text, class: "form-control", placeholder: "Filter customers"}
+      = form_tag '', :method => :get do
+        .row
+          .col-10
+            = text_field_tag :q, params[:q], placeholder: 'Filter customers'
+          .col-2
+            = submit_tag 'Search', class: 'button search-button'
+
     .body-section.p-1
       %table
         %thead
@@ -34,3 +34,7 @@
         %tbody
           - @service.customers.each do |customer|
             = render 'customer', customer: customer
+
+  .row
+    .col-12
+      = will_paginate @service.customers
