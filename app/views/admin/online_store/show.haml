@@ -11,5 +11,5 @@
   - default_sections = %w(header slideshow)
   .store-main-content.col-md-10
     %input{name: "authenticity_token", value: "#{ form_authenticity_token}", type: "hidden"}
-    = react_component("OnlineStore", props: {default_sections: default_sections, sections: @sections.as_json, authenticityToken: form_authenticity_token }.merge(@current_online_store.as_json))
+    = react_component("OnlineStore", props: {default_sections: default_sections, sections: @sections.as_json, authenticityToken: form_authenticity_token }.merge(@current_online_store.as_json), prerender: false)
     %iframe{id: 'homepage-preview-iframe', src: "#{request.base_url}", style: 'width: 80%; height: 100vh'}

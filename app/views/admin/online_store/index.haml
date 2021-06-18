@@ -10,4 +10,4 @@
   = render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
   - default_sections = %w(header slideshow)
   .store-main-content.col-md-10
-    = react_component("OnlineStore", props: {default_sections: default_sections, header: {}, slideshow: {} })
+    = react_component("OnlineStore", props: {default_sections: default_sections, header: {}, slideshow: {} }, prerender: false)
