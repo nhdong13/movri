@@ -1,3 +1,6 @@
+$mobile: "(max-width: 767px)";
+$tablet: "(min-width: 768px) and (max-width: 1024px)";
+
 $border-color: #E1E3E5;
 
 .common-box{
@@ -615,4 +618,14 @@ label{
 
 .css-1qggkls{
   ul{padding: 0}
+}
+
+.announcement_bar {
+  padding: 14px;
+  & * {
+    line-height: normal;
+  }
+  @media #{$mobile}, #{$tablet} {
+    margin-top: -5px;
+  }
 }
