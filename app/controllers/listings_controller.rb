@@ -94,6 +94,17 @@ class ListingsController < ApplicationController
     @seo_service.listing = @listing
     @support_info = SupportInfo.last
 
+
+    if session[:booking].present?
+      service = BookingDatesService.new(current_community, @listing)
+      start_date, end_date, total_days = service.refine_booking_dates(session[:booking])
+      if start_date.present? && end_date.present? && total_days.present?
+        session[:booking][:start_date] = start_date
+        session[:booking][:end_date] = end_date
+        session[:booking][:total_days] = total_days
+      end
+    end
+
     # Remove session booking dates if it in blocked dates
     if @listing.manually_blocked_dates && session[:booking]
       manually_blocked_dates_arr = @listing.manually_blocked_dates.split("&")
@@ -111,45 +122,10 @@ class ListingsController < ApplicationController
       if all_blocked_dates.any? && convert_to_date(start_date) < all_blocked_dates.last
         if all_blocked_dates.last < convert_to_date(get_today)
           session[:booking][:start_date] = get_today
-        else
-          session[:booking][:start_date] = get_next_day_and_convert_it(all_blocked_dates.last)
         end
         session[:booking][:end_date] = get_next_number_days_and_convert_it(convert_to_date(session[:booking][:start_date]), duration)
         session[:booking][:total_days] = duration
       end
-
-
-      # manually_blocked_dates_arr.each_with_index do |range_date, index|
-      #   this_start_date = convert_to_date(range_date.split(",").first)
-      #   this_end_date = convert_to_date(range_date.split(",").last)
-      #   if range_date.split(",").first.present? && range_date.split(",").last.present?
-      #     if convert_to_date(start_date).between?(this_start_date, this_end_date)
-      #       #update session booking with start day is the next day of the blocking end date.
-      #       next_day = get_next_day(range_date.split(",").last)
-      #       next_number_days = get_next_number_days(next_day, duration)
-      #     end
-
-      #     if convert_to_date(end_date).between?(this_start_date, this_end_date)
-      #       #check if the total day of current booking day
-      #       #get next 7 day from the start day
-      #       next_day_from_start_date = get_next_number_days(start_date, 1)
-      #       if convert_to_date(next_day_from_start_date).between?(this_start_date, this_end_date)
-      #         next_day = get_next_day(range_date.split(",").last)
-      #         session[:booking][:start_date] = next_day
-      #         session[:booking][:end_date] = get_next_number_days(next_day)
-      #         session[:booking][:total_days] = 7
-      #         break
-      #       else
-      #         next_day = get_next_day(start_date)
-      #         session[:booking][:end_date] = next_day
-      #         session[:booking][:total_days] = 1
-      #         break
-      #       end
-      #     end
-      #   else
-      #     session[:booking] = nil
-      #   end
-      # end
     end
 
     session[:recently_viewed] ||= []
@@ -609,8 +585,6 @@ class ListingsController < ApplicationController
     if @blocked_dates.any? && convert_to_date(session[:booking][:start_date]) < @blocked_dates.last
       if @blocked_dates.last < convert_to_date(get_today)
         session[:booking][:start_date] = get_today
-      else
-        session[:booking][:start_date] = get_next_day_and_convert_it(@blocked_dates.last)
       end
       session[:booking][:end_date] = get_next_number_days_and_convert_it(convert_to_date(session[:booking][:start_date]), duration)
       session[:booking][:total_days] = duration

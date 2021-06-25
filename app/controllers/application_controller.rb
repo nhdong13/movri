@@ -42,7 +42,6 @@ class ApplicationController < ActionController::Base
     :set_display_expiration_notice,
     :setup_custom_footer,
     :disarm_custom_head_script,
-    :update_booking_session,
     :update_cart_session,
     :set_paper_trail_whodunnit,
     :check_redirect_URLs
@@ -467,21 +466,6 @@ class ApplicationController < ActionController::Base
   def uuid_to_raw string_uuid
     uuid_object = UUIDTools::UUID.parse(string_uuid)
     uuid_raw = UUIDUtils.raw(uuid_object)
-  end
-
-  def update_booking_session
-    if session[:booking] && session[:booking][:start_date]
-      session[:booking][:start_date] = get_today if convert_to_date(session[:booking][:start_date]) < convert_to_date(get_today)
-      session[:booking][:end_date] = get_next_number_days(session[:booking][:start_date]) if convert_to_date(session[:booking][:end_date]) <= convert_to_date(session[:booking][:start_date])
-      data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
-      session[:booking][:total_days] = data[:total_days]
-    else
-      session[:booking] = {}
-      session[:booking][:start_date] = get_today
-      session[:booking][:end_date] = get_next_number_days(session[:booking][:start_date])
-      data = BookingDaysCalculation.call(session[:booking][:start_date], session[:booking][:end_date])
-      session[:booking][:total_days] = data[:total_days]
-    end
   end
 
   def update_cart_session
