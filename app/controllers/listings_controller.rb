@@ -85,7 +85,6 @@ class ListingsController < ApplicationController
   end
 
   def show
-
     @selected_tribe_navi_tab = "home"
     make_onboarding_popup
 
@@ -95,6 +94,7 @@ class ListingsController < ApplicationController
     @support_info = SupportInfo.last
 
 
+    # TODO: quantity validation / using BookingDatesService instead, e.g.
     if session[:booking].present?
       service = BookingDatesService.new(current_community, @listing)
       start_date, end_date, total_days = service.refine_booking_dates(session[:booking])
@@ -563,6 +563,7 @@ class ListingsController < ApplicationController
   end
 
   def cart
+    # TODO: quantity validation / using BookingDatesService instead.
     if  session[:booking][:start_date] == get_today
       @message_for_booking_day = "Shipping Not Available. Please Pickup Locally. Note: For next day delivery, order should be placed before 10:00 AM PST."
     elsif session[:booking][:start_date] == get_next_day(get_today)

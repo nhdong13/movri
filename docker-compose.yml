@@ -14,12 +14,14 @@ services:
       - db
     stdin_open: true
     tty: true
+    mem_limit: 700m
   worker:
     image: movri_web
     env_file: .env.local
     command: bundle exec rake jobs:work
     depends_on:
       - db
+    mem_limit: 500m
   memcached:
     image: memcached:latest
   db:
