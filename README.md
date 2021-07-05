@@ -153,6 +153,10 @@ Congratulations! Sharetribe should now be up and running for development purpose
 
 - `bundle install`
 
+- Install node 12.11.0
+
+- `yarn install`
+
 - Run `script/prepare-assets.sh`
 
 - Clone `config.example.yml` -> `config.yml`
