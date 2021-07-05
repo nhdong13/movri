@@ -190,12 +190,12 @@ echo "CREATE DATABASE IF NOT EXISTS harmony_db CHARACTER SET utf8mb4 COLLATE utf
 - ssh to `movri_web_1` container and run some commands:
 
 ```
-rake db:create
-// then dump database If any, must dump db outside docker container(exit container), comamnd example: mysql -u movri-live -p -h localhost -P 3307 movri-staging < movri_production-backup001.sql
-rake db:structure:load
-rake ts:index
-rake ts:start
-rake sharetribe:create_booking_for_exist_listings
+bundle exec rake db:create
+// then restore database If any, must restore db outside docker container(exit container), comamnd example: mysql -u root -p -h localhost -P 3307 movri-staging < movri_staging.sql
+bundle exec rake db:structure:load
+bundle exec rake ts:index
+bundle exec rake ts:start
+bundle exec rake sharetribe:create_booking_for_exist_listings
 bundle exec rails c
   Community.first.update(domain: 'localhost')
   Person.first.update(password: 'your_pass')
