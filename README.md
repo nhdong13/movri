@@ -149,7 +149,11 @@ Congratulations! Sharetribe should now be up and running for development purpose
 
 ### Docker
 
-- Run `script/prepare-assets.sh` outside docker at first
+- Install Ruby 2.6.2
+
+- `bundle install`
+
+- Run `script/prepare-assets.sh`
 
 - Clone `config.example.yml` -> `config.yml`
 
@@ -173,16 +177,17 @@ Congratulations! Sharetribe should now be up and running for development purpose
 echo "CREATE DATABASE IF NOT EXISTS harmony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root --password=harmony-root -h 127.0.0.1 --port 13306
 ```
 
-- ssh to movri_harmony_api_1 container and run command:
+- ssh to ``movri_harmony_api_1` container and run command:
 
 ```
   lein migrate migrate
 ```
 
-- ssh to movri_web_1 container and run some commands
+- ssh to `movri_web_1` container and run some commands:
 
 ```
 rake db:create
+// then dump database If any, must dump db outside docker container(exit container), comamnd example: mysql -u movri-live -p -h localhost -P 3307 movri-staging < movri_production-backup001.sql
 rake db:structure:load
 rake ts:index
 rake ts:start
