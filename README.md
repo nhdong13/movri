@@ -181,7 +181,7 @@ Congratulations! Sharetribe should now be up and running for development purpose
 echo "CREATE DATABASE IF NOT EXISTS harmony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root --password=harmony-root -h 127.0.0.1 --port 13306
 ```
 
-- ssh to ``movri_harmony_api_1` container and run command:
+- ssh to movri_harmony_api_1` container and run command:
 
 ```
   lein migrate migrate
@@ -203,7 +203,14 @@ bundle exec rails c
 
 - Access `http://localhost:3000`
 
+- To exit app, run `docker container stop $(docker container ls -aq)`
+
 *** Notes: docker commands
+
+- To show all current docker containers
+
+`docker ps`
+
 
 - SSH to docker container, e.g
 ```
