@@ -792,16 +792,16 @@ $listing-author-avatar-height: 108;
         }
       }
 
-      .quantity input, .quantity select {
-        position: relative;
-        top: 0;
-        left: 0;
-        height: 47px;
-        width: 49px;
-      }
-
       .quantity {
         width: auto !important;
+
+        input, select {
+          position: relative;
+          top: 0;
+          left: 0;
+          height: 47px;
+          width: 49px;
+        }
 
         .icon-caret-up,
         .icon-caret-down {
