@@ -15,7 +15,7 @@
           .quantity.flex-items
             %span Qty:
             - element_id = "cart_detail_item_quantity-" + listing.id.to_s
-            = select_tag element_id.to_sym, options_for_select((1..10).to_a.map(&:to_s), selected: value), class: 'custom-select-number mobile-number-item-in-cart-detail'
+            = select_tag element_id.to_sym, options_for_select((1..listing.master_available).to_a.map(&:to_s), selected: value, disabled: disabled_qty(listing).map(&:to_s)), max: listing.available_quantity, class: 'custom-select-number mobile-number-item-in-cart-detail'
         .coverage.flex-items.margin-bt-10
           / .coverage-selection.width-40.padding-0
           /   = select_tag :select_coverage, options_for_select(COVERAGE_OPTIONS, selected: coverage_type), class: 'custom-select'

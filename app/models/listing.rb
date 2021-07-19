@@ -55,6 +55,7 @@
 #  not_in_the_box                  :text(65535)
 #  key_feature                     :text(65535)
 #  available_quantity              :integer          default(0)
+#  master_quantity                 :integer          default(0)
 #  sku                             :string(255)
 #  barcode                         :string(255)
 #  track_quantity                  :boolean
@@ -279,6 +280,7 @@ class Listing < ApplicationRecord
   end
 
   after_save :update_padding_time, if: :saved_change_to_available_quantity?
+  after_save :update_master_available, if: :saved_change_to_available_quantity?
 
   def update_padding_time
     if available_quantity > 0
@@ -288,6 +290,10 @@ class Listing < ApplicationRecord
         self.create_padding_time(start_date: nil, end_date: nil)
       end
     end
+  end
+
+  def update_master_available
+    self.update(master_available: [self.master_available, available_quantity].max)
   end
 
   def specs_tab

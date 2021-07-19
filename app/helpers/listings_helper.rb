@@ -238,4 +238,12 @@ module ListingsHelper
     end
   end
 
+  def maximum_available_quantity listing
+    [1, listing.master_available].max
+  end
+
+  def disabled_qty listing
+    (listing.available_quantity+1..listing.master_available).to_a
+  end
+
 end

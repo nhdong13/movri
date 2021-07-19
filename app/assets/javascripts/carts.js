@@ -93,6 +93,10 @@ window.ST = window.ST || {};
     var promoCode = getPromoCode();
     var id = event.target.id;
     var total = $("#" + id).val();
+    var maximum = event.target.getAttribute('max');
+    if (parseInt(total) > parseInt(maximum)) {
+      total = maximum
+    }
     var listingId = id.split("-").pop();
     var plusItemUrl = "/en/listings/" + listingId + "/change_number_of_item.js";
     $.ajax({

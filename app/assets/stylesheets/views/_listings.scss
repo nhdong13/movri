@@ -676,7 +676,7 @@ $listing-author-avatar-height: 108;
     position: relative;
 
     .quantity {
-      input {
+      input, select {
         outline: none;
         height: 50px;
         width: 62px;
@@ -684,6 +684,13 @@ $listing-author-avatar-height: 108;
         top: 18px;
         left: 26px;
         border: 1px solid;
+      }
+
+      select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: 1px solid #c3c3c3;
       }
 
       .icon-caret-up,
@@ -785,12 +792,12 @@ $listing-author-avatar-height: 108;
         }
       }
 
-      .quantity input {
+      .quantity input, .quantity select {
         position: relative;
         top: 0;
         left: 0;
         height: 47px;
-        width: 52px;
+        width: 49px;
       }
 
       .quantity {

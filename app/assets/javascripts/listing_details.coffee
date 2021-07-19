@@ -1,21 +1,22 @@
 onClickUpQuantity = ->
   $('#quantity-up, #quantity-up-mobile').click ->
-    currentVal = parseInt($('input#quantity-number').val()) || 0
+    currentVal = parseInt($('#quantity-number').val()) || 0
     new_val = currentVal + 1
-    $("input#quantity-number").val(new_val)
-    $("input#quantity-number-mobile").val(new_val)
-    update_price_listing(new_val)
+    if ($("#quantity-number > option[value=#{new_val}]").attr('disabled') != 'disabled')
+      $("#quantity-number").val(new_val)
+      $("#quantity-number-mobile").val(new_val)
+      update_price_listing(new_val)
 
 
 onClickDownQuantity = ->
   $('#quantity-down, #quantity-down-mobile').click ->
-    currentVal = parseInt($('input#quantity-number').val()) || 1
+    currentVal = parseInt($('#quantity-number').val()) || 1
     if(currentVal != 0)
       new_val = currentVal - 1
     else
       new_val = 0
-    $('input#quantity-number').val(new_val)
-    $("input#quantity-number-mobile").val(new_val)
+    $('#quantity-number').val(new_val)
+    $("#quantity-number-mobile").val(new_val)
     update_price_listing(new_val)
 
 update_price_listing = (quantity) ->

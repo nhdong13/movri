@@ -71,7 +71,9 @@
         = t("listings.listing_actions.unable_load_availability")
   .row.listing-order-quantity.center-items
     .col-2.quantity
-      = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field', id: 'quantity-number'
+      -# = text_field_tag :number, 1, type: 'number', class: 'order-quantity-number-field', id: 'quantity-number'
+      = select_tag :number, options_for_select((0..maximum_available_quantity(@listing)).to_a, selected: 1, disabled: disabled_qty(@listing)), class: 'order-quantity-number-field', id: 'quantity-number'
+
       %i.icon-caret-up#quantity-up
       %i.icon-caret-down#quantity-down
     .col-6.rent-container

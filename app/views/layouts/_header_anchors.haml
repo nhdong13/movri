@@ -27,7 +27,7 @@
     .display-flex.mt-1
       .cart-icon-mobile
         = link_to image_tag("mf_icons/icon-movri-mobile-cart.svg"), cart_path
-      %span.number-on-cart-style-mobile
+      %span.number-on-cart.number-on-cart-style-mobile
         - session[:cart] ||= {}
         = session[:cart].values.sum
 .search-partial.w-100.m-1

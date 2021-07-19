@@ -96,7 +96,7 @@ class ListingsController < ApplicationController
 
     # TODO: quantity validation / using BookingDatesService instead, e.g.
     if session[:booking].present?
-      service = BookingDatesService.new(current_community, @listing)
+      service = BookingDatesService.new(@current_community, @listing)
       start_date, end_date, total_days = service.refine_booking_dates(session[:booking])
       if start_date.present? && end_date.present? && total_days.present?
         session[:booking][:start_date] = start_date
@@ -429,6 +429,14 @@ class ListingsController < ApplicationController
     end
 
     listing_id = params[:id]
+
+    maximum_available_quantity = ActionController::Base.helpers.ListingsHelper.maximum_available_quantity
+    if session[:cart][listing_id] == maximum_available_quantity
+      return render json: {
+        success: false,
+        message: "You've selected maximum quantity"
+      }
+    end
 
     session[:cart][listing_id] += 1
 
