@@ -67,7 +67,7 @@ set :bundle_flags, "--no-deployment"
 server '3.96.77.159', user: 'ubuntu', roles: %w{web app db}
 
 set :ssh_options, {
-  keys: '/Users/nhatnkv/.ssh/jack_rsa',
+  keys: '/Users/mac/.ssh/jacknus',
   forward_agent: true,
   auth_methods: %w(publickey)
 }
