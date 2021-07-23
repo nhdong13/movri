@@ -16,7 +16,7 @@
 :javascript
   var algolia_application_id = '#{APP_CONFIG.algolia_application_id}';
   var algolia_search_only_api_key = '#{APP_CONFIG.algolia_search_only_api_key}';
-  var current_duration_session = '#{session[:booking][:total_days]}';
+  var current_duration_session = '#{session[:booking] ? session[:booking][:total_days] : nil}';
   var current_duration_session_label = '#{ListingViewUtils.get_time_rent(session)}';
 %script{:async => "", :src => "//static.klaviyo.com/onsite/js/klaviyo.js?company_id=HLsMny", :type => "text/javascript"}
 :javascript

@@ -153,7 +153,7 @@ class Category < ApplicationRecord
   end
 
   def url_name
-    display_title.split('-').join(' ').capitalize
+    display_title&.split('-')&.join(' ')&.capitalize
   end
 
   def update_category_type
