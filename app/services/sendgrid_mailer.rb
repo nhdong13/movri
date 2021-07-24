@@ -368,7 +368,9 @@ class SendgridMailer
       arrival_date: arrival_date,
       return_date: return_date,
       duration: duration,
-      tax_value: to_CAD(tax_value)
+      tax_value: to_CAD(tax_value),
+      payment_processing_method: 'Stripe',
+      delivery_method: @transaction.shipper.service_delivery.capitalize
     }
   end
 
@@ -448,6 +450,7 @@ class SendgridMailer
   end
 
   def send_order_confirmed_mail
+    @transaction.reload
     shipping_address = @transaction.shipping_address
     billing_address = @transaction.billing_address
     email_to = shipping_address.email
