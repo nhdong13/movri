@@ -366,13 +366,12 @@ class ListingsController < ApplicationController
   end
 
   def ensure_current_user_is_listing_author(error_message)
-    if @current_user.is_admin?
-      @listings = Listing.all.admin_index
-    else
-      @listings = Listing.all
-    end
+    @listings = Listing.all
+    has_admin_rights = @current_user.has_admin_rights?(@current_community)
+    @listings = @listings.admin_index if has_admin_rights
+
     @listing = @listings.find_by_url(params[:id]) || @listings.find_by_id(params[:id])
-    return if @current_user.has_admin_rights?(@current_community)
+    return if has_admin_rights
 
     flash[:error] = error_message
     redirect_to @listing and return
