@@ -50,8 +50,8 @@
           .row
             .col-4
               = text_field_tag :country, 'Canada', placeholder: t('transactions.contact_form.country'), readonly: true, class: ''
-            .col-4
-              = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {}, {:class => "administrative_area_level_1 shipping-address-state "}
+            .col-4.p-0
+              = form.select :state_or_province, options_for_select(CANADA_PROVINCES), {prompt: 'Select Province'}, {:class => "administrative_area_level_1 shipping-address-state ", required: true}
             .col-4.address-fields
               = form.text_field :postal_code, value: form.object.format_postal_code, placeholder: t('transactions.contact_form.zip_code'), class: "postal_code billing-address-postal-code billing-address transaction-address-req-field uppercase"
               = fa_icon "check", class: "d-none"
