@@ -4,14 +4,17 @@ class TransactionAddressesController < ApplicationController
   before_action :find_transaction_address
 
   def create
-    @transaction_address = TransactionAddress.create(transaction_address_params)
-    if @transaction_address
+    @transaction_address = TransactionAddress.new(transaction_address_params)
+    if @transaction_address.save
       @transaction.update(shipping_address_id: @transaction_address.id) if @transaction
       if @current_user
         @transaction_address.update(person_id: @current_user.id)
         @current_user.update(default_shipping_address: @transaction_address.id) if @transaction_address.shipping_address? && !@current_user.shipping_address
         @current_user.update(default_billing_address: @transaction_address.id) if @transaction_address.billing_address? && !@current_user.billing_address
       end
+    else
+      flash[:error] = @transaction.errors.full_messages.first
+      return redirect_back fallback_location: checkout_transaction_path(@transaction.uuid_object)
     end
     if params[:transaction_id]
       return redirect_to shipment_transaction_path(@transaction.uuid_object)
