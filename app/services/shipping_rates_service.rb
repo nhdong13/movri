@@ -120,7 +120,7 @@ module ShippingRatesService
   def convert_to_shipping_selection response
     rates = response["data"]["rates"]
     shipping_selection = []
-    rates.each do |rate|
+    rates&.select{|rate| !['FedEx First Overnight®', 'FedEx Ground®', 'FedEx Priority Overnight®'].include?(rate['service_name'])}&.each do |rate|
       shipping_selection.push(
         {
           'shipper_slug' => rate['shipper_account']['slug'],
