@@ -1,5 +1,5 @@
 class BookingDatesService
-  attr_reader :community, :listing
+  attr_reader :community, :listing, :all_blocked_dates, :start_date, :end_date
 
   def initialize _community, _listing
     @community = _community
@@ -7,8 +7,9 @@ class BookingDatesService
   end
 
   def refine_booking_dates booking_session
-    start_date = booking_session[:start_date]
-    end_date = booking_session[:end_date]
+    @start_date = booking_session[:start_date]
+    @end_date = booking_session[:end_date]
+    duration = booking_session[:total_days]
 
     unless start_date.present? && end_date.present?
       return default_valid_booking_dates
@@ -18,22 +19,18 @@ class BookingDatesService
     end_date = convert_to_date(end_date)
     today = convert_to_date(get_today)
 
-    is_bad_booking_dates =
-      start_date > end_date ||
-      start_date < today ||
-      booking_dates_conflict_blocked_dates?
-
-    return default_valid_booking_dates if is_bad_booking_dates
+    return nil if start_date > end_date
+    return default_valid_booking_dates if is_bad_booking_dates 
+    return default_valid_booking_dates 
   end
 
   private
 
   def booking_dates_conflict_blocked_dates?
+    all_blocked_dates.any? && convert_to_date(start_date) < all_blocked_dates.last
   end
 
   def default_valid_booking_dates
-    start_date
-    end_date
     data = BookingDaysCalculation.call(start_date, end_date)
     return start_date, end_date, data[:total_days]
   end

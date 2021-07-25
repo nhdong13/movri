@@ -95,15 +95,15 @@ class ListingsController < ApplicationController
 
 
     # TODO: quantity validation / using BookingDatesService instead, e.g.
-    if session[:booking].present?
-      service = BookingDatesService.new(@current_community, @listing)
-      start_date, end_date, total_days = service.refine_booking_dates(session[:booking])
-      if start_date.present? && end_date.present? && total_days.present?
-        session[:booking][:start_date] = start_date
-        session[:booking][:end_date] = end_date
-        session[:booking][:total_days] = total_days
-      end
-    end
+    # if session[:booking].present?
+    #   service = BookingDatesService.new(@current_community, @listing)
+    #   start_date, end_date, total_days = service.refine_booking_dates(session[:booking])
+    #   if start_date.present? && end_date.present? && total_days.present?
+    #     session[:booking][:start_date] = start_date
+    #     session[:booking][:end_date] = end_date
+    #     session[:booking][:total_days] = total_days
+    #   end
+    # end
 
     # Remove session booking dates if it in blocked dates
     if @listing.manually_blocked_dates && session[:booking]
