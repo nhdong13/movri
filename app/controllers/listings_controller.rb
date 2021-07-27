@@ -104,6 +104,10 @@ class ListingsController < ApplicationController
     #     session[:booking][:total_days] = total_days
     #   end
     # end
+    unless session[:booking].present?
+      current_date = Date.current
+      session[:booking]= {start_date: current_date.strftime("%m/%d/%Y"), end_date: (current_date + 2.days).strftime("%m/%d/%Y"), total_days: 2}
+    end
 
     # Remove session booking dates if it in blocked dates
     if @listing.manually_blocked_dates && session[:booking]
