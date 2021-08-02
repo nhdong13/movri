@@ -582,6 +582,8 @@ es:
         search: Buscar
         reset_search: "Mostrar todos"
         export_all_as_csv: "Exportar todos en formato CSV"
+        export_all_products: "Exportar todos en formato Excel"
+        processing_export_products: "Procesando la exportación a Excel..."
         processing_export: "Procesando la exportación a CSV..."
         status:
           all: Todos

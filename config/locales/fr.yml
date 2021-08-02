@@ -582,6 +582,8 @@ fr:
         search: Rechercher
         reset_search: "Voir tous"
         export_all_as_csv: "Exporter au format CSV"
+        export_all_products: "Exporter au format Excel"
+        processing_export_products: "Export au format Excel en cours..."
         processing_export: "Export au format CSV en cours..."
         status:
           all: "Tous les statuts"

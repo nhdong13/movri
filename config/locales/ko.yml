@@ -577,6 +577,8 @@ ko:
         search: 찾기
         reset_search: "모두 보기"
         export_all_as_csv: ~
+        export_all_products: ~
+        processing_export_products: ~
         processing_export: ~
         status:
           all: "모든 상태"

@@ -592,6 +592,8 @@ ru:
         search: Поиск
         reset_search: "Показать все"
         export_all_as_csv: "Экспортировать все как CSV"
+        export_all_products: "Экспортировать все как Excel"
+        processing_export_products: "Обработка экспорта в Excel ..."
         processing_export: "Обработка экспорта в CSV ..."
         status:
           all: "Все статусы"

@@ -579,6 +579,8 @@ lv:
         search: ~
         reset_search: ~
         export_all_as_csv: "Eksportēt visus kā CSV"
+        export_all_products: "Eksportēt visus kā Excel"
+        processing_export_products: "Notiek apstrāde eksportam uz Excel ..."
         processing_export: "Notiek apstrāde eksportam uz CSV ..."
         status:
           all: ~

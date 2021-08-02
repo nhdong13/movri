@@ -583,6 +583,8 @@ hu:
         search: ~
         reset_search: ~
         export_all_as_csv: ~
+        export_all_products: ~
+        processing_export_products: ~
         processing_export: ~
         status:
           all: ~

@@ -584,6 +584,8 @@ nl:
         search: Zoek
         reset_search: "Toon alles"
         export_all_as_csv: "Exporteer alles als CSV"
+        export_all_products: "Exporteer alles als Excel"
+        processing_export_products: "Verwerken van de export naar Excel..."
         processing_export: "Verwerken van de export naar CSV..."
         status:
           all: "Alle statussen"

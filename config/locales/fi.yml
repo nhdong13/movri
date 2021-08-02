@@ -582,6 +582,8 @@ fi:
         search: Etsi
         reset_search: "Näytä kaikki"
         export_all_as_csv: "Vie kaikki CSV-muodossa"
+        export_all_products: "Vie kaikki Excel-muodossa"
+        processing_export_products: "Prosessoidaan Excel-vientiä..."
         processing_export: "Prosessoidaan CSV-vientiä..."
         status:
           all: "Kaikki tilat"

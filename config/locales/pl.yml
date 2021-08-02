@@ -592,6 +592,8 @@ pl:
         search: Szukaj
         reset_search: "Pokaż wszystkie"
         export_all_as_csv: ~
+        export_all_products: ~
+        processing_export_products: ~
         processing_export: ~
         status:
           all: "Wszystkie statusy:"

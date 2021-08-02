@@ -587,6 +587,8 @@ sk-SK:
         search: Hľadať
         reset_search: "Ukázať všetko"
         export_all_as_csv: "Exportovať všetko ako CSV"
+        export_all_products: "Exportovať všetko ako Excel"
+        processing_export_products: "Spracováva sa export do súboru Excel ..."
         processing_export: "Spracováva sa export do súboru CSV ..."
         status:
           all: "Všetky stavy"
