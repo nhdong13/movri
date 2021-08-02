@@ -157,7 +157,7 @@ class ExportListingsJob < Struct.new(:community_id, :export_task_id, :export_as_
   end
 
   def listing_url domain, locale
-    Rails.application.routes.url_helpers.listing_url(id: listing.url, locale: locale, host: domain)
+    Rails.application.routes.url_helpers.listing_url(id: listing.url, locale: locale, host: domain, protocol: "https")
   end
 
   def listing_overview
