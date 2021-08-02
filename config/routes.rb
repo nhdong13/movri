@@ -394,6 +394,7 @@ Rails.application.routes.draw do
           end
           collection do
             get 'export'
+            get 'export_products'
             get 'export_status'
           end
         end

@@ -1,5 +1,7 @@
 require 'csv'
-class ExportListingsJob < Struct.new(:current_user_id, :community_id, :export_task_id)
+require "axlsx"
+class ExportListingsJob < Struct.new(:community_id, :export_task_id, :export_as_excel)
+  attr_accessor :listing
   include DelayedAirbrakeNotification
 
   # This before hook should be included in all Jobs to make sure that the service_name is
@@ -15,13 +17,20 @@ class ExportListingsJob < Struct.new(:current_user_id, :community_id, :export_ta
     export_task = ExportTaskResult.find(export_task_id)
     export_task.update(status: 'started')
 
-    csv_content = generate_csv_content(community)
-
     marketplace_name = community.use_domain ? community.domain : community.ident
-    filename = "#{marketplace_name}-listings-#{Time.zone.today}-#{export_task.token}.csv"
+    filename = "#{marketplace_name}-listings-#{Time.zone.today}-#{export_task.token}."
+
+    if export_as_excel
+      export_content = generate_excel_content(community)
+      filename += "xlsx"
+    else
+      export_content = generate_csv_content(community)
+      filename += "csv"
+    end
+    
     export_task.original_filename = filename
     export_task.original_extname = File.extname(filename).delete('.')
-    export_task.update(status: 'finished', file: FakeFileIO.new(filename, csv_content))
+    export_task.update(status: 'finished', file: FakeFileIO.new(filename, export_content))
   end
 
   def generate_csv_content(community)
@@ -56,22 +65,68 @@ class ExportListingsJob < Struct.new(:current_user_id, :community_id, :export_ta
       main_image_url
     }.to_csv(force_quotes: true)
     listings.each do |listing|
+      @listing = listing
       out << [
         listing.id,
         listing.title,
         listing.author_id,
         listing.created_at && I18n.l(listing.created_at, format: '%Y-%m-%d %H:%M:%S'),
         listing.updated_at && I18n.l(listing.updated_at, format: '%Y-%m-%d %H:%M:%S'),
-        status_title(listing, locale),
+        status_title(locale),
         category_title(listing.category_id, categories),
         I18n.t(listing.shape_name_tr_key, locale: locale),
-        main_image_url(listing)
+        main_image_url
       ].to_csv(force_quotes: true)
     end
     out
   end
 
-  def status_title(listing, locale)
+  def generate_excel_content(community)
+    I18nHelper.initialize_community_backend!(community.id, community.locales)
+    locale = community.default_locale
+
+    generate_excel_rows(community)
+  end
+
+  def generate_excel_rows(community)
+    book = Axlsx::Package.new
+    workbook = book.workbook
+    sheet = workbook.add_worksheet name: "Customer List"
+    listings = community.listings.for_export
+    locale = community.default_locale
+
+    sheet.add_row(%w{
+      ID
+      Title
+      Description
+      Availability
+      Condition
+      Price
+      Link
+      main_image_url
+      Brand
+    })
+
+    listings.each do |listing|
+      @listing = listing
+      sheet.add_row [
+        listing.id,
+        listing.title,
+        listing_overview,
+        "In Stock",
+        "New",
+        listing_price,
+        listing_url(community.domain, locale),
+        main_image_url,
+        listing.sku
+      ]
+    end
+
+    book.to_stream.read
+  end
+
+  private
+  def status_title(locale)
     status =
       if listing.approval_pending? || listing.approval_rejected?
         listing.state
@@ -93,7 +148,39 @@ class ExportListingsJob < Struct.new(:current_user_id, :community_id, :export_ta
     out.reverse.join(" | ")
   end
 
-  def main_image_url(listing)
+  def main_image_url
     listing.listing_images.first&.image&.url
+  end
+
+  def listing_price
+    ActionController::Base.helpers.number_to_currency(MoneyViewUtils.to_CAD(listing.price_cents))
+  end
+
+  def listing_url domain, locale
+    Rails.application.routes.url_helpers.listing_url(id: listing.url, locale: locale, host: domain)
+  end
+
+  def listing_overview
+    counter = 0
+    pointer = 0
+    description = ""
+    description_present = false
+    raw_description = listing&.overview_tab&.description
+    while counter >= 0 && pointer < raw_description.length
+      current_char = raw_description[pointer]
+      return description if description_present && raw_description[pointer] == ">"
+      if current_char == "<"
+        counter += 1
+      elsif current_char == ">"
+        counter -= 1
+      else
+        if counter == 0
+          description_present = true
+          description += current_char
+        end
+      end
+      pointer += 1
+    end
+    description
   end
 end

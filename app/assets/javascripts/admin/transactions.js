@@ -22,6 +22,19 @@ window.ST.initializeExportPolling = function (options) {
     document.body.removeChild(link);
     link = null;
   };
+
+  var element2 = $('#export-all-product');
+  var oldHtml2 = $(element2).html();
+  element2.html(options.listings_export_loading);
+  ST.utils.baconStreamFromAjaxPolling(
+    {url: options.pollingUrl},
+    function(pollingResult) {
+      return pollingResult.status == 'finished';
+    }
+  ).onValue(function (val) {
+    element2.html(oldHtml2);
+    downloadURI(val.url, 'export.xlsx');
+  });
 };
 window.ST.initializeTransactionSearchFormSelector = function() {
   $(".status-select-button").click(function(){

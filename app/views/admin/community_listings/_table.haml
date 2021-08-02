@@ -21,8 +21,10 @@
   = link_to "Post a new listing", new_listing_path()
 %span#admin_listings_count= page_entries_info(@presenter.listings, :model => "Listing").html_safe
 
-- if @presenter.show_listings_export?
-  #export-as-csv.right= link_to(" " + t("admin.communities.listings.export_all_as_csv"), {action: :export}, {remote: true, class: icon_class("download")})
+.right
+  - if @presenter.show_listings_export?
+    #export-as-csv.text-right= link_to(" " + t("admin.communities.listings.export_all_as_csv"), {action: :export}, {remote: true, class: icon_class("download")})
+  #export-all-product.text-right= link_to(" " + t("admin.communities.listings.export_all_products"), {action: :export_products}, {remote: true, class: icon_class("download")})
 
 %table#admin_listings
   %thead
