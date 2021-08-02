@@ -414,6 +414,7 @@ Rails.application.routes.draw do
             post :remove_draft_order_items
             post :remove_draft_order_custom_items
             post :add_listing_to_draft_order
+            post :send_shipment_received_mail
           end
           member do
             post :update_draft_order

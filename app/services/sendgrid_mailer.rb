@@ -12,6 +12,7 @@ class SendgridMailer
   ORDER_DELIVERED_TEMPLATE_ID = 'd-ecf7fd441f6b467d81c1c758a5bff3c8'
   CONFIRMATION_EMAIL_TEMPLATE_ID = 'd-034b300e1e50486ea68c39f821d26865'
   WELCOME_EMAIL_TEMPLATE_ID = 'd-2f165bb3f7ce4595ad235928c4dd7d55'
+  SHIPMENT_RECEIVED_TEMPLATE_ID = 'd-f2f0acb8348a465faa95babcc2fa5da1'
   SERVICE_EMAIL = 'sales@movri.ca'
   CART_URL = "#{APP_CONFIG.smtp_email_domain}/cart"
   ROUTES_URL = APP_CONFIG.smtp_email_domain
@@ -176,6 +177,32 @@ class SendgridMailer
         "email": SERVICE_EMAIL
       },
       "template_id": ORDER_CONFIRMED_TEMPLATE_ID
+    }
+    sg = SendGrid::API.new(api_key: APP_CONFIG.SENDGRID_API_KEY)
+    begin
+      response = sg.client.mail._("send").post(request_body: data)
+      return response.status_code
+    rescue Exception => e
+      puts e.message
+    end
+  end
+
+  def send_shipment_received_mail(to, subsitutions)
+    data = {
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": to
+            }
+          ],
+          "dynamic_template_data": subsitutions
+        }
+      ],
+      "from": {
+        "email": SERVICE_EMAIL
+      },
+      "template_id": SHIPMENT_RECEIVED_TEMPLATE_ID
     }
     sg = SendGrid::API.new(api_key: APP_CONFIG.SENDGRID_API_KEY)
     begin

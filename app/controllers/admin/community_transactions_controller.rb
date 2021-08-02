@@ -1,7 +1,7 @@
 require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
-  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy, :update_draft_order]
+  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy, :update_draft_order, :send_shipment_received_mail]
   before_action :set_service
   before_action :find_draft_transaction, only: [
     :add_listing_to_draft_order,
@@ -332,6 +332,18 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     respond_to do |format|
       format.js { render layout: false }
       format.json { render json: listing, each_serializer: ListingSerializer }
+    end
+  end
+
+  def send_shipment_received_mail
+    if @order.sent_shipment_received_mail==false && @order.update(sent_shipment_received_mail: true)
+      SendgridMailer.new(@order, @current_community, @current_user).send_shipment_received_mail(
+        @order.shipping_address.email,
+        { order_number: @order.order_number, first_name: @order.shipping_address.first_name }
+      )
+    end
+    respond_to do |format|
+      format.js { render layout: false }
     end
   end
 

@@ -98,7 +98,7 @@
                 %span Shipping not required
               .width-50.align-right
                 .common-label-btn.common-admin-btn.margin-0.btn-mark-as-fulfilled
-                  %span Mark as Fulfilled
+                  %span.mark-btn Mark as Fulfilled
 
           = form_for [:admin, @order], url: admin_community_transaction_path(@current_community, @order), remote: true do |f|
             .fulfilled-section.padding-15{class: @order.fulfilled? ? "" : "hidden"}
@@ -127,6 +127,13 @@
                     %label
                       = check_box_tag :sent_tracking_number_to_customer, nil, true
                       %span Send shipment details to  your customer now
+          .flex-items.padding-15.fulfilled-option
+            .width-50
+              %span Shipment Received
+            .width-50.align-right
+              .common-label-btn.common-admin-btn.margin-0.btn-mark-as-received
+                = link_to send_shipment_received_mail_admin_community_transactions_path(id: @order), id: "send-shipment", class: "no-border-padding #{@order.sent_shipment_received_mail ? 'disabled-link' : ''}", method: :post, remote: true, disabled: @order.sent_shipment_received_mail do
+                  %span.mark-btn{class: @order.sent_shipment_received_mail ? 'mark-btn-disabled' : ''} Mark as Received
 
         .setting-box.margin-bt-20
           .flex-items
