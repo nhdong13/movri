@@ -109,7 +109,7 @@ class ExportListingsJob < Struct.new(:community_id, :export_task_id, :export_as_
 
     listings.each do |listing|
       @listing = listing
-      sheet.add_row [
+      sheet.add_row([
         listing.id,
         listing.title,
         listing_overview,
@@ -119,7 +119,7 @@ class ExportListingsJob < Struct.new(:community_id, :export_task_id, :export_as_
         listing_url(community.domain, locale),
         main_image_url,
         listing.sku
-      ]
+      ], types: Array.new(8, :string).insert(0, nil))
     end
 
     book.to_stream.read
@@ -153,7 +153,7 @@ class ExportListingsJob < Struct.new(:community_id, :export_task_id, :export_as_
   end
 
   def listing_price
-    ActionController::Base.helpers.number_to_currency(MoneyViewUtils.to_CAD(listing.price_cents))
+    sprintf("%.2f", MoneyViewUtils.to_CAD(listing.price_cents))
   end
 
   def listing_url domain, locale
