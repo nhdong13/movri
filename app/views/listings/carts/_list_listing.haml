@@ -18,7 +18,7 @@
           .col-3
             .quantity-box
               %span= t('transactions.label.quantity')
-              %input.cart-detail-item-quantity{id: "cart-detail-item-quantity-#{listing.id}",value: value, :max => listing.available_quantity, :min => "1", :name => "quantity", :type => "number", :maxlength => 4}
+              %input.cart-detail-item-quantity{id: "cart-detail-item-quantity-#{listing.id}",value: value, :max => [listing.available_quantity, 1].max, :min => "1", :name => "quantity", :type => "number", :maxlength => 4}
           .col-3
             - price_cents = calculate_price_cents(listing, session[:cart][listing.id.to_s])
             - readable_price = MoneyViewUtils.to_humanized(Money.new(price_cents, 'USD'))

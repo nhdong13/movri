@@ -243,7 +243,8 @@ module ListingsHelper
   end
 
   def disabled_qty listing
-    (listing.available_quantity+1..listing.master_available).to_a
+    from_qty = [listing.available_quantity, 1].max
+    (from_qty + 1..listing.master_available).to_a
   end
 
 end

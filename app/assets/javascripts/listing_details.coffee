@@ -2,7 +2,7 @@ onClickUpQuantity = ->
   $('#quantity-up, #quantity-up-mobile').click ->
     currentVal = parseInt($('#quantity-number').val()) || 0
     new_val = currentVal + 1
-    if ($("#quantity-number > option[value=#{new_val}]").attr('disabled') != 'disabled')
+    if ($("#quantity-number > option[value=#{new_val}]").length > 0 && $("#quantity-number > option[value=#{new_val}]").attr('disabled') != 'disabled')
       $("#quantity-number").val(new_val)
       $("#quantity-number-mobile").val(new_val)
       update_price_listing(new_val)

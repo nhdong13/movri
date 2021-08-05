@@ -433,7 +433,7 @@ class ListingsController < ApplicationController
 
     listing_id = params[:id]
 
-    maximum_available_quantity = ActionController::Base.helpers.ListingsHelper.maximum_available_quantity
+    maximum_available_quantity = [listing.available_quantity, 1].max
     if session[:cart][listing_id] == maximum_available_quantity
       return render json: {
         success: false,
