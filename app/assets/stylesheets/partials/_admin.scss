@@ -319,3 +319,10 @@ select#locale-selection {
   background:#e0e4ef;
   color: #374385
 }
+
+span#export-all-product, span#export-as-csv {
+  color: #13588d;
+  font-size: 14px;
+  cursor: pointer;
+  display: block;
+}

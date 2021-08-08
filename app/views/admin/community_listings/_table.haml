@@ -23,8 +23,10 @@
 
 .right
   - if @presenter.show_listings_export?
-    #export-as-csv.text-right= link_to(" " + t("admin.communities.listings.export_all_as_csv"), {action: :export}, {remote: true, class: icon_class("download")})
-  #export-all-product.text-right= link_to(" " + t("admin.communities.listings.export_all_products"), {action: :export_products}, {remote: true, class: icon_class("download")})
+    %span#export-as-csv.text-right
+      %span{class: icon_class("download")}= ' ' + t("admin.communities.listings.export_all_as_csv")
+  %span#export-all-product.text-right
+    %span{class: icon_class("download")}= ' ' + t("admin.communities.listings.export_all_products")
 
 %table#admin_listings
   %thead

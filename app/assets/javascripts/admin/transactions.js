@@ -36,6 +36,21 @@ window.ST.initializeExportPolling = function (options) {
     downloadURI(val.url, 'export.xlsx');
   });
 };
+
+$('span#export-as-csv').click(function() {
+  $.ajax({
+    url: '/admin/communities/1/listings/export',
+    type: "GET"
+  })
+});
+
+$('span#export-all-product').click(function() {
+  $.ajax({
+    url: '/admin/communities/1/listings/export_products',
+    type: "GET"
+  })
+});
+
 window.ST.initializeTransactionSearchFormSelector = function() {
   $(".status-select-button").click(function(){
     $(".status-select-dropdown").show();
