@@ -48,13 +48,14 @@
               .out-line
             %span.capitalize.bold= @order.fulfilled? ? "Fulfilled" : "Unfulfilled"
           - @order.transaction_items.unscope(where: :is_deleted).each do |item|
+            - listing = Listing.unscope(where: [:deleted, :enable]).find_by_id(item.listing_id)
             .flex-items.br-bottom
               .width-15.margin-0
-                = image_tag item.listing ? item.listing.main_image : "", alt: @current_community.image_alt_text
+                = image_tag listing ? listing.main_image : "", alt: @current_community.image_alt_text
               .width-85
                 .flex-items
                   .width-50
-                    %span= item.listing ? item.listing.title : "Unknow product"
+                    %span= listing ? listing.title : "Unknow product"
                   .width-25
                     - if @order.draft_order?
                       - price = item.price_cents
