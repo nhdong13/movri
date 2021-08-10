@@ -90,7 +90,7 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
 
   def export
     @export_result = ExportTaskResult.create
-    Delayed::Job.enqueue(ExportCompletedTransactionsJob.new(@current_user.id, @current_community.id, @export_result.id), priority: 3)
+    Delayed::Job.enqueue(ExportCompletedTransactionsJob.new(@current_user.id, @current_community.id, @export_result.id), priority: 2, run_at: Time.current)
     respond_to do |format|
       format.js { render layout: false }
     end

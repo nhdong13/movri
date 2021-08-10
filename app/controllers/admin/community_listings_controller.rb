@@ -29,7 +29,7 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
 
   def export
     @export_result = ExportTaskResult.create
-    Delayed::Job.enqueue(ExportListingsJob.new(@current_community.id, @export_result.id, false), priority: 3)
+    Delayed::Job.enqueue(ExportListingsJob.new(@current_community.id, @export_result.id, false), priority: 2)
     respond_to do |format|
       format.js { render layout: false }
     end
@@ -37,7 +37,7 @@ class Admin::CommunityListingsController < Admin::AdminBaseController
 
   def export_products
     @export_result = ExportTaskResult.create
-    Delayed::Job.enqueue(ExportListingsJob.new(@current_community.id, @export_result.id, true), priority: 3)
+    Delayed::Job.enqueue(ExportListingsJob.new(@current_community.id, @export_result.id, true), priority: 2)
     respond_to do |format|
       format.js { render layout: false }
     end
