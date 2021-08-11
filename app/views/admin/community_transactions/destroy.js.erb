@@ -1,3 +1,5 @@
+_learnq.push(['identify', { '$email' : '<%= @current_user ? @current_user.get_email : "un_login_user@gmail.com" %>'}]);
+
 _learnq.push(["track", "Cancelled Order", <%= raw @cancelled_data.to_json %>]);
 
 window.location.href = '<%= @redirect_path%>'
