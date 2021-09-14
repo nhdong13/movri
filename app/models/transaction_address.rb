@@ -42,7 +42,7 @@ class TransactionAddress < ApplicationRecord
   before_create :add_office_address
 
   validate :change_office_address, on: :update
-  validates :state_or_province, presence: true, allow_blank: false
+  validates :state_or_province, presence: true, allow_blank: false, unless: :is_office_address?
 
   enum address_type: [:shipping_address, :billing_address]
 
