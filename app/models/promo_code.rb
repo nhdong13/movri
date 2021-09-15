@@ -42,7 +42,7 @@ class PromoCode < ApplicationRecord
 
   validates_presence_of :start_datetime
 
-  has_many :tx, class_name: 'Transaction', :dependent => :destroy
+  has_many :tx, class_name: 'Transaction'
   has_and_belongs_to_many :people_used, class_name: "Person"
   validates_presence_of :start_datetime
 
