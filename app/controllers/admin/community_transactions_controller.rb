@@ -1,7 +1,7 @@
 require 'csv'
 
 class Admin::CommunityTransactionsController < Admin::AdminBaseController
-  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy, :update_draft_order, :send_shipment_received_mail]
+  before_action :find_transaction, only: [:edit, :update, :charge_extra_fee, :refund_transaction, :charge_refund_fee, :destroy, :update_draft_order, :send_shipment_received_mail, :fulfill_data_step_1, :fulfill_data_step_2]
   before_action :set_service
   before_action :find_draft_transaction, only: [
     :add_listing_to_draft_order,
@@ -126,8 +126,21 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     @fulfill_data =  klaviyo_service(@order).get_data_for_fulfill_order
     @redirect_path = edit_admin_community_transaction_path(@current_community, @order)
     respond_to do |format|
-      format.html
+      format.html { render layout: false }
       format.js { render layout: false }
+    end
+  end
+
+  def fulfill_data_step_1
+    @fulfill_data =  klaviyo_service(@order).get_data_for_fulfill_order
+    respond_to do |format|
+      format.html { render layout: false }
+    end
+  end
+
+  def fulfill_data_step_2
+    respond_to do |format|
+      format.html { render layout: false }
     end
   end
 

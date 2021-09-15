@@ -422,6 +422,8 @@ Rails.application.routes.draw do
             get :charge_extra_fee
             get :refund_transaction
             post :charge_refund_fee
+            get :fulfill_data_step_1
+            get :fulfill_data_step_2
           end
         end
         resources :transaction_addresses, controller: :community_transaction_addresses, only: [:update, :create, :edit]

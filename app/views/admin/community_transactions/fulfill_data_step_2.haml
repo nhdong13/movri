@@ -1,0 +1,8 @@
+%script{:async => "", :src => "//static.klaviyo.com/onsite/js/klaviyo.js?company_id=HLsMny", :type => "text/javascript"}
+:javascript
+  var _learnq = _learnq || [];
+  _learnq.push(['identify', {
+    // Change the line below to dynamically print the user's email.
+    '$email' : '#{@current_user ? @current_user.get_email : "un_login_user@gmail.com"}'
+  }]);
+  window.location.href = '#{edit_admin_community_transaction_path(@current_community, @order)}'
