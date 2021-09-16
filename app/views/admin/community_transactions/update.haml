@@ -6,4 +6,8 @@
     '$first_name': '#{@fulfill_data[:customer_properties][:$first_name]}',
     '$last_name': '#{@fulfill_data[:customer_properties][:$last_name]}'
   }]);
-  window.location.href = '#{fulfill_data_step_1_admin_community_transaction_path(@current_community, @order)}'
+  document.addEventListener("DOMContentLoaded", () => document.getElementById("edit_transaction_#{@order.id}").submit());
+%body
+  = form_for [:admin, @order], url: admin_community_transaction_path(@current_community, @order) do |f|
+    = hidden_field_tag :direct_page, @redirect_path
+    = f.hidden_field :fulfilled_at, value: Time.current

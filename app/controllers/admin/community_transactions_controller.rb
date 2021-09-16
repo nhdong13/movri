@@ -124,9 +124,9 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
     end
     flash[:notice] = "Update successfully!"
     @fulfill_data =  klaviyo_service(@order).get_data_for_fulfill_order
-    @redirect_path = edit_admin_community_transaction_path(@current_community, @order)
+    set_fulfull_order_render_page_and_redirect_path(params[:direct_page])
     respond_to do |format|
-      format.html { render layout: false }
+      format.html { render @render_page, layout: false }
       format.js { render layout: false }
     end
   end
@@ -411,5 +411,18 @@ class Admin::CommunityTransactionsController < Admin::AdminBaseController
   def klaviyo_service(transaction=nil)
     transaction = transaction || @transaction
     @klaviyo_service = KlaviyoService.new(transaction, session, @current_user)
+  end
+
+  def set_fulfull_order_render_page_and_redirect_path page
+    if page == "fulfill_step_1"
+      @render_page = "fulfill_data_step_1"
+      @redirect_path = "fulfill_step_2"
+    elsif page == "fulfill_step_2"
+      @render_page = "fulfill_data_step_2"
+      @redirect_path = ""
+    else
+      @render_page = "update"
+      @redirect_path = "fulfill_step_1"
+    end
   end
 end
