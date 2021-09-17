@@ -31,7 +31,7 @@ window.ST = window.ST || {};
                   </div>
                 </div>
                 <div class='width-10 center-items'>
-                  <span class='${item.active ? 'active' : 'expired'}-label'>${item.active ? 'Active' : 'Expired'}</span>
+                  <span class='${item.active=='Active' ? 'active' : 'expired'}-label'>${item.active=='Active' ? 'Active' : 'Expired'}</span>
                 </div>
                 <div class='width-10 center-items'>
                   <span class='items-style'>${item.number_of_uses} used</span>

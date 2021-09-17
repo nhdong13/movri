@@ -44,7 +44,7 @@ class Admin::PromoCodesController < Admin::AdminBaseController
   end
 
   def destroy
-    @promo_code.destroy
+    @promo_code.update(active: false)
     redirect_to admin_promo_codes_path
   end
 

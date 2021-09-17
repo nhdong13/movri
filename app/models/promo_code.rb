@@ -50,7 +50,7 @@ class PromoCode < ApplicationRecord
   algoliasearch index_name: "movri_promo_codes" do
     attribute :id, :code, :number_of_uses
     attributes :active do
-      still_active? ? "Active" : 'Expired'
+      can_use? ? "Active" : 'Expired'
     end
     attributes :start_datetime do
       get_start_date
@@ -130,6 +130,6 @@ class PromoCode < ApplicationRecord
   end
 
   def can_use?
-    still_active? || unlimited_of_use?
+    (still_active? || unlimited_of_use?) && active
   end
 end
