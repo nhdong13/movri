@@ -817,7 +817,7 @@ class TransactionsController < ApplicationController
     booking = @transaction.booking
     booking_end_on = booking.end_on
     if @blocked_dates.include?(booking_end_on)
-      flash[:error] = 'Something wrong with the rental dates.'
+      flash[:error] = 'Quantity selected for 1 or more products in your cart is not available. Kindly change the quantity, or contact us for further assistance.'
       return redirect_to cart_path
     end
   end
