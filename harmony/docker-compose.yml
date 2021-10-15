@@ -8,6 +8,7 @@ services:
       - DB_PORT=3306
       - DB_HOST=db
     command: ["./docker/startup.sh"]
+    restart: "always"
   db:
     image: mysql:5.7
     environment:
@@ -16,3 +17,4 @@ services:
       - ~/.sharetribe/harmony-mysql-data:/var/lib/mysql
     ports:
       - "13306:3306"
+    restart: "always"

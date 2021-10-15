@@ -43,6 +43,7 @@ services:
     command: ["./docker/startup.sh"]
     depends_on:
       - harmony_db
+    restart: "always"
   harmony_db:
     image: mysql:5.7
     environment:
@@ -51,3 +52,4 @@ services:
       - ~/.sharetribe/harmony-mysql-data:/var/lib/mysql
     ports:
       - "13306:3306"
+    restart: "always"

@@ -21,3 +21,4 @@ services:
       - DB_PASSWORD
       - DB_NAME=harmony_db
     command: ["./docker/startup.sh"]
+    restart: "always"
