@@ -149,16 +149,6 @@ Congratulations! Sharetribe should now be up and running for development purpose
 
 ### Docker
 
-- Install Ruby 2.6.2
-
-- `bundle install`
-
-- Install node 12.11.0
-
-- `yarn install`
-
-- Run `script/prepare-assets.sh`
-
 - Clone `config.example.yml` -> `config.yml`
 
 ```
@@ -168,7 +158,14 @@ Congratulations! Sharetribe should now be up and running for development purpose
 - Clone `database.example.yml` -> `database.yml`
 
 ```
+development:
+    adapter: mysql2
+    database: movri_development
+    encoding: utf8
+    username: root
+    password: root
     host: db
+    port: 3306
 ```
 
 - `docker-compose build`
@@ -199,6 +196,7 @@ bundle exec rake sharetribe:create_booking_for_exist_listings
 bundle exec rails c
   Community.first.update(domain: 'localhost')
   Person.first.update(password: 'your_pass')
+script/prepare-assets.sh
 ```
 
 - Access `http://localhost:3000`
@@ -218,7 +216,7 @@ docker exec -it movri_web_1 bash
 bundle exec rails c
 ```
 
-- If source code are changed, we have to re-build docker images and update docker container, e.g
+- If source code are changed but docker has not updated yet, we have to re-build docker images and update docker container, e.g
 
 ```
 docker-compose build web
