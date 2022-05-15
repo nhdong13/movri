@@ -816,7 +816,9 @@ class TransactionsController < ApplicationController
 
     booking = @transaction.booking
     booking_end_on = booking.end_on
-    if @blocked_dates.include?(booking_end_on)
+    booking_start_on = booking.start_on
+    duration = (booking_start_on..booking_end_on).to_a
+    if duration.any?{|d| @blocked_dates.include?(d)}
       flash[:error] = 'Quantity selected for 1 or more products in your cart is not available. Kindly change the quantity, or contact us for further assistance.'
       return redirect_to cart_path
     end

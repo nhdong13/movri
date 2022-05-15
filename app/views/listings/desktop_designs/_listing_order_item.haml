@@ -57,15 +57,16 @@
         - content_for :extra_javascript do
           :javascript
             window.ST.FromToDatePicker.setupPerDayOrNight(#{raw @listing_presenter.datepicker_per_day_or_night_setup(blocked_dates).to_json}, #{raw session[:booking] ? session[:booking][:start_date].to_json : ''}, ".input-arrival-date", ".input-return-date");
+        - show_dates = session[:booking] && !(DateTime.strptime(session[:booking][:start_date], '%m/%d/%Y')..DateTime.strptime(session[:booking][:end_date], '%m/%d/%Y')).to_a.any?{|d| blocked_dates.include?(d)}
         .col-6.clearfix.arrival-date.padding-0
           .form-group
             %label{for: 'arrival-date'} Arrival Date
-            %input.form-control.required.input-arrival-date{value: session[:booking] ? session[:booking][:start_date] : '',type: "arrival-date", :data => { :output => "booking-start-output" }, autocomplete: 'off'}
+            %input.form-control.required.input-arrival-date{value: session[:booking] && show_dates ? session[:booking][:start_date] : '',type: "arrival-date", :data => { :output => "booking-start-output" }, autocomplete: 'off'}
             = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
         .col-6.clearfix.return-date
           .form-group
             %label{for: "return-date"} Return Date
-            %input.form-control.required.input-return-date{value: session[:booking] ? session[:booking][:end_date] : '', type: "return-date",  :data => { :output => "booking-end-output" }, autocomplete: 'off'}
+            %input.form-control.required.input-return-date{value: session[:booking] && show_dates ? session[:booking][:end_date] : '', type: "return-date",  :data => { :output => "booking-end-output" }, autocomplete: 'off'}
             = image_tag("mf_icons/icon-movri-calendar.svg", class: 'header-menu-icon icon-movri-calendar')
       - @listing_presenter.blocked_dates_result.on_error do
         = t("listings.listing_actions.unable_load_availability")
